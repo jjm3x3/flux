@@ -28,6 +28,10 @@ class Keeper < Card
     player.keepers << self
   end
 
+  def ==(other_card)
+    self.name == other_card.name
+  end
+
   def to_s
     @name
   end
@@ -45,11 +49,11 @@ class Goal < Card
   end
 
   def met?(player, game)
-    puts "check if #{player} won"
+    puts "\ncheck if #{player} won"
     haveCard1 = player.keepers.include?(@related_keepers[0])
-    puts "do the have card 1?: #{haveCard1}"
+    puts "do the have card #{@related_keepers[0]}?: #{haveCard1}"
     haveCard2 = player.keepers.include?(@related_keepers[1])
-    puts "do the have card 2?: #{haveCard2}"
+    puts "do the have card #{@related_keepers[1]}?: #{haveCard2}"
     if haveCard1 && haveCard2
       return true
     end

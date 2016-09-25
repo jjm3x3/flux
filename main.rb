@@ -58,18 +58,28 @@ class Game
 
   def playCards
     puts "here is the current goal #{goal}"
-    puts "here are the keepers you have:\n #{@activePlayer.keepers}"
+    keepersPrintOut = @activePlayer.keepers.map do |keeper|
+      keeper.to_s
+    end
+    puts "here are the keepers you have:\n #{keepersPrintOut}"
     cardsPlayed = 0
-    while cardsPlayed < @playRule
-      puts "Here is your current hand:\n #{@activePlayer.hand}"
+    hand = @activePlayer.hand
+    while cardsPlayed < @playRule && !winner
+      handPrintOut = hand.map do |card|
+        card.to_s
+      end
+      puts "Here is your current hand:\n #{handPrintOut}"
       puts "Pick a card to play"
       cardPos = gets
       cardToPlay = hand.delete_at(cardPos.to_i)
       cardToPlay.play(@activePlayer, self)
       cardsPlayed += 1
     end
-    puts "next persons turn"
+    if winner
+      puts "the game is over!!!!==============\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"
+    end
     @activePlayer = @activePlayer.next
+    puts "#{@activePlayer}'s turn"
   end
 
   def drawCards
@@ -78,11 +88,12 @@ class Game
       randValue = Random.new.rand(@deck.length)
       @deck.delete_at(randValue)
     end
+    puts "deck now has #{@deck.length} cards"
     drawnCards
   end
 
   def run
-    while !winner
+    loop do
       @activePlayer.takeTurn
     end
   end
@@ -91,10 +102,11 @@ class Game
     checkingPlayer = @firstPlayer
     winner = false
     loop do
-      winner ||= @firstPlayer.won?
+      winner ||= checkingPlayer.won?
       checkingPlayer = checkingPlayer.next
-      break if !(checkingPlayer == @firstPlayer)
+      break if checkingPlayer == @firstPlayer
     end
+    puts "is there a winner? #{winner.to_s}\n"
     winner 
   end
 
@@ -111,6 +123,7 @@ class Game
       end
       deck << Goal.new(row[1],cards,row[3])
     end
+    puts "deck starts with #{deck.length} cards"
     deck
   end
 end
