@@ -62,7 +62,36 @@ SQL
   [16, "Rocket to the Moon", "[4,17]", "? and ?"],
   [17, "Hearts and Minds", "[5,15]", "? and ?"],
   [18, "Hippyism", "[15,16]", "? and ?"],
-  [19, "Toast", "[3,13]", "? and ?"]
+  [19, "Toast", "[3,13]", "? and ?"],
+  [20, "Baked Goods", "[7,13]", "? and ?"]
 ].each do |value|
   db.execute "insert into goals values ( ? , ? , ? , ?)", value
+end
+
+rows = db.execute <<-SQL
+create table if not exists rules (
+       id int,
+       name varchar(30),
+       rule_type int,
+       rule varchar(50)
+);
+SQL
+
+[
+  [1, "Draw 2", 1, "Draw 2 cards per turn"],
+  [2, "Draw 3", 1, "Draw 3 cards per turn"],
+  [3, "Draw 4", 1, "Draw 4 cards per turn"],
+  [4, "Draw 5", 1, "Draw 5 cards per turn"],
+  [5, "Play 2", 2, "Play 2 cards per turn"],
+  [6, "Play 3", 2, "Play 3 cards per turn"],
+  [7, "Play 4", 2, "Play 4 cards per turn"],
+  [8, "Play All", 2, "Play all of the cards in your hand on each turn"],
+  [9, "Hand Limit 0", 3, "you can only have 0 cards in your hand"],
+  [10, "Hand Limit 1", 3, "you can only have 1 cards in your hand"],
+  [11, "Hand Limit 2", 3, "you can only have 2 cards in your hand"],
+  [12, "Keeper Limit 2", 4, "you can only have 2 keepers  in play."],
+  [13, "Keeper Limit 3", 4, "you can only have 3 keepers  in play."],
+  [14, "Keeper Limit 4", 4, "you can only have 4 keepers  in play."]
+].each do |value|
+  db.execute "insert into rules values ( ? , ? , ? , ? )", value
 end
