@@ -35,6 +35,7 @@ class Player
 end
 
 class Game
+  attr_accessor :ruleBase
 
   def initialize
 
@@ -80,10 +81,10 @@ class Game
     cardsDrawn = @ruleBase.drawRule
     hand = activePlayer.hand
     while cardsPlayed < @ruleBase.playRule && !winner && hand.length > 0
-      printHand(hand)
+      printCardList(hand)
       cardPos = selectCardFromHand
       cardToPlay = hand.delete_at(cardPos.to_i)
-      cardToPlay.play(activePlayer, self, @ruleBase)
+      cardToPlay.play(activePlayer, self)
       cardsPlayed += 1
       checkForWinner # should check for a winner before discarding
       enforceNonActivePlayerLimits
@@ -122,7 +123,7 @@ class Game
   def discardDownToLimit(player)
     while player.hand.count > @ruleBase.handLimit
       puts "choose a card to discard"
-      printHand(player.hand)
+      printCardList(player.hand)
       cardPos = selectCardFromHand("to discard")
       removedCard = player.hand.delete_at(cardPos)
       @discardPile << removedCard
@@ -176,7 +177,7 @@ class Game
     cardPos = gets.to_i
   end
 
-  def printHand(hand)
+  def printCardList(hand)
     handPrintOut = hand.map do |card|
       card.to_s
     end
@@ -200,11 +201,26 @@ class Game
     winner 
   end
 
+  def playTwoAndUseEm(player)
+    cardsDrawn = @deck.drawCards(2)
+    puts "here are the cards:"
+    printCardList(cardsDrawn)
+    puts "which would you like to play first?"
+    whichCard = gets
+    firstOne = cardsDrawn.delete_at(whichCard.to_i)
+    firstOne.play(player, self)
+    cardsDrawn[0].play(player, self)
+  end
+
+  def jackpot(player)
+    player.hand += @deck.drawCards(3)
+  end
+
 end
 
 
 class RuleBase
-  attr_accessor :drawRule, :playRule, :handLimit, :keeperLimit
+  attr_reader :drawRule, :playRule, :handLimit, :keeperLimit
 
   def initialize
     @drawRule = 1
@@ -213,8 +229,55 @@ class RuleBase
     @keeperLimit = Float::INFINITY
   end
 
+  def resetToBasic
+    @drawRule = 1
+    @playRule = 1
+    @handLimit = Float::INFINITY
+    @keeperLimit = Float::INFINITY
+  end
+
+  def addRule(card)
+    puts "here is the rule text of the card: \n'#{card.rule_text}'\n ->and has a type of: #{card.rule_type}"
+    if card.rule_type == 1
+      if @drawRuleCard
+        puts "need to disscard here" # TODO
+        # discardPile << @drawRuleCard
+      end
+      @drawRuleCard = card
+      # @drawRule = card.rule_text[5].to_i
+      puts "changes the draw rule to #{drawRule}"
+    elsif card.rule_type == 2
+      if card.rule_text[5] == 'a'
+        @playRule = Float::INFINITY
+      else
+        @playRule = card.rule_text[5].to_i
+      end
+      # puts "this changes play to '#{@playRule}'"
+    elsif card.rule_type == 3
+      # puts "this changes the hand limmit to: '#{card.rule_text[18]}'"
+      @handLimit = card.rule_text[18].to_i
+    elsif card.rule_type == 4
+      @keeperLimit = card.rule_text[18].to_i
+      puts "going to change the keeper limit to #{@keeperLimit}"
+    else
+      puts "this card not implemented yet #{self}"
+    end
+  end
+
+  def drawRule
+    if @drawRuleCard
+      @drawRuleCard.rule_text[5].to_i
+    else
+      1
+    end
+  end
+
+  def removeLimits
+    # @ruleBase.
+  end
+
   def to_s
-    return "\tdraw #{@drawRule}\n\tplay #{@playRule}\n\thandLimit #{@handLimit}\n\tkeeperLimit #{@keeperLimit}"
+    return "\tdraw #{drawRule}\n\tplay #{@playRule}\n\thandLimit #{@handLimit}\n\tkeeperLimit #{@keeperLimit}"
   end
 end
 

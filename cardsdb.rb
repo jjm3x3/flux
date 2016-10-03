@@ -89,9 +89,27 @@ SQL
   [9, "Hand Limit 0", 3, "you can only have 0 cards in your hand"],
   [10, "Hand Limit 1", 3, "you can only have 1 cards in your hand"],
   [11, "Hand Limit 2", 3, "you can only have 2 cards in your hand"],
-  [12, "Keeper Limit 2", 4, "you can only have 2 keepers  in play."],
-  [13, "Keeper Limit 3", 4, "you can only have 3 keepers  in play."],
-  [14, "Keeper Limit 4", 4, "you can only have 4 keepers  in play."]
+  [12, "Keeper Limit 2", 4, "you can only have 2 keepers in play."],
+  [13, "Keeper Limit 3", 4, "you can only have 3 keepers in play."],
+  [14, "Keeper Limit 4", 4, "you can only have 4 keepers in play."] #,
+  # [15, "First Play Random", 5, "The first card you play must be chosen at random from your hand by the player on your left. Ignore this rule if, at the start of your turn , the current Rule cards allow you to play only one card"]
 ].each do |value|
   db.execute "insert into rules values ( ? , ? , ? , ? )", value
+end
+
+rows = db.execute <<-SQL
+create table if not exists actions (
+       id int,
+       name varchar(30),
+       rule_text varchar(50)
+);
+SQL
+
+[
+  [1, "Rules Reset", "Reset to the Basic Rules. Discard all New Rules cards, and leave only the Basic Rules (and any Meta Rule cards) in play. Don't discard the current Goal."],
+  [2, "Draw 2 and Use 'em", "Set your hand aside. Draw 2 cards, play them in any order you choose, then pick up your hand and continue with your turn. This card and all cards played becauyse of it are counted as a single play."],
+  [3, "Jackpot!", "Draw 3 cards"],
+  [4, "No Limits", "Discard all Hand and Keeper Limit rules currently in play."]
+].each do |value|
+  db.execute "insert into actions values ( ? , ? , ? )", value
 end

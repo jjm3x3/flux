@@ -11,7 +11,7 @@ class Deck
     # puts "what is the value of #{@firstCard}"
     if @firstCard
       @firstCard = false
-      drawnCards = [@cards.delete_at(@cards.length-1)]
+      drawnCards = [@cards.delete_at(@cards.length-18)]
       cardsToDraw -= 1
     end
     puts "draw #{cardsToDraw} card(s) from the game..."
@@ -49,6 +49,9 @@ class Deck
     end
     db.execute("select * from rules;") do |row|
       deck << Rule.new(row[1], row[2], row[3])
+    end
+    db.execute("select * from actions;") do |row|
+      deck << Action.new(row[0], row[1], row[2])
     end
     puts "deck starts with #{deck.length} cards"
     deck
