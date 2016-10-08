@@ -109,7 +109,17 @@ SQL
   [1, "Rules Reset", "Reset to the Basic Rules. Discard all New Rules cards, and leave only the Basic Rules (and any Meta Rule cards) in play. Don't discard the current Goal."],
   [2, "Draw 2 and Use 'em", "Set your hand aside. Draw 2 cards, play them in any order you choose, then pick up your hand and continue with your turn. This card and all cards played becauyse of it are counted as a single play."],
   [3, "Jackpot!", "Draw 3 cards"],
-  [4, "No Limits", "Discard all Hand and Keeper Limit rules currently in play."]
+  [4, "No Limits", "Discard all Hand and Keeper Limit rules currently in play."],
+  [5, "Draw 3, play 2 of them", "Set your hand aside. Draw 3cards and play 2 of them. Discard the last card, then pick up your hand and continue with your turn. This card and all all cards played because of it, counted as a single play."],
+  [6, "Discard & Draw", "Disacrd your entire hand, then draw as many cards as you discarded.i Do not count this card when determining how many replacement cards to draw."],
+  [7, "Use What You Take", "Take a card at random from another player's hand, and play it"],
+  [8, "Taxation!", "Each player mush choose 1 card from his or her hand and give it to you"],
+  [9, "Today's Special!", "Set your hand aside and draw 3 cards.  If today is your birthday, play all 3 cards. If today is a holoday or a specaial annicersary, play 2 of the cards. If it's just another day, play only 1 card. Discard the remainder."],
+  [10, "Mix It All Up", "Gather up all Keepers and Creepers on the table, shuggle them together and deal them back out to all players, starting with yourself. These cards go back into play in front of whoever receives them."],
+  [11, "Let's Do That Again!", "Search through the discard pile. Take any Action or New Rule card you wish and immediately play it. Anyone may look through the disacrd pile at any time, but the order of what's in the pile should not be changed."],
+  [12, "Everybody Gets 1", "Set your hand aside. Count the number of players in the game (including yourself). Draw enough cards to give 1 card to each player, then do so. You decide who gets what."],
+  [13, "Trade Hands", "Trade your hand for the hand of one of your opponents. This is one of those times when you cat get something for nothing."],
+  [14, "Rotate Hands", "All players pass their ahnd to the player next to them. You decide the direction."]
 ].each do |value|
   db.execute "insert into actions values ( ? , ? , ? )", value
 end

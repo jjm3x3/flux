@@ -11,7 +11,7 @@ class Deck
     # puts "what is the value of #{@firstCard}"
     if @firstCard
       @firstCard = false
-      drawnCards = [@cards.delete_at(@cards.length-18)]
+      drawnCards = [@cards.delete_at(@cards.length-1)]
       cardsToDraw -= 1
     end
     puts "draw #{cardsToDraw} card(s) from the game..."

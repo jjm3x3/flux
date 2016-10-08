@@ -99,7 +99,28 @@ class Action < Card
     when 3
       game.jackpot(player)
     when 4
-      game.removeLimits
+      game.ruleBase.removeLimits
+    when 5
+      game.draw3playe2ofThem(player)
+    when 6
+      game.discardAndDraw(player)
+    when 7
+      game.useWhatYouTake(player)
+    when 8
+      game.taxation(player)
+    when 9
+      game.todaysSpecial(player)
+    when 10
+      game.mixItAllUp(player)
+    when 11
+      game.letsDoThatAgain(player)
+    when 12
+      game.everyBodyGets1(player)
+    when 13
+      game.tradeHands(player)
+    when 14
+      game.rotateHands(player)
     end
+    game.discard(self)
   end
 end
