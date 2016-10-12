@@ -175,7 +175,7 @@ class Game
     cardPos = gets.to_i
   end
 
-  def printCardList(hand)
+  def printCardList(hand,prompt="Here is your current hand:")
     i = 0
     numbering = "   "
     hand.map do |card|
@@ -186,7 +186,7 @@ class Game
     handPrintOut = hand.map do |card|
       card.to_s
     end
-    puts "Here is your current hand:\n#{numbering}\n#{handPrintOut}"
+    puts "#{prompt}\n#{numbering}\n#{handPrintOut}"
   end
 
 
@@ -390,13 +390,17 @@ class Game
     nextPlayer = -1
     while nextPlayer != @currentPlayer
       if whichOption.start_with?("clock")
-        nextPlayer  = (playerCur - 1) % @players.length
-      else
         nextPlayer  = (playerCur + 1) % @players.length
+      else
+        nextPlayer  = (playerCur - 1) % @players.length
       end
+
       puts "player #{playerCur} gets =  #{nextPlayer}'s hand "
+      printCardList(@players[nextPlayer].hand, "This is #{playerCur}'s new hand")
       @players[playerCur].hand = @players[nextPlayer].hand
+
       playerCur = nextPlayer
+      puts "here is the value of nextPlayer: #{nextPlayer}"
     end
     @players[playerCur].hand = tempHand
   end
