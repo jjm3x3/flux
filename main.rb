@@ -390,16 +390,20 @@ class Game
     nextPlayer = -1
     while nextPlayer != @currentPlayer
       if whichOption.start_with?("clock")
+        puts "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
+        puts "move counterclockwise curentPlayer: #{playerCur} nextPlayer: #{nextPlayer} " 
         nextPlayer  = (playerCur - 1) % @players.length
       end
 
-      puts "player #{playerCur} gets =  #{nextPlayer}'s hand "
-      printCardList(@players[nextPlayer].hand, "This is #{playerCur}'s new hand")
-      @players[playerCur].hand = @players[nextPlayer].hand
+      # puts "player #{playerCur} gets =  #{nextPlayer}'s hand "
 
-      playerCur = nextPlayer
+      # printCardList(@players[nextPlayer].hand, "This is #{playerCur}'s new hand")
+      # @players[playerCur].hand = @players[nextPlayer].hand
+      # printCardList(@players[playerCur].hand, "This is #{playerCur}'s new hand")
+
+      # playerCur = nextPlayer
       puts "here is the value of nextPlayer: #{nextPlayer}"
     end
     @players[playerCur].hand = tempHand
