@@ -29,6 +29,12 @@ class Player
     end
   end
 
+  def set_hand(hand)
+    oldHand = @hand
+    @hand = hand
+    oldHand
+  end
+
   def to_s
     @name
   end
@@ -383,13 +389,14 @@ class Game
   end
 
   def rotateHands(player)
-    puts "which way yould you like to got (clockwise, counter-clockwise)"
+    puts "which way would you like to got (clockwise, counter-clockwise)"
     whichOption = gets.strip
+
     playerCur = @currentPlayer
     tempHand = @players[playerCur].hand
     nextPlayer = -1
     while nextPlayer != @currentPlayer
-      if whichOption.start_with?("clock")
+      if whichOption.start_with?("cl")
         puts "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
@@ -397,16 +404,22 @@ class Game
         nextPlayer  = (playerCur - 1) % @players.length
       end
 
-      # puts "player #{playerCur} gets =  #{nextPlayer}'s hand "
+      puts "player #{playerCur} gets =  #{nextPlayer}'s hand "
 
-      # printCardList(@players[nextPlayer].hand, "This is #{playerCur}'s new hand")
-      # @players[playerCur].hand = @players[nextPlayer].hand
+      printCardList(@players[nextPlayer].hand, "This is #{playerCur}'s new hand")
+      @players[playerCur].set_hand(@players[nextPlayer].hand)
       # printCardList(@players[playerCur].hand, "This is #{playerCur}'s new hand")
 
-      # playerCur = nextPlayer
-      puts "here is the value of nextPlayer: #{nextPlayer}"
+      playerCur = nextPlayer
+      puts "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayer}"
     end
-    @players[playerCur].hand = tempHand
+    printCardList(tempHand, "here is the onehandLeft out:") 
+    @players[playerCur].set_hand(tempHand)
+    printCardList(@players[playerCur].hand, "This should be the same as above: ")
+    puts "\n"
+    @players.each do |player|
+      printCardList(player.hand, "What is my hand now #{player}:")
+    end
   end
 
 end
