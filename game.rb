@@ -147,7 +147,7 @@ class Game
 
   def selectCardFromHand(reason="to play")
     puts "Pick a card " + reason
-    cardPos = gets.to_i
+    cardPos = STDIN::gets.to_i
   end
 
   def printCardList(hand,prompt="Here is your current hand:")
@@ -186,7 +186,7 @@ class Game
     puts "here are the cards:"
     printCardList(cardsDrawn)
     puts "which would you like to play first?"
-    whichCard = gets
+    whichCard = STDIN::gets
     firstOne = cardsDrawn.delete_at(whichCard.to_i)
     firstOne.play(player, self)
     cardsDrawn[0].play(player, self)
@@ -201,11 +201,11 @@ class Game
     puts "here are the cards:"
     printCardList(cardsDrawn)
     puts "which would you like to play first?"
-    whichCard = gets
+    whichCard = STDIN::gets
     firstOne = cardsDrawn.delete_at(whichCard.to_i)
     firstOne.play(player, self)
     puts "which would you like to play next?"
-    whichCard = gets
+    whichCard = STDIN::gets
     firstOne = cardsDrawn.delete_at(whichCard.to_i)
     firstOne.play(player, self)
     discard(cardsDrawn[0])
@@ -231,7 +231,7 @@ class Game
       player.to_s
     end
     puts "which player would you like to pick from\n#{playerList}"
-    playerPosition = gets.to_i
+    playerPosition = STDIN::gets.to_i
     selectedPlayer = opponents[playerPosition]
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
@@ -246,7 +246,7 @@ class Game
     end.map do |player|
       puts "choose a card to give to #{activePlayer}"
       printCardList(player.hand)
-      whichCard = gets.to_i
+      whichCard = STDIN::gets.to_i
       player.hand.delete_at(whichCard)
     end
     player.hand += newCardsForPlayer
@@ -256,31 +256,31 @@ class Game
     drawnCards = @deck.drawCards(3)
     puts "pick a card to play"
     printCardList(drawnCards)
-    whichCard = gets.strip.to_i
+    whichCard = STDIN::gets.strip.to_i
     cardToPlay = drawnCards.delete_at(whichCard)
     cardToPlay.play(player, self)
 
     puts "Is today your birthday? (y/n)"
-    response = gets.strip
+    response = STDIN::gets.strip
     if response == 'y' || response == 'Y'
       puts "pick a card to play"
       printCardList(drawnCards)
-      whichCard = gets.strip.to_i
+      whichCard = STDIN::gets.strip.to_i
       cardToPlay = drawnCards.delete_at(whichCard)
       cardToPlay.play(player, self)
 
       puts "pick a card to play"
       printCardList(drawnCards)
-      whichCard = gets.strip.to_i
+      whichCard = STDIN::gets.strip.to_i
       cardToPlay = drawnCards.delete_at(whichCard)
       cardToPlay.play(player, self)
     else
       puts "Is today a holiday or an anniversary (y/n)"
-      response = gets.strip
+      response = STDIN::gets.strip
       if response == 'y' || response == 'Y'
         puts "pick a card to play"
         printCardList(drawnCards)
-        whichCard = gets.strip.to_i
+        whichCard = STDIN::gets.strip.to_i
         cardToPlay = drawnCards.delete_at(whichCard)
         cardToPlay.play(player, self)
       end
@@ -321,7 +321,7 @@ class Game
     end
     puts "pick a card you would like to replay"
     printCardList(eligibleCards)
-    whichCard = gets.strip.to_i
+    whichCard = STDIN::gets.strip.to_i
     pickedCard = eligibleCards[whichCard]
     @discardPile = @discardPile.select do |card|
       card != pickedCard
@@ -340,7 +340,7 @@ class Game
         puts "which card would you like to give to #{@players[playerCur]}"
       end
       printCardList(cardsDrawn)
-      whichCard = gets.strip.to_i
+      whichCard = STDIN::gets.strip.to_i
       @players[playerCur].hand << cardsDrawn.delete_at(whichCard)
       playerCur += 1
     end
@@ -351,7 +351,7 @@ class Game
       player.to_s
     end
     puts "who would you like to trade hands with?\n#{opponentsText}"
-    whichPlayer = gets.strip.to_i
+    whichPlayer = STDIN::gets.strip.to_i
     otherHand = opponents[whichPlayer].hand
     opponents[whichPlayer].hand = player.hand
     player.hand = otherHand
@@ -359,7 +359,7 @@ class Game
 
   def rotateHands(player)
     puts "which way would you like to got (clockwise, counter-clockwise)"
-    whichOption = gets.strip
+    whichOption = STDIN::gets.strip
 
     playerCur = @currentPlayer
     tempHand = @players[playerCur].hand
@@ -373,11 +373,10 @@ class Game
         nextPlayer  = (playerCur - 1) % @players.length
       end
 
-      puts "player #{playerCur} gets =  #{nextPlayer}'s hand "
+      puts "player #{playerCur} STDIN::gets =  #{nextPlayer}'s hand "
       if playerCur == @players.length - 1 && whichOption.start_with?("cl")
         @players[playerCur].set_hand(tempHand)
       elsif playerCur == 1 && !whichOption.start_with?("cl")
-        puts "does this ever get called?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         @players[playerCur].set_hand(tempHand)
       else
         @players[playerCur].set_hand(@players[nextPlayer].hand)
