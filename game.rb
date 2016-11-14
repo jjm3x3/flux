@@ -19,6 +19,9 @@ class Game
     @players << Player.new("player1", self)
     @players << Player.new("player2", self)
     @players << Player.new("player3", self)
+    # @players << Player.new("player4", self)
+    # @players << Player.new("player5", self)
+    # @players << Player.new("player6", self)
     @players.each do |player|
       firstHand = @deck.drawCards(3)
       puts "draw your opening hand #{firstHand}"
@@ -371,17 +374,21 @@ class Game
       end
 
       puts "player #{playerCur} gets =  #{nextPlayer}'s hand "
-
-      printCardList(@players[nextPlayer].hand, "This is #{playerCur}'s new hand")
-      @players[playerCur].set_hand(@players[nextPlayer].hand)
-      # printCardList(@players[playerCur].hand, "This is #{playerCur}'s new hand")
+      if playerCur == @players.length - 1 && whichOption.start_with?("cl")
+        @players[playerCur].set_hand(tempHand)
+      elsif playerCur == 1 && !whichOption.start_with?("cl")
+        puts "does this ever get called?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+        @players[playerCur].set_hand(tempHand)
+      else
+        @players[playerCur].set_hand(@players[nextPlayer].hand)
+      end
 
       playerCur = nextPlayer
       puts "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayer}"
     end
-    printCardList(tempHand, "here is the onehandLeft out:") 
-    @players[playerCur].set_hand(tempHand)
-    printCardList(@players[playerCur].hand, "This should be the same as above: ")
+    # printCardList(tempHand, "here is the onehandLeft out:") 
+    # puts "who is the next player #{nextPlayer}"
+    # printCardList(@players[playerCur].hand, "This should be the same as above: ")
     puts "\n"
     @players.each do |player|
       printCardList(player.hand, "What is my hand now #{player}:")
