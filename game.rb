@@ -8,8 +8,11 @@ require "./ruleBase.rb"
 
 class Game
   attr_accessor :ruleBase
+  attr_accessor :players
 
-  def initialize
+  def initialize(input_steam)
+
+    @input_steam = input_steam
 
     @ruleBase = RuleBase.new(self)
     @deck = Deck.new
@@ -346,12 +349,16 @@ class Game
     end
   end
 
+  def get_input
+    @input_steam.gets.strip
+  end
+
   def tradeHands(player)
     opponentsText = opponents.map do |player|
       player.to_s
     end
     puts "who would you like to trade hands with?\n#{opponentsText}"
-    whichPlayer = STDIN::gets.strip.to_i
+    whichPlayer = get_input.to_i
     otherHand = opponents[whichPlayer].hand
     opponents[whichPlayer].hand = player.hand
     player.hand = otherHand
