@@ -9,6 +9,7 @@ class Deck
     cardsToDraw = (number != -1 ? number : 1)
     drawnCards = []
     # puts "what is the value of #{@firstCard}"
+    # put in for debugging
     if @firstCard
       @firstCard = false
       drawnCards = [@cards.delete_at(@cards.length-1)]
@@ -43,6 +44,7 @@ class Deck
     end
     db.execute("select * from goals;") do |row|
       cards = JSON.parse(row[2]).map do |index|
+        # some "blind indexing going on here..."
         deck[index-1]
       end
       deck << Goal.new(row[1],cards,row[3])
