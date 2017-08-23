@@ -366,7 +366,7 @@ class Game
 
   def rotateHands(player)
     puts "which way would you like to got (clockwise, counter-clockwise)"
-    whichOption = STDIN::gets.strip
+    whichOption = get_input
 
     playerCur = @currentPlayer
     tempHand = @players[playerCur].hand
