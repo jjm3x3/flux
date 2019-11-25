@@ -17,10 +17,10 @@ class Deck
       drawnCards = [@cards.delete_at(@cards.length-1)]
       cardsToDraw -= 1
     end
-    puts "draw #{cardsToDraw} card(s) from the game..."
+    @output_stream.puts "draw #{cardsToDraw} card(s) from the game..."
 
     drawnCards += drawMultipleCards(cardsToDraw)
-    puts "deck now has #{@cards.length} cards"
+    @output_stream.puts "deck now has #{@cards.length} cards"
     drawnCards
   end
 
