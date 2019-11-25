@@ -165,7 +165,7 @@ class Game
     handPrintOut = hand.map do |card|
       card.to_s
     end
-    puts "#{prompt}\n#{numbering}\n#{handPrintOut}"
+    @output_stream.puts "#{prompt}\n#{numbering}\n#{handPrintOut}"
   end
 
 
@@ -366,7 +366,7 @@ class Game
   end
 
   def rotateHands(player)
-    puts "which way would you like to got (clockwise, counter-clockwise)"
+    @output_stream.puts "which way would you like to got (clockwise, counter-clockwise)"
     whichOption = get_input
 
     playerCur = @currentPlayer
@@ -377,11 +377,11 @@ class Game
         puts "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
-        puts "move counterclockwise curentPlayer: #{playerCur} nextPlayer: #{nextPlayer} " 
+        @output_stream.puts "move counterclockwise curentPlayer: #{playerCur} nextPlayer: #{nextPlayer} " 
         nextPlayer  = (playerCur - 1) % @players.length
       end
 
-      puts "player #{playerCur} STDIN::gets =  #{nextPlayer}'s hand "
+      @output_stream.puts "player #{playerCur} STDIN::gets =  #{nextPlayer}'s hand "
       if playerCur == @players.length - 1 && whichOption.start_with?("cl")
         @players[playerCur].set_hand(tempHand)
       elsif playerCur == 1 && !whichOption.start_with?("cl")
@@ -391,12 +391,12 @@ class Game
       end
 
       playerCur = nextPlayer
-      puts "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayer}"
+      @output_stream.puts "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayer}"
     end
     # printCardList(tempHand, "here is the onehandLeft out:") 
     # puts "who is the next player #{nextPlayer}"
     # printCardList(@players[playerCur].hand, "This should be the same as above: ")
-    puts "\n"
+    @output_stream.puts "\n"
     @players.each do |player|
       printCardList(player.hand, "What is my hand now #{player}:")
     end
