@@ -374,7 +374,7 @@ class Game
     nextPlayer = -1
     while nextPlayer != @currentPlayer
       if whichOption.start_with?("cl")
-        puts "move clockwise"
+        @output_stream.puts "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
         @output_stream.puts "move counterclockwise curentPlayer: #{playerCur} nextPlayer: #{nextPlayer} " 
