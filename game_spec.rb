@@ -12,8 +12,9 @@ describe "game" do
     describe "everyBodyGets1" do
         it "should draw one card per player" do
             # setup
-            input_stream = StringIO.new("0\n" * 4)
-            theGame = Game.new(input_stream, test_oufile)
+            numberOfPlayers = 4
+            input_stream = StringIO.new("0\n" * numberOfPlayers)
+            theGame = Game.new(input_stream, test_oufile, numberOfPlayers)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -26,8 +27,9 @@ describe "game" do
 
         it "each player should have one more card" do
             # setup
-            input_stream = StringIO.new("0\n" * 4)
-            theGame = Game.new(input_stream, test_oufile)
+            numberOfPlayers = 4
+            input_stream = StringIO.new("0\n" * numberOfPlayers)
+            theGame = Game.new(input_stream, test_oufile, numberOfPlayers)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 

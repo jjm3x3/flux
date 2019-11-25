@@ -11,7 +11,7 @@ class Game
   attr_accessor :players
   attr_accessor :deck
 
-  def initialize(input_steam, output_stream)
+  def initialize(input_steam, output_stream, numberOfPlayers = 3)
 
     @input_steam = input_steam
     @output_stream = output_stream
@@ -21,12 +21,10 @@ class Game
     @discardPile = []
 
     @players = []
-    @players << Player.new("player1", self)
-    @players << Player.new("player2", self)
-    @players << Player.new("player3", self)
-    # @players << Player.new("player4", self)
-    # @players << Player.new("player5", self)
-    # @players << Player.new("player6", self)
+    (1..numberOfPlayers).select do |playerId|
+      @players << Player.new("player" + playerId.to_s, self)
+    end
+
     @players.each do |player|
       firstHand = @deck.drawCards(3) # basic rules draw three cards to start
       @output_stream.puts "draw your opening hand #{firstHand}"
