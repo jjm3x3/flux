@@ -12,7 +12,7 @@ describe "game" do
     describe "everyBodyGets1" do
         it "should draw one card per player" do
             # setup
-            input_stream = StringIO.new("0\n0\n0\n")
+            input_stream = StringIO.new("0\n" * 4)
             theGame = Game.new(input_stream, test_oufile)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
@@ -26,7 +26,7 @@ describe "game" do
 
         it "each player should have one more card" do
             # setup
-            input_stream = StringIO.new("0\n0\n0\n")
+            input_stream = StringIO.new("0\n" * 4)
             theGame = Game.new(input_stream, test_oufile)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
@@ -166,20 +166,20 @@ describe "game" do
                 expect(theFirstPlayer.hand).to eq secondPlayersOriginalCards
             end
 
-            it "second player should have the hand of the last player" do
+            it "second player should have the hand of the player after them" do
                 # setup
                 input_stream = StringIO.new("clockwise")
                 theGame = Game.new(input_stream, test_oufile)
                 theFirstPlayer = theGame.players[0]
-                theLastPlayer = theGame.players[theGame.players.length-1]
-                lastPlayersOriginalCards = theLastPlayer.hand
+                thePlayerAfterThem = theGame.players[2]
+                playerAfterThemsCards = thePlayerAfterThem.hand
 
                 # execute
                 theGame.rotateHands(theFirstPlayer)
 
                 # test
                 theSecondPlayer = theGame.players[1]
-                expect(theSecondPlayer.hand).to eq lastPlayersOriginalCards
+                expect(theSecondPlayer.hand).to eq playerAfterThemsCards
             end
         end
     end
