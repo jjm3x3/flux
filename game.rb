@@ -28,7 +28,7 @@ class Game
     # @players << Player.new("player6", self)
     @players.each do |player|
       firstHand = @deck.drawCards(3) # basic rules draw three cards to start
-      puts "draw your opening hand #{firstHand}"
+      @output_stream.puts "draw your opening hand #{firstHand}"
       player.hand = firstHand
     end
 
