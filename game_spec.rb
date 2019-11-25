@@ -10,18 +10,50 @@ describe "game" do
     end 
 
     describe "rotate_hands" do
-        it "first player should not have the hand they started with" do
-            # setup
-            input_stream = StringIO.new("thing")
-            theGame = Game.new(input_stream, test_oufile)
-            theFirstPlayer = theGame.players[0]
-            firstPlayersOriginalCards = theFirstPlayer.hand
+        describe "counter clockwise" do
+            it "first player should not have the hand they started with" do
+                # setup
+                input_stream = StringIO.new("thing")
+                theGame = Game.new(input_stream, test_oufile)
+                theFirstPlayer = theGame.players[0]
+                firstPlayersOriginalCards = theFirstPlayer.hand
 
-            # execute
-            theGame.rotateHands(theFirstPlayer)
+                # execute
+                theGame.rotateHands(theFirstPlayer)
 
-            # test
-            expect(firstPlayersOriginalCards).not_to eq theFirstPlayer.hand
+                # test
+                expect(theFirstPlayer.hand).not_to eq firstPlayersOriginalCards
+            end
+
+            it "first player should have the hand of the last player" do
+                # setup
+                input_stream = StringIO.new("thing")
+                theGame = Game.new(input_stream, test_oufile)
+                theFirstPlayer = theGame.players[0]
+                theLastPlayer = theGame.players[theGame.players.length-1]
+                lastPlayersOriginalCards = theLastPlayer.hand
+
+                # execute
+                theGame.rotateHands(theFirstPlayer)
+
+                # test
+                expect(theFirstPlayer.hand).to eq lastPlayersOriginalCards
+            end
+
+            it "second player should have the hand of the first player" do
+                # setup
+                input_stream = StringIO.new("thing")
+                theGame = Game.new(input_stream, test_oufile)
+                theFirstPlayer = theGame.players[0]
+                firstPlayersOriginalCards = theFirstPlayer.hand
+
+                # execute
+                theGame.rotateHands(theFirstPlayer)
+
+                # test
+                theSecondPlayer = theGame.players[1]
+                expect(theSecondPlayer.hand).to eq firstPlayersOriginalCards
+            end
         end
     end
 
