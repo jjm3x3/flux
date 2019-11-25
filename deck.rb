@@ -1,6 +1,8 @@
 class Deck
 
-  def initialize
+  def initialize(output_stream)
+    @output_stream = output_stream
+
     @firstCard = true
     @cards = buildDeck
   end
@@ -55,7 +57,7 @@ class Deck
     db.execute("select * from actions;") do |row|
       deck << Action.new(row[0], row[1], row[2])
     end
-    puts "deck starts with #{deck.length} cards"
+    @output_stream.puts "deck starts with #{deck.length} cards"
     deck
   end
 end

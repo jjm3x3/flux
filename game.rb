@@ -10,12 +10,13 @@ class Game
   attr_accessor :ruleBase
   attr_accessor :players
 
-  def initialize(input_steam)
+  def initialize(input_steam, output_stream)
 
     @input_steam = input_steam
+    @output_stream = output_stream
 
     @ruleBase = RuleBase.new(self)
-    @deck = Deck.new
+    @deck = Deck.new(@output_stream)
     @discardPile = []
 
     @players = []
