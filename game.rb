@@ -9,6 +9,7 @@ require "./ruleBase.rb"
 class Game
   attr_accessor :ruleBase
   attr_accessor :players
+  attr_accessor :deck
 
   def initialize(input_steam, output_stream)
 
@@ -339,12 +340,12 @@ class Game
     playerCur = @currentPlayer
     while cardsDrawn.length > 0
       if playerCur == @currentPlayer
-        puts "which card would you like to giver to yourself"
+        @output_stream.puts "which card would you like to giver to yourself"
       else 
-        puts "which card would you like to give to #{@players[playerCur]}"
+        @output_stream.puts "which card would you like to give to #{@players[playerCur]}"
       end
       printCardList(cardsDrawn)
-      whichCard = STDIN::gets.strip.to_i
+      whichCard = get_input.to_i
       @players[playerCur].hand << cardsDrawn.delete_at(whichCard)
       playerCur += 1
     end

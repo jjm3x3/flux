@@ -9,6 +9,38 @@ describe "game" do
         Game.new("input_stream", test_oufile)
     end 
 
+    describe "everyBodyGets1" do
+        it "should draw one card per player" do
+            # setup
+            input_stream = StringIO.new("0\n0\n0\n")
+            theGame = Game.new(input_stream, test_oufile)
+            theFirstPlayer = theGame.players[0]
+            originalDeckCount = theGame.deck.count
+
+            # execute
+            theGame.everyBodyGets1(theFirstPlayer)
+
+            # test
+            expect(theGame.deck.count).to eq originalDeckCount-theGame.players.length
+        end
+
+        it "each player should have one more card" do
+            # setup
+            input_stream = StringIO.new("0\n0\n0\n")
+            theGame = Game.new(input_stream, test_oufile)
+            theFirstPlayer = theGame.players[0]
+            originalDeckCount = theGame.deck.count
+
+            # execute
+            theGame.everyBodyGets1(theFirstPlayer)
+
+            # test
+            theGame.players.select do |player|
+                expect(player.hand.length).to eq 4 # since the opening hand size is 3
+            end
+        end
+    end
+
     describe "tradeHands" do
         it "should not leave the first player with the same hand" do
             # setup

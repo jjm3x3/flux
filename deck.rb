@@ -24,6 +24,9 @@ class Deck
     drawnCards
   end
 
+  def count
+    @cards.length
+  end
 
   private
   def drawMultipleCards(amount)
@@ -60,4 +63,5 @@ class Deck
     @output_stream.puts "deck starts with #{deck.length} cards"
     deck
   end
+
 end
