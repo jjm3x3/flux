@@ -358,7 +358,7 @@ class Game
     opponentsText = opponents.map do |player|
       player.to_s
     end
-    puts "who would you like to trade hands with?\n#{opponentsText}"
+    @output_stream.puts "who would you like to trade hands with?\n#{opponentsText}"
     whichPlayer = get_input.to_i
     otherHand = opponents[whichPlayer].hand
     opponents[whichPlayer].hand = player.hand
