@@ -8,7 +8,11 @@ class GameInterface
   end
 
   def debug(message)
-    @output_stream.puts message    
+    @output_stream.puts message
+  end
+
+  def information(message)
+    @output_stream.puts message
   end
 
 end

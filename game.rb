@@ -322,7 +322,7 @@ class Game
 
   def letsDoThatAgain(player)
     eligibleCards = @discardPile.select do |card|
-      @output_stream.puts "this card is of type: #{card.card_type}"
+      @interface.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
     end
     @interface.displayCards(eligibleCards, "pick a card you would like to replay")
@@ -331,7 +331,7 @@ class Game
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
-    @output_stream.puts "replaying #{pickedCard}"
+    @interface.information "replaying #{pickedCard}"
     pickedCard.play(player, self)
   end
 
