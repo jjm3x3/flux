@@ -260,10 +260,7 @@ class Game
 
   def todaysSpecial(player)
     drawnCards = @deck.drawCards(3)
-    @interface.information "pick a card to play"
-    @interface.displayCards(drawnCards)
-    whichCard = get_input.to_i
-    cardToPlay = drawnCards.delete_at(whichCard)
+    cardToPlay = @interface.select_a_card(drawCards, "pick a card to play")
     cardToPlay.play(player, self)
 
     if @interface.ask_yes_no("is today your birthday")
@@ -273,10 +270,7 @@ class Game
       cardToPlay = drawnCards.delete_at(whichCard)
       cardToPlay.play(player, self)
 
-      puts "pick a card to play"
-      printCardList(drawnCards)
-      whichCard = STDIN::gets.strip.to_i
-      cardToPlay = drawnCards.delete_at(whichCard)
+      cardToPlay = @interface.select_a_card(drawCards, "pick a card to play")
       cardToPlay.play(player, self)
     else
       if @interface.ask_yes_no "Is today a holiday or an anniversary"

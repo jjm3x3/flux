@@ -35,6 +35,13 @@ class GameInterface
     response == 'y' || response == 'Y'
   end
 
+  def select_a_card(card_list, prompt="Select a card")
+      information "pick a card to play"
+      displayCards(card_list)
+      whichCard = get_input.to_i
+      card_list.delete_at(whichCard)
+  end
+
   private
   def get_input
     input = @input_stream.gets
