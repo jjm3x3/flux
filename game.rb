@@ -260,24 +260,18 @@ class Game
 
   def todaysSpecial(player)
     drawnCards = @deck.drawCards(3)
-    cardToPlay = @interface.select_a_card(drawCards, "pick a card to play")
+    cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
     cardToPlay.play(player, self)
 
     if @interface.ask_yes_no("is today your birthday")
-      puts "pick a card to play"
-      printCardList(drawnCards)
-      whichCard = STDIN::gets.strip.to_i
-      cardToPlay = drawnCards.delete_at(whichCard)
+      cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
       cardToPlay.play(player, self)
 
-      cardToPlay = @interface.select_a_card(drawCards, "pick a card to play")
+      cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
       cardToPlay.play(player, self)
     else
       if @interface.ask_yes_no "Is today a holiday or an anniversary"
-        puts "pick a card to play"
-        printCardList(drawnCards)
-        whichCard = STDIN::gets.strip.to_i
-        cardToPlay = drawnCards.delete_at(whichCard)
+        cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
         cardToPlay.play(player, self)
       end
     end
@@ -343,7 +337,8 @@ class Game
 
   def get_input
     input = @input_steam.gets
-    input.strip
+    result = input.strip
+    result
   end
 
   def tradeHands(player)
