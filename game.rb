@@ -377,9 +377,6 @@ class Game
       playerCur = nextPlayer
       @interface.debug "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayer}"
     end
-    # printCardList(tempHand, "here is the onehandLeft out:") 
-    # puts "who is the next player #{nextPlayer}"
-    # printCardList(@players[playerCur].hand, "This should be the same as above: ")
     # @output_stream.puts "\n"
     @players.each do |player|
       @interface.displayCards(player.hand, "What is my hand now #{player}:")
