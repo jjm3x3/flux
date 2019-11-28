@@ -15,7 +15,7 @@ describe "game" do
         it "should draw 3 cards" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
-            theTestInterface = TestInterface.new(input_stream, $stdout)
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
@@ -26,6 +26,54 @@ describe "game" do
 
             # test
             expect(theGame.deck.count).to eq deckCountBeforeExecution - 3
+        end
+
+        it "should only play one card if it is not your birthday or a holiday" do
+            # setup
+            input_stream = StringIO.new("0\nn\nn\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            theFirstPlayer = theGame.players[0]
+            deckCountBeforeExecution = theGame.deck.count
+
+            # execute
+            theGame.todaysSpecial(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.keepers.size).to eq 1 # stand in for knowing how many cards got played
+        end
+
+        it "should only play two cards if it is not your birthday but is a holidy" do
+            # setup
+            input_stream = StringIO.new("0\nn\ny\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            theFirstPlayer = theGame.players[0]
+            deckCountBeforeExecution = theGame.deck.count
+
+            # execute
+            theGame.todaysSpecial(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.keepers.size).to eq 2 # stand in for knowing how many cards got played
+        end
+
+        it "should play all three cards if it is you birthday" do
+            # setup
+            input_stream = StringIO.new("0\ny\n0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            theFirstPlayer = theGame.players[0]
+            deckCountBeforeExecution = theGame.deck.count
+
+            # execute
+            theGame.todaysSpecial(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.keepers.size).to eq 3 # stand in for knowing how many cards got played
         end
     end
 

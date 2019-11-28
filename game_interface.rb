@@ -66,7 +66,6 @@ class TestInterface < GameInterface
   end
 
   def displayCards(hand, prompt="Have some cards")
-    $stdout.puts "Here is the test interface being called"
     method(:displayCards).super_method.call(hand, prompt)
     @cardList = hand
   end
