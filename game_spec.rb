@@ -10,11 +10,37 @@ describe "game" do
         Game.new("input_stream", test_outfile)
     end 
 
+    describe "mixItAllUp" do
+        it "should maintain the same number of keepers" do
+            # setup
+            input_stream = StringIO.new("0")
+            theTestInterface = TestInterface.new(test_outfile)
+            theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            keeper1 = Keeper.new("Thing1")
+            keeper2 = Keeper.new("thing2")
+            theGame.players[0].keepers << keeper1
+            theGame.players[1].keepers << keeper2
+            allBeginningKeepers = theGame.players.flat_map do |player|
+                player.keepers
+            end
+
+            # execute
+            theGame.mixItAllUp(theFirstPlayer)
+
+            # test
+            allEndingKeepers = theGame.players.flat_map do |player|
+                player.keepers
+            end
+            expect(allEndingKeepers.size).to eq allBeginningKeepers.size
+        end
+    end
+
     describe "letsDoThatAgain" do
         it "should non contain any keepers or goals" do
             # setup
             input_stream = StringIO.new("0")
-            theTestInterface = TestInterface.new
+            theTestInterface = TestInterface.new(test_outfile)
             theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theGame.discardPile << Action.new(3, "jackpot2", "here are some rules")
@@ -30,7 +56,6 @@ describe "game" do
 
             # test
             theTestInterface.cardList.select do |card|
-                puts "What is this #{card.class}"
                 expect(card.class).to_not eq Keeper
                 expect(card.class).to_not eq Goal
             end
