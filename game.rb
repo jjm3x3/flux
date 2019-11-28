@@ -17,7 +17,6 @@ class Game
 
     @interface = anInterface
     @input_steam = input_steam
-    @output_stream = output_stream
 
     @ruleBase = RuleBase.new(self)
     @deck = Deck.new(anInterface)
@@ -324,13 +323,11 @@ class Game
     playerCur = @currentPlayer
     while cardsDrawn.length > 0
       if playerCur == @currentPlayer
-        @output_stream.puts "which card would you like to giver to yourself"
+        selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to giver to yourself")
       else 
-        @output_stream.puts "which card would you like to give to #{@players[playerCur]}"
+        selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to give to #{@players[playerCur]}")
       end
-      printCardList(cardsDrawn)
-      whichCard = get_input.to_i
-      @players[playerCur].hand << cardsDrawn.delete_at(whichCard)
+      @players[playerCur].hand << selectedCard
       playerCur += 1
     end
   end
@@ -345,7 +342,7 @@ class Game
     opponentsText = opponents.map do |player|
       player.to_s
     end
-    @output_stream.puts "who would you like to trade hands with?\n#{opponentsText}"
+    @interface.information "who would you like to trade hands with?\n#{opponentsText}"
     whichPlayer = get_input.to_i
     otherHand = opponents[whichPlayer].hand
     opponents[whichPlayer].hand = player.hand
@@ -353,7 +350,7 @@ class Game
   end
 
   def rotateHands(player)
-    @output_stream.puts "which way would you like to got (clockwise, counter-clockwise)"
+    @interface.information "which way would you like to got (clockwise, counter-clockwise)"
     whichOption = get_input
 
     playerCur = @currentPlayer
@@ -361,14 +358,14 @@ class Game
     nextPlayer = -1
     while nextPlayer != @currentPlayer
       if whichOption.start_with?("cl")
-        @output_stream.puts "move clockwise"
+        @interface.debug "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
-        @output_stream.puts "move counterclockwise curentPlayer: #{playerCur} nextPlayer: #{nextPlayer} " 
+        @interface.debug "move counterclockwise curentPlayer: #{playerCur} nextPlayer: #{nextPlayer} " 
         nextPlayer  = (playerCur - 1) % @players.length
       end
 
-      @output_stream.puts "player #{playerCur} STDIN::gets =  #{nextPlayer}'s hand "
+      @interface.information "player #{playerCur} STDIN::gets =  #{nextPlayer}'s hand "
       if playerCur == @players.length - 1 && whichOption.start_with?("cl")
         @players[playerCur].set_hand(tempHand)
       elsif playerCur == 1 && !whichOption.start_with?("cl")
@@ -378,14 +375,14 @@ class Game
       end
 
       playerCur = nextPlayer
-      @output_stream.puts "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayer}"
+      @interface.debug "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayer}"
     end
     # printCardList(tempHand, "here is the onehandLeft out:") 
     # puts "who is the next player #{nextPlayer}"
     # printCardList(@players[playerCur].hand, "This should be the same as above: ")
-    @output_stream.puts "\n"
+    # @output_stream.puts "\n"
     @players.each do |player|
-      printCardList(player.hand, "What is my hand now #{player}:")
+      @interface.displayCards(player.hand, "What is my hand now #{player}:")
     end
   end
 
