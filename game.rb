@@ -10,9 +10,11 @@ class Game
   attr_accessor :ruleBase
   attr_accessor :players
   attr_accessor :deck
+  attr_accessor :discardPile
 
-  def initialize(input_steam, output_stream, numberOfPlayers = 3)
+  def initialize(input_steam, output_stream, numberOfPlayers = 3, anInterface = CliInterface.new)
 
+    @interface = anInterface
     @input_steam = input_steam
     @output_stream = output_stream
 
@@ -319,17 +321,16 @@ class Game
 
   def letsDoThatAgain(player)
     eligibleCards = @discardPile.select do |card|
-      puts "this card is of type: #{card.card_type}"
+      @output_stream.puts "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
     end
-    puts "pick a card you would like to replay"
-    printCardList(eligibleCards)
-    whichCard = STDIN::gets.strip.to_i
+    @interface.displayCards(eligibleCards, "pick a card you would like to replay")
+    whichCard = get_input.to_i
     pickedCard = eligibleCards[whichCard]
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
-    puts "replaying #{pickedCard}"
+    @output_stream.puts "replaying #{pickedCard}"
     pickedCard.play(player, self)
   end
 
@@ -399,6 +400,41 @@ class Game
     @players.each do |player|
       printCardList(player.hand, "What is my hand now #{player}:")
     end
+  end
+
+end
+
+
+class CliInterface
+  def initialize
+    @output_stream = $stdout
+    @input_stream = $stdin
+  end
+
+  def displayCards(hand,prompt="Here is your current hand:")
+    i = 0
+    numbering = "   "
+    hand.map do |card|
+      numbering += i.to_s
+      numbering += (" " * card.to_s.length) + "   "
+      i += 1
+    end
+    handPrintOut = hand.map do |card|
+      card.to_s
+    end
+    @output_stream.puts "#{prompt}\n#{numbering}\n#{handPrintOut}"
+  end
+end
+
+class TestInterface
+  attr_accessor :cardList
+
+  def initialize
+  end
+
+  def displayCards(hand, prompt="Have some cards")
+    $stdout.puts "Here is the test interface being called"
+    @cardList = hand
   end
 
 end

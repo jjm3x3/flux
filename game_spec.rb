@@ -1,20 +1,48 @@
 require "./game.rb"
 require "Tempfile"
+require "io/console"
 
 describe "game" do
 
-    test_oufile = Tempfile.new 'test_output'
+    test_outfile = Tempfile.new 'test_output'
 
     it "should construct" do
-        Game.new("input_stream", test_oufile)
+        Game.new("input_stream", test_outfile)
     end 
+
+    describe "letsDoThatAgain" do
+        it "should non contain any keepers or goals" do
+            # setup
+            input_stream = StringIO.new("0")
+            theTestInterface = TestInterface.new
+            theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theGame.discardPile << Action.new(3, "jackpot2", "here are some rules")
+            theGame.discardPile << Rule.new("some draw rule", 1, "Draw 9 cards")
+            keeper1 = Keeper.new("Thing1")
+            keeper2 = Keeper.new("thing2")
+            theGame.discardPile << keeper1
+            theGame.discardPile << keeper2
+            theGame.discardPile << Goal.new("Achive me", [keeper1, keeper2] , "You most have these cards to win")
+
+            # execute
+            theGame.letsDoThatAgain(theFirstPlayer)
+
+            # test
+            theTestInterface.cardList.select do |card|
+                puts "What is this #{card.class}"
+                expect(card.class).to_not eq Keeper
+                expect(card.class).to_not eq Goal
+            end
+        end
+    end
 
     describe "everyBodyGets1" do
         it "should draw one card per player" do
             # setup
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
-            theGame = Game.new(input_stream, test_oufile, numberOfPlayers)
+            theGame = Game.new(input_stream, test_outfile, numberOfPlayers)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -29,7 +57,7 @@ describe "game" do
             # setup
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
-            theGame = Game.new(input_stream, test_oufile, numberOfPlayers)
+            theGame = Game.new(input_stream, test_outfile, numberOfPlayers)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -47,7 +75,7 @@ describe "game" do
         it "should not leave the first player with the same hand" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
-            theGame = Game.new(input_stream, test_oufile)
+            theGame = Game.new(input_stream, test_outfile)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -61,7 +89,7 @@ describe "game" do
         it "should trade the two hands" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
-            theGame = Game.new(input_stream, test_oufile)
+            theGame = Game.new(input_stream, test_outfile)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             firstPlayersOriginalCards = theFirstPlayer.hand
@@ -78,7 +106,7 @@ describe "game" do
         it "every other players hands should remain untouched" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
-            theGame = Game.new(input_stream, test_oufile)
+            theGame = Game.new(input_stream, test_outfile)
             theFirstPlayer = theGame.players[0]
             theOtherPlayer = theGame.players[2]
             otherPlayersOriginalCards = theOtherPlayer.hand
@@ -96,7 +124,7 @@ describe "game" do
             it "first player should not have the hand they started with" do
                 # setup
                 input_stream = StringIO.new("thing")
-                theGame = Game.new(input_stream, test_oufile)
+                theGame = Game.new(input_stream, test_outfile)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -110,7 +138,7 @@ describe "game" do
             it "first player should have the hand of the last player" do
                 # setup
                 input_stream = StringIO.new("thing")
-                theGame = Game.new(input_stream, test_oufile)
+                theGame = Game.new(input_stream, test_outfile)
                 theFirstPlayer = theGame.players[0]
                 theLastPlayer = theGame.players[theGame.players.length-1]
                 lastPlayersOriginalCards = theLastPlayer.hand
@@ -125,7 +153,7 @@ describe "game" do
             it "second player should have the hand of the first player" do
                 # setup
                 input_stream = StringIO.new("thing")
-                theGame = Game.new(input_stream, test_oufile)
+                theGame = Game.new(input_stream, test_outfile)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -142,7 +170,7 @@ describe "game" do
             it "first player should not have the hand they started with" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                theGame = Game.new(input_stream, test_oufile)
+                theGame = Game.new(input_stream, test_outfile)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -156,7 +184,7 @@ describe "game" do
             it "first player should have the hand of the second player" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                theGame = Game.new(input_stream, test_oufile)
+                theGame = Game.new(input_stream, test_outfile)
                 theFirstPlayer = theGame.players[0]
                 theSecondPlayer = theGame.players[1]
                 secondPlayersOriginalCards = theSecondPlayer.hand
@@ -171,7 +199,7 @@ describe "game" do
             it "second player should have the hand of the player after them" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                theGame = Game.new(input_stream, test_oufile)
+                theGame = Game.new(input_stream, test_outfile)
                 theFirstPlayer = theGame.players[0]
                 thePlayerAfterThem = theGame.players[2]
                 playerAfterThemsCards = thePlayerAfterThem.hand
@@ -186,5 +214,5 @@ describe "game" do
         end
     end
 
-    test_oufile.unlink
+    test_outfile.unlink
 end
