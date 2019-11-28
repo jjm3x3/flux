@@ -13,7 +13,7 @@ class Game
   attr_accessor :deck
   attr_accessor :discardPile
 
-  def initialize(input_steam, output_stream, numberOfPlayers = 3, anInterface = CliInterface.new)
+  def initialize(input_steam, numberOfPlayers = 3, anInterface = CliInterface.new)
 
     @interface = anInterface
     @input_steam = input_steam
