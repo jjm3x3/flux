@@ -19,11 +19,13 @@ describe "game" do
             theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
+            deckCountBeforeExecution = theGame.deck.count
 
             # execute
             theGame.todaysSpecial(theFirstPlayer)
 
             # test
+            expect(theGame.deck.count).to eq deckCountBeforeExecution - 3
         end
     end
 
