@@ -20,7 +20,7 @@ class Game
     @output_stream = output_stream
 
     @ruleBase = RuleBase.new(self)
-    @deck = Deck.new(@output_stream)
+    @deck = Deck.new(anInterface)
     @discardPile = []
 
     @players = []
@@ -30,7 +30,7 @@ class Game
 
     @players.each do |player|
       firstHand = @deck.drawCards(3) # basic rules draw three cards to start
-      @output_stream.puts "draw your opening hand #{firstHand}"
+      @interface.debug "draw your opening hand #{firstHand}"
       player.hand = firstHand
     end
 

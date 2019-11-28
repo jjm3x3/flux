@@ -1,7 +1,7 @@
 class Deck
 
-  def initialize(output_stream)
-    @output_stream = output_stream
+  def initialize(anInterface)
+    @interface = anInterface
 
     @firstCard = true
     @cards = buildDeck
@@ -17,10 +17,10 @@ class Deck
       drawnCards = [@cards.delete_at(@cards.length-2)]
       cardsToDraw -= 1
     end
-    @output_stream.puts "draw #{cardsToDraw} card(s) from the game..."
+    @interface.debug "draw #{cardsToDraw} card(s) from the game..."
 
     drawnCards += drawMultipleCards(cardsToDraw)
-    @output_stream.puts "deck now has #{@cards.length} cards"
+    @interface.debug "deck now has #{@cards.length} cards"
     drawnCards
   end
 
@@ -60,7 +60,7 @@ class Deck
     db.execute("select * from actions;") do |row|
       deck << Action.new(row[0], row[1], row[2])
     end
-    @output_stream.puts "deck starts with #{deck.length} cards"
+    @interface.debug "deck starts with #{deck.length} cards"
     deck
   end
 
