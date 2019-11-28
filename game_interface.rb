@@ -15,14 +15,6 @@ class GameInterface
     @output_stream.puts message
   end
 
-end
-
-class CliInterface < GameInterface
-  def initialize
-    @output_stream = $stdout
-    @input_stream = $stdin
-  end
-
   def displayCards(hand,prompt="Here is your current hand:")
     i = 0
     numbering = "   "
@@ -39,6 +31,13 @@ class CliInterface < GameInterface
 
 end
 
+class CliInterface < GameInterface
+  def initialize
+    @output_stream = $stdout
+    @input_stream = $stdin
+  end
+end
+
 class TestInterface < GameInterface
   attr_accessor :cardList
 
@@ -48,6 +47,7 @@ class TestInterface < GameInterface
 
   def displayCards(hand, prompt="Have some cards")
     $stdout.puts "Here is the test interface being called"
+    method(:displayCards).super_method.call(hand, prompt)
     @cardList = hand
   end
 

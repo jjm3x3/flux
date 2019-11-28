@@ -12,11 +12,11 @@ class Deck
     drawnCards = []
     # puts "what is the value of #{@firstCard}"
     # put in for debugging
-    if @firstCard
-      @firstCard = false
-      drawnCards = [@cards.delete_at(@cards.length-2)]
-      cardsToDraw -= 1
-    end
+    # if @firstCard
+    #   @firstCard = false
+    #   drawnCards = [@cards.delete_at(@cards.length-2)]
+    #   cardsToDraw -= 1
+    # end
     @interface.debug "draw #{cardsToDraw} card(s) from the game..."
 
     drawnCards += drawMultipleCards(cardsToDraw)
@@ -64,4 +64,10 @@ class Deck
     deck
   end
 
+end
+
+class StackedDeck < Deck
+  def drawACard
+    @cards.delete_at(0)
+  end
 end

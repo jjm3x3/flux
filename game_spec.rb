@@ -11,6 +11,22 @@ describe "game" do
         theGame = Game.new("some string", test_outfile, numberOfPlayers=3, theTestInterface)
     end 
 
+    describe "todaysSpecial" do
+        it "should draw 3 cards" do
+            # setup
+            input_stream = StringIO.new("0\nn\nn")
+            theTestInterface = TestInterface.new($stdout)
+            theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface)
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            theGame.todaysSpecial(theFirstPlayer)
+
+            # test
+        end
+    end
+
     describe "mixItAllUp" do
         it "should maintain the same number of keepers" do
             # setup
