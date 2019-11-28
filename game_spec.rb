@@ -14,10 +14,10 @@ describe "game" do
     describe "todaysSpecial" do
         it "should draw 3 cards" do
             # setup
-            input_stream = StringIO.new("0\nn\nn")
-            theTestInterface = TestInterface.new($stdout)
+            input_stream = StringIO.new("0\nn\nn\n")
+            theTestInterface = TestInterface.new(input_stream, $stdout)
             theGame = Game.new(input_stream, test_outfile, numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
 
             # execute

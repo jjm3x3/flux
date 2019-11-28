@@ -29,6 +29,17 @@ class GameInterface
     @output_stream.puts "#{prompt}\n#{numbering}\n#{handPrintOut}"
   end
 
+  def ask_yes_no(prompt)
+    @output_stream.puts "#{prompt} (y/N)"
+    response = get_input
+    response == 'y' || response == 'Y'
+  end
+
+  private
+  def get_input
+    input = @input_stream.gets
+    input.strip
+  end
 end
 
 class CliInterface < GameInterface
@@ -36,12 +47,14 @@ class CliInterface < GameInterface
     @output_stream = $stdout
     @input_stream = $stdin
   end
+
 end
 
 class TestInterface < GameInterface
   attr_accessor :cardList
 
-  def initialize(output)
+  def initialize(input, output)
+    @input_stream = input
     @output_stream = output
   end
 
@@ -55,4 +68,5 @@ class TestInterface < GameInterface
     method(:printKeepers).super_method.call(player)
     @keepers = player.keepers
   end
+
 end

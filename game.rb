@@ -266,9 +266,7 @@ class Game
     cardToPlay = drawnCards.delete_at(whichCard)
     cardToPlay.play(player, self)
 
-    puts "Is today your birthday? (y/n)"
-    response = get_input
-    if response == 'y' || response == 'Y'
+    if @interface.ask_yes_no("is today your birthday")
       puts "pick a card to play"
       printCardList(drawnCards)
       whichCard = STDIN::gets.strip.to_i
@@ -281,9 +279,7 @@ class Game
       cardToPlay = drawnCards.delete_at(whichCard)
       cardToPlay.play(player, self)
     else
-      puts "Is today a holiday or an anniversary (y/n)"
-      response = get_input
-      if response == 'y' || response == 'Y'
+      if @interface.ask_yes_no "Is today a holiday or an anniversary"
         puts "pick a card to play"
         printCardList(drawnCards)
         whichCard = STDIN::gets.strip.to_i
