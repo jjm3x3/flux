@@ -118,12 +118,12 @@ class Game
   end
 
   def setGoal(newGoal)
-    puts "changeing goal to #{newGoal}"
+    @interface.information "changeing goal to #{newGoal}"
     if @goal
       @discardPile << @goal
     end
     @goal = newGoal
-    puts "here is the new value of goal #{@goal}"
+    @interface.debug "here is the new value of goal #{@goal}"
   end
 
   def replenishHand(numberOfCardsDrawn, currentPlayer)
@@ -240,7 +240,7 @@ class Game
     selectedPlayer = opponents[playerPosition]
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
-    puts "playing #{selectedCard}"
+    @interface.debug "playing #{selectedCard}"
     selectedCard.play(player, self)
   end
 
