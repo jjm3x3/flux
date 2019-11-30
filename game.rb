@@ -17,7 +17,6 @@ class Game
   def initialize(input_steam, numberOfPlayers = 3, anInterface = CliInterface.new)
 
     @interface = anInterface
-    @input_steam = input_steam
 
     @ruleBase = RuleBase.new(self, anInterface)
     @deck = Deck.new(anInterface)
@@ -274,12 +273,6 @@ class Game
       @players[playerCur].hand << selectedCard
       playerCur += 1
     end
-  end
-
-  def get_input
-    input = @input_steam.gets
-    result = input.strip
-    result
   end
 
   def tradeHands(player)
