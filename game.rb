@@ -84,12 +84,9 @@ class Game
 
   def removeDownToKeeperLimit(player)
     while player.keepers.length > @ruleBase.keeperLimit
-      puts "choose a card to discard"
-      printKeepers(player)
-      cardPos = selectCardFromHand("to discard")
-      removeKeeper = player.keepers.delete_at(cardPos)
+      removeKeeper = @interface.select_a_card(player.keepers, "Choose a card to discard")
       @discardPile << removeKeeper
-      puts "discarding #{removeKeeper}"
+      @interface.debug "discarding #{removeKeeper}"
     end
   end
 
