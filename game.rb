@@ -47,31 +47,29 @@ class Game
   end
 
   def playCards
-    puts "the discard has #{@discardPile.length} card(s) in it"
-    puts "here is the current goal: #{@goal }"
-    puts "here are the current rules:\n#{@ruleBase}"
-    printKeepers(activePlayer)
+    @interface.information "the discard has #{@discardPile.length} card(s) in it"
+    @interface.information "here is the current goal: #{@goal }"
+    @interface.information "here are the current rules:\n#{@ruleBase}"
+    @interface.displayCards(activePlayer.keepers)
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = activePlayer.hand
     while cardsPlayed < @ruleBase.playRule && !winner && hand.length > 0
-      printCardList(hand)
-      cardPos = selectCardFromHand
-      cardToPlay = hand.delete_at(cardPos.to_i)
+      cardToPlay = @interface.select_a_card(hand)
       cardToPlay.play(activePlayer, self)
       cardsPlayed += 1
       checkForWinner # should check for a winner before discarding
       enforceNonActivePlayerLimits
-      puts "the discard has #{@discardPile.length} card(s) in it"
+      @interface.information "the discard has #{@discardPile.length} card(s) in it"
       # do something if the discard need reshufleing
       cardsDrawn = replenishHand(cardsDrawn, activePlayer)
       hand = activePlayer.hand # really a sad sideeffect of much statefull programming
-      puts "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
+      @interface.information "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
     end
     discardDownToLimit(activePlayer)
     removeDownToKeeperLimit(activePlayer)
     @currentPlayer += 1
-    puts "\n#{activePlayer}'s turn"
+    @interface.information "\n#{activePlayer}'s turn"
   end
 
   def enforceNonActivePlayerLimits
