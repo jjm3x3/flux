@@ -182,7 +182,7 @@ class Game
     @players.each do |player|
       winner ||= player.won?
     end
-    puts "is there a winner? #{winner.to_s}\n"
+    @interface.debug "is there a winner? #{winner.to_s}\n"
     winner 
   end
 

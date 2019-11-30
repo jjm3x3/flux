@@ -9,7 +9,19 @@ describe "game" do
     it "should construct" do
         theTestInterface = TestInterface.new("some string", test_outfile)
         theGame = Game.new("some string", numberOfPlayers=3, theTestInterface)
-    end 
+    end
+
+    describe "winner" do
+        it "should be false for a brand new game" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+
+            # execute , test
+            expect(theGame.winner).to be false
+        end
+    end
 
     describe "jackpot!" do
         it "should draw 3 cards from the deck" do
