@@ -62,6 +62,24 @@ describe "game" do
         end
     end
 
+    describe "removeDownToHandLimit" do
+        it "should make sure that the player has no more keepers than the current keeper limit" do
+            # setup
+            input_stream = StringIO.new("0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            handLimit = 2
+            theGame.ruleBase.addRule(Limit.new("hand limit 2", 3, "some dumb rules text", handLimit))
+
+            # execute
+            theGame.discardDownToLimit(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.hand.size).to eq handLimit
+        end
+    end
+
     describe "winner" do
         it "should be false for a brand new game" do
             # setup
