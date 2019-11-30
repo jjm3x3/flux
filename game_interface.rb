@@ -35,6 +35,16 @@ class GameInterface
     response == 'y' || response == 'Y'
   end
 
+  def ask_rotation(prompt="Which direction?")
+    information "#{prompt} (clockwise/CounterClockwise)"
+    response = get_input
+    response.start_with?("cl") ? :clockwise : :counterClockwise
+  end
+
+  def isClockwise(direction)
+    direction == :clockwise
+  end
+
   def select_a_card(card_list, prompt="Select a card")
       information "pick a card to play"
       displayCards(card_list)
