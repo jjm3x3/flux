@@ -20,7 +20,7 @@ describe "game" do
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers = [Keeper.new("thing1"), Keeper.new("thing2"), Keeper.new("thing3")]
             keeperLimit = 2
-            theGame.ruleBase.addRule(Rule.new("keeper limit 2", 4, "something to get x#{keeperLimit}"))
+            theGame.ruleBase.addRule(Limit.new("keeper limit 2", 4, "some dumb rules text", keeperLimit))
 
             # execute
             theGame.removeDownToKeeperLimit(theFirstPlayer)

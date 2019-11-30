@@ -60,7 +60,7 @@ class RuleBase
 
   def keeperLimit
     if @keeperLimitCard
-      @keeperLimitCard.rule_text[18].to_i
+      @keeperLimitCard.limit
     else
       Float::INFINITY
     end
