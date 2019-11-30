@@ -100,7 +100,7 @@ class Action < Card
     when 4
       game.ruleBase.removeLimits
     when 5
-      game.draw3playe2ofThem(player)
+      game.draw3play2OfThem(player)
     when 6
       game.discardAndDraw(player)
     when 7
