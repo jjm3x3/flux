@@ -11,6 +11,22 @@ describe "game" do
         theGame = Game.new("some string", numberOfPlayers=3, theTestInterface)
     end
 
+    describe "removeDownToKeeperLimit" do
+        it "should make sure that the player has no more keepers than the current keeper limit" do
+            # setup
+            input_stream = StringIO.new("0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theFirstPlayer.keepers = [Keeper.new("thing1"), Keeper.new("thing2"), Keeper.new("thing3")]
+            theGame.ruleBase.addRule(Rule.new("keeper limit 2", 4, "something to get x2"))
+
+            # execute
+            theGame.removeDownToKeeperLimit(theFirstPlayer)
+
+        end
+    end
+
     describe "winner" do
         it "should be false for a brand new game" do
             # setup
