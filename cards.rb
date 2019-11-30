@@ -123,3 +123,15 @@ class Action < Card
     game.discard(self)
   end
 end
+
+class FakeCard < Card
+  attr_reader :played
+  def initialize(name)
+    super(5,name)
+    @played = false
+  end
+
+  def play(player, game)
+    @played = true
+  end
+end
