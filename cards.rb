@@ -81,6 +81,15 @@ class Rule < Card
 
 end
 
+class Limit < Rule
+  attr_reader :limit
+
+  def initialize(name, ruleType, rulesText, limit)
+    super(name, ruleType, rulesText)
+    @limit = limit
+  end
+end
+
 class Action < Card
 
   def initialize(id, name, rule_text)
