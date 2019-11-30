@@ -294,14 +294,14 @@ class Game
 
   def rotateHands(player)
     @interface.information "which way would you like to got (clockwise, counter-clockwise)"
-    whichOption = get_input
+    direction = @interface.ask_rotation
 
     theCurrentPlayer = @currentPlayer % @players.length
     playerCur = theCurrentPlayer
     tempHand = @players[playerCur].hand
     nextPlayer = -1
     while nextPlayer != theCurrentPlayer
-      if whichOption.start_with?("cl")
+      if @interface.isClockwise(direction)
         @interface.debug "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
@@ -310,9 +310,9 @@ class Game
       end
 
       @interface.information "player #{playerCur} STDIN::gets =  #{nextPlayer}'s hand "
-      if playerCur == @players.length - 1 && whichOption.start_with?("cl")
+      if playerCur == @players.length - 1 && @interface.isClockwise(direction)
         @players[playerCur].set_hand(tempHand)
-      elsif playerCur == 1 && !whichOption.start_with?("cl")
+      elsif playerCur == 1 && !@interface.isClockwise(direction)
         @players[playerCur].set_hand(tempHand)
       else
         @players[playerCur].set_hand(@players[nextPlayer].hand)
