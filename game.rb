@@ -188,11 +188,7 @@ class Game
 
   def draw_2_and_use_em(player)
     cardsDrawn = @deck.drawCards(2)
-    puts "here are the cards:"
-    printCardList(cardsDrawn)
-    puts "which would you like to play first?"
-    whichCard = STDIN::gets
-    firstOne = cardsDrawn.delete_at(whichCard.to_i)
+    firstOne = @interface.select_a_card(cardsDrawn, "Which one would you like to play first?")
     firstOne.play(player, self)
     cardsDrawn[0].play(player, self)
   end
