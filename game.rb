@@ -201,18 +201,12 @@ class Game
     player.hand += @deck.drawCards(3)
   end
 
-  def draw3playe2ofThem(player)
+  def draw3play2OfThem(player)
     cardsDrawn = @deck.drawCards(3)
-    puts "here are the cards:"
-    printCardList(cardsDrawn)
-    puts "which would you like to play first?"
-    whichCard = STDIN::gets
-    firstOne = cardsDrawn.delete_at(whichCard.to_i)
+    firstOne = @interface.select_a_card(cardsDrawn, "which would you like to play first?")
     firstOne.play(player, self)
-    puts "which would you like to play next?"
-    whichCard = STDIN::gets
-    firstOne = cardsDrawn.delete_at(whichCard.to_i)
-    firstOne.play(player, self)
+    secondOne = @interface.select_a_card(cardsDrawn, "which would you like to play next?")
+    secondOne.play(player, self)
     discard(cardsDrawn[0])
   end
 
