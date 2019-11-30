@@ -11,6 +11,23 @@ describe "game" do
         theGame = Game.new("some string", numberOfPlayers=3, theTestInterface)
     end 
 
+    describe "draw3play2OfThem" do
+        it "should leave one card remaining and play the others" do
+            # setup
+            input_stream = StringIO.new("0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            theGame.draw3play2OfThem(theFirstPlayer)
+
+            # test
+            expect(theTestInterface.cardList.size).to eq 1
+        end
+    end
+
     describe "discardAndDraw" do
         it "should not include this card when determining how many cards to draw" do
             # setup
