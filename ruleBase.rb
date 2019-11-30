@@ -52,7 +52,7 @@ class RuleBase
 
   def handLimit
     if @handLimitCard
-      @handLimitCard.rule_text[18].to_i
+      @handLimitCard.limit
     else
       Float::INFINITY
     end
