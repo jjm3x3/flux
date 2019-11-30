@@ -17,13 +17,18 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            fakeCard1 = FakeCard.new("thing1")
+            fakeCard2 = FakeCard.new("thing2")
+            cardsToPutOnTop = [fakeCard1, fakeCard2]
+            theGame.deck = StackedDeck.new(theTestInterface, cardsToPutOnTop) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
 
             # execute
             theGame.draw_2_and_use_em(theFirstPlayer)
 
             # test
+            expect(fakeCard1.played).to be true
+            expect(fakeCard2.played).to be true
             expect(theTestInterface.cardList.size).to eq 1 # will just play the last card no matter what
         end
     end
