@@ -84,10 +84,6 @@ describe "game" do
     end
 
     describe "useWhatYouTake" do
-        # TODO:: This will break sometimes since it selects a card from a players hand
-        #        Which was already established upon game construction therefor stacking
-        #        the deck does not imporves this tests' flakyness. Instead we need a way
-        #        of fixing the players hands so that this test doesn't fail
         it "should play a card at random from the selected player" do
             # setup
             input_stream = StringIO.new("0\n")
@@ -97,6 +93,7 @@ describe "game" do
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
+            theSecondPlayer.hand = [FakeCard.new("thing1"), FakeCard.new("thing2"), FakeCard.new("thing3")]
             secondPlayersOriginalCardsCount = theSecondPlayer.hand.size
 
             # execute
