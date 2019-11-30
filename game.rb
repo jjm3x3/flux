@@ -136,33 +136,6 @@ class Game
     end
   end
 
-  def printKeepers(player)
-    keepersPrintOut = player.keepers.map do |keeper|
-      keeper.to_s
-    end
-    puts "here are the keepers you have:\n #{keepersPrintOut}"
-  end
-
-  def selectCardFromHand(reason="to play")
-    puts "Pick a card " + reason
-    cardPos = STDIN::gets.to_i
-  end
-
-  def printCardList(hand,prompt="Here is your current hand:")
-    i = 0
-    numbering = "   "
-    hand.map do |card|
-      numbering += i.to_s
-      numbering += (" " * card.to_s.length) + "   "
-      i += 1
-    end
-    handPrintOut = hand.map do |card|
-      card.to_s
-    end
-    @output_stream.puts "#{prompt}\n#{numbering}\n#{handPrintOut}"
-  end
-
-
   def run
     loop do
       activePlayer.takeTurn
