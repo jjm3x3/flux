@@ -11,6 +11,40 @@ describe "game" do
         theGame = Game.new("some string", numberOfPlayers=3, theTestInterface)
     end 
 
+    describe "jackpot!" do
+        it "should draw 3 cards from the deck" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            theFirstPlayer = theGame.players[0]
+            originalDeckCount = theGame.deck.count
+
+            # execute
+            theGame.jackpot(theFirstPlayer)
+
+            # test
+            expect(theGame.deck.count).to eq originalDeckCount -3
+        end
+
+        it "increase the players hand size by 3" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            theFirstPlayer = theGame.players[0]
+            firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
+
+            # execute
+            theGame.jackpot(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.hand.count).to eq firstPlayersOriginalCardsCount +3
+        end
+    end
+
     describe "draw2AndUseEm" do
         it "should play all the cards" do
             # setup
