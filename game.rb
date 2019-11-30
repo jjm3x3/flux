@@ -254,9 +254,7 @@ class Game
       @interface.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
     end
-    @interface.displayCards(eligibleCards, "pick a card you would like to replay")
-    whichCard = get_input.to_i
-    pickedCard = eligibleCards[whichCard]
+    pickedCard = @interface.select_a_card(eligibleCards, "pick a card you would like to replay")
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
@@ -288,10 +286,9 @@ class Game
     opponentsText = opponents.map do |player|
       player.to_s
     end
-    @interface.information "who would you like to trade hands with?\n#{opponentsText}"
-    whichPlayer = get_input.to_i
-    otherHand = opponents[whichPlayer].hand
-    opponents[whichPlayer].hand = player.hand
+    selectedPlayer = @interface.select_a_player(opponents, "who would you like to trade hands with?")
+    otherHand = selectedPlayer.hand
+    selectedPlayer.hand = player.hand
     player.hand = otherHand
   end
 
