@@ -11,6 +11,23 @@ describe "game" do
         theGame = Game.new("some string", numberOfPlayers=3, theTestInterface)
     end 
 
+    describe "discardAndDraw" do
+        it "should not include this card when determining how many cards to draw" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
+
+            # execute
+            theGame.discardAndDraw(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.hand.size).to eq firstPlayersOriginalCardsCount - 1
+        end
+    end
+
     describe "useWhatYouTake" do
         it "should play a card at random from the selected player" do
             # setup
