@@ -235,9 +235,7 @@ class Game
     playerList = opponents.map do |player|
       player.to_s
     end
-    puts "which player would you like to pick from\n#{playerList}"
-    playerPosition = STDIN::gets.to_i
-    selectedPlayer = opponents[playerPosition]
+    selectedPlayer = @interface.select_a_player(opponents, "which player would you like to pick from")
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
     @interface.debug "playing #{selectedCard}"

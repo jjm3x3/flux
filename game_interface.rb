@@ -42,6 +42,13 @@ class GameInterface
       card_list.delete_at(whichCard)
   end
 
+  def select_a_player(playerList, prompt="Select a player")
+    information prompt
+    information "#{playerList}"
+    whichPlayer = get_input.to_i
+    playerList[whichPlayer]
+  end
+
   private
   def get_input
     input = @input_stream.gets
