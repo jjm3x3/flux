@@ -31,6 +31,22 @@ describe "game" do
             expect(fakeCard2.played).to be true
             expect(theTestInterface.cardList.size).to eq 1 # will just play the last card no matter what
         end
+
+        it "should draw 2 cards from the deck" do
+            # setup
+            input_stream = StringIO.new("0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            theFirstPlayer = theGame.players[0]
+            originalDeckCount = theGame.deck.count
+
+            # execute
+            theGame.draw_2_and_use_em(theFirstPlayer)
+
+            # test
+            expect(theGame.deck.count).to eq originalDeckCount -2
+        end
     end
 
     describe "draw_3_play_2_of_them" do
