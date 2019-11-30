@@ -2,12 +2,13 @@
 class RuleBase
   attr_reader :drawRule, :playRule, :handLimit, :keeperLimit
 
-  def initialize(game)
+  def initialize(game, anInterface)
     @game = game
+    @interface = anInterface
   end
 
   def addRule(card)
-    puts "here is the rule text of the card: \n'#{card.rule_text}'\n ->and has a type of: #{card.rule_type}"
+    @interface.debug "here is the rule text of the card: \n'#{card.rule_text}'\n ->and has a type of: #{card.rule_type}"
     if card.rule_type == 1
       @game.discard(@drawRuleCard) if @drawRuleCard
       @drawRuleCard = card

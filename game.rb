@@ -18,7 +18,7 @@ class Game
     @interface = anInterface
     @input_steam = input_steam
 
-    @ruleBase = RuleBase.new(self)
+    @ruleBase = RuleBase.new(self, anInterface)
     @deck = Deck.new(anInterface)
     @discardPile = []
 
