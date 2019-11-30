@@ -326,10 +326,11 @@ class Game
     @interface.information "which way would you like to got (clockwise, counter-clockwise)"
     whichOption = get_input
 
-    playerCur = @currentPlayer
+    theCurrentPlayer = @currentPlayer % @players.length
+    playerCur = theCurrentPlayer
     tempHand = @players[playerCur].hand
     nextPlayer = -1
-    while nextPlayer != @currentPlayer
+    while nextPlayer != theCurrentPlayer
       if whichOption.start_with?("cl")
         @interface.debug "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length

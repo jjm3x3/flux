@@ -498,6 +498,22 @@ describe "game" do
     end
 
     describe "rotate_hands" do
+        it "should handle if the currentPlayer is set to a number of a player which does not exist" do
+            # setup
+            input_stream = StringIO.new("thing")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            firstPlayersOriginalCards = theFirstPlayer.hand
+            theGame.currentPlayer = 10
+
+            # execute
+            theGame.rotateHands(theFirstPlayer)
+
+            # test
+            # this should work just fine
+        end
+
         describe "counter clockwise" do
             it "first player should not have the hand they started with" do
                 # setup
