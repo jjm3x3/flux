@@ -11,6 +11,22 @@ describe "game" do
         theGame = Game.new("some string", numberOfPlayers=3, theTestInterface)
     end
 
+    describe "activePlayer" do
+        it "should not modify the current player instnace variable" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame.currentPlayer = 10
+
+            # execute
+            theGame.activePlayer
+
+            # test
+            expect(theGame.currentPlayer).to eq 10
+        end
+    end
+
     describe "removeDownToKeeperLimit" do
         it "should make sure that the player has no more keepers than the current keeper limit" do
             # setup

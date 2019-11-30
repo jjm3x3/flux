@@ -12,6 +12,7 @@ class Game
   attr_accessor :players
   attr_accessor :deck
   attr_accessor :discardPile
+  attr_accessor :currentPlayer
 
   def initialize(input_steam, numberOfPlayers = 3, anInterface = CliInterface.new)
 
@@ -37,8 +38,8 @@ class Game
   end
 
   def activePlayer
-    @currentPlayer = @currentPlayer % @players.length
-    @players[@currentPlayer]
+    playerCur = @currentPlayer % @players.length
+    @players[playerCur]
   end
 
   def drawCards
