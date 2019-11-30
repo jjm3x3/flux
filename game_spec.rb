@@ -14,7 +14,7 @@ describe "game" do
     describe "draw2AndUseEm" do
         it "should play all the cards" do
             # setup
-            input_stream = StringIO.new("0\n0\n")
+            input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
             fakeCard1 = FakeCard.new("thing1")
@@ -34,7 +34,7 @@ describe "game" do
 
         it "should draw 2 cards from the deck" do
             # setup
-            input_stream = StringIO.new("0\n0\n")
+            input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
