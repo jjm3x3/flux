@@ -245,14 +245,9 @@ class Game
   end
 
   def taxation(player)
-    puts "playing taxation!"
-    newCardsForPlayer = @players.select do |player|
-      player != activePlayer
-    end.map do |player|
-      puts "choose a card to give to #{activePlayer}"
-      printCardList(player.hand)
-      whichCard = STDIN::gets.to_i
-      player.hand.delete_at(whichCard)
+    @interface.debug "playing taxation!"
+    newCardsForPlayer = opponents.map do |player|
+      @interface.select_a_card(player.hand, "Choose a card to give to #{activePlayer}")
     end
     player.hand += newCardsForPlayer
   end

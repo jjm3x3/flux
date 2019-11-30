@@ -11,6 +11,44 @@ describe "game" do
         theGame = Game.new("some string", numberOfPlayers=3, theTestInterface)
     end 
 
+    describe "taxation" do
+        it "the first player should get some number of cards 1 less than the number of the players in game when the game is new" do
+            # setup
+            input_stream = StringIO.new("0\n0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            theGame = Game.new(input_stream, numberOfPlayers, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            firstPlayersOriginalCards = theFirstPlayer.hand
+
+            # execute
+            theGame.taxation(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.hand.size).to eq firstPlayersOriginalCards.size + (numberOfPlayers-1)
+        end
+
+        it "the second and third players should get be down 1 card when the game is new" do
+            # setup
+            input_stream = StringIO.new("0\n0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            theGame = Game.new(input_stream, numberOfPlayers, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theSecondPlayer = theGame.players[1]
+            theThirdPlayer = theGame.players[2]
+            secondPlayersOriginalCardsCount = theSecondPlayer.hand.size
+            thridPlayersOriginalCardsCount = theThirdPlayer.hand.size
+
+            # execute
+            theGame.taxation(theFirstPlayer)
+
+            # test
+            expect(theSecondPlayer.hand.size).to eq secondPlayersOriginalCardsCount - 1
+            expect(theThirdPlayer.hand.size).to eq thridPlayersOriginalCardsCount - 1
+        end
+    end
+
     describe "todaysSpecial" do
         it "should draw 3 cards" do
             # setup
