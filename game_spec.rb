@@ -19,11 +19,14 @@ describe "game" do
             theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers = [Keeper.new("thing1"), Keeper.new("thing2"), Keeper.new("thing3")]
-            theGame.ruleBase.addRule(Rule.new("keeper limit 2", 4, "something to get x2"))
+            keeperLimit = 2
+            theGame.ruleBase.addRule(Rule.new("keeper limit 2", 4, "something to get x#{keeperLimit}"))
 
             # execute
             theGame.removeDownToKeeperLimit(theFirstPlayer)
 
+            # test
+            expect(theFirstPlayer.keepers.size).to eq keeperLimit
         end
     end
 
