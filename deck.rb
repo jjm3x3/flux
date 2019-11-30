@@ -55,7 +55,7 @@ class Deck
       deck << Goal.new(row[1],cards,row[3])
     end
     db.execute("select * from rules;") do |row|
-      if(row[2] == 4)
+      if(row[2] == 4 || row[2] == 3)
         # TODO :: hack until I add these card types to the db proper
         deck << Limit.new(row[1], row[2], row[3], row[2][18].to_i)
       else
