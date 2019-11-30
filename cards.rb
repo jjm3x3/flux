@@ -94,8 +94,7 @@ class Action < Card
     when 1
       game.ruleBase.resetToBasic
     when 2
-      game.playTwoAndUseEm(player)
-      # puts "draw 2 and use 'em"
+      game.draw_2_and_use_em(player)
     when 3
       game.jackpot(player)
     when 4

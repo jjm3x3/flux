@@ -186,7 +186,7 @@ class Game
     winner 
   end
 
-  def playTwoAndUseEm(player)
+  def draw_2_and_use_em(player)
     cardsDrawn = @deck.drawCards(2)
     puts "here are the cards:"
     printCardList(cardsDrawn)
