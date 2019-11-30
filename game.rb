@@ -226,9 +226,6 @@ class Game
   end
 
   def useWhatYouTake(player)
-    playerList = opponents.map do |player|
-      player.to_s
-    end
     selectedPlayer = @interface.select_a_player(opponents, "which player would you like to pick from")
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)

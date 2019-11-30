@@ -43,8 +43,11 @@ class GameInterface
   end
 
   def select_a_player(playerList, prompt="Select a player")
+    playerNames = playerList.map do |player|
+      player.to_s
+    end
     information prompt
-    information "#{playerList}"
+    information "#{playerNames}"
     whichPlayer = get_input.to_i
     playerList[whichPlayer]
   end
