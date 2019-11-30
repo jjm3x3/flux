@@ -8,7 +8,7 @@ describe "game" do
 
     it "should construct" do
         theTestInterface = TestInterface.new("some string", test_outfile)
-        theGame = Game.new("some string", numberOfPlayers=3, theTestInterface)
+        theGame = Game.new(numberOfPlayers=3, theTestInterface)
     end
 
     describe "activePlayer" do
@@ -16,7 +16,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.currentPlayer = 10
 
             # execute
@@ -32,7 +32,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream,test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0].hand.unshift(FakeCard.new("thing1"))
             theGame.currentPlayer = 0
 
@@ -48,7 +48,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers = [Keeper.new("thing1"), Keeper.new("thing2"), Keeper.new("thing3")]
             keeperLimit = 2
@@ -67,7 +67,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             handLimit = 2
             theGame.ruleBase.addRule(Limit.new("hand limit 2", 3, "some dumb rules text", handLimit))
@@ -85,7 +85,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
 
             # execute , test
             expect(theGame.winner).to be false
@@ -97,7 +97,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
@@ -113,7 +113,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
@@ -131,7 +131,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             fakeCard1 = FakeCard.new("thing1")
             fakeCard2 = FakeCard.new("thing2")
             cardsToPutOnTop = [fakeCard1, fakeCard2]
@@ -151,7 +151,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
@@ -169,7 +169,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
 
@@ -184,7 +184,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
@@ -202,7 +202,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
 
@@ -220,7 +220,7 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
-            theGame = Game.new(input_stream, numberOfPlayers, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
@@ -260,7 +260,7 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
-            theGame = Game.new(input_stream, numberOfPlayers, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -276,7 +276,7 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
-            theGame = Game.new(input_stream, numberOfPlayers, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             theThirdPlayer = theGame.players[2]
@@ -297,7 +297,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
@@ -313,7 +313,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
@@ -329,7 +329,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\nn\ny\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
@@ -345,7 +345,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\ny\n0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
@@ -363,7 +363,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new("Thing1")
             keeper2 = Keeper.new("thing2")
@@ -389,7 +389,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theGame.discardPile << Action.new(3, "jackpot2", "here are some rules")
             theGame.discardPile << Rule.new("some draw rule", 1, "Draw 9 cards")
@@ -416,7 +416,7 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -432,7 +432,7 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -451,7 +451,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -466,7 +466,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             firstPlayersOriginalCards = theFirstPlayer.hand
@@ -484,7 +484,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theOtherPlayer = theGame.players[2]
             otherPlayersOriginalCards = theOtherPlayer.hand
@@ -502,7 +502,7 @@ describe "game" do
             # setup
             input_stream = StringIO.new("thing")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
             theGame.currentPlayer = 10
@@ -519,7 +519,7 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("thing")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -534,7 +534,7 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("thing")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface)
                 theFirstPlayer = theGame.players[0]
                 theLastPlayer = theGame.players[theGame.players.length-1]
                 lastPlayersOriginalCards = theLastPlayer.hand
@@ -550,7 +550,7 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("thing")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -568,7 +568,7 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("clockwise")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -583,7 +583,7 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("clockwise")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface)
                 theFirstPlayer = theGame.players[0]
                 theSecondPlayer = theGame.players[1]
                 secondPlayersOriginalCards = theSecondPlayer.hand
@@ -599,7 +599,7 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("clockwise")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(input_stream, numberOfPlayers=3, theTestInterface)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface)
                 theFirstPlayer = theGame.players[0]
                 thePlayerAfterThem = theGame.players[2]
                 playerAfterThemsCards = thePlayerAfterThem.hand

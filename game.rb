@@ -14,7 +14,7 @@ class Game
   attr_accessor :discardPile
   attr_accessor :currentPlayer
 
-  def initialize(input_steam, numberOfPlayers = 3, anInterface = CliInterface.new)
+  def initialize(numberOfPlayers, anInterface = CliInterface.new)
 
     @interface = anInterface
 
