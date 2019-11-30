@@ -46,6 +46,10 @@ describe "game" do
     end
 
     describe "useWhatYouTake" do
+        # TODO:: This will break sometimes since it selects a card from a players hand
+        #        Which was already established upon game construction therefor stacking
+        #        the deck does not imporves this tests' flakyness. Instead we need a way
+        #        of fixing the players hands so that this test doesn't fail
         it "should play a card at random from the selected player" do
             # setup
             input_stream = StringIO.new("0\n")
