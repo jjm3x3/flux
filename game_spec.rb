@@ -33,7 +33,7 @@ describe "game" do
         end
     end
 
-    describe "draw3play2OfThem" do
+    describe "draw_3_play_2_of_them" do
         it "should leave one card remaining and play the others" do
             # setup
             input_stream = StringIO.new("0\n0\n")
@@ -43,7 +43,7 @@ describe "game" do
             theFirstPlayer = theGame.players[0]
 
             # execute
-            theGame.draw3play2OfThem(theFirstPlayer)
+            theGame.draw_3_play_2_of_them(theFirstPlayer)
 
             # test
             expect(theTestInterface.cardList.size).to eq 1
@@ -59,7 +59,7 @@ describe "game" do
             originalDeckCount = theGame.deck.count
 
             # execute
-            theGame.draw3play2OfThem(theFirstPlayer)
+            theGame.draw_3_play_2_of_them(theFirstPlayer)
 
             # test
             expect(theGame.deck.count).to eq originalDeckCount -3

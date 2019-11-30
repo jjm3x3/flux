@@ -197,7 +197,7 @@ class Game
     player.hand += @deck.drawCards(3)
   end
 
-  def draw3play2OfThem(player)
+  def draw_3_play_2_of_them(player)
     cardsDrawn = @deck.drawCards(3)
     firstOne = @interface.select_a_card(cardsDrawn, "which would you like to play first?")
     firstOne.play(player, self)
