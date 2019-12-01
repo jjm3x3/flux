@@ -690,5 +690,26 @@ describe "game" do
         end
     end
 
+    describe "take_another_turn" do
+        it "should make sure the current player remains the same when the last card of their turn is played" do
+                # setup
+                input_stream = StringIO.new("0\n")
+                theTestInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                theFirstPlayer = theGame.players[0]
+                originalCurrentPlayer = theGame.currentPlayer
+                currentPlayerCounter = 0
+                # tests this action by having the player use this as their one and
+                # only card to play in a turn
+                theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+
+                # execute
+                theGame.playCards
+
+                # test
+                expect(theGame.currentPlayer).to eq originalCurrentPlayer
+        end
+    end
+
     test_outfile.unlink
 end
