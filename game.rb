@@ -49,12 +49,12 @@ class Game
     @interface.information "the discard has #{@discardPile.length} card(s) in it"
     @interface.information "here is the current goal: #{@goal }"
     @interface.information "here are the current rules:\n#{@ruleBase}"
-    @interface.displayCards(activePlayer.keepers)
+    @interface.displayCards(activePlayer.keepers, "Here are your keepers")
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = activePlayer.hand
     while cardsPlayed < @ruleBase.playRule && !winner && hand.length > 0
-      cardToPlay = @interface.select_a_card(hand)
+      cardToPlay = @interface.select_a_card(hand, "Select a card from your hand to play")
       cardToPlay.play(activePlayer, self)
       cardsPlayed += 1
       checkForWinner # should check for a winner before discarding
@@ -292,8 +292,7 @@ class Game
   end
 
   def rotateHands(player)
-    @interface.information "which way would you like to got (clockwise, counter-clockwise)"
-    direction = @interface.ask_rotation
+    direction = @interface.ask_rotation("Which way would you like to rotate? ")
 
     theCurrentPlayer = @currentPlayerCounter % @players.length
     playerCur = theCurrentPlayer
