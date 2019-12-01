@@ -129,7 +129,7 @@ class Action < Card
     when 14
       game.rotateHands(player)
     when 15
-      game.take_another_turn(player)
+      game.take_another_turn
     end
     game.discard(self)
   end
