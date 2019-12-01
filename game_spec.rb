@@ -711,5 +711,111 @@ describe "game" do
         end
     end
 
+    describe "exchange_keepers" do
+        it "should not do anything if you have no keepers" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            theGame.exchange_keepers(theFirstPlayer)
+
+            # test
+            expect(theTestInterface.prompted).to be nil
+        end
+
+        it "should not do anything if you have no keepers" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            theGame.exchange_keepers(theFirstPlayer)
+
+            # test
+            # a hacky way to check that there was no prompt
+            expect(theTestInterface.prompted).to be nil
+        end
+
+        it "should prompt the player if the player and at least one opponent has a keeper" do
+            # setup
+            input_stream = StringIO.new("1\n0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theFirstPlayer.keepers << Keeper.new("thing1")
+            theGame.players[1].keepers << Keeper.new("thing2")
+
+            # execute
+            theGame.exchange_keepers(theFirstPlayer)
+
+            # test
+            expect(theTestInterface.prompted).to_not be nil
+        end
+
+        it "should not change the number of keepers either player has" do
+            # setup
+            input_stream = StringIO.new("1\n0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theFirstPlayer.keepers << Keeper.new("thing1")
+            firstPlayersOriginalKeeperCount = theFirstPlayer.keepers.size
+            theSecondPlayer = theGame.players[1]
+            theSecondPlayer.keepers << Keeper.new("thing2")
+            secondPlayersOriginalKeeperCount = theSecondPlayer.keepers.size
+
+            # execute
+            theGame.exchange_keepers(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.keepers.size).to eq firstPlayersOriginalKeeperCount
+            expect(theSecondPlayer.keepers.size).to eq secondPlayersOriginalKeeperCount
+        end
+
+        it "should change which keepers each player has" do
+            # setup
+            input_stream = StringIO.new("1\n0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            firstPlayersOriginalKeeper = Keeper.new("thing1")
+            theFirstPlayer.keepers << firstPlayersOriginalKeeper
+            theSecondPlayer = theGame.players[1]
+            secondPLayersOriginalKeeper = Keeper.new("thing2")
+            theSecondPlayer.keepers << secondPLayersOriginalKeeper
+
+            # execute
+            theGame.exchange_keepers(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.keepers[0]).to_not eq firstPlayersOriginalKeeper
+            expect(theSecondPlayer.keepers[0]).to_not eq secondPLayersOriginalKeeper
+        end
+
+        it "should not prompt with any players which have no keepers" do
+            # setup
+            input_stream = StringIO.new("1\n0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, $stdout)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            firstPlayersOriginalKeeper = Keeper.new("thing1")
+            theFirstPlayer.keepers << firstPlayersOriginalKeeper
+            theSecondPlayer = theGame.players[1]
+            secondPLayersOriginalKeeper = Keeper.new("thing2")
+            theSecondPlayer.keepers << secondPLayersOriginalKeeper
+
+            # execute
+            theGame.exchange_keepers(theFirstPlayer)
+
+            # test
+            expect(theTestInterface.indexed_output).to_not include theGame.players[2].to_s
+        end
+    end
+
     test_outfile.unlink
 end
