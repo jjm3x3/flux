@@ -593,6 +593,28 @@ describe "game" do
                 theSecondPlayer = theGame.players[1]
                 expect(theSecondPlayer.hand).to eq firstPlayersOriginalCards
             end
+
+            it "should not  let any hands be duplicated" do
+                # setup
+                input_stream = StringIO.new("thing")
+                theTestInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                theFirstPlayer = theGame.players[0]
+                firstPlayersOriginalCards = theFirstPlayer.hand
+                theGame.currentPlayerCounter = 11
+
+                # execute
+                theGame.rotateHands(theFirstPlayer)
+
+                # test
+                theGame.players.select do |player|
+                    theGame.players.select do |otherPlayer|
+                        if player != otherPlayer
+                            expect(player.hand).to_not eq otherPlayer.hand
+                        end
+                    end
+                end
+            end
         end
 
         describe "clockwise" do
@@ -642,6 +664,28 @@ describe "game" do
                 # test
                 theSecondPlayer = theGame.players[1]
                 expect(theSecondPlayer.hand).to eq playerAfterThemsCards
+            end
+
+            it "should not  let any hands be duplicated" do
+                # setup
+                input_stream = StringIO.new("clockwise")
+                theTestInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                theFirstPlayer = theGame.players[0]
+                firstPlayersOriginalCards = theFirstPlayer.hand
+                theGame.currentPlayerCounter = 11
+
+                # execute
+                theGame.rotateHands(theFirstPlayer)
+
+                # test
+                theGame.players.select do |player|
+                    theGame.players.select do |otherPlayer|
+                        if player != otherPlayer
+                            expect(player.hand).to_not eq otherPlayer.hand
+                        end
+                    end
+                end
             end
         end
     end
