@@ -336,4 +336,38 @@ class Game
     @currentPlayerCounter -= 1
   end
 
+  def exchange_keepers(player)
+    if player.keepers.length == 0
+      @interface.information "Too bad you have no keepers"
+      return
+    end
+    otherKeepers = false
+    opponents.select do |player|
+      otherKeepers ||= player.keepers.length != 0
+    end
+    if !otherKeepers
+      @interface.information "Too bad you have no keepers"
+      return
+    end
+
+    eligibleOpponents = opponents.select do |player|
+      player.keepers.length > 0
+    end
+
+    eligibleOpponents.unshift(:no_one)
+    selectedPlayer = @interface.select_a_player(eligibleOpponents, "Which player would you like to take a keeper from")
+    if selectedPlayer == :no_one
+      @interface.information "You don't want to trade with anyone? too bad"
+    end
+    myNewKeeper = @interface.select_a_card(selectedPlayer.keepers, "Slect which Keeper you would like")
+    # if player.keepers.length > 1
+      myOldKeeper = @interface.select_a_card(player.keepers, "Which Keeper would you like to exchange")
+    # end
+    player.keepers << myNewKeeper
+    selectedPlayer.keepers << myOldKeeper
+
+    @interface.displayCardsDebug(player.keepers, "Here are your Keepers after the exchange")
+
+  end
+
 end

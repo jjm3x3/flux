@@ -120,7 +120,8 @@ SQL
   [12, "Everybody Gets 1", "Set your hand aside. Count the number of players in the game (including yourself). Draw enough cards to give 1 card to each player, then do so. You decide who gets what."],
   [13, "Trade Hands", "Trade your hand for the hand of one of your opponents. This is one of those times when you cat get something for nothing."],
   [14, "Rotate Hands", "All players pass their ahnd to the player next to them. You decide the direction."],
-  [15, "Take Another Turn", "Take another turn as soon as you finish this one"]
+  [15, "Take Another Turn", "Take another turn as soon as you finish this one"],
+  [16, "Exchange Keepers", "Pick any Keeper another player has on the table and exchange it for one that you have on the table. If you have no Keepers in play, of if no one else has a Keeper, nothing happens."]
 ].each do |value|
   db.execute "insert into actions values ( ? , ? , ? )", value
 end
