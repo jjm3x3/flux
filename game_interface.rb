@@ -8,7 +8,9 @@ class GameInterface
   end
 
   def debug(message)
-    @output_stream.puts message
+    if @debug
+      @output_stream.puts message
+    end
   end
 
   def information(message)
@@ -83,6 +85,7 @@ class TestInterface < GameInterface
   def initialize(input, output)
     @input_stream = input
     @output_stream = output
+    @debug = true
   end
 
   def displayCards(hand, prompt="Have some cards")
