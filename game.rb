@@ -294,32 +294,40 @@ class Game
   def rotateHands(player)
     direction = @interface.ask_rotation("Which way would you like to rotate? ")
 
-    theCurrentPlayer = @currentPlayerCounter % @players.length
-    playerCur = theCurrentPlayer
+    #candidate for debug
+    # @players.each do |player|
+    #   @interface.displayCards(player.hand, "What is my hand now #{player}:")
+    # end
+
+    playerCur = currentPlayer
     tempHand = @players[playerCur].hand
     nextPlayer = -1
-    while nextPlayer != theCurrentPlayer
+    times = 0
+    while nextPlayer != currentPlayer
       if @interface.isClockwise(direction)
         @interface.debug "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
-        @interface.debug "move counterclockwise curentPlayer: #{playerCur} nextPlayer: #{nextPlayer} " 
+        @interface.debug "move counterclockwise playerCur: #{playerCur} nextPlayer: #{nextPlayer} "
         nextPlayer  = (playerCur - 1) % @players.length
       end
 
-      @interface.information "player #{playerCur} STDIN::gets =  #{nextPlayer}'s hand "
-      if playerCur == @players.length - 1 && @interface.isClockwise(direction)
-        @players[playerCur].set_hand(tempHand)
-      elsif playerCur == 1 && !@interface.isClockwise(direction)
-        @players[playerCur].set_hand(tempHand)
-      else
-        @players[playerCur].set_hand(@players[nextPlayer].hand)
-      end
+      @interface.information "player #{playerCur+1} gets =  #{nextPlayer+1}'s hand "
+      @interface.debug "giving plyer #{playerCur+1} the hand\n\t#{@players[nextPlayer].hand}"
+      @players[playerCur].set_hand(@players[nextPlayer].hand)
 
       playerCur = nextPlayer
-      @interface.debug "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayerCounter}"
+      @interface.debug "here is the value of nextPlayer: #{nextPlayer}"
     end
-    # @output_stream.puts "\n"
+    @interface.debug "giving plyer #{playerCur+1} the hand\n\t#{tempHand}"
+    if @interface.isClockwise(direction) 
+      newNextPlayer = (playerCur - 1) % @players.length
+    else
+      newNextPlayer = (playerCur + 1) % @players.length
+    end
+    @players[newNextPlayer].set_hand(tempHand)
+
+    # candidate for debug
     @players.each do |player|
       @interface.displayCards(player.hand, "What is my hand now #{player}:")
     end
