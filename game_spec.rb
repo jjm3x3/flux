@@ -461,6 +461,21 @@ describe "game" do
             # should just work
         end
 
+        it "should handle if the currentPlayer mod players.length is not 0" do
+            # setup
+            numberOfPlayers = 4
+            input_stream = StringIO.new("0\n" * numberOfPlayers)
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theGame.currentPlayerCounter = 9
+
+            # execute
+            theGame.everyBodyGets1(theFirstPlayer)
+
+            # test
+            # should just work
+        end
     end
 
     describe "tradeHands" do

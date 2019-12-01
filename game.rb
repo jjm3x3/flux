@@ -277,6 +277,7 @@ class Game
       end
       @players[playerCur].hand << selectedCard
       playerCur += 1
+      playerCur %= @players.length
     end
   end
 
