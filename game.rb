@@ -89,8 +89,9 @@ class Game
   end
 
   def discardDownToLimit(player)
+    @interface.debug "The hand limit is #{@ruleBase.handLimit}"
     while player.hand.count > @ruleBase.handLimit
-      removedCard = @interface.select_a_card(player.hand)
+      removedCard = @interface.select_a_card(player.hand, "Player #{player}\n\tSelect a card to discard")
       @discardPile << removedCard
       @interface.debug "removing '#{removedCard}'"
     end
