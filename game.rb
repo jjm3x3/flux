@@ -12,7 +12,7 @@ class Game
   attr_accessor :players
   attr_accessor :deck
   attr_accessor :discardPile
-  attr_accessor :currentPlayer
+  attr_accessor :currentPlayerCounter
 
   def initialize(numberOfPlayers, anInterface = CliInterface.new)
 
@@ -33,11 +33,11 @@ class Game
       player.hand = firstHand
     end
 
-    @currentPlayer = 0
+    @currentPlayerCounter = 0
   end
 
   def activePlayer
-    playerCur = @currentPlayer % @players.length
+    playerCur = @currentPlayerCounter % @players.length
     @players[playerCur]
   end
 
@@ -67,7 +67,7 @@ class Game
     end
     discardDownToLimit(activePlayer)
     removeDownToKeeperLimit(activePlayer)
-    @currentPlayer += 1
+    @currentPlayerCounter += 1
     @interface.information "\n#{activePlayer}'s turn"
   end
 
@@ -237,7 +237,7 @@ class Game
     
     @interface.debug "how many keepers do I have: #{allKeepers.count} but the length is #{allKeepers.length}"
     @interface.debug "and here they are: \n#{allKeepers}"
-    playerCur = @currentPlayer
+    playerCur = @currentPlayerCounter
     random = Random.new
     while allKeepers.length > 0
       @interface.debug "here are the keepers now: \n#{allKeepers}"
@@ -290,7 +290,7 @@ class Game
     @interface.information "which way would you like to got (clockwise, counter-clockwise)"
     direction = @interface.ask_rotation
 
-    theCurrentPlayer = @currentPlayer % @players.length
+    theCurrentPlayer = @currentPlayerCounter % @players.length
     playerCur = theCurrentPlayer
     tempHand = @players[playerCur].hand
     nextPlayer = -1
@@ -313,7 +313,7 @@ class Game
       end
 
       playerCur = nextPlayer
-      @interface.debug "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayer}"
+      @interface.debug "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayerCounter}"
     end
     # @output_stream.puts "\n"
     @players.each do |player|

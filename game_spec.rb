@@ -17,13 +17,13 @@ describe "game" do
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.currentPlayer = 10
+            theGame.currentPlayerCounter = 10
 
             # execute
             theGame.activePlayer
 
             # test
-            expect(theGame.currentPlayer).to eq 10
+            expect(theGame.currentPlayerCounter).to eq 10
         end
     end
 
@@ -34,7 +34,7 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream,test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0].hand.unshift(FakeCard.new("thing1"))
-            theGame.currentPlayer = 0
+            theGame.currentPlayerCounter = 0
 
             # execute
             theGame.playCards
@@ -505,7 +505,7 @@ describe "game" do
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
-            theGame.currentPlayer = 10
+            theGame.currentPlayerCounter = 10
 
             # execute
             theGame.rotateHands(theFirstPlayer)
