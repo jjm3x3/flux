@@ -37,6 +37,8 @@ class Deck
   end
 
   def drawACard
+    # TODO: cover the case when:
+    #         it throws when @cards.length is 0
     randValue = Random.new.rand(@cards.length)
     @cards.delete_at(randValue)
   end
@@ -59,7 +61,7 @@ class Deck
       ruleType = row[2]
       rulesText = row[3]
       if(ruleType == 4 || ruleType == 3)
-        # TODO :: hack until I add these card types to the db proper
+        # TODO: hack until I add these card types to the db proper
         limit = rulesText[18].to_i
         deck << Limit.new(name, row[2], row[3], limit)
       else
