@@ -444,6 +444,23 @@ describe "game" do
                 expect(player.hand.length).to eq 4 # since the opening hand size is 3
             end
         end
+
+        it "should handle if the currentPlayer is set to a number of a player which does not exist" do
+            # setup
+            numberOfPlayers = 4
+            input_stream = StringIO.new("0\n" * numberOfPlayers)
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theGame.currentPlayerCounter = 8
+
+            # execute
+            theGame.everyBodyGets1(theFirstPlayer)
+
+            # test
+            # should just work
+        end
+
     end
 
     describe "tradeHands" do

@@ -129,6 +129,10 @@ class Game
     numberOfCardsDrawn
   end
 
+  def currentPlayer
+    @currentPlayerCounter % @players.length
+  end
+
   def checkForWinner
     if winner
       puts "the game is over!!!!==============\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"
@@ -264,9 +268,9 @@ class Game
 
   def everyBodyGets1(player)
     cardsDrawn = @deck.drawCards(@players.length)
-    playerCur = @currentPlayer
+    playerCur = currentPlayer
     while cardsDrawn.length > 0
-      if playerCur == @currentPlayer
+      if playerCur == currentPlayer
         selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to giver to yourself")
       else 
         selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to give to #{@players[playerCur]}")
