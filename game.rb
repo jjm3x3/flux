@@ -295,9 +295,9 @@ class Game
     direction = @interface.ask_rotation("Which way would you like to rotate? ")
 
     #candidate for debug
-    # @players.each do |player|
-    #   @interface.displayCards(player.hand, "What is my hand now #{player}:")
-    # end
+    @players.each do |player|
+      @interface.displayCardsDebug(player.hand, "What is my hand now #{player}:")
+    end
 
     playerCur = currentPlayer
     tempHand = @players[playerCur].hand
