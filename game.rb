@@ -332,4 +332,8 @@ class Game
     end
   end
 
+  def take_another_turn(player)
+    @currentPlayerCounter -= 1
+  end
+
 end
