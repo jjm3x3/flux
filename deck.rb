@@ -14,7 +14,7 @@ class Deck
     # put in for debugging
     # if @firstCard
     #   @firstCard = false
-    #   drawnCards = [@cards.delete_at(@cards.length-2)]
+    #   drawnCards = [@cards.delete_at(@cards.length-1)]
     #   cardsToDraw -= 1
     # end
     @interface.debug "draw #{cardsToDraw} card(s) from the game..."
