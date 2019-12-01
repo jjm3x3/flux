@@ -49,7 +49,7 @@ class Game
     @interface.information "the discard has #{@discardPile.length} card(s) in it"
     @interface.information "here is the current goal: #{@goal }"
     @interface.information "here are the current rules:\n#{@ruleBase}"
-    @interface.displayCards(activePlayer.keepers, "Here are your keepers")
+    @interface.printKeepers(activePlayer.keepers, "Here are your keepers")
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = activePlayer.hand
@@ -302,7 +302,6 @@ class Game
     playerCur = currentPlayer
     tempHand = @players[playerCur].hand
     nextPlayer = -1
-    times = 0
     while nextPlayer != currentPlayer
       if @interface.isClockwise(direction)
         @interface.debug "move clockwise"
