@@ -354,11 +354,16 @@ class Game
       player.keepers.length > 0
     end
 
+    # TODO:: if any of the following prompts are a single item should it choose for you?
+
     eligibleOpponents.unshift(:no_one)
+    # TODO:: would still be nice to know who has what keepers
     selectedPlayer = @interface.select_a_player(eligibleOpponents, "Which player would you like to take a keeper from")
     if selectedPlayer == :no_one
+      # TODO:: can a user change their mind here?
       @interface.information "You don't want to trade with anyone? too bad"
     end
+    # TODO:: what if a user decides now they don't want to choose one of these
     myNewKeeper = @interface.select_a_card(selectedPlayer.keepers, "Slect which Keeper you would like")
     # if player.keepers.length > 1
       myOldKeeper = @interface.select_a_card(player.keepers, "Which Keeper would you like to exchange")
