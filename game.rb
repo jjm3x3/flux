@@ -29,7 +29,7 @@ class Game
 
     @players.each do |player|
       firstHand = @deck.drawCards(3) # basic rules draw three cards to start
-      @interface.debug "draw your opening hand #{firstHand}"
+      @interface.trace "draw your opening hand #{firstHand}"
       player.hand = firstHand
     end
 
@@ -313,14 +313,14 @@ class Game
       end
 
       @interface.information "player #{playerCur+1} gets =  #{nextPlayer+1}'s hand "
-      @interface.debug "giving plyer #{playerCur+1} the hand\n\t#{@players[nextPlayer].hand}"
+      @interface.trace "giving plyer #{playerCur+1} the hand\n\t#{@players[nextPlayer].hand}"
       @players[playerCur].set_hand(@players[nextPlayer].hand)
 
       playerCur = nextPlayer
       @interface.debug "here is the value of nextPlayer: #{nextPlayer}"
     end
-    @interface.debug "giving plyer #{playerCur+1} the hand\n\t#{tempHand}"
-    if @interface.isClockwise(direction) 
+    @interface.trace "giving plyer #{playerCur+1} the hand\n\t#{tempHand}"
+    if @interface.isClockwise(direction)
       newNextPlayer = (playerCur - 1) % @players.length
     else
       newNextPlayer = (playerCur + 1) % @players.length

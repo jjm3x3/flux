@@ -13,6 +13,12 @@ class GameInterface
     end
   end
 
+  def trace(message)
+    if @trace
+      @output_stream.puts message
+    end
+  end
+
   def information(message)
     @output_stream.puts message
   end
