@@ -18,17 +18,11 @@ class GameInterface
   end
 
   def displayCards(hand,prompt="Here is your current hand:")
-    i = 0
-    numbering = "   "
-    hand.map do |card|
-      numbering += i.to_s
-      numbering += (" " * card.to_s.length) + "   "
-      i += 1
-    end
-    handPrintOut = hand.map do |card|
-      card.to_s
-    end
-    @output_stream.puts "#{prompt}\n#{numbering}\n#{handPrintOut}"
+    @output_stream.puts "#{prompt}\n#{indexed_display(hand)}"
+  end
+
+  def displayCardsDebug(hand,prompt="Here is your current hand:")
+    debug "#{prompt}\n#{indexed_display(hand)}"
   end
 
   def ask_yes_no(prompt)
@@ -68,6 +62,20 @@ class GameInterface
   def get_input
     input = @input_stream.gets
     input.strip
+  end
+
+  def indexed_display(list)
+    i = 0
+    numbering = "   "
+    list.map do |card|
+      numbering += i.to_s
+      numbering += (" " * card.to_s.length) + "   "
+      i += 1
+    end
+    handPrintOut = list.map do |card|
+      card.to_s
+    end
+    return "#{numbering}\n#{handPrintOut}"
   end
 end
 
