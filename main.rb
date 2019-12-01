@@ -1,7 +1,7 @@
 require "./game.rb"
-require "io/console"
+require "./game_interface.rb"
 
-game = Game.new($stdin)
+game = Game.new(3, CliInterface.new)
 game.run
 
 

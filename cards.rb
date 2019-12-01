@@ -81,6 +81,15 @@ class Rule < Card
 
 end
 
+class Limit < Rule
+  attr_reader :limit
+
+  def initialize(name, ruleType, rulesText, limit)
+    super(name, ruleType, rulesText)
+    @limit = limit
+  end
+end
+
 class Action < Card
 
   def initialize(id, name, rule_text)
@@ -94,14 +103,13 @@ class Action < Card
     when 1
       game.ruleBase.resetToBasic
     when 2
-      game.playTwoAndUseEm(player)
-      # puts "draw 2 and use 'em"
+      game.draw_2_and_use_em(player)
     when 3
       game.jackpot(player)
     when 4
       game.ruleBase.removeLimits
     when 5
-      game.draw3playe2ofThem(player)
+      game.draw_3_play_2_of_them(player)
     when 6
       game.discardAndDraw(player)
     when 7
@@ -122,5 +130,17 @@ class Action < Card
       game.rotateHands(player)
     end
     game.discard(self)
+  end
+end
+
+class FakeCard < Card
+  attr_reader :played
+  def initialize(name)
+    super(5,name)
+    @played = false
+  end
+
+  def play(player, game)
+    @played = true
   end
 end

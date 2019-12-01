@@ -1,6 +1,8 @@
 class Deck
 
-  def initialize
+  def initialize(anInterface)
+    @interface = anInterface
+
     @firstCard = true
     @cards = buildDeck
   end
@@ -10,18 +12,21 @@ class Deck
     drawnCards = []
     # puts "what is the value of #{@firstCard}"
     # put in for debugging
-    if @firstCard
-      @firstCard = false
-      drawnCards = [@cards.delete_at(@cards.length-1)]
-      cardsToDraw -= 1
-    end
-    puts "draw #{cardsToDraw} card(s) from the game..."
+    # if @firstCard
+    #   @firstCard = false
+    #   drawnCards = [@cards.delete_at(@cards.length-2)]
+    #   cardsToDraw -= 1
+    # end
+    @interface.debug "draw #{cardsToDraw} card(s) from the game..."
 
     drawnCards += drawMultipleCards(cardsToDraw)
-    puts "deck now has #{@cards.length} cards"
+    @interface.debug "deck now has #{@cards.length} cards"
     drawnCards
   end
 
+  def count
+    @cards.length
+  end
 
   private
   def drawMultipleCards(amount)
@@ -32,6 +37,8 @@ class Deck
   end
 
   def drawACard
+    # TODO: cover the case when:
+    #         it throws when @cards.length is 0
     randValue = Random.new.rand(@cards.length)
     @cards.delete_at(randValue)
   end
@@ -50,12 +57,36 @@ class Deck
       deck << Goal.new(row[1],cards,row[3])
     end
     db.execute("select * from rules;") do |row|
-      deck << Rule.new(row[1], row[2], row[3])
+      name = row[1]
+      ruleType = row[2]
+      rulesText = row[3]
+      if(ruleType == 4 || ruleType == 3)
+        # TODO: hack until I add these card types to the db proper
+        limit = rulesText[18].to_i
+        deck << Limit.new(name, row[2], row[3], limit)
+      else
+        deck << Rule.new(row[1], row[2], row[3])
+      end
     end
     db.execute("select * from actions;") do |row|
       deck << Action.new(row[0], row[1], row[2])
     end
-    puts "deck starts with #{deck.length} cards"
+    @interface.debug "deck starts with #{deck.length} cards"
     deck
+  end
+
+end
+
+class StackedDeck < Deck
+
+  def initialize(anInterface, cardsToPutOnTop = [])
+    super(anInterface)
+    cardsToPutOnTop.select do |card|
+      @cards.unshift(card)
+    end
+  end
+
+  def drawACard
+    @cards.delete_at(0)
   end
 end

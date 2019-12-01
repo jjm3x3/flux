@@ -4,39 +4,41 @@ require "./cards.rb"
 require "./deck.rb"
 require "./player.rb"
 require "./ruleBase.rb"
+require "./game_interface.rb"
 
 
 class Game
   attr_accessor :ruleBase
   attr_accessor :players
+  attr_accessor :deck
+  attr_accessor :discardPile
+  attr_accessor :currentPlayerCounter
 
-  def initialize(input_steam)
+  def initialize(numberOfPlayers, anInterface = CliInterface.new)
 
-    @input_steam = input_steam
+    @interface = anInterface
 
-    @ruleBase = RuleBase.new(self)
-    @deck = Deck.new
+    @ruleBase = RuleBase.new(self, anInterface)
+    @deck = Deck.new(anInterface)
     @discardPile = []
 
     @players = []
-    @players << Player.new("player1", self)
-    @players << Player.new("player2", self)
-    @players << Player.new("player3", self)
-    # @players << Player.new("player4", self)
-    # @players << Player.new("player5", self)
-    # @players << Player.new("player6", self)
+    (1..numberOfPlayers).select do |playerId|
+      @players << Player.new("player" + playerId.to_s, self)
+    end
+
     @players.each do |player|
       firstHand = @deck.drawCards(3) # basic rules draw three cards to start
-      puts "draw your opening hand #{firstHand}"
+      @interface.trace "draw your opening hand #{firstHand}"
       player.hand = firstHand
     end
 
-    @currentPlayer = 0
+    @currentPlayerCounter = 0
   end
 
   def activePlayer
-    @currentPlayer = @currentPlayer % @players.length
-    @players[@currentPlayer]
+    playerCur = @currentPlayerCounter % @players.length
+    @players[playerCur]
   end
 
   def drawCards
@@ -44,31 +46,29 @@ class Game
   end
 
   def playCards
-    puts "the discard has #{@discardPile.length} card(s) in it"
-    puts "here is the current goal: #{@goal }"
-    puts "here are the current rules:\n#{@ruleBase}"
-    printKeepers(activePlayer)
+    @interface.information "the discard has #{@discardPile.length} card(s) in it"
+    @interface.information "here is the current goal: #{@goal }"
+    @interface.information "here are the current rules:\n#{@ruleBase}"
+    @interface.printKeepers(activePlayer.keepers, "Here are your keepers")
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = activePlayer.hand
     while cardsPlayed < @ruleBase.playRule && !winner && hand.length > 0
-      printCardList(hand)
-      cardPos = selectCardFromHand
-      cardToPlay = hand.delete_at(cardPos.to_i)
+      cardToPlay = @interface.select_a_card(hand, "Select a card from your hand to play")
       cardToPlay.play(activePlayer, self)
       cardsPlayed += 1
       checkForWinner # should check for a winner before discarding
       enforceNonActivePlayerLimits
-      puts "the discard has #{@discardPile.length} card(s) in it"
+      @interface.information "the discard has #{@discardPile.length} card(s) in it"
       # do something if the discard need reshufleing
       cardsDrawn = replenishHand(cardsDrawn, activePlayer)
       hand = activePlayer.hand # really a sad sideeffect of much statefull programming
-      puts "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
+      @interface.information "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
     end
     discardDownToLimit(activePlayer)
     removeDownToKeeperLimit(activePlayer)
-    @currentPlayer += 1
-    puts "\n#{activePlayer}'s turn"
+    @currentPlayerCounter += 1
+    @interface.information "\n#{activePlayer}'s turn"
   end
 
   def enforceNonActivePlayerLimits
@@ -82,28 +82,23 @@ class Game
 
   def removeDownToKeeperLimit(player)
     while player.keepers.length > @ruleBase.keeperLimit
-      puts "choose a card to discard"
-      printKeepers(player)
-      cardPos = selectCardFromHand("to discard")
-      removeKeeper = player.keepers.delete_at(cardPos)
+      removeKeeper = @interface.select_a_card(player.keepers, "Choose a card to discard")
       @discardPile << removeKeeper
-      puts "discarding #{removeKeeper}"
+      @interface.debug "discarding #{removeKeeper}"
     end
   end
 
   def discardDownToLimit(player)
+    @interface.debug "The hand limit is #{@ruleBase.handLimit}"
     while player.hand.count > @ruleBase.handLimit
-      puts "choose a card to discard"
-      printCardList(player.hand)
-      cardPos = selectCardFromHand("to discard")
-      removedCard = player.hand.delete_at(cardPos)
+      removedCard = @interface.select_a_card(player.hand, "Player #{player}\n\tSelect a card to discard")
       @discardPile << removedCard
-      puts "removing '#{removedCard}'"
+      @interface.debug "removing '#{removedCard}'"
     end
   end
 
   def discard(card)
-    puts "discarding #{card}"
+    @interface.debug "discarding #{card}"
     @discardPile << card
   end
 
@@ -116,12 +111,12 @@ class Game
   end
 
   def setGoal(newGoal)
-    puts "changeing goal to #{newGoal}"
+    @interface.information "changeing goal to #{newGoal}"
     if @goal
       @discardPile << @goal
     end
     @goal = newGoal
-    puts "here is the new value of goal #{@goal}"
+    @interface.debug "here is the new value of goal #{@goal}"
   end
 
   def replenishHand(numberOfCardsDrawn, currentPlayer)
@@ -134,39 +129,16 @@ class Game
     numberOfCardsDrawn
   end
 
+  def currentPlayer
+    @currentPlayerCounter % @players.length
+  end
+
   def checkForWinner
     if winner
       puts "the game is over!!!!==============\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"
       exit 0
     end
   end
-
-  def printKeepers(player)
-    keepersPrintOut = player.keepers.map do |keeper|
-      keeper.to_s
-    end
-    puts "here are the keepers you have:\n #{keepersPrintOut}"
-  end
-
-  def selectCardFromHand(reason="to play")
-    puts "Pick a card " + reason
-    cardPos = STDIN::gets.to_i
-  end
-
-  def printCardList(hand,prompt="Here is your current hand:")
-    i = 0
-    numbering = "   "
-    hand.map do |card|
-      numbering += i.to_s
-      numbering += (" " * card.to_s.length) + "   "
-      i += 1
-    end
-    handPrintOut = hand.map do |card|
-      card.to_s
-    end
-    puts "#{prompt}\n#{numbering}\n#{handPrintOut}"
-  end
-
 
   def run
     loop do
@@ -180,17 +152,13 @@ class Game
     @players.each do |player|
       winner ||= player.won?
     end
-    puts "is there a winner? #{winner.to_s}\n"
+    @interface.debug "is there a winner? #{winner.to_s}\n"
     winner 
   end
 
-  def playTwoAndUseEm(player)
+  def draw_2_and_use_em(player)
     cardsDrawn = @deck.drawCards(2)
-    puts "here are the cards:"
-    printCardList(cardsDrawn)
-    puts "which would you like to play first?"
-    whichCard = STDIN::gets
-    firstOne = cardsDrawn.delete_at(whichCard.to_i)
+    firstOne = @interface.select_a_card(cardsDrawn, "Which one would you like to play first?")
     firstOne.play(player, self)
     cardsDrawn[0].play(player, self)
   end
@@ -199,23 +167,17 @@ class Game
     player.hand += @deck.drawCards(3)
   end
 
-  def draw3playe2ofThem(player)
+  def draw_3_play_2_of_them(player)
     cardsDrawn = @deck.drawCards(3)
-    puts "here are the cards:"
-    printCardList(cardsDrawn)
-    puts "which would you like to play first?"
-    whichCard = STDIN::gets
-    firstOne = cardsDrawn.delete_at(whichCard.to_i)
+    firstOne = @interface.select_a_card(cardsDrawn, "which would you like to play first?")
     firstOne.play(player, self)
-    puts "which would you like to play next?"
-    whichCard = STDIN::gets
-    firstOne = cardsDrawn.delete_at(whichCard.to_i)
-    firstOne.play(player, self)
+    secondOne = @interface.select_a_card(cardsDrawn, "which would you like to play next?")
+    secondOne.play(player, self)
     discard(cardsDrawn[0])
   end
 
   def discardAndDraw(player)
-    numberOfCardsToDraw = player.hand.length
+    numberOfCardsToDraw = player.hand.length - 1
     player.hand.each do |card|
       discard(card)
     end
@@ -230,61 +192,35 @@ class Game
   end
 
   def useWhatYouTake(player)
-    playerList = opponents.map do |player|
-      player.to_s
-    end
-    puts "which player would you like to pick from\n#{playerList}"
-    playerPosition = STDIN::gets.to_i
-    selectedPlayer = opponents[playerPosition]
+    selectedPlayer = @interface.select_a_player(opponents, "which player would you like to pick from")
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
-    puts "playing #{selectedCard}"
+    @interface.debug "playing #{selectedCard}"
     selectedCard.play(player, self)
   end
 
   def taxation(player)
-    puts "playing taxation!"
-    newCardsForPlayer = @players.select do |player|
-      player != activePlayer
-    end.map do |player|
-      puts "choose a card to give to #{activePlayer}"
-      printCardList(player.hand)
-      whichCard = STDIN::gets.to_i
-      player.hand.delete_at(whichCard)
+    @interface.debug "playing taxation!"
+    newCardsForPlayer = opponents.map do |player|
+      @interface.select_a_card(player.hand, "Choose a card to give to #{activePlayer}")
     end
     player.hand += newCardsForPlayer
   end
 
   def todaysSpecial(player)
     drawnCards = @deck.drawCards(3)
-    puts "pick a card to play"
-    printCardList(drawnCards)
-    whichCard = STDIN::gets.strip.to_i
-    cardToPlay = drawnCards.delete_at(whichCard)
+    cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
     cardToPlay.play(player, self)
 
-    puts "Is today your birthday? (y/n)"
-    response = STDIN::gets.strip
-    if response == 'y' || response == 'Y'
-      puts "pick a card to play"
-      printCardList(drawnCards)
-      whichCard = STDIN::gets.strip.to_i
-      cardToPlay = drawnCards.delete_at(whichCard)
+    if @interface.ask_yes_no("is today your birthday")
+      cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
       cardToPlay.play(player, self)
 
-      puts "pick a card to play"
-      printCardList(drawnCards)
-      whichCard = STDIN::gets.strip.to_i
-      cardToPlay = drawnCards.delete_at(whichCard)
+      cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
       cardToPlay.play(player, self)
     else
-      puts "Is today a holiday or an anniversary (y/n)"
-      response = STDIN::gets.strip
-      if response == 'y' || response == 'Y'
-        puts "pick a card to play"
-        printCardList(drawnCards)
-        whichCard = STDIN::gets.strip.to_i
-        cardToPlay = drawnCards.delete_at(whichCard)
+      if @interface.ask_yes_no "Is today a holiday or an anniversary"
+        cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
         cardToPlay.play(player, self)
       end
     end
@@ -303,101 +239,96 @@ class Game
       player.keepers = []
     end
     
-    puts "how many keepers do I have: #{allKeepers.count} but the length is #{allKeepers.length}"
-    puts "and here they are: \n#{allKeepers}"
-    playerCur = @currentPlayer
+    @interface.debug "how many keepers do I have: #{allKeepers.count} but the length is #{allKeepers.length}"
+    @interface.debug "and here they are: \n#{allKeepers}"
+    playerCur = @currentPlayerCounter
     random = Random.new
     while allKeepers.length > 0
-      puts "here are the keepers now: \n#{allKeepers}"
+      @interface.debug "here are the keepers now: \n#{allKeepers}"
       playerCur = playerCur % @players.length
       randomPosition = random.rand(allKeepers.length)
       @players[playerCur].keepers << allKeepers.delete_at(randomPosition)
       playerCur += 1
     end
-    printKeepers(activePlayer)
+    @interface.printKeepers(activePlayer)
   end
 
   def letsDoThatAgain(player)
     eligibleCards = @discardPile.select do |card|
-      puts "this card is of type: #{card.card_type}"
+      @interface.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
     end
-    puts "pick a card you would like to replay"
-    printCardList(eligibleCards)
-    whichCard = STDIN::gets.strip.to_i
-    pickedCard = eligibleCards[whichCard]
+    pickedCard = @interface.select_a_card(eligibleCards, "pick a card you would like to replay")
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
-    puts "replaying #{pickedCard}"
+    @interface.information "replaying #{pickedCard}"
     pickedCard.play(player, self)
   end
 
   def everyBodyGets1(player)
     cardsDrawn = @deck.drawCards(@players.length)
-    playerCur = @currentPlayer
+    playerCur = currentPlayer
     while cardsDrawn.length > 0
-      if playerCur == @currentPlayer
-        puts "which card would you like to giver to yourself"
+      if playerCur == currentPlayer
+        selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to giver to yourself")
       else 
-        puts "which card would you like to give to #{@players[playerCur]}"
+        selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to give to #{@players[playerCur]}")
       end
-      printCardList(cardsDrawn)
-      whichCard = STDIN::gets.strip.to_i
-      @players[playerCur].hand << cardsDrawn.delete_at(whichCard)
+      @players[playerCur].hand << selectedCard
       playerCur += 1
+      playerCur %= @players.length
     end
-  end
-
-  def get_input
-    @input_steam.gets.strip
   end
 
   def tradeHands(player)
     opponentsText = opponents.map do |player|
       player.to_s
     end
-    puts "who would you like to trade hands with?\n#{opponentsText}"
-    whichPlayer = get_input.to_i
-    otherHand = opponents[whichPlayer].hand
-    opponents[whichPlayer].hand = player.hand
+    selectedPlayer = @interface.select_a_player(opponents, "who would you like to trade hands with?")
+    otherHand = selectedPlayer.hand
+    selectedPlayer.hand = player.hand
     player.hand = otherHand
   end
 
   def rotateHands(player)
-    puts "which way would you like to got (clockwise, counter-clockwise)"
-    whichOption = get_input
+    direction = @interface.ask_rotation("Which way would you like to rotate? ")
 
-    playerCur = @currentPlayer
+    #candidate for debug
+    @players.each do |player|
+      @interface.displayCardsDebug(player.hand, "What is my hand now #{player}:")
+    end
+
+    playerCur = currentPlayer
     tempHand = @players[playerCur].hand
     nextPlayer = -1
-    while nextPlayer != @currentPlayer
-      if whichOption.start_with?("cl")
-        puts "move clockwise"
+    while nextPlayer != currentPlayer
+      if @interface.isClockwise(direction)
+        @interface.debug "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
-        puts "move counterclockwise curentPlayer: #{playerCur} nextPlayer: #{nextPlayer} " 
+        @interface.debug "move counterclockwise playerCur: #{playerCur} nextPlayer: #{nextPlayer} "
         nextPlayer  = (playerCur - 1) % @players.length
       end
 
-      puts "player #{playerCur} STDIN::gets =  #{nextPlayer}'s hand "
-      if playerCur == @players.length - 1 && whichOption.start_with?("cl")
-        @players[playerCur].set_hand(tempHand)
-      elsif playerCur == 1 && !whichOption.start_with?("cl")
-        @players[playerCur].set_hand(tempHand)
-      else
-        @players[playerCur].set_hand(@players[nextPlayer].hand)
-      end
+      @interface.information "player #{playerCur+1} gets =  #{nextPlayer+1}'s hand "
+      @interface.trace "giving plyer #{playerCur+1} the hand\n\t#{@players[nextPlayer].hand}"
+      @players[playerCur].set_hand(@players[nextPlayer].hand)
 
       playerCur = nextPlayer
-      puts "here is the value of nextPlayer: #{nextPlayer} and #{@currentPlayer}"
+      @interface.debug "here is the value of nextPlayer: #{nextPlayer}"
     end
-    # printCardList(tempHand, "here is the onehandLeft out:") 
-    # puts "who is the next player #{nextPlayer}"
-    # printCardList(@players[playerCur].hand, "This should be the same as above: ")
-    puts "\n"
+    @interface.trace "giving plyer #{playerCur+1} the hand\n\t#{tempHand}"
+    if @interface.isClockwise(direction)
+      newNextPlayer = (playerCur - 1) % @players.length
+    else
+      newNextPlayer = (playerCur + 1) % @players.length
+    end
+    @players[newNextPlayer].set_hand(tempHand)
+
+    # candidate for debug
     @players.each do |player|
-      printCardList(player.hand, "What is my hand now #{player}:")
+      @interface.displayCards(player.hand, "What is my hand now #{player}:")
     end
   end
 
