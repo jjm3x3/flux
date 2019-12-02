@@ -1,10 +1,10 @@
 class GameInterface
 
-  def printKeepers(player)
+  def printKeepers(player, prompt="here are the keepers you have:")
     keepersPrintOut = player.keepers.map do |keeper|
       keeper.to_s
     end
-    @output_stream.puts "here are the keepers you have:\n #{keepersPrintOut}"
+    @output_stream.puts "#{prompt}\n #{keepersPrintOut}"
   end
 
   def debug(message)
@@ -93,21 +93,32 @@ end
 
 class TestInterface < GameInterface
   attr_accessor :cardList
+  attr_accessor :prompted
+  attr_accessor :indexed_output
 
   def initialize(input, output)
     @input_stream = input
     @output_stream = output
     @debug = true
+    @indexed_output = ""
   end
 
   def displayCards(hand, prompt="Have some cards")
     method(:displayCards).super_method.call(hand, prompt)
+    @prompted = true
     @cardList = hand
   end
 
-  def printKeepers(player)
-    method(:printKeepers).super_method.call(player)
+  def printKeepers(player, prompt="here are some keepers")
+    method(:printKeepers).super_method.call(player, prompt)
     @keepers = player.keepers
+  end
+
+  def indexed_display(list)
+    @prompted = true
+    result = method(:indexed_display).super_method.call(list)
+    @indexed_output += result
+    result
   end
 
 end

@@ -49,7 +49,7 @@ class Game
     @interface.information "the discard has #{@discardPile.length} card(s) in it"
     @interface.information "here is the current goal: #{@goal }"
     @interface.information "here are the current rules:\n#{@ruleBase}"
-    @interface.printKeepers(activePlayer.keepers, "Here are your keepers")
+    @interface.printKeepers(activePlayer)
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = activePlayer.hand
@@ -330,6 +330,67 @@ class Game
     @players.each do |player|
       @interface.displayCards(player.hand, "What is my hand now #{player}:")
     end
+  end
+
+  def take_another_turn
+    @currentPlayerCounter -= 1
+  end
+
+  def exchange_keepers(player)
+    if player.keepers.length == 0
+      @interface.information "Too bad you have no keepers"
+      return
+    end
+    otherKeepers = false
+    opponents.select do |player|
+      otherKeepers ||= player.keepers.length != 0
+    end
+    if !otherKeepers
+      @interface.information "Too bad you have no keepers"
+      return
+    end
+
+    eligibleOpponents = opponents.select do |player|
+      player.keepers.length > 0
+    end
+
+
+
+    eligibleOpponents.select do |palyer|
+      @interface.printKeepers(player, "Here are the keepers: #{player.to_s} has:")
+    end
+
+    eligibleOpponents.unshift(:no_one)
+    selectedPlayer = :no_one
+    loop do
+      selectedPlayer = @interface.select_a_player(eligibleOpponents, "Which player would you like to take a keeper from")
+      areYouSure = selectedPlayer != :no_one
+      if selectedPlayer == :no_one
+        areYouSure = @interface.ask_yes_no "Are you sure you don't want to trade with anyone?"
+      end
+      if areYouSure
+        break
+      end
+    end
+    if selectedPlayer == :no_one
+      return
+    end
+
+    if selectedPlayer.keepers.length > 1
+      myNewKeeper = @interface.select_a_card(selectedPlayer.keepers, "Slect which Keeper you would like")
+    else
+      myNewKeeper = selectedPlayer.keepers.delete_at(0)
+    end
+    if player.keepers.length > 1
+      myOldKeeper = @interface.select_a_card(player.keepers, "Which Keeper would you like to exchange")
+    else
+      myOldKeeper = player.keepers.delete_at(0)
+    end
+    player.keepers << myNewKeeper
+    selectedPlayer.keepers << myOldKeeper
+
+    @interface.displayCardsDebug(player.keepers, "Here are your Keepers after the exchange")
+
   end
 
 end

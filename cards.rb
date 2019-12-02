@@ -128,6 +128,10 @@ class Action < Card
       game.tradeHands(player)
     when 14
       game.rotateHands(player)
+    when 15
+      game.take_another_turn
+    when 16
+      game.exchange_keepers(player)
     end
     game.discard(self)
   end
