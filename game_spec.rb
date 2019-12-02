@@ -743,7 +743,7 @@ describe "game" do
 
         it "should prompt the player if the player and at least one opponent has a keeper" do
             # setup
-            input_stream = StringIO.new("1\n0\n0\n")
+            input_stream = StringIO.new("1\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]

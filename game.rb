@@ -376,11 +376,16 @@ class Game
       return
     end
 
-    # TODO:: if any of the following prompts are a single item should it choose for you?
-    myNewKeeper = @interface.select_a_card(selectedPlayer.keepers, "Slect which Keeper you would like")
-    # if player.keepers.length > 1
+    if selectedPlayer.keepers.length > 1
+      myNewKeeper = @interface.select_a_card(selectedPlayer.keepers, "Slect which Keeper you would like")
+    else
+      myNewKeeper = selectedPlayer.keepers.delete_at(0)
+    end
+    if player.keepers.length > 1
       myOldKeeper = @interface.select_a_card(player.keepers, "Which Keeper would you like to exchange")
-    # end
+    else
+      myOldKeeper = player.keepers.delete_at(0)
+    end
     player.keepers << myNewKeeper
     selectedPlayer.keepers << myOldKeeper
 

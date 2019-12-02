@@ -115,6 +115,7 @@ class TestInterface < GameInterface
   end
 
   def indexed_display(list)
+    @prompted = true
     result = method(:indexed_display).super_method.call(list)
     @indexed_output += result
     result
