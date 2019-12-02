@@ -27,6 +27,23 @@ describe "game" do
         end
     end
 
+    describe "drawCards" do
+        it "should draw bassed on the 'drawRule' if the count parmeter is :draw_rule" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream,test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theDecksOriginalSize = theGame.deck.count
+
+            # execute
+            theGame.drawCards(theFirstPlayer, :draw_rule)
+
+            # test
+            expect(theGame.deck.count).to eq theDecksOriginalSize - theGame.ruleBase.drawRule
+        end
+    end
+
     describe "playCards" do
         it "should play cards..... :?" do
             # setup
