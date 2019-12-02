@@ -14,6 +14,8 @@ class Card
       @card_type = "Rule"
     when 4
       @card_type = "Action"
+    when 6
+      @card_type = "Creeper"
     end
   end
 
