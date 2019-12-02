@@ -57,6 +57,46 @@ describe "game" do
             # test
             expect(returnedCards.length).to eq theGame.ruleBase.drawRule
         end
+
+        it "should never return any creepers" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream,test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface,
+                [Creeper.new(10000, "Screem", "Some very scary rule text"),
+                Creeper.new(10001, "Lonelyness", "There is no one there"),
+                Creeper.new(10002, "Depression", "There is no one there"),
+                Creeper.new(10003, "Bankrupsy", "There is no one there"),
+                Creeper.new(10004, "Lust", "There is no one there"),
+                Creeper.new(10005, "Loss", "There is no one there")])
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            returnedCards = theGame.drawCards(theFirstPlayer, :draw_rule)
+
+            # test
+            returnedCards.each do |card|
+                expect(card.card_type).to_not eq "Creeper"
+            end
+        end
+
+        it "should draw enough cards including any number of creepers to make sure it returns the expected number" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream,test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface,
+                [Creeper.new(10000, "Screem", "Some very scary rule text"),
+                Creeper.new(10001, "Lonelyness", "There is no one there")])
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            returnedCards = theGame.drawCards(theFirstPlayer, :draw_rule)
+
+            # test
+            expect(returnedCards.length).to eq theGame.ruleBase.drawRule
+        end
     end
 
     describe "playCards" do

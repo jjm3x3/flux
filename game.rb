@@ -45,18 +45,22 @@ class Game
     expectedNumberOfCards = (count == :draw_rule ? @ruleBase.drawRule : count)
     @interface.debug "expecting to draw #{expectedNumberOfCards} cards"
     drawnCards = @deck.drawCards(expectedNumberOfCards)
-    remainingCards = drawnCards.select do |card|
-      @interface.debug "What is this card? #{card.card_type}"
-      if card.card_type == "Creeper"
-        @interface.debug "Found a creeper: #{card}"
-        card.play(player, self)
+    loop do
+      drawnCards = drawnCards.select do |card|
+        @interface.debug "What is this card? #{card.card_type}"
+        if card.card_type == "Creeper"
+          @interface.debug "Found a creeper: #{card}"
+          card.play(player, self)
+        end
+        card.card_type != "Creeper"
+       end
+      if drawnCards.length == expectedNumberOfCards
+        break
+      else
+      drawnCards += @deck.drawCards(expectedNumberOfCards - drawnCards.length)
       end
-      card.card_type != "Creeper"
     end
-    if remainingCards.length != expectedNumberOfCards
-      remainingCards += @deck.drawCards(expectedNumberOfCards - remainingCards.length)
-    end
-    remainingCards
+    drawnCards
   end
 
   def playCards
