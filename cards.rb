@@ -137,6 +137,18 @@ class Action < Card
   end
 end
 
+class Creeper < Card
+  def initialize(id, name, rule_text)
+    super(6, name)
+    @id = id
+    @rule_text = rule_text
+  end
+
+  def play(player, game)
+    puts "OH NOOOOS a you played a creeper"
+  end
+end
+
 class FakeCard < Card
   attr_reader :played
   def initialize(name)

@@ -71,6 +71,9 @@ class Deck
     db.execute("select * from actions;") do |row|
       deck << Action.new(row[0], row[1], row[2])
     end
+    db.execute("select * from creepers;") do |row|
+      deck << Creeper.new(row[0], row[1], row[2])
+    end
     @interface.debug "deck starts with #{deck.length} cards"
     deck
   end
