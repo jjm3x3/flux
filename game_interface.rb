@@ -1,10 +1,10 @@
 class GameInterface
 
-  def printKeepers(player)
+  def printKeepers(player, prompt="here are the keepers you have:")
     keepersPrintOut = player.keepers.map do |keeper|
       keeper.to_s
     end
-    @output_stream.puts "here are the keepers you have:\n #{keepersPrintOut}"
+    @output_stream.puts "#{prompt}\n #{keepersPrintOut}"
   end
 
   def debug(message)
@@ -109,8 +109,8 @@ class TestInterface < GameInterface
     @cardList = hand
   end
 
-  def printKeepers(player)
-    method(:printKeepers).super_method.call(player)
+  def printKeepers(player, prompt="here are some keepers")
+    method(:printKeepers).super_method.call(player, prompt)
     @keepers = player.keepers
   end
 
