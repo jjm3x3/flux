@@ -147,7 +147,7 @@ class Creeper < Card
   end
 
   def play(player, game)
-    puts "OH NOOOOS a you played a creeper"
+    player.keepers << self
   end
 end
 
