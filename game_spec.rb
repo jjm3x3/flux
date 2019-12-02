@@ -31,7 +31,7 @@ describe "game" do
         it "should draw bassed on the 'drawRule' if the count parmeter is :draw_rule" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream,test_outfile)
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theDecksOriginalSize = theGame.deck.count
@@ -41,6 +41,21 @@ describe "game" do
 
             # test
             expect(theGame.deck.count).to eq theDecksOriginalSize - theGame.ruleBase.drawRule
+        end
+
+        it "should draw enough cards including creepers to make sure it returns the expected number" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream,test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface, [Creeper.new(10000, "Screem", "Some very scary rule text")])
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            returnedCards = theGame.drawCards(theFirstPlayer, :draw_rule)
+
+            # test
+            expect(returnedCards.length).to eq theGame.ruleBase.drawRule
         end
     end
 
