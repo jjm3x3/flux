@@ -84,9 +84,10 @@ class GameInterface
 end
 
 class CliInterface < GameInterface
-  def initialize
+  def initialize(debug)
     @output_stream = $stdout
     @input_stream = $stdin
+    @debug = debug
   end
 
 end
