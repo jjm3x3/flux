@@ -147,7 +147,7 @@ class Creeper < Card
   end
 
   def play(player, game)
-    player.keepers << self
+    player.creepers << self
   end
 end
 

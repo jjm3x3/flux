@@ -1,10 +1,11 @@
 
 class Player
-  attr_accessor :keepers, :next, :name, :hand
+  attr_accessor :keepers, :next, :name, :hand, :creepers
   
   def initialize(name, game)
     @name = name
     @keepers = []
+    @creepers = []
     @game = game
   end
 
