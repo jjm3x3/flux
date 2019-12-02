@@ -28,7 +28,7 @@ class Game
     end
 
     @players.each do |player|
-      firstHand = @deck.drawCards(3) # basic rules draw three cards to start
+      firstHand = drawCards(player, 3) # basic rules draw three cards to start
       @interface.trace "draw your opening hand #{firstHand}"
       player.hand = firstHand
     end
