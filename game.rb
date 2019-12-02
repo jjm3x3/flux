@@ -41,8 +41,21 @@ class Game
     @players[playerCur]
   end
 
-  def drawCards
-    @deck.drawCards(@ruleBase.drawRule)
+  def drawCards(player, count)
+    if count == :draw_rule
+      drawnCards = @deck.drawCards(@ruleBase.drawRule)
+    else
+      drawnCards = @deck.drawCards(count)
+    end
+    remainingCards = drawnCards.select do |card|
+      @interface.debug "What is this card? #{card.card_type}"
+      if card.card_type == "Creeper"
+        @interface.debug "Found a creeper: #{card}"
+        card.play(player, self)
+      end
+      card.card_type != "Creeper"
+    end
+    remainingCards
   end
 
   def playCards

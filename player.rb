@@ -14,7 +14,7 @@ class Player
   end 
 
   def drawCards
-    @hand += @game.drawCards
+    @hand += @game.drawCards(self, :draw_rule)
   end
 
   def won?
