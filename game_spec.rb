@@ -800,7 +800,7 @@ describe "game" do
         it "should not prompt with any players which have no keepers" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, $stdout)
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new("thing1")
@@ -814,6 +814,28 @@ describe "game" do
 
             # test
             expect(theTestInterface.indexed_output).to_not include theGame.players[2].to_s
+        end
+
+        it "should not prompt to check if you are sure of your decision" do
+            # setup
+            input_stream = StringIO.new("0\ny\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            firstPlayersOriginalKeeper = Keeper.new("thing1")
+            theFirstPlayer.keepers << firstPlayersOriginalKeeper
+            theSecondPlayer = theGame.players[1]
+            secondPLayersOriginalKeeper = Keeper.new("thing2")
+            theSecondPlayer.keepers << secondPLayersOriginalKeeper
+
+            # execute
+            theGame.exchange_keepers(theFirstPlayer)
+
+            # test
+            #  This is stand in. if everyone keeps theier starting keepers
+            #  then an exchange did not happen
+            expect(theFirstPlayer.keepers[0]).to eq firstPlayersOriginalKeeper
+            expect(theSecondPlayer.keepers[0]).to eq secondPLayersOriginalKeeper
         end
     end
 

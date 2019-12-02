@@ -361,11 +361,21 @@ class Game
     end
 
     eligibleOpponents.unshift(:no_one)
-    selectedPlayer = @interface.select_a_player(eligibleOpponents, "Which player would you like to take a keeper from")
-    if selectedPlayer == :no_one
-      # TODO:: can a user change their mind here?
-      @interface.information "You don't want to trade with anyone? too bad"
+    selectedPlayer = :no_one
+    loop do
+      selectedPlayer = @interface.select_a_player(eligibleOpponents, "Which player would you like to take a keeper from")
+      areYouSure = selectedPlayer != :no_one
+      if selectedPlayer == :no_one
+        areYouSure = @interface.ask_yes_no "Are you sure you don't want to trade with anyone?"
+      end
+      if areYouSure
+        break
+      end
     end
+    if selectedPlayer == :no_one
+      return
+    end
+
     # TODO:: if any of the following prompts are a single item should it choose for you?
     myNewKeeper = @interface.select_a_card(selectedPlayer.keepers, "Slect which Keeper you would like")
     # if player.keepers.length > 1
