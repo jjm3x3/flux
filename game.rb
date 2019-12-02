@@ -67,7 +67,7 @@ class Game
     @interface.information "the discard has #{@discardPile.length} card(s) in it"
     @interface.information "here is the current goal: #{@goal }"
     @interface.information "here are the current rules:\n#{@ruleBase}"
-    @interface.printKeepers(activePlayer)
+    @interface.printPermanents(activePlayer)
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = activePlayer.hand
