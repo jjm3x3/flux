@@ -30,6 +30,28 @@ class Player
     @creepers << creeper
   end
 
+  def has_peace?
+    @keepers.select do |keeper|
+      keeper.is_peace?
+    end.size > 0
+  end
+
+  def has_war?
+    @creepers.select do |creeper|
+      creeper.is_war?
+    end.size > 0
+  end
+
+  def take_war
+    warCreeper = @creepers.select do |creeper|
+      creeper.is_war?
+    end[0]
+    @creepers = @creepers.select do |creeper|
+      !creeper.is_war?
+    end
+    warCreeper
+  end
+
   def set_hand(hand)
     oldHand = @hand
     @hand = hand

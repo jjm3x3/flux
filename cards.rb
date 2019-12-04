@@ -47,6 +47,10 @@ class Keeper < Card
     end
   end
 
+  def is_peace?
+    @id == @@PeaceId
+  end
+
 end
 
 class Goal < Card
