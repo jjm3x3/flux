@@ -183,7 +183,7 @@ class Game
   end
 
   def draw_2_and_use_em(player)
-    cardsDrawn = @deck.drawCards(2)
+    cardsDrawn = drawCards(player, 2)
     firstOne = @interface.select_a_card(cardsDrawn, "Which one would you like to play first?")
     firstOne.play(player, self)
     cardsDrawn[0].play(player, self)

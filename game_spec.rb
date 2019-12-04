@@ -396,6 +396,44 @@ describe "game" do
             # test
             expect(theGame.deck.count).to eq originalDeckCount -2
         end
+
+        it "should play creepers imidately if they are drawn" do
+            # setup
+            input_stream = StringIO.new("0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            warCreeper = Creeper.new(1, "War", "with some rules text")
+            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theFirstPlayer = theGame.players[0]
+            # assuming the start draw rule is 1
+            cardsDrawnToDate = 0
+
+            # execute
+            theGame.draw_2_and_use_em(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.creepers).to include warCreeper
+        end
+
+        it "should remove expected number plus the number of creeper cards from deck" do
+            # setup
+            input_stream = StringIO.new("0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
+            theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
+            theFirstPlayer = theGame.players[0]
+            # assuming the start draw rule is 1
+            cardsDrawnToDate = 0
+            countOfDeckToStart = theGame.deck.count
+            cardsDrawn = 2
+
+            # execute
+            theGame.draw_2_and_use_em(theFirstPlayer)
+
+            # test
+            expect(theGame.deck.count).to eq countOfDeckToStart - (cardsDrawn + stackedCreepers.size) # the creeper
+        end
     end
 
     describe "draw_3_play_2_of_them" do
