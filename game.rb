@@ -412,7 +412,7 @@ class Game
 
   end
 
-  # TODO:: needs to be called any time any keeper or creeper gets played  or changes hands :(
+  # TODO:: needs to be called any time any keeper or creeper changes hands :(
   def resolve_war_rule(player)
     playerHasPeace = player.has_peace?
     playerHasWar = player.has_war?
