@@ -174,6 +174,14 @@ class Game
     winner 
   end
 
+  def opponents(of_player=nil)
+    of_player ?  of_player : activePlayer
+
+    @players.select do |player|
+      player != of_player
+    end
+  end
+
   def draw_2_and_use_em(player)
     cardsDrawn = @deck.drawCards(2)
     firstOne = @interface.select_a_card(cardsDrawn, "Which one would you like to play first?")
@@ -200,13 +208,6 @@ class Game
       discard(card)
     end
     player.hand = @deck.drawCards(numberOfCardsToDraw)
-  end
-
-  def opponents
-    # puts "who is the current player: #{activePlayer}"
-    @players.select do |player|
-      player != activePlayer
-    end
   end
 
   def useWhatYouTake(player)

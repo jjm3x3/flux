@@ -164,6 +164,40 @@ describe "game" do
         end
     end
 
+    describe "opponents" do
+        it "should get the opponents of the active player if no player is passed in" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            currentPlayerCounter = 0 # set active player to "player1"
+
+            # execute
+            theOpponents = theGame.opponents
+
+
+            # test
+            expect(theOpponents).to include theGame.players[1]
+            expect(theOpponents).to include theGame.players[2]
+        end
+
+        it "should get the opponents of the player that is passed in" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            currentPlayerCounter = 0 # set active player to "player1"
+
+            # execute
+            theOpponents = theGame.opponents(theGame.players[1])
+
+
+            # test
+            expect(theOpponents).to include theGame.players[0]
+            expect(theOpponents).to include theGame.players[2]
+        end
+    end
+
     describe "jackpot!" do
         it "should draw 3 cards from the deck" do
             # setup
