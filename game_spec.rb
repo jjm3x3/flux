@@ -951,7 +951,7 @@ describe "game" do
         it "should ensure that if the player to play it has peace they don't end with it" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, $stdout)
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new("Peace")
@@ -968,7 +968,7 @@ describe "game" do
         it "should give war to selected player" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, $stdout)
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new("Peace")
