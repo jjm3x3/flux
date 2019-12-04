@@ -141,7 +141,7 @@ class Game
     # puts "here is #{numberOfCardsDrawn} < #{@ruleBase.drawRule}"
     if numberOfCardsDrawn < @ruleBase.drawRule
       lackingCards = @ruleBase.drawRule - numberOfCardsDrawn
-      currentPlayer.hand += @deck.drawCards(lackingCards)
+      currentPlayer.hand += drawCards(currentPlayer, lackingCards)
       numberOfCardsDrawn += lackingCards
     end
     numberOfCardsDrawn
