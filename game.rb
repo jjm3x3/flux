@@ -227,7 +227,7 @@ class Game
   end
 
   def todaysSpecial(player)
-    drawnCards = @deck.drawCards(3)
+    drawnCards = drawCards(player, 3)
     cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
     cardToPlay.play(player, self)
 
