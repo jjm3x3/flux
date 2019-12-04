@@ -358,7 +358,7 @@ describe "game" do
         end
     end
 
-    describe "draw2AndUseEm" do
+    describe "draw_2_and_use_em" do
         it "should play all the cards" do
             # setup
             input_stream = StringIO.new("0\n")
