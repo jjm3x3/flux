@@ -219,6 +219,25 @@ describe "game" do
             # test
             expect(theFirstPlayer.creepers).to include warCreeper
         end
+
+        it "should remove expected number plus the number of creeper cards from deck" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            warCreeper = Creeper.new(1, "War", "with some rules text")
+            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theFirstPlayer = theGame.players[0]
+            # assuming the start draw rule is 1
+            cardsDrawnToDate = 0
+            countOfDeckToStart = theGame.deck.count
+
+            # execute
+            totalDrawnCards = theGame.replenishHand(cardsDrawnToDate, theFirstPlayer)
+
+            # test
+            expect(theGame.deck.count).to eq countOfDeckToStart - (totalDrawnCards + 1) # the creeper
+        end
     end
 
     describe "winner" do
