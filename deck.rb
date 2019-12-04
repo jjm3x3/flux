@@ -47,7 +47,7 @@ class Deck
     deck = []
     db = SQLite3::Database.new "cards.db"
     db.execute("select * from keepers;") do |row|
-      deck << Keeper.new(row[1])
+      deck << Keeper.new(row[0], row[1])
     end
     db.execute("select * from goals;") do |row|
       cards = JSON.parse(row[2]).map do |index|

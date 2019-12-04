@@ -33,15 +33,17 @@ class Card
 end
 
 class Keeper < Card
+  @@PeaceId = 16
   
-  def initialize(name)
+  def initialize(id, name)
     super(1,name)
+    @id = id
   end
 
   def play(player, game)
     player.keepers << self
-    if self.name == "Peace"
-      resolve_war_rule(player)
+    if @id == @@PeaceId
+      game.resolve_war_rule(player)
     end
   end
 
