@@ -202,7 +202,7 @@ class Game
     discard(cardsDrawn[0])
   end
 
-  def discardAndDraw(player)
+  def discard_and_draw(player)
     numberOfCardsToDraw = player.hand.length - 1
     player.hand.each do |card|
       discard(card)

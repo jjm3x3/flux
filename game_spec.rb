@@ -501,7 +501,7 @@ describe "game" do
         end
     end
 
-    describe "discardAndDraw" do
+    describe "discard_and_draw" do
         it "should not include this card when determining how many cards to draw" do
             # setup
             input_stream = StringIO.new("")
@@ -511,7 +511,7 @@ describe "game" do
             firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
 
             # execute
-            theGame.discardAndDraw(theFirstPlayer)
+            theGame.discard_and_draw(theFirstPlayer)
 
             # test
             expect(theFirstPlayer.hand.size).to eq firstPlayersOriginalCardsCount - 1
@@ -528,7 +528,7 @@ describe "game" do
             # assuming the start draw rule is 1
 
             # execute
-            theGame.discardAndDraw(theFirstPlayer)
+            theGame.discard_and_draw(theFirstPlayer)
 
             # test
             expect(theFirstPlayer.creepers).to include warCreeper
@@ -547,7 +547,7 @@ describe "game" do
             cardsDrawn = 2
 
             # execute
-            theGame.discardAndDraw(theFirstPlayer)
+            theGame.discard_and_draw(theFirstPlayer)
 
             # test
             expect(theGame.deck.count).to eq countOfDeckToStart - (cardsDrawn + stackedCreepers.size) # the creeper
