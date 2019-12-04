@@ -40,6 +40,9 @@ class Keeper < Card
 
   def play(player, game)
     player.keepers << self
+    if self.name == "Peace"
+      resolve_war_rule(player)
+    end
   end
 
 end
@@ -146,10 +149,15 @@ class Creeper < Card
     @rule_text = rule_text
   end
 
+  def is_war?
+    @id == 1
+  end
+
   def play(player, game)
+    player.add_creeper(self)
     case @id
     when 1
-      game.resolve_war_rule(player, self)
+      game.resolve_war_rule(player)
     end
   end
 end

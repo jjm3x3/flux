@@ -1263,9 +1263,10 @@ describe "game" do
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new("Peace")
             warCreeper = Creeper.new(1, "War", "Some rules text")
+            theFirstPlayer.creepers << warCreeper
 
             # execute
-            theGame.resolve_war_rule(theFirstPlayer, warCreeper)
+            theGame.resolve_war_rule(theFirstPlayer)
 
             # test
             expect(theFirstPlayer.creepers).to_not include warCreeper
@@ -1282,7 +1283,7 @@ describe "game" do
             theFirstPlayer.creepers << warCreeper
 
             # execute
-            theGame.resolve_war_rule(theFirstPlayer, warCreeper)
+            theGame.resolve_war_rule(theFirstPlayer)
 
             # test
             expect(theGame.players[1].creepers).to include warCreeper

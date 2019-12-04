@@ -1,7 +1,6 @@
 
 class Player
-  attr_accessor :keepers, :next, :name, :hand
-  attr_reader :creepers
+  attr_accessor :keepers, :next, :name, :hand, :creepers
   
   def initialize(name, game)
     @name = name
