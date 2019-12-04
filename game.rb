@@ -285,7 +285,7 @@ class Game
     pickedCard.play(player, self)
   end
 
-  def everyBodyGets1(player)
+  def everybody_gets_1(player)
     cardsDrawn = drawCards(player, @players.length)
     playerCur = currentPlayer
     while cardsDrawn.length > 0

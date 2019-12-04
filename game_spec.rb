@@ -786,7 +786,7 @@ describe "game" do
         end
     end
 
-    describe "everyBodyGets1" do
+    describe "everybody_gets_1" do
         it "should draw one card per player" do
             # setup
             numberOfPlayers = 4
@@ -797,7 +797,7 @@ describe "game" do
             originalDeckCount = theGame.deck.count
 
             # execute
-            theGame.everyBodyGets1(theFirstPlayer)
+            theGame.everybody_gets_1(theFirstPlayer)
 
             # test
             expect(theGame.deck.count).to eq originalDeckCount-theGame.players.length
@@ -813,7 +813,7 @@ describe "game" do
             originalDeckCount = theGame.deck.count
 
             # execute
-            theGame.everyBodyGets1(theFirstPlayer)
+            theGame.everybody_gets_1(theFirstPlayer)
 
             # test
             theGame.players.select do |player|
@@ -831,7 +831,7 @@ describe "game" do
             theGame.currentPlayerCounter = 8
 
             # execute
-            theGame.everyBodyGets1(theFirstPlayer)
+            theGame.everybody_gets_1(theFirstPlayer)
 
             # test
             # should just work
@@ -847,7 +847,7 @@ describe "game" do
             theGame.currentPlayerCounter = 9
 
             # execute
-            theGame.everyBodyGets1(theFirstPlayer)
+            theGame.everybody_gets_1(theFirstPlayer)
 
             # test
             # should just work
@@ -865,7 +865,7 @@ describe "game" do
             # assuming the start draw rule is 1
 
             # execute
-            theGame.everyBodyGets1(theFirstPlayer)
+            theGame.everybody_gets_1(theFirstPlayer)
 
             # test
             expect(theFirstPlayer.creepers).to include warCreeper
@@ -885,7 +885,7 @@ describe "game" do
             cardsDrawn = numberOfPlayers
 
             # execute
-            theGame.everyBodyGets1(theFirstPlayer)
+            theGame.everybody_gets_1(theFirstPlayer)
 
             # test
             expect(theGame.deck.count).to eq countOfDeckToStart - (cardsDrawn + stackedCreepers.size) # the creeper

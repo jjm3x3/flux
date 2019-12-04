@@ -125,7 +125,7 @@ class Action < Card
     when 11
       game.letsDoThatAgain(player)
     when 12
-      game.everyBodyGets1(player)
+      game.everybody_gets_1(player)
     when 13
       game.tradeHands(player)
     when 14
