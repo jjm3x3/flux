@@ -249,6 +249,7 @@ class Game
     end
   end
 
+  # TODO:: this effects all keepers AND CREEPERS
   def mixItAllUp(player)
     allKeepers = @players.flat_map do |player|
       player.keepers
@@ -355,6 +356,8 @@ class Game
     @currentPlayerCounter -= 1
   end
 
+  # TODO:: since this doesn't cause the Keepers to be replayed the
+  #        resolve_war_rule must be called for both players
   def exchange_keepers(player)
     if player.keepers.length == 0
       @interface.information "Too bad you have no keepers"

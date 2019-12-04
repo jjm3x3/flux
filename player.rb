@@ -19,6 +19,7 @@ class Player
     @hand += @game.drawCards(self, :draw_rule)
   end
 
+  # TODO:: cannot win if the player has any creepers
   def won?
     if @game.hasGoal?
       @game.goalMet?(self)
