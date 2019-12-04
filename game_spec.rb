@@ -123,7 +123,7 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.keepers = [Keeper.new("thing1"), Keeper.new("thing2"), Keeper.new("thing3")]
+            theFirstPlayer.keepers = [Keeper.new(0, "thing1"), Keeper.new(0, "thing2"), Keeper.new(0, "thing3")]
             keeperLimit = 2
             theGame.ruleBase.addRule(Limit.new("keeper limit 2", 4, "some dumb rules text", keeperLimit))
 
@@ -742,8 +742,8 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            keeper1 = Keeper.new("Thing1")
-            keeper2 = Keeper.new("thing2")
+            keeper1 = Keeper.new(0, "Thing1")
+            keeper2 = Keeper.new(0, "thing2")
             theGame.players[0].keepers << keeper1
             theGame.players[1].keepers << keeper2
             allBeginningKeepers = theGame.players.flat_map do |player|
@@ -770,8 +770,8 @@ describe "game" do
             theFirstPlayer = theGame.players[0]
             theGame.discardPile << Action.new(3, "jackpot2", "here are some rules")
             theGame.discardPile << Rule.new("some draw rule", 1, "Draw 9 cards")
-            keeper1 = Keeper.new("Thing1")
-            keeper2 = Keeper.new("thing2")
+            keeper1 = Keeper.new(0, "Thing1")
+            keeper2 = Keeper.new(0, "thing2")
             theGame.discardPile << keeper1
             theGame.discardPile << keeper2
             theGame.discardPile << Goal.new("Achive me", [keeper1, keeper2] , "You most have these cards to win")
@@ -1162,8 +1162,8 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.keepers << Keeper.new("thing1")
-            theGame.players[1].keepers << Keeper.new("thing2")
+            theFirstPlayer.keepers << Keeper.new(0, "thing1")
+            theGame.players[1].keepers << Keeper.new(0, "thing2")
 
             # execute
             theGame.exchange_keepers(theFirstPlayer)
@@ -1178,10 +1178,10 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.keepers << Keeper.new("thing1")
+            theFirstPlayer.keepers << Keeper.new(0, "thing1")
             firstPlayersOriginalKeeperCount = theFirstPlayer.keepers.size
             theSecondPlayer = theGame.players[1]
-            theSecondPlayer.keepers << Keeper.new("thing2")
+            theSecondPlayer.keepers << Keeper.new(0, "thing2")
             secondPlayersOriginalKeeperCount = theSecondPlayer.keepers.size
 
             # execute
@@ -1198,10 +1198,10 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            firstPlayersOriginalKeeper = Keeper.new("thing1")
+            firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
             theSecondPlayer = theGame.players[1]
-            secondPLayersOriginalKeeper = Keeper.new("thing2")
+            secondPLayersOriginalKeeper = Keeper.new(0, "thing2")
             theSecondPlayer.keepers << secondPLayersOriginalKeeper
 
             # execute
@@ -1218,10 +1218,10 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            firstPlayersOriginalKeeper = Keeper.new("thing1")
+            firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
             theSecondPlayer = theGame.players[1]
-            secondPLayersOriginalKeeper = Keeper.new("thing2")
+            secondPLayersOriginalKeeper = Keeper.new(0, "thing2")
             theSecondPlayer.keepers << secondPLayersOriginalKeeper
 
             # execute
@@ -1237,10 +1237,10 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            firstPlayersOriginalKeeper = Keeper.new("thing1")
+            firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
             theSecondPlayer = theGame.players[1]
-            secondPLayersOriginalKeeper = Keeper.new("thing2")
+            secondPLayersOriginalKeeper = Keeper.new(0, "thing2")
             theSecondPlayer.keepers << secondPLayersOriginalKeeper
 
             # execute
@@ -1261,7 +1261,7 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.keepers << Keeper.new("Peace")
+            theFirstPlayer.keepers << Keeper.new(0, "Peace")
             warCreeper = Creeper.new(1, "War", "Some rules text")
             theFirstPlayer.creepers << warCreeper
 
@@ -1278,7 +1278,7 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.keepers << Keeper.new("Peace")
+            theFirstPlayer.keepers << Keeper.new(0, "Peace")
             warCreeper = Creeper.new(1, "War", "Some rules text")
             theFirstPlayer.creepers << warCreeper
 
