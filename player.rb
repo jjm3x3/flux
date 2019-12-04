@@ -1,6 +1,7 @@
 
 class Player
-  attr_accessor :keepers, :next, :name, :hand, :creepers
+  attr_accessor :keepers, :next, :name, :hand
+  attr_reader :creepers
   
   def initialize(name, game)
     @name = name
@@ -24,6 +25,10 @@ class Player
     else
       false
     end
+  end
+
+  def add_creeper(creeper)
+    @creepers << creeper
   end
 
   def set_hand(hand)

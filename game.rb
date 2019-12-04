@@ -413,19 +413,15 @@ class Game
   end
 
   # TODO:: needs to be called any time any keeper or creeper gets played  or changes hands :(
-  def resolve_war_rule(player)
+  def resolve_war_rule(player, war)
     # TODO:: find a better way to see if a player has Peace
     if player.keepers.include? Keeper.new("Peace")
-
       selectedPlayer = @interface.select_a_player(opponents(player), "#{player} since you have peace. Who would you like to give war too?")
-      warCreeper = player.creepers.select do |creeper|
-        creeper.is_war?
-      end
-      player.creepers = player.creepers.select do |creeper|
-        !creeper.is_war?
-      end
+
       @interface.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
-      selectedPlayer.creepers << warCreeper[0]
+      selectedPlayer.add_creeper(war)
+    else
+      player.add_creeper(war)
     end
   end
 

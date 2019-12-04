@@ -146,15 +146,10 @@ class Creeper < Card
     @rule_text = rule_text
   end
 
-  def is_war?
-    @id == 1
-  end
-
   def play(player, game)
-    player.creepers << self
     case @id
     when 1
-      game.resolve_war_rule(player)
+      game.resolve_war_rule(player, self)
     end
   end
 end
