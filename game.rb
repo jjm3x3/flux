@@ -207,7 +207,7 @@ class Game
     player.hand.each do |card|
       discard(card)
     end
-    player.hand = @deck.drawCards(numberOfCardsToDraw)
+    player.hand = drawCards(player, numberOfCardsToDraw)
   end
 
   def useWhatYouTake(player)
