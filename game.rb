@@ -190,7 +190,7 @@ class Game
   end
 
   def jackpot(player)
-    player.hand += @deck.drawCards(3)
+    player.hand += drawCards(player, 3)
   end
 
   def draw_3_play_2_of_them(player)
