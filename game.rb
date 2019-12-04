@@ -175,7 +175,7 @@ class Game
   end
 
   def opponents(of_player=nil)
-    of_player ?  of_player : activePlayer
+    of_player = of_player ?  of_player : activePlayer
 
     @players.select do |player|
       player != of_player

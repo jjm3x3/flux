@@ -165,7 +165,7 @@ describe "game" do
     end
 
     describe "opponents" do
-        it "should get the opponents of the active player if no player is passed in" do
+        it "should only get the opponents of the active player if no player is passed in" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
@@ -177,11 +177,12 @@ describe "game" do
 
 
             # test
+            expect(theOpponents).to_not include theGame.players[0]
             expect(theOpponents).to include theGame.players[1]
             expect(theOpponents).to include theGame.players[2]
         end
 
-        it "should get the opponents of the player that is passed in" do
+        it "should only get the opponents of the player that is passed in" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
@@ -194,6 +195,7 @@ describe "game" do
 
             # test
             expect(theOpponents).to include theGame.players[0]
+            expect(theOpponents).to_not include theGame.players[1]
             expect(theOpponents).to include theGame.players[2]
         end
     end
