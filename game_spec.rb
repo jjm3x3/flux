@@ -33,6 +33,7 @@ describe "game" do
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface)
             theFirstPlayer = theGame.players[0]
             theDecksOriginalSize = theGame.deck.count
 
