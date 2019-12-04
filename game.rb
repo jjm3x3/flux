@@ -194,7 +194,7 @@ class Game
   end
 
   def draw_3_play_2_of_them(player)
-    cardsDrawn = @deck.drawCards(3)
+    cardsDrawn = drawCards(player, 3)
     firstOne = @interface.select_a_card(cardsDrawn, "which would you like to play first?")
     firstOne.play(player, self)
     secondOne = @interface.select_a_card(cardsDrawn, "which would you like to play next?")
