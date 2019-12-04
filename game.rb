@@ -422,7 +422,7 @@ class Game
       @interface.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
       warCreeper = player.creepers.select do |creeper|
         creeper.is_war?
-      end
+      end[0]
       player.creepers = player.creepers.select do |creeper|
         !creeper.is_war?
       end

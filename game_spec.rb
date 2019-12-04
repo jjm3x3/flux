@@ -1261,7 +1261,7 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.keepers << Keeper.new(0, "Peace")
+            theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")
             warCreeper = Creeper.new(1, "War", "Some rules text")
             theFirstPlayer.creepers << warCreeper
 
@@ -1278,7 +1278,7 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.keepers << Keeper.new(0, "Peace")
+            theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")
             warCreeper = Creeper.new(1, "War", "Some rules text")
             theFirstPlayer.creepers << warCreeper
 
