@@ -286,7 +286,7 @@ class Game
   end
 
   def everyBodyGets1(player)
-    cardsDrawn = @deck.drawCards(@players.length)
+    cardsDrawn = drawCards(player, @players.length)
     playerCur = currentPlayer
     while cardsDrawn.length > 0
       if playerCur == currentPlayer
