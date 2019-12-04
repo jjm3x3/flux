@@ -152,6 +152,75 @@ describe "game" do
         end
     end
 
+    describe "replenishHand" do
+        it "should return the same number of cards if none are to be drawn" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            # assuming the start draw rule is 1
+            cardsDrawnToDate = 1
+
+            # execute
+            totalDrawnCards = theGame.replenishHand(cardsDrawnToDate, theFirstPlayer)
+
+            # test
+            expect(totalDrawnCards).to eq cardsDrawnToDate
+        end
+
+        it "should return a number greater if there are cards to be drawn" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            # assuming the start draw rule is 1
+            cardsDrawnToDate = 0
+
+            # execute
+            totalDrawnCards = theGame.replenishHand(cardsDrawnToDate, theFirstPlayer)
+
+            # test
+            expect(totalDrawnCards).to be > cardsDrawnToDate
+        end
+
+        it "should remove cards from the deck if it draws cards" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            # assuming the start draw rule is 1
+            cardsDrawnToDate = 0
+            countOfDeckToStart = theGame.deck.count
+
+            # execute
+            totalDrawnCards = theGame.replenishHand(cardsDrawnToDate, theFirstPlayer)
+
+            # test
+            expect(theGame.deck.count).to eq countOfDeckToStart - totalDrawnCards
+        end
+
+        it "should play creepers imidately if they are drawn" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            warCreeper = Creeper.new(1, "War", "with some rules text")
+            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theFirstPlayer = theGame.players[0]
+            # assuming the start draw rule is 1
+            cardsDrawnToDate = 0
+
+            # execute
+            totalDrawnCards = theGame.replenishHand(cardsDrawnToDate, theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.creepers).to include warCreeper
+        end
+    end
+
     describe "winner" do
         it "should be false for a brand new game" do
             # setup
