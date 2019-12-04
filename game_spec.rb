@@ -330,7 +330,6 @@ describe "game" do
             theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
-            cardsDrawnToDate = 0
 
             # execute
             theGame.jackpot(theFirstPlayer)
@@ -348,7 +347,6 @@ describe "game" do
             theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
-            cardsDrawnToDate = 0
             countOfDeckToStart = theGame.deck.count
             jackpotDrawCount = 3
 
@@ -406,7 +404,6 @@ describe "game" do
             theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
-            cardsDrawnToDate = 0
 
             # execute
             theGame.draw_2_and_use_em(theFirstPlayer)
@@ -424,7 +421,6 @@ describe "game" do
             theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
-            cardsDrawnToDate = 0
             countOfDeckToStart = theGame.deck.count
             cardsDrawn = 2
 
