@@ -911,5 +911,24 @@ describe "game" do
         end
     end
 
+    describe "resolve_war_rule" do
+        it "should ensure that if the player to play it has peace they don't end with it" do
+            # setup
+            input_stream = StringIO.new("0\n")
+            theTestInterface = TestInterface.new(input_stream, $stdout)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theFirstPlayer.keepers << Keeper.new("Peace")
+            warCreeper = Creeper.new(1, "War", "Some rules text")
+            theFirstPlayer.creepers << warCreeper
+
+            # execute
+            theGame.resolve_war_rule(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.creepers).to_not include warCreeper
+        end
+    end
+
     test_outfile.unlink
 end
