@@ -1,3 +1,6 @@
+require "./cards/action.rb"
+require "./cards/cards.rb"
+
 class Deck
 
   def initialize(anInterface)

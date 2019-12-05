@@ -1,6 +1,6 @@
 require "sqlite3"
 require "json"
-require "./cards.rb"
+require "./cards/cards.rb"
 require "./deck.rb"
 require "./player.rb"
 require "./ruleBase.rb"
