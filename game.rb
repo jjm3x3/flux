@@ -141,7 +141,7 @@ class Game
     # puts "here is #{numberOfCardsDrawn} < #{@ruleBase.drawRule}"
     if numberOfCardsDrawn < @ruleBase.drawRule
       lackingCards = @ruleBase.drawRule - numberOfCardsDrawn
-      currentPlayer.hand += @deck.drawCards(lackingCards)
+      currentPlayer.hand += drawCards(currentPlayer, lackingCards)
       numberOfCardsDrawn += lackingCards
     end
     numberOfCardsDrawn
@@ -174,19 +174,27 @@ class Game
     winner 
   end
 
+  def opponents(of_player=nil)
+    of_player = of_player ?  of_player : activePlayer
+
+    @players.select do |player|
+      player != of_player
+    end
+  end
+
   def draw_2_and_use_em(player)
-    cardsDrawn = @deck.drawCards(2)
+    cardsDrawn = drawCards(player, 2)
     firstOne = @interface.select_a_card(cardsDrawn, "Which one would you like to play first?")
     firstOne.play(player, self)
     cardsDrawn[0].play(player, self)
   end
 
   def jackpot(player)
-    player.hand += @deck.drawCards(3)
+    player.hand += drawCards(player, 3)
   end
 
   def draw_3_play_2_of_them(player)
-    cardsDrawn = @deck.drawCards(3)
+    cardsDrawn = drawCards(player, 3)
     firstOne = @interface.select_a_card(cardsDrawn, "which would you like to play first?")
     firstOne.play(player, self)
     secondOne = @interface.select_a_card(cardsDrawn, "which would you like to play next?")
@@ -194,19 +202,12 @@ class Game
     discard(cardsDrawn[0])
   end
 
-  def discardAndDraw(player)
+  def discard_and_draw(player)
     numberOfCardsToDraw = player.hand.length - 1
     player.hand.each do |card|
       discard(card)
     end
-    player.hand = @deck.drawCards(numberOfCardsToDraw)
-  end
-
-  def opponents
-    # puts "who is the current player: #{activePlayer}"
-    @players.select do |player|
-      player != activePlayer
-    end
+    player.hand = drawCards(player, numberOfCardsToDraw)
   end
 
   def useWhatYouTake(player)
@@ -226,7 +227,7 @@ class Game
   end
 
   def todaysSpecial(player)
-    drawnCards = @deck.drawCards(3)
+    drawnCards = drawCards(player, 3)
     cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
     cardToPlay.play(player, self)
 
@@ -248,6 +249,7 @@ class Game
     end
   end
 
+  # TODO:: this effects all keepers AND CREEPERS
   def mixItAllUp(player)
     allKeepers = @players.flat_map do |player|
       player.keepers
@@ -284,8 +286,8 @@ class Game
     pickedCard.play(player, self)
   end
 
-  def everyBodyGets1(player)
-    cardsDrawn = @deck.drawCards(@players.length)
+  def everybody_gets_1(player)
+    cardsDrawn = drawCards(player, @players.length)
     playerCur = currentPlayer
     while cardsDrawn.length > 0
       if playerCur == currentPlayer
@@ -354,6 +356,8 @@ class Game
     @currentPlayerCounter -= 1
   end
 
+  # TODO:: since this doesn't cause the Keepers to be replayed the
+  #        resolve_war_rule must be called for both players
   def exchange_keepers(player)
     if player.keepers.length == 0
       @interface.information "Too bad you have no keepers"
@@ -409,6 +413,18 @@ class Game
 
     @interface.displayCardsDebug(player.keepers, "Here are your Keepers after the exchange")
 
+  end
+
+  # TODO:: needs to be called any time any keeper or creeper changes hands :(
+  def resolve_war_rule(player)
+    playerHasPeace = player.has_peace?
+    playerHasWar = player.has_war?
+    if (playerHasPeace && playerHasWar)
+      selectedPlayer = @interface.select_a_player(opponents(player), "#{player} since you have peace. Who would you like to give war too?")
+      @interface.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
+
+      selectedPlayer.add_creeper(player.take_war)
+    end
   end
 
 end

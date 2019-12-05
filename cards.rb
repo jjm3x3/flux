@@ -33,13 +33,22 @@ class Card
 end
 
 class Keeper < Card
+  @@PeaceId = 16
   
-  def initialize(name)
+  def initialize(id, name)
     super(1,name)
+    @id = id
   end
 
   def play(player, game)
     player.keepers << self
+    if @id == @@PeaceId
+      game.resolve_war_rule(player)
+    end
+  end
+
+  def is_peace?
+    @id == @@PeaceId
   end
 
 end
@@ -113,7 +122,7 @@ class Action < Card
     when 5
       game.draw_3_play_2_of_them(player)
     when 6
-      game.discardAndDraw(player)
+      game.discard_and_draw(player)
     when 7
       game.useWhatYouTake(player)
     when 8
@@ -125,7 +134,7 @@ class Action < Card
     when 11
       game.letsDoThatAgain(player)
     when 12
-      game.everyBodyGets1(player)
+      game.everybody_gets_1(player)
     when 13
       game.tradeHands(player)
     when 14
@@ -146,8 +155,16 @@ class Creeper < Card
     @rule_text = rule_text
   end
 
+  def is_war?
+    @id == 1
+  end
+
   def play(player, game)
-    player.creepers << self
+    player.add_creeper(self)
+    case @id
+    when 1
+      game.resolve_war_rule(player)
+    end
   end
 end
 
