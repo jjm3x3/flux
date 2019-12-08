@@ -94,8 +94,11 @@ end
 
 class StackedDeck < Deck
 
-  def initialize(anInterface, cardsToPutOnTop = [])
+  def initialize(anInterface, cardsToPutOnTop = [], startEmpty=false)
     super(anInterface)
+    if startEmpty
+      @cards = []
+    end
     cardsToPutOnTop.select do |card|
       @cards.unshift(card)
     end
