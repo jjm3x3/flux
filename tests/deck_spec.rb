@@ -37,7 +37,7 @@ describe "deck" do
             expect(drawnCards.size).to eq 1
         end
 
-        it "Should return an empty list if it can not draw any cards" do
+        it "Should return an empty list if it can not draw 1 card" do
             # setup
             input_stream = StringIO.new("0")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
@@ -48,6 +48,21 @@ describe "deck" do
             end
 
             drawnCards = theDeck.drawCards
+
+            expect(drawnCards.size).to eq 0
+        end
+
+        it "Should return an empty list if it can not draw any cards" do
+            # setup
+            input_stream = StringIO.new("0")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theDeck = Deck.new(theTestInterface)
+            # setup the deck so there is only one card left to draw
+            (1..100).each do |itteration|
+                theDeck.send(:drawACard)
+            end
+
+            drawnCards = theDeck.drawCards(3)
 
             expect(drawnCards.size).to eq 0
         end

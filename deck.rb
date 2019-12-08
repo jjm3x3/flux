@@ -38,7 +38,7 @@ class Deck
     drawnCards = (1..amount).to_a.map do |time|
       drawACard
     end
-    if (drawnCards.size == 1 && !drawnCards[0])
+    if (drawnCards.size > 0 && drawnCards.all?(nil))
       return []
     end
     drawnCards
