@@ -66,6 +66,21 @@ describe "deck" do
 
             expect(drawnCards.size).to eq 0
         end
+
+        it "Should return a list with no nils in it" do
+            # setup
+            input_stream = StringIO.new("0")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theDeck = Deck.new(theTestInterface)
+            # setup the deck so there is only one card left to draw
+            (1..(theDeck.count-2)).each do |itteration|
+                theDeck.send(:drawACard)
+            end
+
+            drawnCards = theDeck.drawCards(3)
+
+            expect(drawnCards.size).to eq 2
+        end
     end
 
     test_outfile.unlink
