@@ -98,6 +98,43 @@ describe "game" do
             # test
             expect(returnedCards.length).to eq theGame.ruleBase.drawRule
         end
+
+        it "should draw as many cards as it can from the deck and stop when there are no more" do
+            # setup
+            input_stream = StringIO.new("")
+            thetestinterface = TestInterface.new(input_stream, $stdout)
+            thegame = Game.new(numberofplayers=3, thetestinterface)
+            theWholeDeck = [Keeper.new(10000, "wall art"),
+                    Keeper.new(10001, "new car smell")]
+            thegame.deck = StackedDeck.new(thetestinterface,
+                theWholeDeck,
+                startempty=true)
+            thefirstplayer = thegame.players[0]
+
+            # execute
+            returnedcards = thegame.drawCards(thefirstplayer, 3)
+
+            # test
+            expect(returnedcards.length).to eq theWholeDeck.size # since that is all the cards there is to draw
+        end
+
+        it "should stop trying to draw if there are no more cards to draw" do
+            # setup
+            input_stream = StringIO.new("")
+            thetestinterface = TestInterface.new(input_stream, test_outfile)
+            thegame = Game.new(numberofplayers=3, thetestinterface)
+            thegame.deck = StackedDeck.new(thetestinterface,
+                [Creeper.new(10000, "screem", "some very scary rule text"),
+                    Creeper.new(10001, "lonelyness", "there is no one there")],
+                startempty=true)
+            thefirstplayer = thegame.players[0]
+
+            # execute
+            returnedcards = thegame.drawCards(thefirstplayer, :draw_rule)
+
+            # test
+            expect(returnedcards.length).to eq 0 # 0 since there are no "real cards to draw"
+        end
     end
 
     describe "playCards" do

@@ -44,6 +44,7 @@ class Game
     @interface.debug "expecting to draw #{expectedNumberOfCards} cards"
     drawnCards = @deck.drawCards(expectedNumberOfCards)
     loop do
+      @interface.debug "How many cards where actually drawn #{drawnCards.size}"
       drawnCards = drawnCards.select do |card|
         @interface.debug "What is this card? #{card.card_type}"
         if card.card_type == "Creeper"
@@ -51,10 +52,15 @@ class Game
           card.play(player, self)
         end
         card.card_type != "Creeper"
-       end
+      end
       if drawnCards.length == expectedNumberOfCards
         break
       else
+      # TODO:: should shuffle the discard back in the draw at this point
+      if deck.count == 0
+        @interface.debug "No cards left to draw"
+        break
+      end
       drawnCards += @deck.drawCards(expectedNumberOfCards - drawnCards.length)
       end
     end
