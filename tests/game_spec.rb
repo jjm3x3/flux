@@ -735,7 +735,7 @@ describe "game" do
         end
     end
 
-    describe "mixItAllUp" do
+    describe "mix_it_all_up" do
         it "should maintain the same number of keepers" do
             # setup
             input_stream = StringIO.new("0")
@@ -751,7 +751,7 @@ describe "game" do
             end
 
             # execute
-            theGame.mixItAllUp(theFirstPlayer)
+            theGame.mix_it_all_up(theFirstPlayer)
 
             # test
             allEndingKeepers = theGame.players.flat_map do |player|

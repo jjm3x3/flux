@@ -250,7 +250,7 @@ class Game
   end
 
   # TODO:: this effects all keepers AND CREEPERS
-  def mixItAllUp(player)
+  def mix_it_all_up(player)
     allKeepers = @players.flat_map do |player|
       player.keepers
     end
