@@ -1,5 +1,3 @@
-require "sqlite3"
-require "json"
 require "./cards/cards.rb"
 require "./deck.rb"
 require "./player.rb"

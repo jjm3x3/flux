@@ -1,3 +1,5 @@
+require "sqlite3"
+require "json"
 require "./cards/action.rb"
 require "./cards/cards.rb"
 
@@ -34,14 +36,18 @@ class Deck
   private
   def drawMultipleCards(amount)
     drawnCards = (1..amount).to_a.map do |time|
-      # puts "draw loop run"
       drawACard
     end
+    if (drawnCards.size == 1 && !drawnCards[0])
+      return []
+    end
+    drawnCards
   end
 
   def drawACard
-    # TODO: cover the case when:
-    #         it throws when @cards.length is 0
+    if(!@cards.any?)
+      return nil
+    end
     randValue = Random.new.rand(@cards.length)
     @cards.delete_at(randValue)
   end

@@ -1,3 +1,5 @@
+require "./cards/cards.rb"
+
 class Action < Card
 
   def initialize(id, name, rule_text)
