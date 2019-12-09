@@ -102,7 +102,7 @@ describe "game" do
         it "should draw as many cards as it can from the deck and stop when there are no more" do
             # setup
             input_stream = StringIO.new("")
-            thetestinterface = TestInterface.new(input_stream, $stdout)
+            thetestinterface = TestInterface.new(input_stream, test_outfile)
             thegame = Game.new(numberofplayers=3, thetestinterface)
             theWholeDeck = [Keeper.new(10000, "wall art"),
                     Keeper.new(10001, "new car smell")]
