@@ -27,6 +27,16 @@ class Player
     end
   end
 
+  def add_permanent(permanent1)
+    if permanent1.card_type 1
+      @keepers << permanent1
+    elsif permanent1.card_type 6
+      add_creeper(permanent1)
+    else
+      puts "attempting to play a permanent1 with an unknown type '#{permanent1.card_type}'"
+    end
+  end
+
   def add_creeper(creeper)
     @creepers << creeper
   end
@@ -51,6 +61,11 @@ class Player
       !creeper.is_war?
     end
     warCreeper
+  end
+
+  def clear_permanents
+    @keepers = []
+    @creepers = []
   end
 
   def set_hand(hand)

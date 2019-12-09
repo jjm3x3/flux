@@ -52,5 +52,28 @@ describe "player" do
         end
     end
 
+    describe "add_permanenet" do
+        it "should add a keeper to the players keeper collection if the card is a keeper" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            keeper1 = Keeper.new(1, "thing1")
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            theFirstPlayer.add_permanent()
+        end
+
+        it "should add a keeper to the players keeper collection if the card is a keeper extra lite version" do
+            # setup
+            thePlayer = Player.new("JOE", nil)
+            keeper1 = Keeper.new(1, "thing1")
+
+            # execute
+            thePlayer.add_permanent(keeper1)
+        end
+    end
+
     test_outfile.unlink
 end
