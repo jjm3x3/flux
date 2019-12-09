@@ -254,7 +254,6 @@ class Game
     end
   end
 
-  # TODO:: this needs to address resolving the war rule
   def mix_it_all_up(player)
     allPermanents = @players.flat_map do |player|
       player.keepers
@@ -281,6 +280,14 @@ class Game
       @players[playerCur].add_permanent(aPermanent)
       playerCur += 1
     end
+
+    # might regret this decission but I am going to resolve the war rule for
+    # every player since it will check for both permanents anyway it will be a
+    # no-op for most players
+    @players.each do |player|
+      resolve_war_rule(player)
+    end
+
     @interface.printPermanents(activePlayer)
   end
 

@@ -808,15 +808,36 @@ describe "game" do
             theGame.players[0].keepers << keeper1
             theGame.players[1].keepers << keeper2
             theGame.players[100].add_creeper(Creeper.new(1, "the devil", "scary rules text"))
-            allBeginningKeepers = theGame.players.flat_map do |player|
-                player.keepers
-            end
 
             # execute
             theGame.mix_it_all_up(theFirstPlayer)
 
             # test
             expect(theGame.players[100].creepers.any?).to be false
+        end
+
+        it "should resolve the war rule so that no person ends up with peace and war" do
+            # setup
+            input_stream = StringIO.new("0")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            random = Object.new
+            random.define_singleton_method(:rand) do |num|
+                0
+            end
+            theGame = Game.new(numberOfPlayers=2, theTestInterface, random)
+            theFirstPlayer = theGame.players[0]
+            keeper1 = Keeper.new(0, "Thing1")
+            warCreeper = Creeper.new(1, "I am WAR", "some rules text")
+            peaceKeeper = Keeper.new(16, "I am peace")
+            theGame.players[0].keepers << peaceKeeper
+            theGame.players[0].keepers << keeper1
+            theGame.players[1].add_creeper(warCreeper)
+
+            # execute
+            theGame.mix_it_all_up(theFirstPlayer)
+
+            # test
+            expect(theGame.players[0].creepers).to_not include warCreeper
         end
     end
 
