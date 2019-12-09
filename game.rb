@@ -374,8 +374,6 @@ class Game
     @currentPlayerCounter -= 1
   end
 
-  # TODO:: since this doesn't cause the Keepers to be replayed the
-  #        resolve_war_rule must be called for both players
   def exchange_keepers(player)
     if player.keepers.length == 0
       @interface.information "Too bad you have no keepers"
@@ -436,7 +434,6 @@ class Game
 
   end
 
-  # TODO:: needs to be called any time any keeper or creeper changes hands :(
   def resolve_war_rule(player)
     playerHasPeace = player.has_peace?
     playerHasWar = player.has_war?
