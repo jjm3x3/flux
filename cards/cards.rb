@@ -102,6 +102,9 @@ class Limit < Rule
 end
 
 class Creeper < Card
+  @@war_id = 1
+  @@taxes_id = 2
+
   def initialize(id, name, rule_text)
     super(6, name)
     @id = id
@@ -109,7 +112,11 @@ class Creeper < Card
   end
 
   def is_war?
-    @id == 1
+    @id == @@war_id
+  end
+
+  def is_taxes?
+    @id == @@taxes_id
   end
 
   def play(player, game)
@@ -117,6 +124,8 @@ class Creeper < Card
     case @id
     when 1
       game.resolve_war_rule(player)
+    when 2
+      game.resolve_taxes_rule(player)
     end
   end
 end

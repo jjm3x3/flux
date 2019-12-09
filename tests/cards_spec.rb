@@ -44,4 +44,26 @@ describe "cards" do
             end
         end
     end
+
+    describe "Creepers" do
+        describe "play" do
+            it "should call resolve_taxes_rule if taxes is played" do
+                # setup
+                fakeGame = Object.new
+                calledResolveTaxesRule = false
+                fakeGame.define_singleton_method(:resolve_taxes_rule) do |player|
+                    calledResolveTaxesRule = true
+                end
+                fakePlayer = Player.new("fake boi", fakeGame)
+                sut = Creeper.new(2, "shut up and take my money (taxes)", "don't go bankrupt")
+
+                # exectue
+                sut.play(fakePlayer, fakeGame)
+
+                # test
+                expect(calledResolveTaxesRule).to be true
+
+            end
+        end
+    end
 end
