@@ -1332,6 +1332,48 @@ describe "game" do
             expect(theFirstPlayer.keepers[0]).to eq firstPlayersOriginalKeeper
             expect(theSecondPlayer.keepers[0]).to eq secondPLayersOriginalKeeper
         end
+
+        it "should make sure that the originating player does not end up with war and peace" do
+            # setup
+            input_stream = StringIO.new("1\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            catKeeper = Keeper.new(1000, "Cat")
+            peaceKeeper = Keeper.new(16, "a peace thing")
+            warCreeper = Creeper.new(1, "a war kind of thing", "War is a scary place")
+            theFirstPlayer.keepers << catKeeper
+            theFirstPlayer.add_creeper(warCreeper)
+            theSecondPlayer = theGame.players[1]
+            theSecondPlayer.keepers << peaceKeeper
+
+            # execute
+            theGame.exchange_keepers(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.creepers).to_not include warCreeper
+        end
+
+        it "should make sure that the other player does not end up with war and peace" do
+            # setup
+            input_stream = StringIO.new("1\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            catKeeper = Keeper.new(1000, "Cat")
+            peaceKeeper = Keeper.new(16, "a peace thing")
+            warCreeper = Creeper.new(1, "a war kind of thing", "War is a scary place")
+            theFirstPlayer.keepers << peaceKeeper
+            theSecondPlayer = theGame.players[1]
+            theSecondPlayer.add_creeper(warCreeper)
+            theSecondPlayer.keepers << catKeeper
+
+            # execute
+            theGame.exchange_keepers(theFirstPlayer)
+
+            # test
+            expect(theSecondPlayer.creepers).to_not include warCreeper
+        end
     end
 
     describe "resolve_war_rule" do

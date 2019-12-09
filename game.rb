@@ -57,7 +57,7 @@ class Game
       if drawnCards.length == expectedNumberOfCards
         break
       else
-      # TODO:: should shuffle the discard back in the draw at this point
+      # TODO: should shuffle the discard back in the draw at this point
       if deck.count == 0
         @interface.debug "No cards left to draw"
         break
@@ -428,6 +428,9 @@ class Game
     end
     player.keepers << myNewKeeper
     selectedPlayer.keepers << myOldKeeper
+
+    resolve_war_rule(player)
+    resolve_war_rule(selectedPlayer)
 
     @interface.displayCardsDebug(player.keepers, "Here are your Keepers after the exchange")
 
