@@ -253,28 +253,34 @@ class Game
     end
   end
 
-  # TODO:: this effects all keepers AND CREEPERS
+  # TODO:: this needs to address resolving the war rule
   def mix_it_all_up(player)
-    allKeepers = @players.flat_map do |player|
+    allPermanents = @players.flat_map do |player|
       player.keepers
     end
 
+    allPermanents += @players.flat_map do |player|
+      player.creepers
+    end
+
     @players.each do |player|
-      player.keepers = []
+      player.clear_permanents
     end
     
-    @interface.debug "how many keepers do I have: #{allKeepers.count} but the length is #{allKeepers.length}"
-    @interface.debug "and here they are: \n#{allKeepers}"
+    @interface.debug "how many keepers do I have: #{allPermanents.count} but the length is #{allPermanents.length}"
+    @interface.debug "and here they are: \n#{allPermanents}"
     playerCur = @currentPlayerCounter
     random = Random.new
-    while allKeepers.length > 0
-      @interface.debug "here are the keepers now: \n#{allKeepers}"
+    while allPermanents.length > 0
+      @interface.debug "here are the keepers now: \n#{allPermanents}"
       playerCur = playerCur % @players.length
-      randomPosition = random.rand(allKeepers.length)
-      @players[playerCur].keepers << allKeepers.delete_at(randomPosition)
+      randomPosition = random.rand(allPermanents.length)
+      aPermanent = allPermanents.delete_at(randomPosition)
+      @interface.debug "Trying to add the permanent #{aPermanent}"
+      @players[playerCur].add_permanent(aPermanent)
       playerCur += 1
     end
-    @interface.printKeepers(activePlayer)
+    @interface.printPermanents(activePlayer)
   end
 
   def letsDoThatAgain(player)

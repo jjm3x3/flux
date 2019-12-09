@@ -796,6 +796,28 @@ describe "game" do
             end
             expect(allEndingKeepers.size).to eq allBeginningKeepers.size
         end
+
+        it "should randomly move creepers as well" do
+            # setup
+            input_stream = StringIO.new("0")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=1000, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            keeper1 = Keeper.new(0, "Thing1")
+            keeper2 = Keeper.new(0, "thing2")
+            theGame.players[0].keepers << keeper1
+            theGame.players[1].keepers << keeper2
+            theGame.players[100].add_creeper(Creeper.new(1, "the devil", "scary rules text"))
+            allBeginningKeepers = theGame.players.flat_map do |player|
+                player.keepers
+            end
+
+            # execute
+            theGame.mix_it_all_up(theFirstPlayer)
+
+            # test
+            expect(theGame.players[100].creepers.any?).to be false
+        end
     end
 
     describe "letsDoThatAgain" do
