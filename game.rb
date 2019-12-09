@@ -12,9 +12,10 @@ class Game
   attr_accessor :discardPile
   attr_accessor :currentPlayerCounter
 
-  def initialize(numberOfPlayers, anInterface = CliInterface.new)
+  def initialize(numberOfPlayers, anInterface = CliInterface.new, aRandom = Random.new)
 
     @interface = anInterface
+    @random = aRandom
 
     @ruleBase = RuleBase.new(self, anInterface)
     @deck = Deck.new(anInterface)
@@ -270,7 +271,7 @@ class Game
     @interface.debug "how many keepers do I have: #{allPermanents.count} but the length is #{allPermanents.length}"
     @interface.debug "and here they are: \n#{allPermanents}"
     playerCur = @currentPlayerCounter
-    random = Random.new
+    random = @random
     while allPermanents.length > 0
       @interface.debug "here are the keepers now: \n#{allPermanents}"
       playerCur = playerCur % @players.length
