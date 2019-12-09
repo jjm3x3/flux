@@ -62,7 +62,7 @@ describe "player" do
             theFirstPlayer = theGame.players[0]
 
             # execute
-            theFirstPlayer.add_permanent()
+            theFirstPlayer.add_permanent(keeper1)
         end
 
         it "should add a keeper to the players keeper collection if the card is a keeper extra lite version" do

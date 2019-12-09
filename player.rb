@@ -28,9 +28,9 @@ class Player
   end
 
   def add_permanent(permanent1)
-    if permanent1.card_type 1
+    if permanent1.card_type == "Keeper"
       @keepers << permanent1
-    elsif permanent1.card_type 6
+    elsif permanent1.card_type == "Creeper"
       add_creeper(permanent1)
     else
       puts "attempting to play a permanent1 with an unknown type '#{permanent1.card_type}'"
