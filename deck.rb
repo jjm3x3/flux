@@ -95,13 +95,18 @@ end
 
 class StackedDeck < Deck
 
-  def initialize(anInterface, cardsToPutOnTop = [], startEmpty=false)
+  def initialize(anInterface, cardsToPutOnTop = [], startEmpty=false, withCreepers=true)
     super(anInterface)
     if startEmpty
       @cards = []
     end
     cardsToPutOnTop.select do |card|
       @cards.unshift(card)
+    end
+    if(!withCreepers)
+      @cards = @cards.select do |card|
+        card.card_type != "Creeper"
+      end
     end
   end
 

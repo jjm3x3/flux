@@ -232,6 +232,7 @@ describe "game" do
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
+            theGame.deck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty= false, withCreepers=false)
             countOfDeckToStart = theGame.deck.count
 
             # execute
