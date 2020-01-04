@@ -1,3 +1,8 @@
+require "sqlite3"
+require "json"
+require "./cards/action.rb"
+require "./cards/cards.rb"
+
 class Deck
 
   def initialize(anInterface)
@@ -31,14 +36,22 @@ class Deck
   private
   def drawMultipleCards(amount)
     drawnCards = (1..amount).to_a.map do |time|
-      # puts "draw loop run"
       drawACard
     end
+    # this filters out "nil" cards when there are no more cards in the deck to draw
+    drawnCards = drawnCards.select do |card|
+      card 
+    end
+    if (drawnCards.size > 0 && drawnCards.all?(nil))
+      return []
+    end
+    drawnCards
   end
 
   def drawACard
-    # TODO: cover the case when:
-    #         it throws when @cards.length is 0
+    if(!@cards.any?)
+      return nil
+    end
     randValue = Random.new.rand(@cards.length)
     @cards.delete_at(randValue)
   end
@@ -47,7 +60,7 @@ class Deck
     deck = []
     db = SQLite3::Database.new "cards.db"
     db.execute("select * from keepers;") do |row|
-      deck << Keeper.new(row[1])
+      deck << Keeper.new(row[0], row[1])
     end
     db.execute("select * from goals;") do |row|
       cards = JSON.parse(row[2]).map do |index|
@@ -71,6 +84,9 @@ class Deck
     db.execute("select * from actions;") do |row|
       deck << Action.new(row[0], row[1], row[2])
     end
+    db.execute("select * from creepers;") do |row|
+      deck << Creeper.new(row[0], row[1], row[2])
+    end
     @interface.debug "deck starts with #{deck.length} cards"
     deck
   end
@@ -79,8 +95,11 @@ end
 
 class StackedDeck < Deck
 
-  def initialize(anInterface, cardsToPutOnTop = [])
+  def initialize(anInterface, cardsToPutOnTop = [], startEmpty=false)
     super(anInterface)
+    if startEmpty
+      @cards = []
+    end
     cardsToPutOnTop.select do |card|
       @cards.unshift(card)
     end

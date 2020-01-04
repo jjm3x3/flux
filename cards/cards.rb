@@ -14,6 +14,8 @@ class Card
       @card_type = "Rule"
     when 4
       @card_type = "Action"
+    when 6
+      @card_type = "Creeper"
     end
   end
 
@@ -31,13 +33,29 @@ class Card
 end
 
 class Keeper < Card
+  @@peace_id = 16
+  @@money_id = 19
   
-  def initialize(name)
+  def initialize(id, name)
     super(1,name)
+    @id = id
   end
 
   def play(player, game)
     player.keepers << self
+    if @id == @@peace_id
+      game.resolve_war_rule(player)
+    elsif @id == @@money_id
+      game.resolve_taxes_rule(player)
+    end
+  end
+
+  def is_peace?
+    @id == @@peace_id
+  end
+
+  def is_money?
+    @id == @@money_id
   end
 
 end
@@ -90,50 +108,32 @@ class Limit < Rule
   end
 end
 
-class Action < Card
+class Creeper < Card
+  @@war_id = 1
+  @@taxes_id = 2
 
   def initialize(id, name, rule_text)
-    super(4,name)
+    super(6, name)
     @id = id
     @rule_text = rule_text
   end
 
+  def is_war?
+    @id == @@war_id
+  end
+
+  def is_taxes?
+    @id == @@taxes_id
+  end
+
   def play(player, game)
+    player.add_creeper(self)
     case @id
     when 1
-      game.ruleBase.resetToBasic
+      game.resolve_war_rule(player)
     when 2
-      game.draw_2_and_use_em(player)
-    when 3
-      game.jackpot(player)
-    when 4
-      game.ruleBase.removeLimits
-    when 5
-      game.draw_3_play_2_of_them(player)
-    when 6
-      game.discardAndDraw(player)
-    when 7
-      game.useWhatYouTake(player)
-    when 8
-      game.taxation(player)
-    when 9
-      game.todaysSpecial(player)
-    when 10
-      game.mixItAllUp(player)
-    when 11
-      game.letsDoThatAgain(player)
-    when 12
-      game.everyBodyGets1(player)
-    when 13
-      game.tradeHands(player)
-    when 14
-      game.rotateHands(player)
-    when 15
-      game.take_another_turn
-    when 16
-      game.exchange_keepers(player)
+      game.resolve_taxes_rule(player)
     end
-    game.discard(self)
   end
 end
 

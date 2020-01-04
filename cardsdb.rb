@@ -101,7 +101,7 @@ rows = db.execute <<-SQL
 create table if not exists actions (
        id int,
        name varchar(30),
-       rule_text varchar(50)
+       rule_text varchar(250)
 );
 SQL
 
@@ -124,4 +124,19 @@ SQL
   [16, "Exchange Keepers", "Pick any Keeper another player has on the table and exchange it for one that you have on the table. If you have no Keepers in play, of if no one else has a Keeper, nothing happens."]
 ].each do |value|
   db.execute "insert into actions values ( ? , ? , ? )", value
+end
+
+rows = db.execute <<-SQL
+create table if not exists creepers (
+  id int,
+  name varchar(30),
+  rules_text varchar(200)
+);
+SQL
+
+[
+  [1, "War", "You cannot win if you have this unless the Goal says otherwise"],
+  [2, "Taxes", "You cannot win if you have this unless the Goal says otherwise. If you have Money on the table discard bot that and this."]
+].each do |value|
+  db.execute "insert into creepers values ( ? , ? , ? )", value
 end

@@ -1,6 +1,4 @@
-require "sqlite3"
-require "json"
-require "./cards.rb"
+require "./cards/cards.rb"
 require "./deck.rb"
 require "./player.rb"
 require "./ruleBase.rb"
@@ -14,9 +12,10 @@ class Game
   attr_accessor :discardPile
   attr_accessor :currentPlayerCounter
 
-  def initialize(numberOfPlayers, anInterface = CliInterface.new)
+  def initialize(numberOfPlayers, anInterface = CliInterface.new, aRandom = Random.new)
 
     @interface = anInterface
+    @random = aRandom
 
     @ruleBase = RuleBase.new(self, anInterface)
     @deck = Deck.new(anInterface)
@@ -28,7 +27,7 @@ class Game
     end
 
     @players.each do |player|
-      firstHand = @deck.drawCards(3) # basic rules draw three cards to start
+      firstHand = drawCards(player, 3) # basic rules draw three cards to start
       @interface.trace "draw your opening hand #{firstHand}"
       player.hand = firstHand
     end
@@ -41,15 +40,39 @@ class Game
     @players[playerCur]
   end
 
-  def drawCards
-    @deck.drawCards(@ruleBase.drawRule)
+  def drawCards(player, count)
+    expectedNumberOfCards = (count == :draw_rule ? @ruleBase.drawRule : count)
+    @interface.debug "expecting to draw #{expectedNumberOfCards} cards"
+    drawnCards = @deck.drawCards(expectedNumberOfCards)
+    loop do
+      @interface.debug "How many cards where actually drawn #{drawnCards.size}"
+      drawnCards = drawnCards.select do |card|
+        @interface.debug "What is this card? #{card.card_type}"
+        if card.card_type == "Creeper"
+          @interface.debug "Found a creeper: #{card}"
+          card.play(player, self)
+        end
+        card.card_type != "Creeper"
+      end
+      if drawnCards.length == expectedNumberOfCards
+        break
+      else
+      # TODO: should shuffle the discard back in the draw at this point
+      if @deck.count == 0
+        @interface.debug "No cards left to draw"
+        break
+      end
+      drawnCards += @deck.drawCards(expectedNumberOfCards - drawnCards.length)
+      end
+    end
+    drawnCards
   end
 
   def playCards
     @interface.information "the discard has #{@discardPile.length} card(s) in it"
     @interface.information "here is the current goal: #{@goal }"
     @interface.information "here are the current rules:\n#{@ruleBase}"
-    @interface.printKeepers(activePlayer)
+    @interface.printPermanents(activePlayer)
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = activePlayer.hand
@@ -123,7 +146,7 @@ class Game
     # puts "here is #{numberOfCardsDrawn} < #{@ruleBase.drawRule}"
     if numberOfCardsDrawn < @ruleBase.drawRule
       lackingCards = @ruleBase.drawRule - numberOfCardsDrawn
-      currentPlayer.hand += @deck.drawCards(lackingCards)
+      currentPlayer.hand += drawCards(currentPlayer, lackingCards)
       numberOfCardsDrawn += lackingCards
     end
     numberOfCardsDrawn
@@ -156,19 +179,27 @@ class Game
     winner 
   end
 
+  def opponents(of_player=nil)
+    of_player = of_player ?  of_player : activePlayer
+
+    @players.select do |player|
+      player != of_player
+    end
+  end
+
   def draw_2_and_use_em(player)
-    cardsDrawn = @deck.drawCards(2)
+    cardsDrawn = drawCards(player, 2)
     firstOne = @interface.select_a_card(cardsDrawn, "Which one would you like to play first?")
     firstOne.play(player, self)
     cardsDrawn[0].play(player, self)
   end
 
   def jackpot(player)
-    player.hand += @deck.drawCards(3)
+    player.hand += drawCards(player, 3)
   end
 
   def draw_3_play_2_of_them(player)
-    cardsDrawn = @deck.drawCards(3)
+    cardsDrawn = drawCards(player, 3)
     firstOne = @interface.select_a_card(cardsDrawn, "which would you like to play first?")
     firstOne.play(player, self)
     secondOne = @interface.select_a_card(cardsDrawn, "which would you like to play next?")
@@ -176,19 +207,12 @@ class Game
     discard(cardsDrawn[0])
   end
 
-  def discardAndDraw(player)
+  def discard_and_draw(player)
     numberOfCardsToDraw = player.hand.length - 1
     player.hand.each do |card|
       discard(card)
     end
-    player.hand = @deck.drawCards(numberOfCardsToDraw)
-  end
-
-  def opponents
-    # puts "who is the current player: #{activePlayer}"
-    @players.select do |player|
-      player != activePlayer
-    end
+    player.hand = drawCards(player, numberOfCardsToDraw)
   end
 
   def useWhatYouTake(player)
@@ -208,7 +232,7 @@ class Game
   end
 
   def todaysSpecial(player)
-    drawnCards = @deck.drawCards(3)
+    drawnCards = drawCards(player, 3)
     cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
     cardToPlay.play(player, self)
 
@@ -230,27 +254,42 @@ class Game
     end
   end
 
-  def mixItAllUp(player)
-    allKeepers = @players.flat_map do |player|
+  def mix_it_all_up(player)
+    allPermanents = @players.flat_map do |player|
       player.keepers
     end
 
+    allPermanents += @players.flat_map do |player|
+      player.creepers
+    end
+
     @players.each do |player|
-      player.keepers = []
+      player.clear_permanents
     end
     
-    @interface.debug "how many keepers do I have: #{allKeepers.count} but the length is #{allKeepers.length}"
-    @interface.debug "and here they are: \n#{allKeepers}"
+    @interface.debug "how many keepers do I have: #{allPermanents.count} but the length is #{allPermanents.length}"
+    @interface.debug "and here they are: \n#{allPermanents}"
     playerCur = @currentPlayerCounter
-    random = Random.new
-    while allKeepers.length > 0
-      @interface.debug "here are the keepers now: \n#{allKeepers}"
+    random = @random
+    while allPermanents.length > 0
+      @interface.debug "here are the keepers now: \n#{allPermanents}"
       playerCur = playerCur % @players.length
-      randomPosition = random.rand(allKeepers.length)
-      @players[playerCur].keepers << allKeepers.delete_at(randomPosition)
+      randomPosition = random.rand(allPermanents.length)
+      aPermanent = allPermanents.delete_at(randomPosition)
+      @interface.debug "Trying to add the permanent #{aPermanent}"
+      @players[playerCur].add_permanent(aPermanent)
       playerCur += 1
     end
-    @interface.printKeepers(activePlayer)
+
+    # might regret this decission but I am going to resolve the war rule for
+    # every player since it will check for both permanents anyway it will be a
+    # no-op for most players
+    @players.each do |player|
+      resolve_war_rule(player)
+      resolve_taxes_rule(player)
+    end
+
+    @interface.printPermanents(activePlayer)
   end
 
   def letsDoThatAgain(player)
@@ -266,8 +305,8 @@ class Game
     pickedCard.play(player, self)
   end
 
-  def everyBodyGets1(player)
-    cardsDrawn = @deck.drawCards(@players.length)
+  def everybody_gets_1(player)
+    cardsDrawn = drawCards(player, @players.length)
     playerCur = currentPlayer
     while cardsDrawn.length > 0
       if playerCur == currentPlayer
@@ -389,8 +428,31 @@ class Game
     player.keepers << myNewKeeper
     selectedPlayer.keepers << myOldKeeper
 
+    resolve_war_rule(player)
+    resolve_war_rule(selectedPlayer)
+    resolve_taxes_rule(player)
+    resolve_taxes_rule(selectedPlayer)
+
     @interface.displayCardsDebug(player.keepers, "Here are your Keepers after the exchange")
 
+  end
+
+  def resolve_war_rule(player)
+    playerHasPeace = player.has_peace?
+    playerHasWar = player.has_war?
+    if (playerHasPeace && playerHasWar)
+      selectedPlayer = @interface.select_a_player(opponents(player), "#{player} since you have peace. Who would you like to give war too?")
+      @interface.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
+
+      selectedPlayer.add_creeper(player.take_war)
+    end
+  end
+
+  def resolve_taxes_rule(player)
+    if(player.has_money? && player.has_taxes?)
+      discard(player.take_taxes)
+      discard(player.take_money)
+    end
   end
 
 end
