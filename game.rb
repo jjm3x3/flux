@@ -87,8 +87,6 @@ class Game
       hand = player.hand # really a sad sideeffect of much statefull programming
       @interface.information "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
     end
-    discardDownToLimit(player)
-    removeDownToKeeperLimit(player)
     @currentPlayerCounter += 1
     @interface.information "\n#{activePlayer}'s turn"
   end

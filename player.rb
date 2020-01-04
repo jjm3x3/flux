@@ -13,6 +13,8 @@ class Player
   def takeTurn
     drawCards
     @game.playCards(self)
+    @game.discardDownToLimit(self)
+    @game.removeDownToKeeperLimit(self)
   end 
 
   def drawCards
