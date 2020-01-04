@@ -143,11 +143,12 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream,test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theFirstPlayer = theGame.players[0].hand.unshift(FakeCard.new("thing1"))
+            theFirstPlayer = theGame.players[0]
+            theFirstPlayer.hand.unshift(FakeCard.new("thing1"))
             theGame.currentPlayerCounter = 0
 
             # execute
-            theGame.playCards
+            theGame.playCards(theFirstPlayer)
 
             # test
         end
@@ -231,6 +232,7 @@ describe "game" do
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
+            theGame.deck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty= false, withCreepers=false)
             countOfDeckToStart = theGame.deck.count
 
             # execute
@@ -291,23 +293,6 @@ describe "game" do
     end
 
     describe "opponents" do
-        it "should only get the opponents of the active player if no player is passed in" do
-            # setup
-            input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            currentPlayerCounter = 0 # set active player to "player1"
-
-            # execute
-            theOpponents = theGame.opponents
-
-
-            # test
-            expect(theOpponents).to_not include theGame.players[0]
-            expect(theOpponents).to include theGame.players[1]
-            expect(theOpponents).to include theGame.players[2]
-        end
-
         it "should only get the opponents of the player that is passed in" do
             # setup
             input_stream = StringIO.new("")
@@ -1187,22 +1172,57 @@ describe "game" do
 
     describe "take_another_turn" do
         it "should make sure the current player remains the same when the last card of their turn is played" do
-                # setup
-                input_stream = StringIO.new("0\n")
-                theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
-                theFirstPlayer = theGame.players[0]
-                originalCurrentPlayer = theGame.currentPlayer
-                currentPlayerCounter = 0
-                # tests this action by having the player use this as their one and
-                # only card to play in a turn
-                theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+            # setup
+            input_stream = StringIO.new("0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            originalCurrentPlayer = theGame.currentPlayer
+            currentPlayerCounter = 0
+            # tests this action by having the player use this as their one and
+            # only card to play in a turn
+            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
 
-                # execute
-                theGame.playCards
+            # execute
+            theGame.playCards(theFirstPlayer)
 
-                # test
-                expect(theGame.currentPlayer).to eq originalCurrentPlayer
+            # test
+            expect(theGame.currentPlayer).to eq originalCurrentPlayer
+        end
+
+        it "should make sure the current player remains the same when they play a card in the middle of their turn" do
+            # setup
+            input_stream = StringIO.new("0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theGame.ruleBase.addRule(Rule.new("play more", 2, "play 2"))
+            theFirstPlayer = theGame.players[0]
+            originalCurrentPlayer = theGame.currentPlayer
+            currentPlayerCounter = 0
+            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+
+            # execute
+            theGame.playCards(theFirstPlayer)
+
+            # test
+            expect(theGame.currentPlayer).to eq originalCurrentPlayer
+        end
+
+        it "should not force the current player to discard down to hand limit until their first turn is over" do
+            # setup
+            input_stream = StringIO.new("0\n0\n0\n0\n0\n0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theGame.ruleBase.addRule(Limit.new("low hand limit", 3, "no cards", 0))
+            theFirstPlayer = theGame.players[0]
+            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+
+            # execute
+            theGame.playCards(theFirstPlayer)
+
+            # test
+            startingHandSize = 3
+            expect(theFirstPlayer.hand.size).to eq startingHandSize
         end
     end
 

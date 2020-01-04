@@ -35,11 +35,6 @@ class Game
     @currentPlayerCounter = 0
   end
 
-  def activePlayer
-    playerCur = @currentPlayerCounter % @players.length
-    @players[playerCur]
-  end
-
   def drawCards(player, count)
     expectedNumberOfCards = (count == :draw_rule ? @ruleBase.drawRule : count)
     @interface.debug "expecting to draw #{expectedNumberOfCards} cards"
@@ -68,35 +63,36 @@ class Game
     drawnCards
   end
 
-  def playCards
+  def playCards(player)
     @interface.information "the discard has #{@discardPile.length} card(s) in it"
     @interface.information "here is the current goal: #{@goal }"
     @interface.information "here are the current rules:\n#{@ruleBase}"
-    @interface.printPermanents(activePlayer)
+    @interface.information "\n#{player}'s turn"
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
-    hand = activePlayer.hand
+    hand = player.hand
     while cardsPlayed < @ruleBase.playRule && !winner && hand.length > 0
+      @interface.printPermanents(player)
       cardToPlay = @interface.select_a_card(hand, "Select a card from your hand to play")
-      cardToPlay.play(activePlayer, self)
+      cardToPlay.play(player, self)
       cardsPlayed += 1
       checkForWinner # should check for a winner before discarding
-      enforceNonActivePlayerLimits
+      enforceNonActivePlayerLimits(player)
       @interface.information "the discard has #{@discardPile.length} card(s) in it"
       # do something if the discard need reshufleing
-      cardsDrawn = replenishHand(cardsDrawn, activePlayer)
-      hand = activePlayer.hand # really a sad sideeffect of much statefull programming
+      cardsDrawn = replenishHand(cardsDrawn, player)
+      hand = player.hand # really a sad sideeffect of much statefull programming
       @interface.information "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
     end
-    discardDownToLimit(activePlayer)
-    removeDownToKeeperLimit(activePlayer)
-    @currentPlayerCounter += 1
-    @interface.information "\n#{activePlayer}'s turn"
   end
 
-  def enforceNonActivePlayerLimits
+  def progress_turn
+    @currentPlayerCounter += 1
+  end
+
+  def enforceNonActivePlayerLimits(the_active_player)
     @players.each do |player|
-      if player != activePlayer
+      if player != the_active_player
         discardDownToLimit(player)
         removeDownToKeeperLimit(player)
       end
@@ -165,7 +161,9 @@ class Game
 
   def run
     loop do
+      activePlayer = @players[currentPlayer]
       activePlayer.takeTurn
+      progress_turn
     end
   end
 
@@ -179,9 +177,7 @@ class Game
     winner 
   end
 
-  def opponents(of_player=nil)
-    of_player = of_player ?  of_player : activePlayer
-
+  def opponents(of_player)
     @players.select do |player|
       player != of_player
     end
@@ -216,7 +212,7 @@ class Game
   end
 
   def useWhatYouTake(player)
-    selectedPlayer = @interface.select_a_player(opponents, "which player would you like to pick from")
+    selectedPlayer = @interface.select_a_player(opponents(player), "which player would you like to pick from")
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
     @interface.debug "playing #{selectedCard}"
@@ -225,8 +221,8 @@ class Game
 
   def taxation(player)
     @interface.debug "playing taxation!"
-    newCardsForPlayer = opponents.map do |player|
-      @interface.select_a_card(player.hand, "Choose a card to give to #{activePlayer}")
+    newCardsForPlayer = opponents(player).map do |player|
+      @interface.select_a_card(player.hand, "Choose a card to give to #{player}")
     end
     player.hand += newCardsForPlayer
   end
@@ -255,16 +251,16 @@ class Game
   end
 
   def mix_it_all_up(player)
-    allPermanents = @players.flat_map do |player|
-      player.keepers
+    allPermanents = @players.flat_map do |aPlayer|
+      aPlayer.keepers
     end
 
-    allPermanents += @players.flat_map do |player|
-      player.creepers
+    allPermanents += @players.flat_map do |aPlayer|
+      aPlayer.creepers
     end
 
-    @players.each do |player|
-      player.clear_permanents
+    @players.each do |aPlayer|
+      aPlayer.clear_permanents
     end
     
     @interface.debug "how many keepers do I have: #{allPermanents.count} but the length is #{allPermanents.length}"
@@ -284,12 +280,12 @@ class Game
     # might regret this decission but I am going to resolve the war rule for
     # every player since it will check for both permanents anyway it will be a
     # no-op for most players
-    @players.each do |player|
-      resolve_war_rule(player)
-      resolve_taxes_rule(player)
+    @players.each do |aPlayer|
+      resolve_war_rule(aPlayer)
+      resolve_taxes_rule(aPlayer)
     end
 
-    @interface.printPermanents(activePlayer)
+    @interface.printPermanents(player)
   end
 
   def letsDoThatAgain(player)
@@ -321,10 +317,10 @@ class Game
   end
 
   def tradeHands(player)
-    opponentsText = opponents.map do |player|
+    opponentsText = opponents(player).map do |player|
       player.to_s
     end
-    selectedPlayer = @interface.select_a_player(opponents, "who would you like to trade hands with?")
+    selectedPlayer = @interface.select_a_player(opponents(player), "who would you like to trade hands with?")
     otherHand = selectedPlayer.hand
     selectedPlayer.hand = player.hand
     player.hand = otherHand
@@ -371,8 +367,8 @@ class Game
     end
   end
 
-  def take_another_turn
-    @currentPlayerCounter -= 1
+  def take_another_turn(player)
+    player.take_another_turn = true
   end
 
   def exchange_keepers(player)
@@ -381,7 +377,7 @@ class Game
       return
     end
     otherKeepers = false
-    opponents.select do |player|
+    opponents(player).select do |player|
       otherKeepers ||= player.keepers.length != 0
     end
     if !otherKeepers
@@ -389,14 +385,14 @@ class Game
       return
     end
 
-    eligibleOpponents = opponents.select do |player|
-      player.keepers.length > 0
+    eligibleOpponents = opponents(player).select do |aPlayer|
+      aPlayer.keepers.length > 0
     end
 
 
 
-    eligibleOpponents.select do |palyer|
-      @interface.printKeepers(player, "Here are the keepers: #{player.to_s} has:")
+    eligibleOpponents.select do |aPlayer|
+      @interface.printKeepers(aPlayer, "Here are the keepers: #{aPlayer.to_s} has:")
     end
 
     eligibleOpponents.unshift(:no_one)
