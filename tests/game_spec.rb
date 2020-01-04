@@ -844,6 +844,7 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
+            theGame.deck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
             originalDeckCount = theGame.deck.count
 
             # execute
@@ -1183,6 +1184,7 @@ describe "game" do
             theFirstPlayer = theGame.players[0]
             originalCurrentPlayer = theGame.currentPlayer
             currentPlayerCounter = 0
+            theFirstPlayer.hand.unshift(Keeper.new(15, "Any ol thing "))
             theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
 
             # execute
