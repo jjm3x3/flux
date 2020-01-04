@@ -72,11 +72,11 @@ class Game
     @interface.information "here is the current goal: #{@goal }"
     @interface.information "here are the current rules:\n#{@ruleBase}"
     @interface.information "\n#{player}'s turn"
-    @interface.printPermanents(player)
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = player.hand
     while cardsPlayed < @ruleBase.playRule && !winner && hand.length > 0
+      @interface.printPermanents(player)
       cardToPlay = @interface.select_a_card(hand, "Select a card from your hand to play")
       cardToPlay.play(player, self)
       cardsPlayed += 1
