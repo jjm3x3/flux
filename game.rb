@@ -36,8 +36,7 @@ class Game
   end
 
   def activePlayer
-    playerCur = @currentPlayerCounter % @players.length
-    @players[playerCur]
+    @players[currentPlayer]
   end
 
   def drawCards(player, count)
