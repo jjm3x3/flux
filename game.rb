@@ -178,9 +178,7 @@ class Game
     winner 
   end
 
-  def opponents(of_player=nil)
-    of_player = of_player ?  of_player : activePlayer
-
+  def opponents(of_player)
     @players.select do |player|
       player != of_player
     end
@@ -215,7 +213,7 @@ class Game
   end
 
   def useWhatYouTake(player)
-    selectedPlayer = @interface.select_a_player(opponents, "which player would you like to pick from")
+    selectedPlayer = @interface.select_a_player(opponents(player), "which player would you like to pick from")
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
     @interface.debug "playing #{selectedCard}"
@@ -224,7 +222,7 @@ class Game
 
   def taxation(player)
     @interface.debug "playing taxation!"
-    newCardsForPlayer = opponents.map do |player|
+    newCardsForPlayer = opponents(player).map do |player|
       @interface.select_a_card(player.hand, "Choose a card to give to #{player}")
     end
     player.hand += newCardsForPlayer
@@ -320,10 +318,10 @@ class Game
   end
 
   def tradeHands(player)
-    opponentsText = opponents.map do |player|
+    opponentsText = opponents(player).map do |player|
       player.to_s
     end
-    selectedPlayer = @interface.select_a_player(opponents, "who would you like to trade hands with?")
+    selectedPlayer = @interface.select_a_player(opponents(player), "who would you like to trade hands with?")
     otherHand = selectedPlayer.hand
     selectedPlayer.hand = player.hand
     player.hand = otherHand
@@ -380,7 +378,7 @@ class Game
       return
     end
     otherKeepers = false
-    opponents.select do |player|
+    opponents(player).select do |player|
       otherKeepers ||= player.keepers.length != 0
     end
     if !otherKeepers
@@ -388,7 +386,7 @@ class Game
       return
     end
 
-    eligibleOpponents = opponents.select do |player|
+    eligibleOpponents = opponents(player).select do |player|
       player.keepers.length > 0
     end
 
