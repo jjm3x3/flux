@@ -254,16 +254,16 @@ class Game
   end
 
   def mix_it_all_up(player)
-    allPermanents = @players.flat_map do |player|
-      player.keepers
+    allPermanents = @players.flat_map do |aPlayer|
+      aPlayer.keepers
     end
 
-    allPermanents += @players.flat_map do |player|
-      player.creepers
+    allPermanents += @players.flat_map do |aPlayer|
+      aPlayer.creepers
     end
 
-    @players.each do |player|
-      player.clear_permanents
+    @players.each do |aPlayer|
+      aPlayer.clear_permanents
     end
     
     @interface.debug "how many keepers do I have: #{allPermanents.count} but the length is #{allPermanents.length}"
@@ -283,9 +283,9 @@ class Game
     # might regret this decission but I am going to resolve the war rule for
     # every player since it will check for both permanents anyway it will be a
     # no-op for most players
-    @players.each do |player|
-      resolve_war_rule(player)
-      resolve_taxes_rule(player)
+    @players.each do |aPlayer|
+      resolve_war_rule(aPlayer)
+      resolve_taxes_rule(aPlayer)
     end
 
     @interface.printPermanents(activePlayer)
