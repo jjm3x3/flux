@@ -135,7 +135,8 @@ create table if not exists creepers (
 SQL
 
 [
-  [1, "War", "You cannot win if you have this unless the Goal says otherwise"]
+  [1, "War", "You cannot win if you have this unless the Goal says otherwise"],
+  [2, "Taxes", "You cannot win if you have this unless the Goal says otherwise. If you have Money on the table discard bot that and this."]
 ].each do |value|
   db.execute "insert into creepers values ( ? , ? , ? )", value
 end

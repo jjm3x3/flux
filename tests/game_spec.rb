@@ -1412,5 +1412,77 @@ describe "game" do
         end
     end
 
+    describe "resolve_taxes_rule" do
+        it "should make sure that if the player has taxes but not money they end up with taxes" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            taxesCreeper = Creeper.new(2, "Taxes", "Some rules text")
+            theFirstPlayer.add_creeper(taxesCreeper)
+
+            # execute
+            theGame.resolve_taxes_rule(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.creepers).to include taxesCreeper
+        end
+
+        it "should make sure that if the player has money but not taxes they end up with money" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            moenyKeeper = Keeper.new(19, "Pennies")
+            theFirstPlayer.keepers << moenyKeeper
+
+            # execute
+            theGame.resolve_taxes_rule(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.keepers).to include moenyKeeper
+        end
+
+        it "should make sure that if the player has taxes and money they end up with neither" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            moenyKeeper = Keeper.new(19, "Pennies")
+            theFirstPlayer.keepers << moenyKeeper
+            taxesCreeper = Creeper.new(2, "Taxes", "Some rules text")
+            theFirstPlayer.add_creeper(taxesCreeper)
+
+            # execute
+            theGame.resolve_taxes_rule(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.creepers).to_not include taxesCreeper
+            expect(theFirstPlayer.keepers).to_not include moenyKeeper
+        end
+
+        it "should result in both being discarded" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            moenyKeeper = Keeper.new(19, "Pennies")
+            theFirstPlayer.keepers << moenyKeeper
+            taxesCreeper = Creeper.new(2, "Taxes", "Some rules text")
+            theFirstPlayer.add_creeper(taxesCreeper)
+
+            # execute
+            theGame.resolve_taxes_rule(theFirstPlayer)
+
+            # test
+            expect(theGame.discardPile).to include taxesCreeper
+            expect(theGame.discardPile).to include moenyKeeper
+        end
+    end
+
     test_outfile.unlink
 end
