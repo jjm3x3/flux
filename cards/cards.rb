@@ -45,6 +45,8 @@ class Keeper < Card
     player.keepers << self
     if @id == @@peace_id
       game.resolve_war_rule(player)
+    elsif @id == @@money_id
+      game.resolve_taxes_rule(player)
     end
   end
 

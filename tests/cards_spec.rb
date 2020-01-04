@@ -42,6 +42,38 @@ describe "cards" do
                 # test
                 expect(calledResolveWarRule).to be false
             end
+
+            it "should call resolve_taxes_rule if money is played" do
+                fakeGame = Object.new
+                calledResolveTaxesRule = false
+                fakeGame.define_singleton_method(:resolve_taxes_rule) do |player|
+                    calledResolveTaxesRule = true
+                end
+                fakePlayer = Player.new("fake boi", fakeGame)
+                sut = Keeper.new(19, "Wanna be moeny")
+
+                # exectue
+                sut.play(fakePlayer, fakeGame)
+
+                # test
+                expect(calledResolveTaxesRule).to be true
+            end
+
+            it "should not call resolve_taxes_rule if not money is played" do
+                fakeGame = Object.new
+                calledResolveTaxesRule = false
+                fakeGame.define_singleton_method(:resolve_taxes_rule) do |player|
+                    calledResolveTaxesRule = true
+                end
+                fakePlayer = Player.new("fake boi", fakeGame)
+                sut = Keeper.new(11, "Not money")
+
+                # exectue
+                sut.play(fakePlayer, fakeGame)
+
+                # test
+                expect(calledResolveTaxesRule).to be false
+            end
         end
     end
 
