@@ -75,5 +75,26 @@ describe "player" do
         end
     end
 
+    describe "has_death?" do
+        it "should return false if the player does not have the death creeper in front of them" do
+            # setup
+            thePlayer = Player.new("JOE", nil)
+            deathCreepepr1 = Creeper.new(3, "wanna be death", "you cannot win heh heh")
+
+            # execute, test
+            expect(thePlayer.has_death?).to be false
+        end
+
+        it "should return true if the player has death creeper in front of them" do
+            # setup
+            thePlayer = Player.new("JOE", nil)
+            deathCreepepr1 = Creeper.new(3, "wanna be death", "you cannot win heh heh")
+            thePlayer.add_permanent(deathCreepepr1)
+
+            # execute, test
+            expect(thePlayer.has_death?).to be true
+        end
+    end
+
     test_outfile.unlink
 end

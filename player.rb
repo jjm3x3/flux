@@ -72,6 +72,12 @@ class Player
     end.size > 0
   end
 
+  def has_death?
+    @creepers.select do |creeper|
+      creeper.is_death?
+    end.size > 0
+  end
+
   def take_money
     moenyKeeper = @keepers.select do |keeper|
       keeper.is_money?
