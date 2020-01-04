@@ -35,10 +35,6 @@ class Game
     @currentPlayerCounter = 0
   end
 
-  def activePlayer
-    @players[currentPlayer]
-  end
-
   def drawCards(player, count)
     expectedNumberOfCards = (count == :draw_rule ? @ruleBase.drawRule : count)
     @interface.debug "expecting to draw #{expectedNumberOfCards} cards"
@@ -165,6 +161,7 @@ class Game
 
   def run
     loop do
+      activePlayer = @players[currentPlayer]
       activePlayer.takeTurn
       progress_turn
     end
