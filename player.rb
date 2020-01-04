@@ -53,6 +53,38 @@ class Player
     end.size > 0
   end
 
+  def has_money?
+    @keepers.select do |keeper|
+      keeper.is_money?
+    end.size > 0
+  end
+
+  def has_taxes?
+    @creepers.select do |creeper|
+      creeper.is_taxes?
+    end.size > 0
+  end
+
+  def take_money
+    moenyKeeper = @keepers.select do |keeper|
+      keeper.is_money?
+    end[0]
+    @keepers = @keepers.select do |keeper|
+      !keeper.is_money?
+    end
+    moenyKeeper
+  end
+
+  def take_taxes
+    taxesCreeper = @creepers.select do |creeper|
+      creeper.is_taxes?
+    end[0]
+    @creepers = @creepers.select do |creeper|
+      !creeper.is_taxes?
+    end
+    taxesCreeper
+  end
+
   def take_war
     warCreeper = @creepers.select do |creeper|
       creeper.is_war?

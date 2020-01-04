@@ -286,6 +286,7 @@ class Game
     # no-op for most players
     @players.each do |player|
       resolve_war_rule(player)
+      resolve_taxes_rule(player)
     end
 
     @interface.printPermanents(activePlayer)
@@ -429,6 +430,8 @@ class Game
 
     resolve_war_rule(player)
     resolve_war_rule(selectedPlayer)
+    resolve_taxes_rule(player)
+    resolve_taxes_rule(selectedPlayer)
 
     @interface.displayCardsDebug(player.keepers, "Here are your Keepers after the exchange")
 
@@ -442,6 +445,14 @@ class Game
       @interface.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
 
       selectedPlayer.add_creeper(player.take_war)
+    end
+  end
+
+  # TODO:: make sure thits gets called when ever keepers/creepers change hands
+  def resolve_taxes_rule(player)
+    if(player.has_money? && player.has_taxes?)
+      discard(player.take_taxes)
+      discard(player.take_money)
     end
   end
 
