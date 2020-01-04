@@ -34,6 +34,7 @@ end
 
 class Keeper < Card
   @@peace_id = 16
+  @@money_id = 19
   
   def initialize(id, name)
     super(1,name)
@@ -49,6 +50,10 @@ class Keeper < Card
 
   def is_peace?
     @id == @@peace_id
+  end
+
+  def is_money?
+    @id == @@money_id
   end
 
 end
