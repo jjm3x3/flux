@@ -71,6 +71,7 @@ class Game
     @interface.information "the discard has #{@discardPile.length} card(s) in it"
     @interface.information "here is the current goal: #{@goal }"
     @interface.information "here are the current rules:\n#{@ruleBase}"
+    @interface.information "\n#{player}'s turn"
     @interface.printPermanents(player)
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
@@ -91,7 +92,6 @@ class Game
 
   def progress_turn
     @currentPlayerCounter += 1
-    @interface.information "\n#{activePlayer}'s turn"
   end
 
   def enforceNonActivePlayerLimits(the_active_player)
