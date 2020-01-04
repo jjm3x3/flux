@@ -87,6 +87,9 @@ class Game
       hand = player.hand # really a sad sideeffect of much statefull programming
       @interface.information "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
     end
+  end
+
+  def progress_turn
     @currentPlayerCounter += 1
     @interface.information "\n#{activePlayer}'s turn"
   end
@@ -163,6 +166,7 @@ class Game
   def run
     loop do
       activePlayer.takeTurn
+      progress_turn
     end
   end
 
