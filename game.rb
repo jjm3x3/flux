@@ -67,28 +67,28 @@ class Game
     drawnCards
   end
 
-  def playCards
+  def playCards(player)
     @interface.information "the discard has #{@discardPile.length} card(s) in it"
     @interface.information "here is the current goal: #{@goal }"
     @interface.information "here are the current rules:\n#{@ruleBase}"
-    @interface.printPermanents(activePlayer)
+    @interface.printPermanents(player)
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
-    hand = activePlayer.hand
+    hand = player.hand
     while cardsPlayed < @ruleBase.playRule && !winner && hand.length > 0
       cardToPlay = @interface.select_a_card(hand, "Select a card from your hand to play")
-      cardToPlay.play(activePlayer, self)
+      cardToPlay.play(player, self)
       cardsPlayed += 1
       checkForWinner # should check for a winner before discarding
-      enforceNonActivePlayerLimits(activePlayer)
+      enforceNonActivePlayerLimits(player)
       @interface.information "the discard has #{@discardPile.length} card(s) in it"
       # do something if the discard need reshufleing
-      cardsDrawn = replenishHand(cardsDrawn, activePlayer)
-      hand = activePlayer.hand # really a sad sideeffect of much statefull programming
+      cardsDrawn = replenishHand(cardsDrawn, player)
+      hand = player.hand # really a sad sideeffect of much statefull programming
       @interface.information "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
     end
-    discardDownToLimit(activePlayer)
-    removeDownToKeeperLimit(activePlayer)
+    discardDownToLimit(player)
+    removeDownToKeeperLimit(player)
     @currentPlayerCounter += 1
     @interface.information "\n#{activePlayer}'s turn"
   end

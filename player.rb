@@ -12,7 +12,7 @@ class Player
 
   def takeTurn
     drawCards
-    @game.playCards
+    @game.playCards(self)
   end 
 
   def drawCards

@@ -143,11 +143,12 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream,test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theFirstPlayer = theGame.players[0].hand.unshift(FakeCard.new("thing1"))
+            theFirstPlayer = theGame.players[0]
+            theFirstPlayer.hand.unshift(FakeCard.new("thing1"))
             theGame.currentPlayerCounter = 0
 
             # execute
-            theGame.playCards
+            theGame.playCards(theFirstPlayer)
 
             # test
         end
@@ -1182,7 +1183,7 @@ describe "game" do
             theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
 
             # execute
-            theGame.playCards
+            theGame.playCards(theFirstPlayer)
 
             # test
             expect(theGame.currentPlayer).to eq originalCurrentPlayer
