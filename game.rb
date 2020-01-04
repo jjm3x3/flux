@@ -388,14 +388,14 @@ class Game
       return
     end
 
-    eligibleOpponents = opponents(player).select do |player|
-      player.keepers.length > 0
+    eligibleOpponents = opponents(player).select do |aPlayer|
+      aPlayer.keepers.length > 0
     end
 
 
 
-    eligibleOpponents.select do |palyer|
-      @interface.printKeepers(player, "Here are the keepers: #{player.to_s} has:")
+    eligibleOpponents.select do |aPlayer|
+      @interface.printKeepers(aPlayer, "Here are the keepers: #{aPlayer.to_s} has:")
     end
 
     eligibleOpponents.unshift(:no_one)
