@@ -370,8 +370,8 @@ class Game
     end
   end
 
-  def take_another_turn
-    @currentPlayerCounter -= 1
+  def take_another_turn(player)
+    player.take_another_turn = true
   end
 
   def exchange_keepers(player)

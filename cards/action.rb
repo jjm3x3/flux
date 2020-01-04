@@ -39,7 +39,7 @@ class Action < Card
     when 14
       game.rotateHands(player)
     when 15
-      game.take_another_turn
+      game.take_another_turn(player)
     when 16
       game.exchange_keepers(player)
     end
