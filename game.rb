@@ -80,7 +80,7 @@ class Game
       cardToPlay.play(activePlayer, self)
       cardsPlayed += 1
       checkForWinner # should check for a winner before discarding
-      enforceNonActivePlayerLimits
+      enforceNonActivePlayerLimits(activePlayer)
       @interface.information "the discard has #{@discardPile.length} card(s) in it"
       # do something if the discard need reshufleing
       cardsDrawn = replenishHand(cardsDrawn, activePlayer)
@@ -93,9 +93,9 @@ class Game
     @interface.information "\n#{activePlayer}'s turn"
   end
 
-  def enforceNonActivePlayerLimits
+  def enforceNonActivePlayerLimits(the_active_player)
     @players.each do |player|
-      if player != activePlayer
+      if player != the_active_player
         discardDownToLimit(player)
         removeDownToKeeperLimit(player)
       end
@@ -225,7 +225,7 @@ class Game
   def taxation(player)
     @interface.debug "playing taxation!"
     newCardsForPlayer = opponents.map do |player|
-      @interface.select_a_card(player.hand, "Choose a card to give to #{activePlayer}")
+      @interface.select_a_card(player.hand, "Choose a card to give to #{player}")
     end
     player.hand += newCardsForPlayer
   end
@@ -288,7 +288,7 @@ class Game
       resolve_taxes_rule(aPlayer)
     end
 
-    @interface.printPermanents(activePlayer)
+    @interface.printPermanents(player)
   end
 
   def letsDoThatAgain(player)
