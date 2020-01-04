@@ -448,7 +448,6 @@ class Game
     end
   end
 
-  # TODO:: make sure thits gets called when ever keepers/creepers change hands
   def resolve_taxes_rule(player)
     if(player.has_money? && player.has_taxes?)
       discard(player.take_taxes)
