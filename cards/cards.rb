@@ -111,6 +111,7 @@ end
 class Creeper < Card
   @@war_id = 1
   @@taxes_id = 2
+  @@death_id = 3
 
   def initialize(id, name, rule_text)
     super(6, name)
@@ -124,6 +125,10 @@ class Creeper < Card
 
   def is_taxes?
     @id == @@taxes_id
+  end
+
+  def is_death?
+    @id == @@death_id
   end
 
   def play(player, game)

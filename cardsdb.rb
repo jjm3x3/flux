@@ -136,7 +136,8 @@ SQL
 
 [
   [1, "War", "You cannot win if you have this unless the Goal says otherwise"],
-  [2, "Taxes", "You cannot win if you have this unless the Goal says otherwise. If you have Money on the table discard bot that and this."]
+  [2, "Taxes", "You cannot win if you have this unless the Goal says otherwise. If you have Money on the table discard bot that and this."],
+  [3, "Death", "You cannot win if you have this unless the Gaol says otherwise. If you have this at the start of your turn, discard something else you have in play (a Keeper or Creeper). You may discard this anytime it stands alone"]
 ].each do |value|
   db.execute "insert into creepers values ( ? , ? , ? )", value
 end
