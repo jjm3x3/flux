@@ -11,22 +11,6 @@ describe "game" do
         theGame = Game.new(numberOfPlayers=3, theTestInterface)
     end
 
-    describe "activePlayer" do
-        it "should not modify the current player instnace variable" do
-            # setup
-            input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.currentPlayerCounter = 10
-
-            # execute
-            theGame.activePlayer
-
-            # test
-            expect(theGame.currentPlayerCounter).to eq 10
-        end
-    end
-
     describe "drawCards" do
         it "should draw bassed on the 'drawRule' if the count parmeter is :draw_rule" do
             # setup
