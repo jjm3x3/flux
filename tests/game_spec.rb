@@ -1188,6 +1188,41 @@ describe "game" do
             # test
             expect(theGame.currentPlayer).to eq originalCurrentPlayer
         end
+
+        it "should make sure the current player remains the same when they play a card in the middle of their turn" do
+            # setup
+            input_stream = StringIO.new("0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theGame.ruleBase.addRule(Rule.new("play more", 2, "play 2"))
+            theFirstPlayer = theGame.players[0]
+            originalCurrentPlayer = theGame.currentPlayer
+            currentPlayerCounter = 0
+            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+
+            # execute
+            theGame.playCards(theFirstPlayer)
+
+            # test
+            expect(theGame.currentPlayer).to eq originalCurrentPlayer
+        end
+
+        it "should not force the current player to discard down to hand limit until their first turn is over" do
+            # setup
+            input_stream = StringIO.new("0\n0\n0\n0\n0\n0\n0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theGame.ruleBase.addRule(Limit.new("low hand limit", 3, "no cards", 0))
+            theFirstPlayer = theGame.players[0]
+            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+
+            # execute
+            theGame.playCards(theFirstPlayer)
+
+            # test
+            startingHandSize = 3
+            expect(theFirstPlayer.hand.size).to eq startingHandSize
+        end
     end
 
     describe "exchange_keepers" do
