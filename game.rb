@@ -58,7 +58,7 @@ class Game
         break
       else
       # TODO: should shuffle the discard back in the draw at this point
-      if deck.count == 0
+      if @deck.count == 0
         @interface.debug "No cards left to draw"
         break
       end

@@ -38,8 +38,9 @@ class Deck
     drawnCards = (1..amount).to_a.map do |time|
       drawACard
     end
+    # this filters out "nil" cards when there are no more cards in the deck to draw
     drawnCards = drawnCards.select do |card|
-      card
+      card 
     end
     if (drawnCards.size > 0 && drawnCards.all?(nil))
       return []
