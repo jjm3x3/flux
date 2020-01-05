@@ -58,7 +58,8 @@ describe "player" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aStackedDeck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, Random.new, aStackedDeck)
             keeper1 = Keeper.new(1, "thing1")
             keeper2 = Keeper.new(2, "thing2")
             theGame.setGoal(Goal.new("do a thing", [keeper1, keeper2], "some rule text"))

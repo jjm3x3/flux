@@ -12,13 +12,13 @@ class Game
   attr_accessor :discardPile
   attr_accessor :currentPlayerCounter
 
-  def initialize(numberOfPlayers, anInterface = CliInterface.new, aRandom = Random.new)
+  def initialize(numberOfPlayers, anInterface = CliInterface.new, aRandom = Random.new, aDeck = Deck.new(anInterface))
 
     @interface = anInterface
     @random = aRandom
 
     @ruleBase = RuleBase.new(self, anInterface)
-    @deck = Deck.new(anInterface)
+    @deck = aDeck
     @discardPile = []
 
     @players = []
