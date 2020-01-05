@@ -24,6 +24,7 @@ PLATFORMS
 
 DEPENDENCIES
   rspec (~> 3.9)
+  rspec-mocks
   sqlite3
 
 BUNDLED WITH
