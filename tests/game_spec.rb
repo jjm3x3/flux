@@ -11,22 +11,6 @@ describe "game" do
         theGame = Game.new(numberOfPlayers=3, theTestInterface)
     end
 
-    describe "activePlayer" do
-        it "should not modify the current player instnace variable" do
-            # setup
-            input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.currentPlayerCounter = 10
-
-            # execute
-            theGame.activePlayer
-
-            # test
-            expect(theGame.currentPlayerCounter).to eq 10
-        end
-    end
-
     describe "drawCards" do
         it "should draw bassed on the 'drawRule' if the count parmeter is :draw_rule" do
             # setup
@@ -860,6 +844,7 @@ describe "game" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, theTestInterface)
             theFirstPlayer = theGame.players[0]
+            theGame.deck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
             originalDeckCount = theGame.deck.count
 
             # execute
@@ -1199,6 +1184,7 @@ describe "game" do
             theFirstPlayer = theGame.players[0]
             originalCurrentPlayer = theGame.currentPlayer
             currentPlayerCounter = 0
+            theFirstPlayer.hand.unshift(Keeper.new(15, "Any ol thing "))
             theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
 
             # execute
@@ -1501,6 +1487,45 @@ describe "game" do
             # test
             expect(theGame.discardPile).to include taxesCreeper
             expect(theGame.discardPile).to include moenyKeeper
+        end
+    end
+
+    describe "resolve_death_rule" do
+        it "should result in one less permanent" do
+            # setup
+            input_stream = StringIO.new("0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            moenyKeeper = Keeper.new(19, "Pennies")
+            theFirstPlayer.keepers << moenyKeeper
+            deathCreeper = Creeper.new(3, "dead", "Some rules text")
+            theFirstPlayer.add_creeper(deathCreeper)
+            numberOfStartingPermanents = theFirstPlayer.permanents.size
+
+            # execute
+            theGame.resolve_death_rule(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.permanents.size).to eq numberOfStartingPermanents - 1
+        end
+
+        it "if death stand alone it should consume itself" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            deathCreeper = Creeper.new(3, "dead", "Some rules text")
+            theFirstPlayer.add_creeper(deathCreeper)
+            numberOfStartingPermanents = theFirstPlayer.permanents.size
+
+            # execute
+            theGame.resolve_death_rule(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.permanents.size).to eq numberOfStartingPermanents - 1
+            expect(theFirstPlayer.permanents.size).to eq 0 # should be no remaining cards
         end
     end
 

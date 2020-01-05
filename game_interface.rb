@@ -59,10 +59,10 @@ class GameInterface
   end
 
   def select_a_card(card_list, prompt="Select a card")
-      information prompt
-      displayCards(card_list, "Here are your options")
-      whichCard = get_input.to_i
-      card_list.delete_at(whichCard)
+    information prompt
+    displayCards(card_list, "Here are your options")
+    whichCard = get_input.to_i
+    card_list.delete_at(whichCard)
   end
 
   def select_a_player(playerList, prompt="Select a player")

@@ -7,11 +7,15 @@ class Player
     @name = name
     @keepers = []
     @creepers = []
+    @hand = []
     @game = game
     @take_another_turn = false
   end
 
   def takeTurn
+    if(self.has_death?)
+      @game.resolve_death_rule(self)
+    end
     drawCards
     @game.playCards(self)
     @game.discardDownToLimit(self)
@@ -72,6 +76,12 @@ class Player
     end.size > 0
   end
 
+  def has_death?
+    @creepers.select do |creeper|
+      creeper.is_death?
+    end.size > 0
+  end
+
   def take_money
     moenyKeeper = @keepers.select do |keeper|
       keeper.is_money?
@@ -102,9 +112,32 @@ class Player
     warCreeper
   end
 
+  def take_death
+    deathCreeper = @creepers.select do |creeper|
+      creeper.is_death?
+    end[0]
+    @creepers = @creepers.select do |creeper|
+      !creeper.is_death?
+    end
+    deathCreeper
+  end
+
+  def discard_permanent(card)
+    @keepers = @keepers.select do |keeper|
+      keeper != card
+    end
+    @creepers = @creepers.select do |creeper|
+      creeper != card
+    end
+  end
+
   def clear_permanents
     @keepers = []
     @creepers = []
+  end
+
+  def permanents
+    @keepers + @creepers
   end
 
   def set_hand(hand)

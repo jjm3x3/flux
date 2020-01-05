@@ -12,13 +12,13 @@ class Game
   attr_accessor :discardPile
   attr_accessor :currentPlayerCounter
 
-  def initialize(numberOfPlayers, anInterface = CliInterface.new, aRandom = Random.new)
+  def initialize(numberOfPlayers, anInterface = CliInterface.new, aRandom = Random.new, aDeck = Deck.new(anInterface))
 
     @interface = anInterface
     @random = aRandom
 
     @ruleBase = RuleBase.new(self, anInterface)
-    @deck = Deck.new(anInterface)
+    @deck = aDeck
     @discardPile = []
 
     @players = []
@@ -448,6 +448,20 @@ class Game
     if(player.has_money? && player.has_taxes?)
       discard(player.take_taxes)
       discard(player.take_money)
+    end
+  end
+
+  def resolve_death_rule(player)
+    if(player.has_death?)
+      eligiablePermanents = player.permanents.select do |perm|
+        perm.card_type != "Creeper" || !perm.is_death?
+      end
+      if(eligiablePermanents.size == 0)
+        discard(player.take_death)
+      else
+        selectedCard = @interface.select_a_card(eligiablePermanents, "Which permanent would you like to discard?")
+        player.discard_permanent(selectedCard)
+      end
     end
   end
 
