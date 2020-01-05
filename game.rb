@@ -211,7 +211,7 @@ class Game
     player.hand = drawCards(player, numberOfCardsToDraw)
   end
 
-  def useWhatYouTake(player)
+  def use_what_you_take(player)
     validOpponents = opponents(player).select do |opp|
       opp.hand.size > 0
     end

@@ -561,7 +561,7 @@ describe "game" do
         end
     end
 
-    describe "useWhatYouTake" do
+    describe "use_what_you_take" do
         it "should play a card at random from the selected player" do
             # setup
             input_stream = StringIO.new("0\n")
@@ -575,7 +575,7 @@ describe "game" do
             secondPlayersOriginalCardsCount = theSecondPlayer.hand.size
 
             # execute
-            theGame.useWhatYouTake(theFirstPlayer)
+            theGame.use_what_you_take(theFirstPlayer)
 
             # test
             expect(theSecondPlayer.hand.size).to eq secondPlayersOriginalCardsCount - 1 # a stand in to make sure the right number of cards got played
@@ -593,7 +593,7 @@ describe "game" do
             theSecondPlayer.set_hand([])
 
             # execute
-            theGame.useWhatYouTake(theFirstPlayer)
+            theGame.use_what_you_take(theFirstPlayer)
 
             # test
             # should not crash

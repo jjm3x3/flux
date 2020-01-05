@@ -23,7 +23,7 @@ class Action < Card
     when 6
       game.discard_and_draw(player)
     when 7
-      game.useWhatYouTake(player)
+      game.use_what_you_take(player)
     when 8
       game.taxation(player)
     when 9
