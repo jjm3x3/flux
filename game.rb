@@ -228,7 +228,9 @@ class Game
 
   def taxation(player)
     @interface.debug "playing taxation!"
-    newCardsForPlayer = opponents(player).map do |player|
+    newCardsForPlayer = opponents(player).select do |player|
+      player.hand.size > 0
+    end.map do |player|
       @interface.select_a_card(player.hand, "Choose a card to give to #{player}")
     end
     player.hand += newCardsForPlayer
