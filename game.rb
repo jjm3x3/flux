@@ -64,10 +64,6 @@ class Game
   end
 
   def playCards(player)
-    @interface.information "the discard has #{@discardPile.length} card(s) in it"
-    @interface.information "here is the current goal: #{@goal }"
-    @interface.information "here are the current rules:\n#{@ruleBase}"
-    @interface.information "\n#{player}'s turn"
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = player.hand
@@ -162,6 +158,10 @@ class Game
   def run
     loop do
       activePlayer = @players[currentPlayer]
+      @interface.information "the discard has #{@discardPile.length} card(s) in it"
+      @interface.information "here is the current goal: #{@goal }"
+      @interface.information "here are the current rules:\n#{@ruleBase}"
+      @interface.information "\n#{player}'s turn"
       activePlayer.takeTurn
       progress_turn
     end
