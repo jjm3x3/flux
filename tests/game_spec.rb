@@ -1490,5 +1490,44 @@ describe "game" do
         end
     end
 
+    describe "resolve_death_rule" do
+        it "should result in one less permanent" do
+            # setup
+            input_stream = StringIO.new("0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            moenyKeeper = Keeper.new(19, "Pennies")
+            theFirstPlayer.keepers << moenyKeeper
+            deathCreeper = Creeper.new(3, "dead", "Some rules text")
+            theFirstPlayer.add_creeper(deathCreeper)
+            numberOfStartingPermanents = theFirstPlayer.permanents.size
+
+            # execute
+            theGame.resolve_death_rule(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.permanents.size).to eq numberOfStartingPermanents - 1
+        end
+
+        it "if death stand alone it should consume itself" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            deathCreeper = Creeper.new(3, "dead", "Some rules text")
+            theFirstPlayer.add_creeper(deathCreeper)
+            numberOfStartingPermanents = theFirstPlayer.permanents.size
+
+            # execute
+            theGame.resolve_death_rule(theFirstPlayer)
+
+            # test
+            expect(theFirstPlayer.permanents.size).to eq numberOfStartingPermanents - 1
+            expect(theFirstPlayer.permanents.size).to eq 0 # should be no remaining cards
+        end
+    end
+
     test_outfile.unlink
 end

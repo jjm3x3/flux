@@ -451,4 +451,18 @@ class Game
     end
   end
 
+  def resolve_death_rule(player)
+    if(player.has_death?)
+      eligiablePermanents = player.permanents.select do |perm|
+        perm.card_type != "Creeper" || !perm.is_death?
+      end
+      if(eligiablePermanents.size == 0)
+        discard(player.take_death)
+      else
+        selectedCard = @interface.select_a_card(eligiablePermanents, "Which permanent would you like to discard?")
+        player.discard_permanent(selectedCard)
+      end
+    end
+  end
+
 end
