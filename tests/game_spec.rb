@@ -581,24 +581,23 @@ describe "game" do
             expect(theSecondPlayer.hand.size).to eq secondPlayersOriginalCardsCount - 1 # a stand in to make sure the right number of cards got played
         end
 
-        # TODO: IDK how to test this
-        # it "should not play any cards if no other player has a hand" do
-        #     # setup
-        #     input_stream = StringIO.new("0\n")
-        #     theTestInterface = TestInterface.new(input_stream, test_outfile)
-        #     numberOfPlayers = 3
-        #     theGame = Game.new(input_stream, numberOfPlayers, theTestInterface)
-        #     theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
-        #     theFirstPlayer = theGame.players[0]
-        #     theSecondPlayer = theGame.players[1]
-        #     secondPlayersOriginalCardsCount = theSecondPlayer.hand.size
+        it "should not play any cards if no other player has a hand" do
+            # setup
+            input_stream = StringIO.new("")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 2
+            theGame = Game.new(numberOfPlayers, theTestInterface)
+            theGame.deck = StackedDeck.new(theTestInterface)
+            theFirstPlayer = theGame.players[0]
+            theSecondPlayer = theGame.players[1]
+            theSecondPlayer.set_hand([])
 
-        #     # execute
-        #     theGame.useWhatYouTake(theFirstPlayer)
+            # execute
+            theGame.useWhatYouTake(theFirstPlayer)
 
-        #     # test
-        #     expect(theSecondPlayer.hand.size).to eq secondPlayersOriginalCardsCount - 1 # a stand in to make sure the right number of cards got played
-        # end
+            # test
+            # should not crash
+        end
     end
 
     describe "taxation" do

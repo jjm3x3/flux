@@ -212,7 +212,14 @@ class Game
   end
 
   def useWhatYouTake(player)
-    selectedPlayer = @interface.select_a_player(opponents(player), "which player would you like to pick from")
+    validOpponents = opponents(player).select do |opp|
+      opp.hand.size > 0
+    end
+    if(validOpponents.size == 0)
+      @interface.information "Too bad no body has any cards for you"
+      return
+    end
+    selectedPlayer = @interface.select_a_player(validOpponents, "which player would you like to pick from")
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
     @interface.debug "playing #{selectedCard}"
