@@ -7,11 +7,15 @@ class Player
     @name = name
     @keepers = []
     @creepers = []
+    @hand = []
     @game = game
     @take_another_turn = false
   end
 
   def takeTurn
+    if(self.has_death?)
+      @game.resolve_death_rule
+    end
     drawCards
     @game.playCards(self)
     @game.discardDownToLimit(self)
