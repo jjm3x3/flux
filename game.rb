@@ -64,10 +64,6 @@ class Game
   end
 
   def playCards(player)
-    @interface.information "the discard has #{@discardPile.length} card(s) in it"
-    @interface.information "here is the current goal: #{@goal }"
-    @interface.information "here are the current rules:\n#{@ruleBase}"
-    @interface.information "\n#{player}'s turn"
     cardsPlayed = 0
     cardsDrawn = @ruleBase.drawRule
     hand = player.hand
@@ -101,7 +97,8 @@ class Game
 
   def removeDownToKeeperLimit(player)
     while player.keepers.length > @ruleBase.keeperLimit
-      removeKeeper = @interface.select_a_card(player.keepers, "Choose a card to discard")
+      @interface.information "Since the keeper limit is #{keeperLimit} you must discard a keeper"
+      removeKeeper = @interface.select_a_card(player.keepers, "Choose a keeper to discard")
       @discardPile << removeKeeper
       @interface.debug "discarding #{removeKeeper}"
     end
@@ -162,6 +159,10 @@ class Game
   def run
     loop do
       activePlayer = @players[currentPlayer]
+      @interface.information "the discard has #{@discardPile.length} card(s) in it"
+      @interface.information "here is the current goal: #{@goal }"
+      @interface.information "here are the current rules:\n#{@ruleBase}"
+      @interface.information "\n#{activePlayer}'s turn"
       activePlayer.takeTurn
       progress_turn
     end
@@ -211,8 +212,15 @@ class Game
     player.hand = drawCards(player, numberOfCardsToDraw)
   end
 
-  def useWhatYouTake(player)
-    selectedPlayer = @interface.select_a_player(opponents(player), "which player would you like to pick from")
+  def use_what_you_take(player)
+    validOpponents = opponents(player).select do |opp|
+      opp.hand.size > 0
+    end
+    if(validOpponents.size == 0)
+      @interface.information "Too bad no body has any cards for you"
+      return
+    end
+    selectedPlayer = @interface.select_a_player(validOpponents, "which player would you like to pick from")
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
     @interface.debug "playing #{selectedCard}"
@@ -221,8 +229,10 @@ class Game
 
   def taxation(player)
     @interface.debug "playing taxation!"
-    newCardsForPlayer = opponents(player).map do |player|
-      @interface.select_a_card(player.hand, "Choose a card to give to #{player}")
+    newCardsForPlayer = opponents(player).select do |player|
+      player.hand.size > 0
+    end.map do |aPlayer|
+      @interface.select_a_card(aPlayer.hand, "Choose a card to give to #{player}")
     end
     player.hand += newCardsForPlayer
   end
