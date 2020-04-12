@@ -134,3 +134,6 @@ class TestInterface < GameInterface
   end
 
 end
+
+class GuiInterface < GameInterface
+end
