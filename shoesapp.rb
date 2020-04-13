@@ -3,11 +3,22 @@ require "./game_interface.rb"
 
 
 Shoes.app do 
-    @startGameButton = button "Push me" 
-    @title = para "Would you like to play?"
+    @startStack = stack do
+        @title = para "Would you like to play?"
+        @startGameButton = button "Push me"
+
+    end
+
+    @game_stack = stack do
+        para "Is this all new :thinking:"
+    end
+
+    @game_stack.hide
+
     @startGameButton.click do
-        @title.replace "Game starting..."
-        game = Game.new(3, GuiInterface.new)
+        @game_stack.show
+        @startStack.hide
+        game = Game.new(3, GuiInterface.new(self))
         # game.run
     end
 end
