@@ -6,6 +6,7 @@ class GameGui < Gosu::Window
         self.caption = "Fluxx"
 
         @bakground_image = Gosu::Image.new("assets/onlinePurpleSquare.jpg", tileable: true)
+        @cursor = Gosu::Image.new("assets/onlineCursor2.png")
         @font = Gosu::Font.new(20)
 
         @left_click_down = false
@@ -29,6 +30,8 @@ class GameGui < Gosu::Window
 
     def draw
         @bakground_image.draw(0,0,0)
+        @cursor.draw(mouse_x, mouse_y, 2, 0.0078125, 0.0078125)
+
         textcolor = @left_click_down ? Gosu::Color::BLACK : Gosu::Color::WHITE
         @font.draw_text("Here is some text", 10,10, 1 , 1.0, 1.0, textcolor)
     end
