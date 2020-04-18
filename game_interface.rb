@@ -136,4 +136,15 @@ class TestInterface < GameInterface
 end
 
 class GuiInterface < GameInterface
+  def initialize(shoes_app)
+    @the_app = shoes_app
+  end
+
+  def information(message)
+    @the_app.information(message)
+  end
+
+  def debug(message)
+    @the_app.debug(message)
+  end
 end
