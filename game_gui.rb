@@ -29,7 +29,8 @@ class GameGui < Gosu::Window
 
     def draw
         @bakground_image.draw(0,0,0)
-        @font.draw_text("Here is some text", 10,10, 1 , 1.0, 1.0, Gosu::Color::WHITE)
+        textcolor = @left_click_down ? Gosu::Color::BLACK : Gosu::Color::WHITE
+        @font.draw_text("Here is some text", 10,10, 1 , 1.0, 1.0, textcolor)
     end
 end
 
