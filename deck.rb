@@ -2,6 +2,7 @@ require "sqlite3"
 require "json"
 require "./cards/action.rb"
 require "./cards/cards.rb"
+require "./util.rb"
 
 class Deck
 
@@ -42,7 +43,7 @@ class Deck
     drawnCards = drawnCards.select do |card|
       card 
     end
-    if (drawnCards.size > 0 && drawnCards.all?(nil))
+    if (drawnCards.size > 0 && Util.are_all_nil(drawnCards))
       return []
     end
     drawnCards

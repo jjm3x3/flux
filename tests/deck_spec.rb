@@ -43,7 +43,7 @@ describe "deck" do
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theDeck = Deck.new(theTestInterface)
             # setup the deck so there is only one card left to draw
-            (1..100).each do |itteration|
+            (1..theDeck.count).each do |itteration|
                 theDeck.send(:drawACard)
             end
 
@@ -57,8 +57,8 @@ describe "deck" do
             input_stream = StringIO.new("0")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             theDeck = Deck.new(theTestInterface)
-            # setup the deck so there is only one card left to draw
-            (1..100).each do |itteration|
+            # setup the deck so there are no cards left to draw
+            (1..theDeck.count).each do |itteration|
                 theDeck.send(:drawACard)
             end
 
