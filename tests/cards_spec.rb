@@ -6,6 +6,17 @@ describe "cards" do
 
     test_outfile = Tempfile.new 'test_output'
 
+    describe "Cards" do
+
+        describe "==" do
+            it "should not crash when compated to nil" do
+                sut = Keeper.new(16, "Let there be Peace")
+
+                expect(sut == nil).to be false
+            end
+        end
+    end
+
     describe "Keepers" do
         describe "play" do
             it "should call resolve_war_rule if peace is played" do

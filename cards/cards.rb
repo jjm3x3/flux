@@ -20,6 +20,7 @@ class Card
   end
 
   def ==(other_card)
+    return false if other_card == nil
     self.name == other_card.name
   end
 
