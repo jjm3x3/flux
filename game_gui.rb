@@ -32,8 +32,14 @@ class GameGui < Gosu::Window
         @bakground_image.draw(0,0,0)
         @cursor.draw(mouse_x, mouse_y, 2, 0.0078125, 0.0078125)
 
-        textcolor = @left_click_down ? Gosu::Color::BLACK : Gosu::Color::WHITE
+        textcolor = @left_click_down && intersects ? Gosu::Color::BLACK : Gosu::Color::WHITE
         @font.draw_text("Here is some text", 10,10, 1 , 1.0, 1.0, textcolor)
+    end
+
+    private
+    def intersects
+        text_height = 10
+        mouse_x > 10 && mouse_x < 10 + @font.text_width("Here is some text") && mouse_y > 10 && mouse_y < 10 + @font.height
     end
 end
 
