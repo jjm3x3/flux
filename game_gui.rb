@@ -1,5 +1,6 @@
 require 'gosu'
 require './gui_elements/button.rb'
+require './gui_elements/game_stats.rb'
 require './game.rb'
 
 class GameGui < Gosu::Window
@@ -13,6 +14,7 @@ class GameGui < Gosu::Window
 
         @left_click_down = false
         @new_game_button = Button.new(self, "New Game?", 10, 10)
+        @game_stats = GameStats.new(10, 10)
         @game = nil
         @current_displayed_cards = []
 
@@ -69,7 +71,7 @@ class GameGui < Gosu::Window
         # for main menu
             @new_game_button.draw
         else
-            draw_game_stats(10, 10)
+            @game_stats.draw(@game)
 
             activePlayer = @game.players[@game.currentPlayer]
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10*4 + 20 *7, 1, 1.0, 1.0, Gosu::Color::WHITE)
@@ -99,19 +101,6 @@ class GameGui < Gosu::Window
                 end
             end
         end
-    end
-
-    def draw_game_stats(x, y)
-        margin = 10
-        previous_lines = 0
-        next_text_y = y + margin * previous_lines + @font.height * previous_lines
-        @font.draw_text("The deck has #{@game.deck.count} cards in it", x, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
-        previous_lines += 1
-        next_text_y = y + margin * previous_lines + @font.height * previous_lines
-        @font.draw_text("The discard pile has #{@game.discardPile.size} cards in it", x, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
-        previous_lines += 1
-        next_text_y = y + margin * previous_lines + @font.height * previous_lines
-        @font.draw_text("The Current rules are: #{@game.ruleBase}", 10, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
     end
 
 end
