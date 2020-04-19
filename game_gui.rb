@@ -48,7 +48,17 @@ class GameGui < Gosu::Window
             @font.draw_text("The discard pile has #{@game.discardPile.size} cards in it", 10, 10*2 + 20, 1, 1.0, 1.0, Gosu::Color::WHITE)
             @font.draw_text("The Current rules are: #{@game.ruleBase}", 10, 10*3 + 20 *2, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
-            @font.draw_text("It is player #{@game.players[@game.currentPlayer]}'s turn'", 10, 10*4 + 20 *7, 1, 1.0, 1.0, Gosu::Color::WHITE)
+            activePlayer = @game.players[@game.currentPlayer]
+            @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10*4 + 20 *7, 1, 1.0, 1.0, Gosu::Color::WHITE)
+
+            cardsDisplayed = 0
+            displayedCards = []
+            activePlayer.hand.each do |card|
+                newCardButton = Button.new(self, "#{card}")
+                newCardButton.draw
+                displayedCards <<
+                cardsDisplayed += 1
+            end
         end
     end
 
