@@ -79,6 +79,7 @@ class Game
   end
 
   def setup_new_turn
+    drawCards(active_player, :draw_rule)
     @cardsPlayed = 0
     @cardsDrawn = @ruleBase.drawRule
   end

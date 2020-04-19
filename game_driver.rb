@@ -20,7 +20,7 @@ class GameDriver
     if(activePlayer.has_death?)
       @game.resolve_death_rule(activePlayer)
     end
-    @game.drawCards(activePlayer, :draw_rule)
+    # @game.drawCards(activePlayer, :draw_rule)
     @game.playCards(activePlayer)
     @game.discardDownToLimit(activePlayer)
     @game.removeDownToKeeperLimit(activePlayer)
