@@ -41,7 +41,10 @@ class GameGui < Gosu::Window
         @cursor.draw(mouse_x, mouse_y, 2, 0.0078125, 0.0078125)
 
         if !@game
+        # for main menu
             @new_game_button.draw
+        else
+            @font.draw_text("The deck has #{@game.deck.count} cards in it", 10, 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
         end
     end
 
