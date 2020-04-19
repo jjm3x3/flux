@@ -160,10 +160,18 @@ class Game
     checkingPlayer = @firstPlayer
     winner = false
     @players.each do |player|
-      winner ||= player.won?
+      winner ||= has_player_won?(player)
     end
     @interface.debug "is there a winner? #{winner.to_s}\n"
     winner
+  end
+
+  def has_player_won?(player)
+    if hasGoal?
+      goalMet?(player) && !player.creepers.any?
+    else
+      false
+    end
   end
 
   def opponents(of_player)

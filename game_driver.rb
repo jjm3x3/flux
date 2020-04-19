@@ -21,7 +21,6 @@ class GameDriver
       @game.resolve_death_rule(activePlayer)
     end
     @game.drawCards(activePlayer, :draw_rule)
-    # activePlayer.drawCards
     @game.playCards(activePlayer)
     @game.discardDownToLimit(activePlayer)
     @game.removeDownToKeeperLimit(activePlayer)

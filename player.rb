@@ -12,18 +12,6 @@ class Player
     @take_another_turn = false
   end
 
-  def drawCards
-    @hand += @game.drawCards(self, :draw_rule)
-  end
-
-  def won?
-    if @game.hasGoal?
-      @game.goalMet?(self) && !@creepers.any?
-    else
-      false
-    end
-  end
-
   def add_permanent(permanent1)
     if permanent1.card_type == "Keeper"
       @keepers << permanent1
