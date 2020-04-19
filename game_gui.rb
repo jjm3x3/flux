@@ -27,6 +27,13 @@ class GameGui < Gosu::Window
                 puts "I am starting a game then"
                 @game = Game.new(3, CliInterface.new(true))
             end
+            clickedCard = 0
+            @current_displayed_cards.each do |cardButton|
+                if cardButton.is_clicked?
+                    puts "you clicked a card button #{@game.players[@game.currentPlayer].hand[clickedCard]}"
+                end
+                clickedCard += 1
+            end
         end
     end
 
