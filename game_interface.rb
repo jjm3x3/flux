@@ -103,6 +103,20 @@ class CliInterface < GameInterface
 
 end
 
+class TrueCliInterface
+  def initialize
+    @output_stream = $stdout
+    @input_stream = $stdin
+  end
+
+  def display_game_state(game)
+    @output_stream.puts "\e[2J\e[f"
+    @output_stream.puts "The deck has #{game.deck.count} cards in it"
+    @output_stream.puts "the discard has #{game.discardPile.length} card(s) in it"
+    @output_stream.puts "here are the current rules:#{game.ruleBase}"
+  end
+end
+
 class TestInterface < GameInterface
   attr_accessor :cardList
   attr_accessor :prompted
