@@ -64,22 +64,38 @@ class Game
   end
 
   def playCards(player)
-    cardsPlayed = 0
-    cardsDrawn = @ruleBase.drawRule
+    setup_new_turn
     hand = player.hand
-    while cardsPlayed < @ruleBase.playRule && !winner && hand.length > 0
+    while !winner && !ready_to_progress
       @interface.printPermanents(player)
+
       cardToPlay = @interface.select_a_card(hand, "Select a card from your hand to play")
+
+      post_card_play_clean_up(player, cardToPlay)
+
+      hand = player.hand # really a sad sideeffect of much statefull programming
+      @interface.information "played: #{@cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
+    end
+  end
+
+  def setup_new_turn
+    @cardsPlayed = 0
+    @cardsDrawn = @ruleBase.drawRule
+  end
+
+  def ready_to_progress
+    avtive_player_has_cards = active_player.hand.length > 0
+    @cardsPlayed >= @ruleBase.playRule || !avtive_player_has_cards
+  end
+
+  def post_card_play_clean_up(player, cardToPlay)
       cardToPlay.play(player, self)
-      cardsPlayed += 1
+      @cardsPlayed += 1
       checkForWinner # should check for a winner before discarding
       enforceNonActivePlayerLimits(player)
       @interface.information "the discard has #{@discardPile.length} card(s) in it"
       # do something if the discard need reshufleing
-      cardsDrawn = replenishHand(cardsDrawn, player)
-      hand = player.hand # really a sad sideeffect of much statefull programming
-      @interface.information "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
-    end
+      @cardsDrawn = replenishHand(@cardsDrawn, player)
   end
 
   def progress_turn
@@ -147,6 +163,10 @@ class Game
 
   def currentPlayer
     @currentPlayerCounter % @players.length
+  end
+
+  def active_player
+    players[currentPlayer]
   end
 
   def checkForWinner

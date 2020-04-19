@@ -28,16 +28,23 @@ class GameGui < Gosu::Window
             if @new_game_button.is_clicked?
                 puts "I am starting a game then"
                 @game = Game.new(3, @logger)
+                @game.setup_new_turn
             end
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
                 if cardButton.is_clicked?
                     activePlayer = @game.players[@game.currentPlayer]
+
                     cardToPlay = activePlayer.hand[clickedCard]
                     puts "you clicked a card button #{cardToPlay}"
-                    cardToPlay.play(activePlayer, @game)
-                    @game.progress_turn
-                    @player_changed = true
+
+                    @game.post_card_play_clean_up(activePlayer, cardToPlay)
+
+                    if @game.ready_to_progress
+                        @game.progress_turn
+                        @player_changed = true
+                        @game.setup_new_turn
+                    end
                 end
                 clickedCard += 1
             end
