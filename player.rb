@@ -11,6 +11,10 @@ class Player
     @take_another_turn = false
   end
 
+  def remove_card_from_hand(index)
+    @hand.delete_at(index)
+  end
+
   def add_cards_to_hand(cards)
     @hand += cards
   end

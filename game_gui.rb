@@ -35,7 +35,7 @@ class GameGui < Gosu::Window
                 if cardButton.is_clicked?
                     activePlayer = @game.players[@game.currentPlayer]
 
-                    cardToPlay = activePlayer.hand[clickedCard]
+                    cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
                     puts "you clicked a card button #{cardToPlay}"
 
                     @game.post_card_play_clean_up(activePlayer, cardToPlay)
