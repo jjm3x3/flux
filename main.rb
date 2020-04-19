@@ -17,10 +17,11 @@ ARGV.each do |arg|
   end
 end
 
+logger = CliInterface.new(debug)
 if gui
-  GameGui.new.show
+  guiGame = GameGui.new(logger)
+  guiGame.show
 else
-  interface = CliInterface.new(debug)
-  gameDriver = GameDriver.new(Game.new(3, interface), 3, interface)
+  gameDriver = GameDriver.new(Game.new(3, logger), 3, logger)
   gameDriver.run
 end

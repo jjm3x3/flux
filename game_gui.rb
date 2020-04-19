@@ -3,7 +3,7 @@ require './gui_elements/button.rb'
 require './game.rb'
 
 class GameGui < Gosu::Window
-    def initialize
+    def initialize(logger)
         super 640, 480
         self.caption = "Fluxx"
 
@@ -17,6 +17,8 @@ class GameGui < Gosu::Window
         @current_displayed_cards = []
 
         @player_changed = true
+
+        @logger = logger
     end
 
     def button_up(id)
@@ -25,7 +27,7 @@ class GameGui < Gosu::Window
             @left_click_down = false
             if @new_game_button.is_clicked?
                 puts "I am starting a game then"
-                @game = Game.new(3, CliInterface.new(true))
+                @game = Game.new(3, @logger)
             end
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
