@@ -69,9 +69,7 @@ class GameGui < Gosu::Window
         # for main menu
             @new_game_button.draw
         else
-            @font.draw_text("The deck has #{@game.deck.count} cards in it", 10, 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
-            @font.draw_text("The discard pile has #{@game.discardPile.size} cards in it", 10, 10*2 + 20, 1, 1.0, 1.0, Gosu::Color::WHITE)
-            @font.draw_text("The Current rules are: #{@game.ruleBase}", 10, 10*3 + 20 *2, 1, 1.0, 1.0, Gosu::Color::WHITE)
+            draw_game_stats(10, 10)
 
             activePlayer = @game.players[@game.currentPlayer]
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10*4 + 20 *7, 1, 1.0, 1.0, Gosu::Color::WHITE)
@@ -101,6 +99,19 @@ class GameGui < Gosu::Window
                 end
             end
         end
+    end
+
+    def draw_game_stats(x, y)
+        margin = 10
+        previous_lines = 0
+        next_text_y = y + margin * previous_lines + @font.height * previous_lines
+        @font.draw_text("The deck has #{@game.deck.count} cards in it", x, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        previous_lines += 1
+        next_text_y = y + margin * previous_lines + @font.height * previous_lines
+        @font.draw_text("The discard pile has #{@game.discardPile.size} cards in it", x, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        previous_lines += 1
+        next_text_y = y + margin * previous_lines + @font.height * previous_lines
+        @font.draw_text("The Current rules are: #{@game.ruleBase}", 10, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
     end
 
 end
