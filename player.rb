@@ -2,7 +2,7 @@
 class Player
   attr_accessor :keepers, :hand, :take_another_turn
   attr_reader :creepers, :name
-  
+
   def initialize(name, game)
     @name = name
     @keepers = []
@@ -11,20 +11,6 @@ class Player
     @game = game
     @take_another_turn = false
   end
-
-  def takeTurn
-    if(self.has_death?)
-      @game.resolve_death_rule(self)
-    end
-    drawCards
-    @game.playCards(self)
-    @game.discardDownToLimit(self)
-    @game.removeDownToKeeperLimit(self)
-    if(@take_another_turn)
-      @game.currentPlayerCounter -= 1
-      @take_another_turn = false
-    end
-  end 
 
   def drawCards
     @hand += @game.drawCards(self, :draw_rule)

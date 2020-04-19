@@ -5,42 +5,6 @@ describe "player" do
 
     test_outfile = Tempfile.new 'test_output'
 
-    describe "takeTurn" do
-        it "should not call resolve_death_rule if they do not has_death?" do
-            fakeGame = Object.new
-            gameDouble = double("game", :drawCards => ["a card"])
-            allow(gameDouble).to receive(:playCards)
-            allow(gameDouble).to receive(:discardDownToLimit)
-            allow(gameDouble).to receive(:removeDownToKeeperLimit)
-            allow(gameDouble).to receive(:resolve_death_rule)
-            fakePlayer = Player.new("fake boi", gameDouble)
-
-            # execute
-            fakePlayer.takeTurn
-
-            # test
-            expect(gameDouble).to_not have_received(:resolve_death_rule)
-        end
-
-        it "should call resolve_death_rule if they has_death?" do
-            fakeGame = Object.new
-            gameDouble = double("game", :drawCards => ["a card"])
-            allow(gameDouble).to receive(:playCards)
-            allow(gameDouble).to receive(:discardDownToLimit)
-            allow(gameDouble).to receive(:removeDownToKeeperLimit)
-            allow(gameDouble).to receive(:resolve_death_rule)
-            fakePlayer = Player.new("fake boi", gameDouble)
-            deathCreepepr1 = Creeper.new(3, "wanna be death", "you cannot win heh heh")
-            fakePlayer.add_permanent(deathCreepepr1)
-
-            # execute
-            fakePlayer.takeTurn
-
-            # test
-            expect(gameDouble).to have_received(:resolve_death_rule)
-        end
-    end
-
     describe "won?" do
         it "should return false if the game has no goal" do
             # setup

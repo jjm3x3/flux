@@ -16,6 +16,19 @@ class GameDriver
       end
   end
 
+  def takeTurn(activePlayer)
+    if(activePlayer.has_death?)
+      @game.resolve_death_rule(activePlayer)
     end
+    @game.drwaCards(activePlayer, :draw_rule)
+    # activePlayer.drawCards
+    @game.playCards(activePlayer)
+    @game.discardDownToLimit(activePlayer)
+    @game.removeDownToKeeperLimit(activePlayer)
+    if(@take_another_turn)
+      @game.currentPlayerCounter -= 1
+      @take_another_turn = false
+    end
+  end
 
 end
