@@ -1,7 +1,7 @@
 class GameDriver
-  def initialize(players, logger)
+  def initialize(game, players, logger)
       @logger = logger
-      @game = Game.new(players, logger)
+      @game = game
       @interface = TrueCliInterface.new
   end
 
@@ -20,7 +20,7 @@ class GameDriver
     if(activePlayer.has_death?)
       @game.resolve_death_rule(activePlayer)
     end
-    @game.drwaCards(activePlayer, :draw_rule)
+    @game.drawCards(activePlayer, :draw_rule)
     # activePlayer.drawCards
     @game.playCards(activePlayer)
     @game.discardDownToLimit(activePlayer)

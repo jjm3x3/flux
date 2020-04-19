@@ -12,7 +12,8 @@ ARGV.each do |arg|
   end
 end
 
-gameDriver = GameDriver.new(3, CliInterface.new(debug))
+interface = CliInterface.new(debug)
+gameDriver = GameDriver.new(Game.new(3, interface), 3, interface)
 gameDriver.run
 
 
