@@ -15,7 +15,7 @@ describe "GameDriver" do
             allow(gameDouble).to receive(:discardDownToLimit)
             allow(gameDouble).to receive(:removeDownToKeeperLimit)
             allow(gameDouble).to receive(:resolve_death_rule)
-            gameDriver = GameDriver.new(gameDouble, 3, theTestInterface)
+            gameDriver = GameDriver.new(gameDouble, theTestInterface)
 
             userDouble = double("user", :has_death? => false)
             allow(userDouble).to receive(:permanents).and_return([])
@@ -39,7 +39,7 @@ describe "GameDriver" do
             allow(gameDouble).to receive(:discardDownToLimit)
             allow(gameDouble).to receive(:removeDownToKeeperLimit)
             allow(gameDouble).to receive(:resolve_death_rule)
-            gameDriver = GameDriver.new(gameDouble, 3, theTestInterface)
+            gameDriver = GameDriver.new(gameDouble, theTestInterface)
 
             userDouble = double("user", :has_death? => true)
             allow(userDouble).to receive(:permanents).and_return([])

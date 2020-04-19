@@ -1,5 +1,5 @@
 class GameDriver
-  def initialize(game, players, logger)
+  def initialize(game, logger)
       @logger = logger
       @game = game
       @interface = TrueCliInterface.new
