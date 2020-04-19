@@ -32,7 +32,12 @@ class GameGui < Gosu::Window
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
                 if cardButton.is_clicked?
-                    puts "you clicked a card button #{@game.players[@game.currentPlayer].hand[clickedCard]}"
+                    activePlayer = @game.players[@game.currentPlayer]
+                    cardToPlay = activePlayer.hand[clickedCard]
+                    puts "you clicked a card button #{cardToPlay}"
+                    cardToPlay.play(activePlayer, @game)
+                    @game.progress_turn
+                    @player_changed = true
                 end
                 clickedCard += 1
             end
@@ -65,6 +70,7 @@ class GameGui < Gosu::Window
 
             if @player_changed
                 cardsDisplayed = 0
+                @current_displayed_cards = []
                 activePlayer.hand.each do |card|
                     newCardButton = Button.new(self, "#{card}", 20, 10 * (5 + cardsDisplayed) + 20 * (8 + cardsDisplayed))
                     newCardButton.draw
