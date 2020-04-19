@@ -74,7 +74,7 @@ class GameGui < Gosu::Window
             @game_stats.draw(@game)
 
             activePlayer = @game.active_player
-            @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10*4 + 20 *7, 1, 1.0, 1.0, Gosu::Color::WHITE)
+            @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
             if @redraw_hand
 
