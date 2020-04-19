@@ -82,6 +82,6 @@ class RuleBase
   end
 
   def to_s
-    return "\tdraw #{drawRule}\n\tplay #{playRule}\n\thandLimit #{handLimit}\n\tkeeperLimit #{keeperLimit}"
+    return "\n\tdraw #{drawRule}\n\tplay #{playRule}\n\thandLimit #{handLimit}\n\tkeeperLimit #{keeperLimit}"
   end
 end

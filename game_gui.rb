@@ -45,6 +45,10 @@ class GameGui < Gosu::Window
             @new_game_button.draw
         else
             @font.draw_text("The deck has #{@game.deck.count} cards in it", 10, 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
+            @font.draw_text("The discard pile has #{@game.discardPile.size} cards in it", 10, 10*2 + 20, 1, 1.0, 1.0, Gosu::Color::WHITE)
+            @font.draw_text("The Current rules are: #{@game.ruleBase}", 10, 10*3 + 20 *2, 1, 1.0, 1.0, Gosu::Color::WHITE)
+
+            @font.draw_text("It is player #{@game.players[@game.currentPlayer]}'s turn'", 10, 10*4 + 20 *7, 1, 1.0, 1.0, Gosu::Color::WHITE)
         end
     end
 
