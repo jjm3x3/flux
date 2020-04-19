@@ -12,7 +12,7 @@ class GameGui < Gosu::Window
         @font = Gosu::Font.new(20)
 
         @left_click_down = false
-        @new_game_button = Button.new(self, "New Game?")
+        @new_game_button = Button.new(self, "New Game?", 10, 10)
         @game = nil
     end
 

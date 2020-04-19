@@ -1,15 +1,17 @@
 class Button
-    def initialize(window, text)
+    def initialize(window, text, x, y)
         @window = window
-        @font = Gosu::Font.new(20)
         @text = text
+        @x = x
+        @y = y
+        @font = Gosu::Font.new(20)
     end
 
     def draw
         left_click_down = Gosu.button_down? Gosu::MS_LEFT
 
         textcolor = left_click_down && intersects ? Gosu::Color::BLACK : Gosu::Color::WHITE
-        @font.draw_text(@text, 10,10, 1 , 1.0, 1.0, textcolor)
+        @font.draw_text(@text, @x , @y, 1 , 1.0, 1.0, textcolor)
     end
 
     def is_clicked?
@@ -18,7 +20,6 @@ class Button
 
     private
     def intersects
-        text_height = 10
-        @window.mouse_x > 10 && @window.mouse_x < 10 + @font.text_width(@text) && @window.mouse_y > 10 && @window.mouse_y < 10 + @font.height
+        @window.mouse_x > @x && @window.mouse_x < @x + @font.text_width(@text) && @window.mouse_y > @y && @window.mouse_y < @y + @font.height
     end
 end
