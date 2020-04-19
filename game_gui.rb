@@ -14,6 +14,9 @@ class GameGui < Gosu::Window
         @left_click_down = false
         @new_game_button = Button.new(self, "New Game?", 10, 10)
         @game = nil
+        @current_displayed_cards = []
+
+        @player_changed = true
     end
 
     def button_up(id)
@@ -51,13 +54,19 @@ class GameGui < Gosu::Window
             activePlayer = @game.players[@game.currentPlayer]
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10*4 + 20 *7, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
-            cardsDisplayed = 0
-            displayedCards = []
-            activePlayer.hand.each do |card|
-                newCardButton = Button.new(self, "#{card}")
-                newCardButton.draw
-                displayedCards <<
-                cardsDisplayed += 1
+            if @player_changed
+                cardsDisplayed = 0
+                activePlayer.hand.each do |card|
+                    newCardButton = Button.new(self, "#{card}", 20, 10 * (5 + cardsDisplayed) + 20 * (8 + cardsDisplayed))
+                    newCardButton.draw
+                    @current_displayed_cards << newCardButton
+                    cardsDisplayed += 1
+                end
+                @player_changed = false
+            else
+                @current_displayed_cards.each do |cardButton|
+                    cardButton.draw
+                end
             end
         end
     end
