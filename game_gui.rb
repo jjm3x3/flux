@@ -79,5 +79,3 @@ class GameGui < Gosu::Window
     end
 
 end
-
-GameGui.new.show
