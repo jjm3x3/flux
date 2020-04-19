@@ -156,18 +156,6 @@ class Game
     end
   end
 
-  def run
-    loop do
-      activePlayer = @players[currentPlayer]
-      @interface.information "the discard has #{@discardPile.length} card(s) in it"
-      @interface.information "here is the current goal: #{@goal }"
-      @interface.information "here are the current rules:#{@ruleBase}"
-      @interface.information "\n#{activePlayer}'s turn"
-      activePlayer.takeTurn
-      progress_turn
-    end
-  end
-
   def winner
     checkingPlayer = @firstPlayer
     winner = false

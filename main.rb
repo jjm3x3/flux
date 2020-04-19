@@ -1,5 +1,6 @@
 require "./game.rb"
 require "./game_interface.rb"
+require "./game_driver.rb"
 
 debug=false
 
@@ -11,8 +12,8 @@ ARGV.each do |arg|
   end
 end
 
-game = Game.new(3, CliInterface.new(debug))
-game.run
+gameDriver = GameDriver.new(3, CliInterface.new(debug))
+gameDriver.run
 
 
 
