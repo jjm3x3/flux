@@ -28,7 +28,6 @@ class GameGui < Gosu::Window
             if @new_game_button.is_clicked?
                 puts "I am starting a game then"
                 @game = Game.new(3, @logger)
-                @game.setup_new_turn
             end
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
@@ -43,7 +42,6 @@ class GameGui < Gosu::Window
                     if @game.ready_to_progress
                         @game.progress_turn
                         @player_changed = true
-                        @game.setup_new_turn
                     end
                 end
                 clickedCard += 1
@@ -74,6 +72,8 @@ class GameGui < Gosu::Window
 
             activePlayer = @game.players[@game.currentPlayer]
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10*4 + 20 *7, 1, 1.0, 1.0, Gosu::Color::WHITE)
+
+            @game.setup_new_turn
 
             if @player_changed
                 cardsDisplayed = 0
