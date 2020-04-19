@@ -1,5 +1,6 @@
 require 'gosu'
 require './gui_elements/button.rb'
+require './game.rb'
 
 class GameGui < Gosu::Window
     def initialize
@@ -12,6 +13,7 @@ class GameGui < Gosu::Window
 
         @left_click_down = false
         @new_game_button = Button.new(self, "New Game?")
+        @game = nil
     end
 
     def button_up(id)
@@ -20,7 +22,7 @@ class GameGui < Gosu::Window
             @left_click_down = false
             if @new_game_button.is_clicked?
                 puts "I am starting a game then"
-                # Start a game
+                @game = Game.new(3, CliInterface.new(true))
             end
         end
     end
@@ -38,7 +40,9 @@ class GameGui < Gosu::Window
         @bakground_image.draw(0,0,0)
         @cursor.draw(mouse_x, mouse_y, 2, 0.0078125, 0.0078125)
 
-        @new_game_button.draw
+        if !@game
+            @new_game_button.draw
+        end
     end
 
 end
