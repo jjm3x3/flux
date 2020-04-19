@@ -1,4 +1,5 @@
 require 'gosu'
+require './gui_elements/button.rb'
 
 class GameGui < Gosu::Window
     def initialize
@@ -10,12 +11,17 @@ class GameGui < Gosu::Window
         @font = Gosu::Font.new(20)
 
         @left_click_down = false
+        @new_game_button = Button.new(self, "New Game?")
     end
 
     def button_up(id)
         if @left_click_down
             puts "left button released"
             @left_click_down = false
+            if @new_game_button.is_clicked?
+                puts "I am starting a game then"
+                # Start a game
+            end
         end
     end
 
@@ -32,15 +38,9 @@ class GameGui < Gosu::Window
         @bakground_image.draw(0,0,0)
         @cursor.draw(mouse_x, mouse_y, 2, 0.0078125, 0.0078125)
 
-        textcolor = @left_click_down && intersects ? Gosu::Color::BLACK : Gosu::Color::WHITE
-        @font.draw_text("Here is some text", 10,10, 1 , 1.0, 1.0, textcolor)
+        @new_game_button.draw
     end
 
-    private
-    def intersects
-        text_height = 10
-        mouse_x > 10 && mouse_x < 10 + @font.text_width("Here is some text") && mouse_y > 10 && mouse_y < 10 + @font.height
-    end
 end
 
 GameGui.new.show
