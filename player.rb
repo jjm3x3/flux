@@ -11,6 +11,10 @@ class Player
     @take_another_turn = false
   end
 
+  def add_cards_to_hand(cards)
+    @hand += cards
+  end
+
   def add_permanent(permanent1)
     if permanent1.card_type == "Keeper"
       @keepers << permanent1

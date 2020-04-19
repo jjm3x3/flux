@@ -60,7 +60,7 @@ class Game
       drawnCards += @deck.drawCards(expectedNumberOfCards - drawnCards.length)
       end
     end
-    drawnCards
+    player.add_cards_to_hand(drawnCards)
   end
 
   def playCards(player)
