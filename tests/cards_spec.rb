@@ -26,7 +26,7 @@ describe "cards" do
                 fakeGame.define_singleton_method(:resolve_war_rule) do |player|
                     calledResolveWarRule = true
                 end
-                fakePlayer = Player.new("fake boi", fakeGame)
+                fakePlayer = Player.new("fake boi")
                 sut = Keeper.new(16, "Wanna be Peace")
 
                 # exectue
@@ -44,7 +44,7 @@ describe "cards" do
                 fakeGame.define_singleton_method(:resolve_war_rule) do |player|
                     calledResolveWarRule = true
                 end
-                fakePlayer = Player.new("fake boi", fakeGame)
+                fakePlayer = Player.new("fake boi")
                 sut = Keeper.new(11, "not peace")
 
                 # exectue
@@ -60,7 +60,7 @@ describe "cards" do
                 fakeGame.define_singleton_method(:resolve_taxes_rule) do |player|
                     calledResolveTaxesRule = true
                 end
-                fakePlayer = Player.new("fake boi", fakeGame)
+                fakePlayer = Player.new("fake boi")
                 sut = Keeper.new(19, "Wanna be moeny")
 
                 # exectue
@@ -76,7 +76,7 @@ describe "cards" do
                 fakeGame.define_singleton_method(:resolve_taxes_rule) do |player|
                     calledResolveTaxesRule = true
                 end
-                fakePlayer = Player.new("fake boi", fakeGame)
+                fakePlayer = Player.new("fake boi")
                 sut = Keeper.new(11, "Not money")
 
                 # exectue
@@ -97,7 +97,7 @@ describe "cards" do
                 fakeGame.define_singleton_method(:resolve_taxes_rule) do |player|
                     calledResolveTaxesRule = true
                 end
-                fakePlayer = Player.new("fake boi", fakeGame)
+                fakePlayer = Player.new("fake boi")
                 sut = Creeper.new(2, "shut up and take my money (taxes)", "don't go bankrupt")
 
                 # exectue

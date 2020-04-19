@@ -3,12 +3,11 @@ class Player
   attr_accessor :keepers, :hand, :take_another_turn
   attr_reader :creepers, :name
 
-  def initialize(name, game)
+  def initialize(name)
     @name = name
     @keepers = []
     @creepers = []
     @hand = []
-    @game = game
     @take_another_turn = false
   end
 

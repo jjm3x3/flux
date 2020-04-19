@@ -23,7 +23,7 @@ class Game
 
     @players = []
     (1..numberOfPlayers).select do |playerId|
-      @players << Player.new("player" + playerId.to_s, self)
+      @players << Player.new("player" + playerId.to_s)
     end
 
     @players.each do |player|

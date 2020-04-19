@@ -20,7 +20,7 @@ describe "player" do
 
         it "should add a keeper to the players keeper collection if the card is a keeper extra lite version" do
             # setup
-            thePlayer = Player.new("JOE", nil)
+            thePlayer = Player.new("JOE")
             keeper1 = Keeper.new(1, "thing1")
 
             # execute
@@ -31,7 +31,7 @@ describe "player" do
     describe "has_death?" do
         it "should return false if the player does not have the death creeper in front of them" do
             # setup
-            thePlayer = Player.new("JOE", nil)
+            thePlayer = Player.new("JOE")
             deathCreepepr1 = Creeper.new(3, "wanna be death", "you cannot win heh heh")
 
             # execute, test
@@ -40,7 +40,7 @@ describe "player" do
 
         it "should return true if the player has death creeper in front of them" do
             # setup
-            thePlayer = Player.new("JOE", nil)
+            thePlayer = Player.new("JOE")
             deathCreepepr1 = Creeper.new(3, "wanna be death", "you cannot win heh heh")
             thePlayer.add_permanent(deathCreepepr1)
 
