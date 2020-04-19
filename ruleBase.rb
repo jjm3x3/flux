@@ -42,7 +42,7 @@ class RuleBase
     if @playRuleCard
       if @playRuleCard.rule_text[5] == 'a'
         Float::INFINITY
-      else 
+      else
         @playRuleCard.rule_text[5].to_i
       end
     else
