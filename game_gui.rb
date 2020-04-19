@@ -76,6 +76,16 @@ class GameGui < Gosu::Window
             activePlayer = @game.active_player
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
+            @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
+
+            permanentsDisplayed = 0
+            permanents_start_y = 10 + @game_stats.height + 10 + @font.height + 10 + @font.height + 5
+            activePlayer.permanents.each do |card|
+                next_y = permanents_start_y + @font.height * permanentsDisplayed + 5 * permanentsDisplayed
+                @font.draw_text("#{card}", 20, next_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
+                permanentsDisplayed += 1
+            end
+
             if @redraw_hand
 
                 cardsDisplayed = 0
