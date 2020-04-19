@@ -17,6 +17,7 @@ class GameGui < Gosu::Window
         @current_displayed_cards = []
 
         @player_changed = true
+        @redraw_hand = true
 
         @logger = logger
     end
@@ -38,6 +39,8 @@ class GameGui < Gosu::Window
                     puts "you clicked a card button #{cardToPlay}"
 
                     @game.post_card_play_clean_up(activePlayer, cardToPlay)
+
+                    @redraw_hand = true
 
                     if @game.ready_to_progress
                         @game.progress_turn
@@ -73,9 +76,8 @@ class GameGui < Gosu::Window
             activePlayer = @game.players[@game.currentPlayer]
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10*4 + 20 *7, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
-            @game.setup_new_turn
+            if @redraw_hand
 
-            if @player_changed
                 cardsDisplayed = 0
                 @current_displayed_cards = []
                 activePlayer.hand.each do |card|
@@ -84,7 +86,15 @@ class GameGui < Gosu::Window
                     @current_displayed_cards << newCardButton
                     cardsDisplayed += 1
                 end
-                @player_changed = false
+
+                @redraw_hand = false
+
+                if @player_changed
+                    @game.setup_new_turn
+                    @redraw_hand = true
+
+                    @player_changed = false
+                end
             else
                 @current_displayed_cards.each do |cardButton|
                     cardButton.draw
