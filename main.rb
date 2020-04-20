@@ -1,6 +1,6 @@
 require "./game.rb"
 require "./game_interface.rb"
-require "./game_driver.rb"
+require "./game_cli.rb"
 require "./game_gui.rb"
 
 debug=false
@@ -22,6 +22,6 @@ if gui
   guiGame = GameGui.new(logger)
   guiGame.show
 else
-  gameDriver = GameDriver.new(Game.new(3, logger), logger)
+  gameDriver = GameCli.new(Game.new(3, logger), logger)
   gameDriver.run
 end

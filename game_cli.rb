@@ -1,4 +1,4 @@
-class GameDriver
+class GameCli
   def initialize(game, logger)
       @logger = logger
       @game = game
