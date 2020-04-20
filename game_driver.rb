@@ -10,22 +10,20 @@ class GameDriver
         activePlayer = @game.players[@game.currentPlayer]
         @interface.display_game_state(@game)
         @logger.information "\n#{activePlayer}'s turn"
-        takeTurn(activePlayer)
+        if(activePlayer.has_death?)
+          @game.resolve_death_rule(activePlayer)
+        end
+
+        @game.discardDownToLimit(activePlayer)
+        @game.removeDownToKeeperLimit(activePlayer)
+        if(@take_another_turn)
+          @game.currentPlayerCounter -= 1
+          @take_another_turn = false
+        end
         @game.progress_turn
       end
   end
 
-  def takeTurn(activePlayer)
-    if(activePlayer.has_death?)
-      @game.resolve_death_rule(activePlayer)
-    end
-    @game.playCards(activePlayer)
-    @game.discardDownToLimit(activePlayer)
-    @game.removeDownToKeeperLimit(activePlayer)
-    if(@take_another_turn)
-      @game.currentPlayerCounter -= 1
-      @take_another_turn = false
-    end
-  end
+
 
 end
