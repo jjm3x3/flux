@@ -79,19 +79,23 @@ class GameGui < Gosu::Window
             @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
             permanentsDisplayed = 0
-            permanents_start_y = 10 + @game_stats.height + 10 + @font.height + 10 + @font.height + 5
+            permananent_margin = 5
+            permanents_start_y = 10 + @game_stats.height + 10 + @font.height + 10 + @font.height + permananent_margin
             activePlayer.permanents.each do |card|
-                next_y = permanents_start_y + @font.height * permanentsDisplayed + 5 * permanentsDisplayed
+                next_y = permanents_start_y + @font.height * permanentsDisplayed + permananent_margin * permanentsDisplayed
                 @font.draw_text("#{card}", 20, next_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
                 permanentsDisplayed += 1
             end
+            permanents_height = activePlayer.permanents.length * @font.height + activePlayer.permanents.length * permananent_margin
+
+            @font.draw_text("Pick a card to play:", 10, permanents_start_y + permanents_height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
             if @redraw_hand
 
                 cardsDisplayed = 0
                 @current_displayed_cards = []
                 activePlayer.hand.each do |card|
-                    newCardButton = Button.new(self, "#{card}", 20, 10 * (5 + cardsDisplayed) + 20 * (8 + cardsDisplayed))
+                    newCardButton = Button.new(self, "#{card}", 20, (permanents_start_y + permanents_height + 10 + @font.height) + 10 * cardsDisplayed + @font.height * cardsDisplayed)
                     newCardButton.draw
                     @current_displayed_cards << newCardButton
                     cardsDisplayed += 1
