@@ -17,11 +17,14 @@ class GameStats
         @font.draw_text("The discard pile has #{game.discardPile.size} cards in it", @x, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
         previous_lines += 1
         next_text_y = @y + @margin * previous_lines + @font.height * previous_lines
+        @font.draw_text("The Current Goal is: #{game.goal}", @x, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        previous_lines += 1
+        next_text_y = @y + @margin * previous_lines + @font.height * previous_lines
         @font.draw_text("The Current rules are: #{game.ruleBase}", @x, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
     end
 
     def height
-        height_up_to_rules = @margin * 2 + @font.height * 2
+        height_up_to_rules = @margin * 3 + @font.height * 3
 
         number_of_rules = 4
         rule_spacer = 0

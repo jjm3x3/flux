@@ -5,7 +5,7 @@ require './game.rb'
 
 class GameGui < Gosu::Window
     def initialize(logger)
-        super 640, 480
+        super 640, 960
         self.caption = "Fluxx"
 
         @bakground_image = Gosu::Image.new("assets/onlinePurpleSquare.jpg", tileable: true)

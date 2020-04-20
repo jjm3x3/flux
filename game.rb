@@ -11,6 +11,7 @@ class Game
   attr_accessor :deck
   attr_accessor :discardPile
   attr_accessor :currentPlayerCounter
+  attr_reader :goal
 
   def initialize(numberOfPlayers, anInterface = CliInterface.new, aRandom = Random.new, aDeck = Deck.new(anInterface))
 
