@@ -13,15 +13,17 @@ class GameDriver
 
         @game.setup_new_turn
         hand = activePlayer.hand
+        cardsPlayed = 0
         while !@game.ready_to_progress
           @logger.printPermanents(activePlayer)
 
           cardToPlay = @logger.select_a_card(hand, "Select a card from your hand to play")
 
           @game.post_card_play_clean_up(activePlayer, cardToPlay)
+          cardsPlayed += 1
 
           hand = activePlayer.hand # really a sad sideeffect of much statefull programming
-          # @logger.information "played: #{@cardsPlayed} of play: #{@game.ruleBase.playRule}"
+          @logger.information "played: #{cardsPlayed} of play: #{@game.ruleBase.playRule}"
         end
         @game.end_turn_cleanup
       end
