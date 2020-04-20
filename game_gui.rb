@@ -45,7 +45,7 @@ class GameGui < Gosu::Window
                     @redraw_hand = true
 
                     if @game.ready_to_progress
-                        @game.progress_turn
+                        @game.end_turn_cleanup
                         @player_changed = true
                     end
                 end
