@@ -65,6 +65,9 @@ class Game
   end
 
   def setup_new_turn
+    if(active_player.has_death?)
+      resolve_death_rule(active_player)
+    end
     active_player.add_cards_to_hand(drawCards(active_player, :draw_rule))
     @cardsPlayed = 0
     @cardsDrawn = @ruleBase.drawRule

@@ -10,9 +10,6 @@ class GameDriver
         activePlayer = @game.players[@game.currentPlayer]
         @interface.display_game_state(@game)
         @logger.information "\n#{activePlayer}'s turn"
-        if(activePlayer.has_death?)
-          @game.resolve_death_rule(activePlayer)
-        end
 
         @game.setup_new_turn
         hand = activePlayer.hand
