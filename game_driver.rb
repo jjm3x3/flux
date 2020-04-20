@@ -9,7 +9,6 @@ class GameDriver
       loop do
         activePlayer = @game.players[@game.currentPlayer]
         @interface.display_game_state(@game)
-      #   @interface.information "here is the current goal: #{@goal }"
         @logger.information "\n#{activePlayer}'s turn"
         takeTurn(activePlayer)
         @game.progress_turn
@@ -20,7 +19,6 @@ class GameDriver
     if(activePlayer.has_death?)
       @game.resolve_death_rule(activePlayer)
     end
-    # @game.drawCards(activePlayer, :draw_rule)
     @game.playCards(activePlayer)
     @game.discardDownToLimit(activePlayer)
     @game.removeDownToKeeperLimit(activePlayer)
