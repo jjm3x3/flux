@@ -64,21 +64,6 @@ class Game
     drawnCards
   end
 
-  def playCards(player)
-    setup_new_turn
-    hand = player.hand
-    while !winner && !ready_to_progress
-      @interface.printPermanents(player)
-
-      cardToPlay = @interface.select_a_card(hand, "Select a card from your hand to play")
-
-      post_card_play_clean_up(player, cardToPlay)
-
-      hand = player.hand # really a sad sideeffect of much statefull programming
-      @interface.information "played: #{@cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
-    end
-  end
-
   def setup_new_turn
     active_player.add_cards_to_hand(drawCards(active_player, :draw_rule))
     @cardsPlayed = 0

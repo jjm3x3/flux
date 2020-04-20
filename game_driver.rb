@@ -14,6 +14,19 @@ class GameDriver
           @game.resolve_death_rule(activePlayer)
         end
 
+        @game.setup_new_turn
+        hand = activePlayer.hand
+        while !@game.ready_to_progress
+          @logger.printPermanents(activePlayer)
+
+          cardToPlay = @logger.select_a_card(hand, "Select a card from your hand to play")
+
+          @game.post_card_play_clean_up(activePlayer, cardToPlay)
+
+          hand = activePlayer.hand # really a sad sideeffect of much statefull programming
+          # @logger.information "played: #{@cardsPlayed} of play: #{@game.ruleBase.playRule}"
+        end
+
         @game.discardDownToLimit(activePlayer)
         @game.removeDownToKeeperLimit(activePlayer)
         if(@take_another_turn)
@@ -23,7 +36,5 @@ class GameDriver
         @game.progress_turn
       end
   end
-
-
 
 end
