@@ -42,7 +42,7 @@ class RuleBase
     if @playRuleCard
       if @playRuleCard.rule_text[5] == 'a'
         Float::INFINITY
-      else 
+      else
         @playRuleCard.rule_text[5].to_i
       end
     else
@@ -82,6 +82,6 @@ class RuleBase
   end
 
   def to_s
-    return "\tdraw #{drawRule}\n\tplay #{playRule}\n\thandLimit #{handLimit}\n\tkeeperLimit #{keeperLimit}"
+    return "\n\tdraw #{drawRule}\n\tplay #{playRule}\n\thandLimit #{handLimit}\n\tkeeperLimit #{keeperLimit}"
   end
 end

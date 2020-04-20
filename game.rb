@@ -161,21 +161,21 @@ class Game
       activePlayer = @players[currentPlayer]
       @interface.information "the discard has #{@discardPile.length} card(s) in it"
       @interface.information "here is the current goal: #{@goal }"
-      @interface.information "here are the current rules:\n#{@ruleBase}"
+      @interface.information "here are the current rules:#{@ruleBase}"
       @interface.information "\n#{activePlayer}'s turn"
       activePlayer.takeTurn
       progress_turn
     end
   end
 
-  def winner 
+  def winner
     checkingPlayer = @firstPlayer
     winner = false
     @players.each do |player|
       winner ||= player.won?
     end
     @interface.debug "is there a winner? #{winner.to_s}\n"
-    winner 
+    winner
   end
 
   def opponents(of_player)
@@ -272,7 +272,7 @@ class Game
     @players.each do |aPlayer|
       aPlayer.clear_permanents
     end
-    
+
     @interface.debug "how many keepers do I have: #{allPermanents.count} but the length is #{allPermanents.length}"
     @interface.debug "and here they are: \n#{allPermanents}"
     playerCur = @currentPlayerCounter
@@ -317,7 +317,7 @@ class Game
     while cardsDrawn.length > 0
       if playerCur == currentPlayer
         selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to giver to yourself")
-      else 
+      else
         selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to give to #{@players[playerCur]}")
       end
       @players[playerCur].hand << selectedCard
