@@ -88,6 +88,16 @@ class Game
       @cardsDrawn = replenishHand(@cardsDrawn, player)
   end
 
+  def end_turn_cleanup
+    discardDownToLimit(active_player)
+    removeDownToKeeperLimit(active_player)
+    if(@take_another_turn)
+      currentPlayerCounter -= 1
+      @take_another_turn = false
+    end
+    progress_turn
+  end
+
   def progress_turn
     @currentPlayerCounter += 1
   end

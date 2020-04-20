@@ -23,14 +23,7 @@ class GameDriver
           hand = activePlayer.hand # really a sad sideeffect of much statefull programming
           # @logger.information "played: #{@cardsPlayed} of play: #{@game.ruleBase.playRule}"
         end
-
-        @game.discardDownToLimit(activePlayer)
-        @game.removeDownToKeeperLimit(activePlayer)
-        if(@take_another_turn)
-          @game.currentPlayerCounter -= 1
-          @take_another_turn = false
-        end
-        @game.progress_turn
+        @game.end_turn_cleanup
       end
   end
 
