@@ -60,7 +60,7 @@ class Game
       drawnCards += @deck.drawCards(expectedNumberOfCards - drawnCards.length)
       end
     end
-    player.add_cards_to_hand(drawnCards)
+    drawnCards
   end
 
   def playCards(player)
@@ -79,7 +79,7 @@ class Game
   end
 
   def setup_new_turn
-    drawCards(active_player, :draw_rule)
+    active_player.add_cards_to_hand(drawCards(active_player, :draw_rule))
     @cardsPlayed = 0
     @cardsDrawn = @ruleBase.drawRule
   end

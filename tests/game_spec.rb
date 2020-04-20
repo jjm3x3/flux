@@ -1255,7 +1255,7 @@ describe "game" do
             theGame.playCards(theFirstPlayer)
 
             # test
-            startingHandSize = 3
+            startingHandSize = 3 + 1 # since we now draw cards in the playCards method
             expect(theFirstPlayer.hand.size).to eq startingHandSize
         end
     end
