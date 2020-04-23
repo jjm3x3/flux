@@ -121,23 +121,6 @@ describe "game" do
         end
     end
 
-    describe "playCards" do
-        it "should play cards..... :?" do
-            # setup
-            input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream,test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theFirstPlayer = theGame.players[0]
-            theFirstPlayer.hand.unshift(FakeCard.new("thing1"))
-            theGame.currentPlayerCounter = 0
-
-            # execute
-            theGame.playCards(theFirstPlayer)
-
-            # test
-        end
-    end
-
     describe "removeDownToKeeperLimit" do
         it "should make sure that the player has no more keepers than the current keeper limit" do
             # setup

@@ -4,6 +4,7 @@ class GameDriver
     def initialize(game, logger)
         @game = game
         @logger = logger
+        @cardsPlayed = 0
     end
 
     def setup_new_turn
