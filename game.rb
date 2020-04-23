@@ -64,40 +64,6 @@ class Game
     drawnCards
   end
 
-  def setup_new_turn
-    if(active_player.has_death?)
-      resolve_death_rule(active_player)
-    end
-    active_player.add_cards_to_hand(drawCards(active_player, :draw_rule))
-    @cardsPlayed = 0
-    @cardsDrawn = @ruleBase.drawRule
-  end
-
-  def ready_to_progress
-    avtive_player_has_cards = active_player.hand.length > 0
-    @cardsPlayed >= @ruleBase.playRule || !avtive_player_has_cards
-  end
-
-  def post_card_play_clean_up(player, cardToPlay)
-      cardToPlay.play(player, self)
-      @cardsPlayed += 1
-      checkForWinner # should check for a winner before discarding
-      enforceNonActivePlayerLimits(player)
-      @interface.information "the discard has #{@discardPile.length} card(s) in it"
-      # do something if the discard need reshufleing
-      @cardsDrawn = replenishHand(@cardsDrawn, player)
-  end
-
-  def end_turn_cleanup
-    discardDownToLimit(active_player)
-    removeDownToKeeperLimit(active_player)
-    if(@take_another_turn)
-      currentPlayerCounter -= 1
-      @take_another_turn = false
-    end
-    progress_turn
-  end
-
   def progress_turn
     @currentPlayerCounter += 1
   end
@@ -167,13 +133,6 @@ class Game
 
   def active_player
     players[currentPlayer]
-  end
-
-  def checkForWinner
-    if winner
-      puts "the game is over!!!!==============\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"
-      exit 0
-    end
   end
 
   def winner

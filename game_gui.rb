@@ -31,21 +31,22 @@ class GameGui < Gosu::Window
             if @new_game_button.is_clicked?
                 puts "I am starting a game then"
                 @game = Game.new(3, @logger)
+                @game_driver = GameDriver.new(@game, @logger)
             end
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
                 if cardButton.is_clicked?
-                    activePlayer = @game.active_player
+                    activePlayer = @game_driver.active_player
 
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
                     puts "you clicked a card button #{cardToPlay}"
 
-                    @game.post_card_play_clean_up(activePlayer, cardToPlay)
+                    @game_driver.post_card_play_clean_up(activePlayer, cardToPlay)
 
                     @redraw_hand = true
 
-                    if @game.ready_to_progress
-                        @game.end_turn_cleanup
+                    if @game_driver.ready_to_progress
+                        @game_driver.end_turn_cleanup
                         @player_changed = true
                     end
                 end
@@ -67,13 +68,13 @@ class GameGui < Gosu::Window
         @bakground_image.draw(0,0,0)
         @cursor.draw(mouse_x, mouse_y, 2, 0.0078125, 0.0078125)
 
-        if !@game
+        if !@game_driver
         # for main menu
             @new_game_button.draw
         else
             @game_stats.draw(@game)
 
-            activePlayer = @game.active_player
+            activePlayer = @game_driver.active_player
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
             @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
@@ -104,7 +105,7 @@ class GameGui < Gosu::Window
                 @redraw_hand = false
 
                 if @player_changed
-                    @game.setup_new_turn
+                    @game_driver.setup_new_turn
                     @redraw_hand = true
 
                     @player_changed = false
