@@ -42,14 +42,15 @@ class GameDriver
       @game.progress_turn
     end
 
+    def active_player
+        @game.active_player
+    end
+
+    private
     def checkForWinner
       if @game.winner
         puts "the game is over!!!!==============\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"
         exit 0
       end
-    end
-
-    def active_player
-        @game.active_player
     end
 end
