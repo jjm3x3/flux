@@ -45,7 +45,7 @@ class GameGui < Gosu::Window
 
                     @redraw_hand = true
 
-                    if @game_driver.ready_to_progress
+                    if @game_driver.turn_over?
                         @game_driver.end_turn_cleanup
                         @player_changed = true
                     end

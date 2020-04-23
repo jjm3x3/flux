@@ -14,7 +14,7 @@ class GameCli
         @game_driver.setup_new_turn
         hand = activePlayer.hand
         cardsPlayed = 0
-        while !@game_driver.ready_to_progress
+        while !@game_driver.turn_over?
           @logger.printPermanents(activePlayer)
 
           cardToPlay = @logger.select_a_card(hand, "Select a card from your hand to play")

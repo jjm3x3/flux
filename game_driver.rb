@@ -17,7 +17,7 @@ class GameDriver
       @cardsDrawn = drawnCards.length
     end
 
-    def ready_to_progress
+    def turn_over?
       avtive_player_has_cards = active_player.hand.length > 0
       @cardsPlayed >= @game.ruleBase.playRule || !avtive_player_has_cards
     end
