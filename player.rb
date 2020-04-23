@@ -1,6 +1,6 @@
 
 class Player
-  attr_accessor :keepers, :hand, :take_another_turn
+  attr_accessor :keepers, :hand
   attr_reader :creepers, :name
 
   def initialize(name)
@@ -8,7 +8,6 @@ class Player
     @keepers = []
     @creepers = []
     @hand = []
-    @take_another_turn = false
   end
 
   def remove_card_from_hand(index)
