@@ -74,6 +74,7 @@ class GameGui < Gosu::Window
         # for main menu
             @new_game_button.draw
         else
+            @new_game_button.set_visibility(false)
             @game_stats.draw(@game)
 
             activePlayer = @game_driver.active_player

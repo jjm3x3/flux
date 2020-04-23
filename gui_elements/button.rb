@@ -5,6 +5,7 @@ class Button
         @x = x
         @y = y
         @font = Gosu::Font.new(20)
+        @visible = true
     end
 
     def draw
@@ -15,7 +16,11 @@ class Button
     end
 
     def is_clicked?
-        intersects
+        intersects && @visible
+    end
+
+    def set_visibility(is_visible)
+        @visible = is_visible
     end
 
     private
