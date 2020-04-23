@@ -1,6 +1,7 @@
 require 'gosu'
 require './gui_elements/button.rb'
 require './gui_elements/game_stats.rb'
+require './gui_elements/dialog.rb'
 require './game.rb'
 
 class GameGui < Gosu::Window
@@ -21,6 +22,7 @@ class GameGui < Gosu::Window
         @redraw_hand = true
 
         @logger = logger
+        @are_you_sure_dialog = Dialog.new
     end
 
     def button_up(id)
@@ -70,6 +72,7 @@ class GameGui < Gosu::Window
     def draw
         @bakground_image.draw(0,0,0)
 
+        @are_you_sure_dialog.draw
         if !@game_driver
         # for main menu
             @new_game_button.draw
