@@ -8,7 +8,7 @@ class Dialog
 
     def draw
         if @visible
-            @baground_image.draw(100, 100, 2, 0.25, 0.25)
+            @baground_image.draw(100, 100, ZOrder::DIALOG, 0.25, 0.25)
         end
     end
 
