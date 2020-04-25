@@ -33,7 +33,7 @@ class GameGui < Gosu::Window
                 @are_you_sure_dialog.handle_result do |clicked|
                     if clicked == :yes_clicked
                         puts "I am starting a game then"
-                        @game = Game.new(3, @logger)
+                        @game = Game.new(3, @logger, self)
                         @game_driver = GameDriver.new(@game, @logger)
                     elsif clicked == :no_clicked
                         puts "no selected"
@@ -135,6 +135,10 @@ class GameGui < Gosu::Window
                 end
             end
         end
+    end
+
+    # "TrueGuiInterface" stuff
+    def select_a_card(card_list, prompt="Select a card", &block)
     end
 
 end
