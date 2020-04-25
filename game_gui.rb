@@ -22,7 +22,7 @@ class GameGui < Gosu::Window
         @redraw_hand = true
 
         @logger = logger
-        @are_you_sure_dialog = Dialog.new
+        @are_you_sure_dialog = Dialog.new(self)
     end
 
     def button_up(id)
