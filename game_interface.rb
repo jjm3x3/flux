@@ -122,6 +122,19 @@ class TrueCliInterface
     @output_stream.puts "here is the current goal: #{game.goal}"
     @output_stream.puts "here are the current rules:#{game.ruleBase}"
   end
+
+  def select_a_card(card_list, prompt="select a card")
+    @output_stream.puts prompt
+    @output_stream.puts StringFormattingUtilities.indexed_display(card_list)
+    whichCard = get_input.to_i
+    card_list.delete_at(whichCard)
+  end
+
+  private
+  def get_input
+    input = @input_stream.gets
+    input.strip
+  end
 end
 
 class TrueTestInterface
