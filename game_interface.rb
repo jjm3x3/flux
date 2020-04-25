@@ -127,7 +127,8 @@ class TrueCliInterface
     @output_stream.puts prompt
     @output_stream.puts StringFormattingUtilities.indexed_display(card_list)
     whichCard = get_input.to_i
-    card_list.delete_at(whichCard)
+    card_to_play = card_list.delete_at(whichCard)
+    yield(card_to_play)
   end
 
   private
