@@ -54,6 +54,7 @@ class CardDialog
         @visible = false
         @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
         @font = Gosu::Font.new(20)
+        @card_list = card_list
         @card_buttons = []
         cardsDisplayed = 0
         card_list.each do |card|
@@ -85,6 +86,12 @@ class CardDialog
     end
 
     def handle_result
-        puts "need to do some handling"
+        cardIndex = 0
+        @card_buttons.each do |card_button|
+            if card_button.is_clicked?
+                puts "#{@card_list[cardIndex]} was selected"
+            end
+            cardIndex += 1
+        end
     end
 end
