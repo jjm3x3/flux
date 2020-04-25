@@ -119,9 +119,16 @@ class TrueCliInterface
 end
 
 class TrueTestInterface
+  attr_reader :card_list
   def initialize(input, output)
     @input_stream = input
     @output_stream = output
+  end
+
+  def select_a_card(card_list, prompt)
+    @card_list = card_list
+    whichCard = @input_stream.gets.strip.to_i
+    card_list.delete_at(whichCard)
   end
 end
 
