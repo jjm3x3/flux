@@ -48,3 +48,43 @@ class Dialog
     end
 
 end
+
+class CardDialog
+    def initialize(window, card_list, &block)
+        @visible = false
+        @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
+        @font = Gosu::Font.new(20)
+        @card_buttons = []
+        cardsDisplayed = 0
+        card_list.each do |card|
+            @card_buttons << Button.new(window, "#{card}", 120, 120 + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::DIALOG_ITEMS)
+            cardsDisplayed += 1
+        end
+
+        @handle_result_block = block
+    end
+
+    def draw
+        if @visible
+            @baground_image.draw(100, 100, ZOrder::DIALOG, 0.25, 0.25)
+            @card_buttons.each do |card_button|
+                card_button.draw
+            end
+        end
+    end
+
+    def show
+        @visible = true
+        @card_buttons.each do |card_button|
+            card_button.set_visibility true
+        end
+    end
+
+    def is_visible?
+        @visible
+    end
+
+    def handle_result
+        puts "need to do some handling"
+    end
+end
