@@ -11,6 +11,7 @@ class Game
   attr_accessor :deck
   attr_accessor :discardPile
   attr_accessor :currentPlayerCounter
+  attr_reader :goal
 
   def initialize(numberOfPlayers, anInterface = CliInterface.new, aRandom = Random.new, aDeck = Deck.new(anInterface))
 
@@ -23,7 +24,7 @@ class Game
 
     @players = []
     (1..numberOfPlayers).select do |playerId|
-      @players << Player.new("player" + playerId.to_s, self)
+      @players << Player.new("player" + playerId.to_s)
     end
 
     @players.each do |player|
@@ -61,25 +62,6 @@ class Game
       end
     end
     drawnCards
-  end
-
-  def playCards(player)
-    cardsPlayed = 0
-    cardsDrawn = @ruleBase.drawRule
-    hand = player.hand
-    while cardsPlayed < @ruleBase.playRule && !winner && hand.length > 0
-      @interface.printPermanents(player)
-      cardToPlay = @interface.select_a_card(hand, "Select a card from your hand to play")
-      cardToPlay.play(player, self)
-      cardsPlayed += 1
-      checkForWinner # should check for a winner before discarding
-      enforceNonActivePlayerLimits(player)
-      @interface.information "the discard has #{@discardPile.length} card(s) in it"
-      # do something if the discard need reshufleing
-      cardsDrawn = replenishHand(cardsDrawn, player)
-      hand = player.hand # really a sad sideeffect of much statefull programming
-      @interface.information "played: #{cardsPlayed} of play: #{@ruleBase.playRule}, winner? (#{!winner}), hand_length: #{hand.length}"
-    end
   end
 
   def progress_turn
@@ -149,33 +131,26 @@ class Game
     @currentPlayerCounter % @players.length
   end
 
-  def checkForWinner
-    if winner
-      puts "the game is over!!!!==============\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"
-      exit 0
-    end
-  end
-
-  def run
-    loop do
-      activePlayer = @players[currentPlayer]
-      @interface.information "the discard has #{@discardPile.length} card(s) in it"
-      @interface.information "here is the current goal: #{@goal }"
-      @interface.information "here are the current rules:#{@ruleBase}"
-      @interface.information "\n#{activePlayer}'s turn"
-      activePlayer.takeTurn
-      progress_turn
-    end
+  def active_player
+    players[currentPlayer]
   end
 
   def winner
     checkingPlayer = @firstPlayer
     winner = false
     @players.each do |player|
-      winner ||= player.won?
+      winner ||= has_player_won?(player)
     end
     @interface.debug "is there a winner? #{winner.to_s}\n"
     winner
+  end
+
+  def has_player_won?(player)
+    if hasGoal?
+      goalMet?(player) && !player.creepers.any?
+    else
+      false
+    end
   end
 
   def opponents(of_player)
@@ -469,7 +444,7 @@ class Game
       if(eligiablePermanents.size == 0)
         discard(player.take_death)
       else
-        selectedCard = @interface.select_a_card(eligiablePermanents, "Which permanent would you like to discard?")
+        selectedCard = @interface.select_a_card(eligiablePermanents, "Which permanent would you like to discard to death?")
         player.discard_permanent(selectedCard)
       end
     end

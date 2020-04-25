@@ -1,41 +1,21 @@
 
 class Player
-  attr_accessor :keepers, :hand, :take_another_turn
+  attr_accessor :keepers, :hand
   attr_reader :creepers, :name
-  
-  def initialize(name, game)
+
+  def initialize(name)
     @name = name
     @keepers = []
     @creepers = []
     @hand = []
-    @game = game
-    @take_another_turn = false
   end
 
-  def takeTurn
-    if(self.has_death?)
-      @game.resolve_death_rule(self)
-    end
-    drawCards
-    @game.playCards(self)
-    @game.discardDownToLimit(self)
-    @game.removeDownToKeeperLimit(self)
-    if(@take_another_turn)
-      @game.currentPlayerCounter -= 1
-      @take_another_turn = false
-    end
-  end 
-
-  def drawCards
-    @hand += @game.drawCards(self, :draw_rule)
+  def remove_card_from_hand(index)
+    @hand.delete_at(index)
   end
 
-  def won?
-    if @game.hasGoal?
-      @game.goalMet?(self) && !@creepers.any?
-    else
-      false
-    end
+  def add_cards_to_hand(cards)
+    @hand += cards
   end
 
   def add_permanent(permanent1)
