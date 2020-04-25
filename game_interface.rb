@@ -80,6 +80,12 @@ class GameInterface
   end
 
   def indexed_display(list)
+    return StringFormattingUtilities.indexed_display(list)
+  end
+end
+
+class StringFormattingUtilities
+  def self.indexed_display(list)
     i = 0
     numbering = "   "
     list.map do |card|
