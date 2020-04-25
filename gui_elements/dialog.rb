@@ -33,4 +33,18 @@ class Dialog
         @no_button.set_visibility false
     end
 
+    def is_visible?
+        @visible
+    end
+
+    def handle_result
+        if @yes_button.is_clicked?
+            yield(:yes_clicked)
+        elsif @no_button.is_clicked?
+            yield(:no_clicked)
+        else
+            yield(:nothing_clicked)
+        end
+    end
+
 end

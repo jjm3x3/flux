@@ -29,11 +29,22 @@ class GameGui < Gosu::Window
         if @left_click_down
             puts "left button released"
             @left_click_down = false
+            if @are_you_sure_dialog.is_visible?
+                @are_you_sure_dialog.handle_result do |clicked|
+                    if clicked == :yes_clicked
+                        puts "I am starting a game then"
+                        @game = Game.new(3, @logger)
+                        @game_driver = GameDriver.new(@game, @logger)
+                    elsif clicked == :no_clicked
+                        puts "no selected"
+                    else
+                        puts "nothing selected"
+                    end
+
+                end
+            end
             if @new_game_button.is_clicked?
                 @are_you_sure_dialog.show
-                puts "I am starting a game then"
-                @game = Game.new(3, @logger)
-                @game_driver = GameDriver.new(@game, @logger)
             end
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
