@@ -40,8 +40,8 @@ class GameGui < Gosu::Window
                     else
                         puts "nothing selected"
                     end
-
                 end
+                return
             end
             if @new_game_button.is_clicked?
                 @are_you_sure_dialog.show
