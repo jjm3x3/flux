@@ -118,6 +118,13 @@ class TrueCliInterface
   end
 end
 
+class TrueTestInterface
+  def initialize(input, output)
+    @input_stream = input
+    @output_stream = output
+  end
+end
+
 class TestInterface < GameInterface
   attr_accessor :cardList
   attr_accessor :prompted

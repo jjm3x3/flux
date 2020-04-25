@@ -277,7 +277,7 @@ describe "game" do
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             aStackedDeck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface, Random.new, aStackedDeck)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, TrueTestInterface.new(input_stream, test_outfile), Random.new, aStackedDeck)
             keeper1 = Keeper.new(1, "thing1")
             keeper2 = Keeper.new(2, "thing2")
             theGame.setGoal(Goal.new("do a thing", [keeper1, keeper2], "some rule text"))
@@ -824,7 +824,7 @@ describe "game" do
             random.define_singleton_method(:rand) do |num|
                 0
             end
-            theGame = Game.new(numberOfPlayers=2, theTestInterface, random)
+            theGame = Game.new(numberOfPlayers=2, theTestInterface, TrueTestInterface.new(input_stream, test_outfile), random)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new(0, "Thing1")
             warCreeper = Creeper.new(1, "I am WAR", "some rules text")
