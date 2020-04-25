@@ -22,7 +22,9 @@ class GameGui < Gosu::Window
         @redraw_hand = true
 
         @logger = logger
+
         @are_you_sure_dialog = Dialog.new(self)
+        @current_dialog = nil
     end
 
     def button_up(id)
@@ -85,6 +87,9 @@ class GameGui < Gosu::Window
         @bakground_image.draw(0,0,0)
 
         @are_you_sure_dialog.draw
+        if @current_dialog != nil
+            @current_dialog.draw
+        end
         if !@game_driver
         # for main menu
             @new_game_button.draw
@@ -139,6 +144,8 @@ class GameGui < Gosu::Window
 
     # "TrueGuiInterface" stuff
     def select_a_card(card_list, prompt="Select a card", &block)
+        @current_dialog = CardDialog.new(self, card_list, &block)
+        @current_dialog.show
     end
 
 end
