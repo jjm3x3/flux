@@ -31,6 +31,9 @@ class GameGui < Gosu::Window
         if @left_click_down
             puts "left button released"
             @left_click_down = false
+            if @current_dialog != nil && @current_dialog.is_visible?
+                @current_dialog.handle_result
+            end
             if @are_you_sure_dialog.is_visible?
                 @are_you_sure_dialog.handle_result do |clicked|
                     if clicked == :yes_clicked
