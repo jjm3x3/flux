@@ -78,6 +78,7 @@ class GameGui < Gosu::Window
             @new_game_button.draw
         else
             @new_game_button.set_visibility(false)
+            @are_you_sure_dialog.hide
             @game_stats.draw(@game)
 
             activePlayer = @game_driver.active_player

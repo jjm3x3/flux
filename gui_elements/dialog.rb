@@ -21,4 +21,10 @@ class Dialog
         end
     end
 
+    def hide
+        @visible = false
+        @yes_button.set_visibility false
+        @no_button.set_visibility false
+    end
+
 end
