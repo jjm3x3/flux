@@ -2,7 +2,7 @@ require "./gui_elements/zorder.rb"
 
 class Dialog
     def initialize(window)
-        @visible = true
+        @visible = false
         @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
         @font = Gosu::Font.new(20)
         @yes_button = Button.new(window, "Yes", 120, 120, ZOrder::DIALOG_ITEMS)
@@ -19,6 +19,12 @@ class Dialog
             @yes_button.draw
             @no_button.draw
         end
+    end
+
+    def show
+        @visible = true
+        @yes_button.set_visibility true
+        @no_button.set_visibility true
     end
 
     def hide

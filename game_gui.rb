@@ -30,6 +30,7 @@ class GameGui < Gosu::Window
             puts "left button released"
             @left_click_down = false
             if @new_game_button.is_clicked?
+                @are_you_sure_dialog.show
                 puts "I am starting a game then"
                 @game = Game.new(3, @logger)
                 @game_driver = GameDriver.new(@game, @logger)
