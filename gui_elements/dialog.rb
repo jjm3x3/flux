@@ -89,7 +89,9 @@ class CardDialog
         cardIndex = 0
         @card_buttons.each do |card_button|
             if card_button.is_clicked?
-                puts "#{@card_list[cardIndex]} was selected"
+                selectedCard = @card_list[cardIndex]
+                puts "#{selectedCard} was selected"
+                @handle_result_block.call(selectedCard)
             end
             cardIndex += 1
         end
