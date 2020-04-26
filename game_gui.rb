@@ -64,9 +64,13 @@ class GameGui < Gosu::Window
         end
     end
 
+    def needs_cursor?
+        true
+    end
+
     def draw
         @bakground_image.draw(0,0,0)
-        @cursor.draw(mouse_x, mouse_y, 2, 0.0078125, 0.0078125)
+        #@cursor.draw(mouse_x, mouse_y, 2, 0.0078125, 0.0078125)
 
         if !@game_driver
         # for main menu
