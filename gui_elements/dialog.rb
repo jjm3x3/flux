@@ -92,8 +92,10 @@ class CardDialog
                 selectedCard = @card_list[cardIndex]
                 puts "#{selectedCard} was selected"
                 @handle_result_block.call(selectedCard)
+                return true
             end
             cardIndex += 1
         end
+        return false
     end
 end
