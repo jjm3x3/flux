@@ -1,7 +1,12 @@
+require 'concurrent'
+
 class GameDriver
+    include Concurrent::Async
+
     attr_reader :game
 
     def initialize(game, logger)
+        super()
         @game = game
         @logger = logger
         @cardsPlayed = 0
