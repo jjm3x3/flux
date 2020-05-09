@@ -18,6 +18,8 @@ ARGV.each do |arg|
   end
 end
 
+puts "starting game where debug: #{debug} and gui: #{gui}"
+
 logger = CliInterface.new(debug)
 if gui
   guiGame = GameGui.new(logger)
