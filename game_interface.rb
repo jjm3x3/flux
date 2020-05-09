@@ -1,3 +1,5 @@
+require 'concurrent'
+
 class GameInterface
 
   def printKeepers(player, prompt="here are the keepers you have:")
@@ -110,7 +112,10 @@ class CliInterface < GameInterface
 end
 
 class TrueCliInterface
+  include Concurrent::Async
+
   def initialize
+    super()
     @output_stream = $stdout
     @input_stream = $stdin
   end
