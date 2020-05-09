@@ -1,5 +1,8 @@
+require 'concurrent'
 
 class Card
+  include Concurrent::Async
+
   attr_reader :card_type
   attr_reader :name
 

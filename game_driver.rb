@@ -28,7 +28,7 @@ class GameDriver
     end
 
     def post_card_play_clean_up(player, cardToPlay)
-        cardToPlay.play(player, @game)
+        cardToPlay.await.play(player, @game)
         @cardsPlayed += 1
         checkForWinner # should check for a winner before discarding
         @game.enforceNonActivePlayerLimits(player)
