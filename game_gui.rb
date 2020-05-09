@@ -159,15 +159,23 @@ class GameGui < Gosu::Window
     def select_a_card(card_list, prompt="Select a card", &block)
         puts "does this even get called?"
         @current_dialog_lock.with_write_lock do
-            # @current_dialog = CardDialog.new(self, &block)
+            @logger.debug "inside lock..."
             @current_dialog.set_cards(card_list)
+            @logger.debug "set cards"
+            response = IVar.new()
+            @logger.debug "create ivar"
+            @current_dialog.set_response(response)
+            @logger.debug "set response"
             @current_dialog.set_selection_callback(&block)
+            @logger.debug "set selection call back"
             @current_dialog.show
+            @logger.debug "call show"
         end
-        @logger.debug puts "dialog showed...?"
-        found_result = nil
-        current_task = nil
-        sleep 10
+        @logger.debug "dialog showed...?"
+        response.value
+        # found_result = nil
+        # current_task = nil
+        # sleep 10
         # while !found_result
         #     if !current_task || (current_task && current_task.state == :fulfilled)
         #         current_task = @timer_set.post(100) do

@@ -57,6 +57,7 @@ class CardDialog
         @font = Gosu::Font.new(20)
         @card_buttons = []
         @result = Concurrent::AtomicReference.new
+        @current_result = nil
     end
 
     def set_cards(card_list)
@@ -100,6 +101,10 @@ class CardDialog
         @visible
     end
 
+    def set_response(new_i_var)
+        @current_result = new_i_var
+    end
+
     def get_result
         @result.get
     end
@@ -118,6 +123,7 @@ class CardDialog
                 #     @handle_result_block.call(selectedCard)
                 # end
                 @result.set(selectedCard)
+                @current_result.set selectedCard
                 return true
             end
             cardIndex += 1
