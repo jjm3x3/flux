@@ -56,12 +56,12 @@ class GameGui < Gosu::Window
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
                 if cardButton.is_clicked?
-                    activePlayer = @game_driver.active_player
+                    activePlayer = @game_driver.await.active_player.value
 
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
                     puts "you clicked a card button #{cardToPlay}"
 
-                    @game_driver.post_card_play_clean_up(activePlayer, cardToPlay)
+                    @game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
 
                     @redraw_hand = true
 
@@ -103,7 +103,8 @@ class GameGui < Gosu::Window
             @are_you_sure_dialog.hide
             @game_stats.draw(@game)
 
-            activePlayer = @game_driver.active_player
+            activePlayer = @game_driver.await.active_player.value
+            @logger.debug "It is #{activePlayer}'s turn"
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
             @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
@@ -134,7 +135,7 @@ class GameGui < Gosu::Window
                 @redraw_hand = false
 
                 if @player_changed
-                    @game_driver.setup_new_turn
+                    @game_driver.await.setup_new_turn
                     @redraw_hand = true
 
                     @player_changed = false
