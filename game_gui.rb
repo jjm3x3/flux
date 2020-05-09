@@ -26,15 +26,20 @@ class GameGui < Gosu::Window
 
         @are_you_sure_dialog = Dialog.new(self)
         @current_dialog = CardDialog.new(self)
+        @current_dialog_lock = Concurrent::ReadWriteLock.new
+        @timer_set = Concurrent::TimerSet.new
     end
 
     def button_up(id)
         if @left_click_down
             puts "left button released"
             @left_click_down = false
-            if @current_dialog != nil && @current_dialog.is_visible?
-                if @current_dialog.handle_result
-                    @current_dialog.hide
+
+            @current_dialog_lock.with_write_lock do
+                if @current_dialog != nil && @current_dialog.is_visible?
+                    if @current_dialog.handle_result
+                        @current_dialog.hide
+                    end
                 end
             end
             if @are_you_sure_dialog.is_visible?
@@ -64,12 +69,12 @@ class GameGui < Gosu::Window
 
                     @game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
 
-                    @redraw_hand = true
+                    # @redraw_hand = true
 
-                    if @game_driver.turn_over?
-                        @game_driver.end_turn_cleanup
-                        @player_changed = true
-                    end
+                    # if @game_driver.turn_over?
+                    #     @game_driver.end_turn_cleanup
+                    #     @player_changed = true
+                    # end
                 end
                 clickedCard += 1
             end
@@ -93,8 +98,10 @@ class GameGui < Gosu::Window
         @bakground_image.draw(0,0,0)
 
         @are_you_sure_dialog.draw
-        if @current_dialog != nil
-            @current_dialog.draw
+        @current_dialog_lock.with_read_lock do
+            if @current_dialog != nil
+                @current_dialog.draw
+            end
         end
         if !@game_driver
         # for main menu
@@ -151,9 +158,27 @@ class GameGui < Gosu::Window
     # "TrueGuiInterface" stuff
     def select_a_card(card_list, prompt="Select a card", &block)
         puts "does this even get called?"
-        @current_dialog.set_cards(card_list)
-        @current_dialog.set_selection_callback(&block)
-        @current_dialog.show
+        @current_dialog_lock.with_write_lock do
+            # @current_dialog = CardDialog.new(self, &block)
+            @current_dialog.set_cards(card_list)
+            @current_dialog.set_selection_callback(&block)
+            @current_dialog.show
+        end
+        @logger.debug puts "dialog showed...?"
+        found_result = nil
+        current_task = nil
+        sleep 10
+        # while !found_result
+        #     if !current_task || (current_task && current_task.state == :fulfilled)
+        #         current_task = @timer_set.post(100) do
+        #             puts "stuck in a loop"
+        #             found_result = @current_dialog.get_result
+        #         end
+        #     end
+        # end
+        # @current_dialog_lock.with_write_lock do
+        #     found_result = @current_dialog.reset_result
+        # end
     end
 
 end

@@ -100,13 +100,24 @@ class CardDialog
         @visible
     end
 
+    def get_result
+        @result.get
+    end
+
+    def reset_result
+        @result.set(nil)
+    end
+
     def handle_result
         cardIndex = 0
         @card_buttons.each do |card_button|
             if card_button.is_clicked?
                 selectedCard = @card_list[cardIndex]
                 puts "#{selectedCard} was selected"
-                @handle_result_block.call(selectedCard)
+                # if @handle_result_block
+                #     @handle_result_block.call(selectedCard)
+                # end
+                @result.set(selectedCard)
                 return true
             end
             cardIndex += 1

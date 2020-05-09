@@ -18,12 +18,12 @@ class Deck
     drawnCards = []
     # puts "what is the value of #{@firstCard}"
     # put in for debugging
-    # if @firstCard
-    #   @firstCard = false
-    #   newInjectedCard = Action.new(2,"extra draw 2 an use em", "put some rule text here")
-    #   drawnCards = [newInjectedCard]
-    #   cardsToDraw -= 1
-    # end
+    if @firstCard
+      @firstCard = false
+      newInjectedCard = Action.new(2,"extra draw 2 an use em", "put some rule text here")
+      drawnCards = [newInjectedCard]
+      cardsToDraw -= 1
+    end
     @interface.debug "draw #{cardsToDraw} card(s) from the game..."
 
     drawnCards += drawMultipleCards(cardsToDraw)
