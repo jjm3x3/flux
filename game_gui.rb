@@ -24,7 +24,7 @@ class GameGui < Gosu::Window
         @logger = logger
 
         @are_you_sure_dialog = Dialog.new(self)
-        @current_dialog = nil
+        @current_dialog = CardDialog.new(self)
     end
 
     def button_up(id)
@@ -33,7 +33,7 @@ class GameGui < Gosu::Window
             @left_click_down = false
             if @current_dialog != nil && @current_dialog.is_visible?
                 if @current_dialog.handle_result
-                    @current_dialog = nil
+                    @current_dialog.hide
                 end
             end
             if @are_you_sure_dialog.is_visible?
@@ -150,7 +150,9 @@ class GameGui < Gosu::Window
 
     # "TrueGuiInterface" stuff
     def select_a_card(card_list, prompt="Select a card", &block)
-        @current_dialog = CardDialog.new(self, card_list, &block)
+        puts "does this even get called?"
+        @current_dialog.set_cards(card_list)
+        @current_dialog.set_selection_callback(&block)
         @current_dialog.show
     end
 

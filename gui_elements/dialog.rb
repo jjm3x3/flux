@@ -50,18 +50,26 @@ class Dialog
 end
 
 class CardDialog
-    def initialize(window, card_list, &block)
+    def initialize(window)
+        @window = window
         @visible = false
         @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
         @font = Gosu::Font.new(20)
-        @card_list = card_list
         @card_buttons = []
+        @result = Concurrent::AtomicReference.new
+    end
+
+    def set_cards(card_list)
+        @card_list = card_list
         cardsDisplayed = 0
         card_list.each do |card|
-            @card_buttons << Button.new(window, "#{card}", 120, 120 + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::DIALOG_ITEMS)
+            @card_buttons << Button.new(@window, "#{card}", 120, 120 + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::DIALOG_ITEMS)
             cardsDisplayed += 1
         end
 
+    end
+
+    def set_selection_callback(&block)
         @handle_result_block = block
     end
 
@@ -78,6 +86,13 @@ class CardDialog
         @visible = true
         @card_buttons.each do |card_button|
             card_button.set_visibility true
+        end
+    end
+
+    def hide
+        @visible = false
+        @card_buttons.each do |card_button|
+            card_button.set_visibility false
         end
     end
 
