@@ -60,7 +60,7 @@ class GameGui < Gosu::Window
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
                 if cardButton.is_clicked?
-                    activePlayer = @game_driver.await.active_player.value
+                    activePlayer = @new_game_driver.await.active_player.value
 
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
                     puts "you clicked a card button #{cardToPlay}"
@@ -100,7 +100,7 @@ class GameGui < Gosu::Window
         if @current_dialog != nil
             @current_dialog.draw
         end
-        if !@game_driver
+        if !@new_game_driver
         # for main menu
             @new_game_button.draw
         else
