@@ -1,3 +1,4 @@
+require "concurrent"
 require "./cards/cards.rb"
 require "./deck.rb"
 require "./player.rb"
@@ -6,6 +7,8 @@ require "./game_interface.rb"
 
 
 class Game
+  include Concurrent::Async
+
   attr_accessor :ruleBase
   attr_accessor :players
   attr_accessor :deck
@@ -14,6 +17,7 @@ class Game
   attr_reader :goal
 
   def initialize(numberOfPlayers, anInterface, aTrueInterface = TrueCliInterface.new, aRandom = Random.new, aDeck = Deck.new(anInterface))
+    super()
 
     @logger = anInterface
     @interface = aTrueInterface
