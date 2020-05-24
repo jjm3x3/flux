@@ -24,6 +24,7 @@ class Card
 
   def ==(other_card)
     return false if other_card == nil
+    return false unless other_card.respond_to? :name
     self.name == other_card.name
   end
 
@@ -39,7 +40,7 @@ end
 class Keeper < Card
   @@peace_id = 16
   @@money_id = 19
-  
+
   def initialize(id, name)
     super(1,name)
     @id = id
