@@ -25,4 +25,8 @@ class NewGameDriver
         # do something if the discard need reshufleing
         @cardsDrawn = @game.await.replenishHand(@cardsDrawn, player).value
     end
+
+    def active_player
+        @game.await.active_player.value
+    end
 end
