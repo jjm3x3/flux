@@ -28,6 +28,9 @@ class GameGui < Gosu::Window
         @are_you_sure_dialog = Dialog.new(self)
         @current_dialog = CardDialog.new(self)
         @new_game_driver = nil
+
+        @current_cached_player = nil
+        @current_player_future = nil
     end
 
     def button_up(id)
@@ -46,6 +49,7 @@ class GameGui < Gosu::Window
                         @game = Game.new(3, @logger, GuiInputManager.new(self))
                         @new_game_driver = NewGameDriver.new(@game, @logger)
                         @game_driver = GameDriver.new(@game, @logger)
+                        @current_cached_player = @new_game_driver.await.active_player.value
                     elsif clicked == :no_clicked
                         puts "no selected"
                     else
@@ -73,6 +77,7 @@ class GameGui < Gosu::Window
                     if @game_driver.turn_over?
                         @game_driver.end_turn_cleanup
                         @player_changed = true
+                        setup_cached_player
                     end
                 end
                 clickedCard += 1
@@ -108,7 +113,7 @@ class GameGui < Gosu::Window
             @are_you_sure_dialog.hide
             @game_stats.draw(@game)
 
-            activePlayer = @new_game_driver.await.active_player.value
+            activePlayer = @current_cached_player
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
             @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
@@ -162,6 +167,16 @@ class GameGui < Gosu::Window
         @current_dialog.set_cards(card_list)
         @current_dialog.set_selection_callback(&block)
         @current_dialog.show
+    end
+
+    private
+    def setup_cached_player
+        @current_player_future = @new_game_driver.async.active_player
+        @current_player_future.add_observer do |time, value|
+            @logger.debug "Here is the time #{time}"
+            @logger.debug "Here is the value #{value}"
+            @current_cached_player = value
+        end
     end
 
 end
