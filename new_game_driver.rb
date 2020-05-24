@@ -20,9 +20,9 @@ class NewGameDriver
         @logger.debug "Should only happen at the end"
         @cardsPlayed += 1
         checkForWinner # should check for a winner before discarding
-        @game.enforceNonActivePlayerLimits(player)
+        @game.await.enforceNonActivePlayerLimits(player)
         @logger.information "the discard has #{@game.discardPile.length} card(s) in it"
         # do something if the discard need reshufleing
-        @cardsDrawn = @game.replenishHand(@cardsDrawn, player)
+        @cardsDrawn = @game.await.replenishHand(@cardsDrawn, player).value
     end
 end
