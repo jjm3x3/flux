@@ -169,8 +169,8 @@ class Game
     cardsDrawn = drawCards(player, 2)
     # firstOne = @logger.select_a_card(cardsDrawn, "Which one would you like to play first?")
     select_result = @interface.await.select_a_card(cardsDrawn, "Which one would you like to play first?") do |selected_card|
-      selected_card.play(player, self)
-      cardsDrawn[0].play(player, self)
+      # selected_card.play(player, self)
+      # cardsDrawn[0].play(player, self)
     end
   end
 
