@@ -7,6 +7,7 @@ class NewGameDriver
         super()
         @game = game
         @logger = logger
+        @cardsPlayed = 0
     end
 
     def sleep_for_10
@@ -14,10 +15,14 @@ class NewGameDriver
     end
 
     def post_card_play_clean_up(player, card_to_play)
-        puts "this should get logged sync"
+        @logger.debug "this should get logged sync"
         card_to_play.await.play(player, @game)
-        # sleep 100
-        puts "here is a player #{player}"
-        puts "here is the card #{card_to_play}"
+        @logger.debug "Should only happen at the end"
+        @cardsPlayed += 1
+        checkForWinner # should check for a winner before discarding
+        @game.enforceNonActivePlayerLimits(player)
+        @logger.information "the discard has #{@game.discardPile.length} card(s) in it"
+        # do something if the discard need reshufleing
+        @cardsDrawn = @game.replenishHand(@cardsDrawn, player)
     end
 end
