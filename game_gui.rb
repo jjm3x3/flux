@@ -108,7 +108,7 @@ class GameGui < Gosu::Window
             @are_you_sure_dialog.hide
             @game_stats.draw(@game)
 
-            activePlayer = @game_driver.await.active_player.value
+            activePlayer = @new_game_driver.await.active_player.value
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
             @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
