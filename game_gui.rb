@@ -4,6 +4,7 @@ require './gui_elements/game_stats.rb'
 require './gui_elements/dialog.rb'
 require './game.rb'
 require './gui_input_manager.rb'
+require './new_game_driver.rb'
 
 class GameGui < Gosu::Window
     def initialize(logger)
@@ -26,6 +27,7 @@ class GameGui < Gosu::Window
 
         @are_you_sure_dialog = Dialog.new(self)
         @current_dialog = CardDialog.new(self)
+        @new_game_driver = nil
     end
 
     def button_up(id)
@@ -42,6 +44,7 @@ class GameGui < Gosu::Window
                     if clicked == :yes_clicked
                         puts "I am starting a game then"
                         @game = Game.new(3, @logger, GuiInputManager.new(self))
+                        @new_game_driver = NewGameDriver.new(@game, @logger)
                         @game_driver = GameDriver.new(@game, @logger)
                     elsif clicked == :no_clicked
                         puts "no selected"
@@ -62,7 +65,8 @@ class GameGui < Gosu::Window
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
                     puts "you clicked a card button #{cardToPlay}"
 
-                    @game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
+                    @new_game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
+                    # @game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
 
                     @redraw_hand = true
 
