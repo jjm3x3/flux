@@ -37,6 +37,16 @@ class NewGameDriver
         @logger.debug "Finished post_card_play_clean_up"
     end
 
+    def end_turn_cleanup
+      @game.await.discardDownToLimit(active_player)
+      @game.await.removeDownToKeeperLimit(active_player)
+      if(@take_another_turn)
+        @currentPlayerCounter -= 1
+        @take_another_turn = false
+      end
+      @game.await.progress_turn
+    end
+
     def active_player
         @game.await.active_player.value
     end
