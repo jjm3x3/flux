@@ -25,6 +25,7 @@ if gui
   guiGame = GameGui.new(logger)
   guiGame.show
 else
-  gameDriver = GameCli.new(GameDriver.new(Game.new(3, logger), logger), logger)
+  theGame = Game.new(3, logger)
+  gameDriver = GameCli.new(GameDriver.new(theGame, logger), logger, NewGameDriver.new(theGame, logger))
   gameDriver.run
 end

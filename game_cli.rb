@@ -1,7 +1,8 @@
 class GameCli
-  def initialize(game, logger)
+  def initialize(game, logger, new_game_driver)
       @logger = logger
       @game_driver = game
+      @new_game_driver = new_game_driver
       @interface = TrueCliInterface.new
   end
 
