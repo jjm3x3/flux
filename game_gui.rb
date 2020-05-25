@@ -50,7 +50,7 @@ class GameGui < Gosu::Window
                         puts "I am starting a game then"
                         @game = Game.new(3, @logger, GuiInputManager.new(self))
                         @new_game_driver = NewGameDriver.new(@game, @logger)
-                        @game_driver = GameDriver.new(@game, @logger)
+                        # @game_driver = GameDriver.new(@game, @logger)
                         @current_cached_player = @new_game_driver.await.active_player.value
                     elsif clicked == :no_clicked
                         puts "no selected"
@@ -147,7 +147,7 @@ class GameGui < Gosu::Window
                 @redraw_hand = false
 
                 if @player_changed
-                    @game_driver.await.setup_new_turn
+                    @new_game_driver.await.setup_new_turn
                     @redraw_hand = true
 
                     @player_changed = false
