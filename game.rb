@@ -106,6 +106,10 @@ class Game
     @discardPile << card
   end
 
+  def play_limit
+    @ruleBase.playRule
+  end
+
   def hasGoal?
     !@goal.nil?
   end

@@ -16,7 +16,7 @@ class NewGameDriver
 
     def turn_over?
       active_player_has_cards = active_player.hand.length > 0
-      @cardsPlayed >= @game.ruleBase.playRule || !active_player_has_cards
+      @cardsPlayed >= @game.await.play_rule.value || !active_player_has_cards
     end
 
     def post_card_play_clean_up(player, card_to_play)
