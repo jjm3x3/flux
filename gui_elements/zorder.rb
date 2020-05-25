@@ -1,0 +1,3 @@
+module ZOrder
+    BAKGROUND, GAME_ITEMS, DIALOG, DIALOG_ITEMS, CURSOR = *0..4
+end
