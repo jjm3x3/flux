@@ -73,16 +73,7 @@ class GameGui < Gosu::Window
 
                     @play_card_future = @new_game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
                     @play_card_future.add_observer do |time, value|
-                        @logger.debug "Executing play_card_future observer"
-                        @logger.debug "What is the current_payer_future '#{@current_player_future}'"
-                        @logger.debug "Is the current play_card_future finished '#{@play_card_future.state}'"
-                        is_turn_over = @new_game_driver.await.turn_over?
-                        @logger.debug "What is the this #{is_turn_over}"
-                        @logger.debug "What is its state this #{is_turn_over.state}"
-
-                        @logger.debug "Is the turn over?"
-                        if is_turn_over.value
-                            @game_driver.end_turn_cleanup
+                        if value # this means the turn is over
                             @player_changed = true
                             setup_cached_player
                         end
