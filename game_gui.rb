@@ -42,6 +42,7 @@ class GameGui < Gosu::Window
             if @current_dialog != nil && @current_dialog.is_visible?
                 if @current_dialog.handle_result
                     @current_dialog.hide
+                    return
                 end
             end
             if @are_you_sure_dialog.is_visible?
@@ -62,6 +63,7 @@ class GameGui < Gosu::Window
             end
             if @new_game_button.is_clicked?
                 @are_you_sure_dialog.show
+                return
             end
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
@@ -82,6 +84,7 @@ class GameGui < Gosu::Window
 
                     @redraw_hand = true
 
+                    return
                 end
                 clickedCard += 1
             end
