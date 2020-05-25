@@ -73,7 +73,7 @@ class GameGui < Gosu::Window
 
                     @play_card_future = @new_game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
                     @play_card_future.add_observer do |time, value|
-                        if @game_driver.turn_over?
+                        if @new_game_driver.await.turn_over?.value
                             @game_driver.end_turn_cleanup
                             @player_changed = true
                             setup_cached_player
