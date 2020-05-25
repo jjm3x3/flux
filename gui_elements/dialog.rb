@@ -62,6 +62,7 @@ class CardDialog
 
     def set_cards(card_list)
         @card_list = card_list
+        @card_buttons = []
         cardsDisplayed = 0
         card_list.each do |card|
             @card_buttons << Button.new(@window, "#{card}", 120, 120 + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::DIALOG_ITEMS)
