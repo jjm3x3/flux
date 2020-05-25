@@ -14,6 +14,16 @@ class NewGameDriver
         sleep 10
     end
 
+    def setup_new_turn
+      if(active_player.has_death?)
+        @game.await.resolve_death_rule(active_player)
+      end
+      drawnCards = @game.await.drawCards(active_player, :draw_rule).value
+      active_player.add_cards_to_hand(drawnCards)
+      @cardsPlayed = 0
+      @cardsDrawn = drawnCards.length
+    end
+
     def turn_over?
         puts "Beginning of turn_over?"
         @logger.debug "Beginning of turn_over?"
