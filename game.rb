@@ -52,7 +52,7 @@ class Game
         @logger.debug "What is this card? #{card.card_type}"
         if card.card_type == "Creeper"
           @logger.debug "Found a creeper: #{card}"
-          card.play(player, self)
+          card.await.play(player, self)
         end
         card.card_type != "Creeper"
       end
