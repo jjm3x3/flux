@@ -33,6 +33,7 @@ describe "cards" do
             it "should call resolve_war_rule if peace is played" do
                 # setup
                 fakeGame = Object.new
+                asyncGame = double("game", :await => fakeGame)
                 calledResolveWarRule = false
                 fakeGame.define_singleton_method(:resolve_war_rule) do |player|
                     calledResolveWarRule = true
@@ -41,7 +42,7 @@ describe "cards" do
                 sut = Keeper.new(16, "Wanna be Peace")
 
                 # exectue
-                sut.play(fakePlayer, fakeGame)
+                sut.play(fakePlayer, asyncGame)
 
                 # test
                 expect(calledResolveWarRule).to be true
@@ -67,6 +68,7 @@ describe "cards" do
 
             it "should call resolve_taxes_rule if money is played" do
                 fakeGame = Object.new
+                asyncGame = double("game", :await => fakeGame)
                 calledResolveTaxesRule = false
                 fakeGame.define_singleton_method(:resolve_taxes_rule) do |player|
                     calledResolveTaxesRule = true
@@ -75,7 +77,7 @@ describe "cards" do
                 sut = Keeper.new(19, "Wanna be moeny")
 
                 # exectue
-                sut.play(fakePlayer, fakeGame)
+                sut.play(fakePlayer, asyncGame)
 
                 # test
                 expect(calledResolveTaxesRule).to be true
@@ -104,6 +106,7 @@ describe "cards" do
             it "should call resolve_taxes_rule if taxes is played" do
                 # setup
                 fakeGame = Object.new
+                asyncGame = double("game", :await => fakeGame)
                 calledResolveTaxesRule = false
                 fakeGame.define_singleton_method(:resolve_taxes_rule) do |player|
                     calledResolveTaxesRule = true
@@ -112,7 +115,7 @@ describe "cards" do
                 sut = Creeper.new(2, "shut up and take my money (taxes)", "don't go bankrupt")
 
                 # exectue
-                sut.play(fakePlayer, fakeGame)
+                sut.play(fakePlayer, asyncGame)
 
                 # test
                 expect(calledResolveTaxesRule).to be true
