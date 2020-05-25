@@ -143,6 +143,8 @@ class TrueCliInterface
 end
 
 class TrueTestInterface
+  include Concurrent::Async
+
   attr_reader :card_list
   def initialize(input, output)
     @input_stream = input
