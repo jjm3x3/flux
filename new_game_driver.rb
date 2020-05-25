@@ -25,13 +25,16 @@ class NewGameDriver
     def post_card_play_clean_up(player, card_to_play)
         @logger.debug "this should get logged sync"
         card_to_play.await.play(player, @game)
-        @logger.debug "Should only happen at the end"
+        @logger.debug "After card was played"
         @cardsPlayed += 1
+        @logger.debug "Increment cards played"
         checkForWinner # should check for a winner before discarding
+        @logger.debug "Checked for winner"
         @game.await.enforceNonActivePlayerLimits(player)
         @logger.information "the discard has #{@game.discardPile.length} card(s) in it"
         # do something if the discard need reshufleing
         @cardsDrawn = @game.await.replenishHand(@cardsDrawn, player).value
+        @logger.debug "Finished post_card_play_clean_up"
     end
 
     def active_player
