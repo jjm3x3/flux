@@ -31,6 +31,8 @@ class GameGui < Gosu::Window
 
         @current_cached_player = nil
         @current_player_future = nil
+
+        @play_card_future = nil
     end
 
     def button_up(id)
@@ -69,16 +71,18 @@ class GameGui < Gosu::Window
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
                     puts "you clicked a card button #{cardToPlay}"
 
-                    @new_game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
+                    @play_card_future = @new_game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
+                    @play_card_future.add_observer do |time, value|
+                        if @game_driver.turn_over?
+                            @game_driver.end_turn_cleanup
+                            @player_changed = true
+                            setup_cached_player
+                        end
+                    end
                     # @game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
 
                     @redraw_hand = true
 
-                    if @game_driver.turn_over?
-                        @game_driver.end_turn_cleanup
-                        @player_changed = true
-                        setup_cached_player
-                    end
                 end
                 clickedCard += 1
             end
