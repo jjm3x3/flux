@@ -40,4 +40,12 @@ class NewGameDriver
     def active_player
         @game.await.active_player.value
     end
+
+    private
+    def checkForWinner
+      if @game.await.winner.value
+        puts "the game is over!!!!==============\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"
+        exit 0
+      end
+    end
 end
