@@ -9,7 +9,6 @@ class Action < Card
   end
 
   def play(player, game)
-    puts "happens sync inside of Action#play"
     case @id
     when 1
       game.ruleBase.resetToBasic

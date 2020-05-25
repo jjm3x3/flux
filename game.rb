@@ -170,14 +170,14 @@ class Game
   end
 
   def draw_2_and_use_em(player)
-    puts "happens sync at the beginning of draw_2_and_use_em"
+    @logger.debug "happens sync at the beginning of draw_2_and_use_em"
     cardsDrawn = drawCards(player, 2)
     # firstOne = @logger.select_a_card(cardsDrawn, "Which one would you like to play first?")
-    select_result = @interface.await.select_a_card(cardsDrawn, "Which one would you like to play first?") do |selected_card|
-      # selected_card.play(player, self)
-      # cardsDrawn[0].play(player, self)
-    end
+    select_result = @interface.await.select_a_card(cardsDrawn, "Which one would you like to play first?")
     @logger.debug "Here is the selected card in draw_2_and_use_em: '#{select_result.value}'"
+    selected_card = select_result.value
+    selected_card.await.play(player, self)
+    cardsDrawn[0].await.play(player, self)
   end
 
   def jackpot(player)
