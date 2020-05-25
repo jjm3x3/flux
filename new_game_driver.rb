@@ -15,8 +15,11 @@ class NewGameDriver
     end
 
     def turn_over?
-      active_player_has_cards = active_player.hand.length > 0
-      @cardsPlayed >= @game.await.play_rule.value || !active_player_has_cards
+        puts "Beginning of turn_over?"
+        @logger.debug "Beginning of turn_over?"
+        active_player_has_cards = active_player.hand.length > 0
+        @logger.debug "Does the active player have card #{active_player_has_cards}"
+        @cardsPlayed >= @game.await.play_rule.value || !active_player_has_cards
     end
 
     def post_card_play_clean_up(player, card_to_play)
