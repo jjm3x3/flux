@@ -182,6 +182,8 @@ class GameGui < Gosu::Window
             @logger.debug "Here is the time #{time}"
             @logger.debug "Here is the value #{value}"
             @current_cached_player = value
+            @player_changed = true
+            @redraw_hand = true
         end
     end
 
