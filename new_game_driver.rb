@@ -35,6 +35,12 @@ class NewGameDriver
         # do something if the discard need reshufleing
         @cardsDrawn = @game.await.replenishHand(@cardsDrawn, player).value
         @logger.debug "Finished post_card_play_clean_up"
+        if turn_over?
+            @logger.debug "The turn is over proceed to end_turn_cleanup"
+            end_turn_cleanup
+            return true
+        end
+        return false
     end
 
     def end_turn_cleanup
