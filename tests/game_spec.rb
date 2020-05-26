@@ -473,6 +473,26 @@ describe "game" do
             # test
             expect(theGame.deck.count).to eq countOfDeckToStart - (cardsDrawn + stackedCreepers.size) # the creeper
         end
+
+        it "should not end in deadlock" do
+            # setup
+            input_stream = StringIO.new("0\n")
+            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
+            stackedActionCards = [Action.new(3, "Jackpot", "with some rules text")]
+            theGame.deck = StackedDeck.new(theTestInterface, stackedActionCards)
+            theFirstPlayer = theGame.players[0]
+            # assuming the start draw rule is 1
+            countOfDeckToStart = theGame.deck.count
+            cardsDrawn = 2
+
+            # execute
+            theGame.await.draw_2_and_use_em(theFirstPlayer)
+
+            # test
+            # make sure this the above call doesn't explode
+        end
     end
 
     describe "draw_3_play_2_of_them" do
