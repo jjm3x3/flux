@@ -64,6 +64,12 @@ describe "GameDriver" do
             allow(gameDouble).to receive(:enforceNonActivePlayerLimits)
             allow(gameDouble).to receive(:discardPile).and_return([])
             allow(gameDouble).to receive(:replenishHand)
+            allow(gameDouble).to receive(:play_card)
+            allow(gameDouble).to receive(:active_player).and_return(Player.new("Goeff"))
+            allow(gameDouble).to receive(:play_limit).and_return(1)
+            allow(gameDouble).to receive(:discardDownToLimit)
+            allow(gameDouble).to receive(:removeDownToKeeperLimit)
+            allow(gameDouble).to receive(:progress_turn)
             gameDriver = GameDriver.new(gameDouble, theTestInterface)
             playerDouble = double("player")
 
@@ -71,7 +77,7 @@ describe "GameDriver" do
             gameDriver.post_card_play_clean_up(playerDouble, cardDouble)
 
             # test
-            expect(cardDouble).to have_received(:play)
+            expect(gameDouble).to have_received(:play_card)
         end
     end
 
