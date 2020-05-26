@@ -4,7 +4,7 @@ require './gui_elements/game_stats.rb'
 require './gui_elements/dialog.rb'
 require './game.rb'
 require './gui_input_manager.rb'
-require './new_game_driver.rb'
+require './game_driver.rb'
 
 class GameGui < Gosu::Window
     def initialize(logger)
@@ -50,7 +50,7 @@ class GameGui < Gosu::Window
                     if clicked == :yes_clicked
                         puts "I am starting a game then"
                         @game = Game.new(3, @logger, GuiInputManager.new(self))
-                        @new_game_driver = NewGameDriver.new(@game, @logger)
+                        @new_game_driver = GameDriver.new(@game, @logger)
                         @current_cached_player = @new_game_driver.await.active_player.value
                     elsif clicked == :no_clicked
                         puts "no selected"

@@ -1,6 +1,6 @@
 require "concurrent"
 
-class NewGameDriver
+class GameDriver
     include Concurrent::Async
 
     def initialize(game, logger)
