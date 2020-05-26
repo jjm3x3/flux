@@ -34,6 +34,7 @@ class GuiInputManager
         end
         # @input_manager_log.puts "What is the dialog_result: '#{dialog_result}''"
         # @input_manager_log.flush
+        card_list.delete(dialog_result)
         return dialog_result
     end
 end
