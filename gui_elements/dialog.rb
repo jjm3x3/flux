@@ -101,6 +101,10 @@ class CardDialog
         @selected_card
     end
 
+    def reset_result
+        @selected_card = nil
+    end
+
     def handle_result
         cardIndex = 0
         @card_buttons.each do |card_button|
