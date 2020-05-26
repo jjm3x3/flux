@@ -13,6 +13,17 @@ describe "gui_input_manager" do
 
             expect(select_result).not_to be nil
         end
+
+        it "should remove the selected card from the input card list" do
+            testCard = Card.new
+            guiDouble = double("gui", :select_a_card => nil, :get_dialog_result => testCard)
+            sut = GuiInputManager.new(guiDouble)
+
+            input_card_list = [testCard]
+            select_result = sut.await.select_a_card(input_card_list, "prompt for a test")
+
+            expect(input_card_list).not_to include testCard
+        end
     end
 
 end
