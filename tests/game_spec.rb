@@ -561,7 +561,7 @@ describe "game" do
             theGame.discard_and_draw(theFirstPlayer)
 
             # test
-            expect(theFirstPlayer.hand.size).to eq firstPlayersOriginalCardsCount - 1
+            expect(theFirstPlayer.hand.size).to eq firstPlayersOriginalCardsCount
         end
 
         it "should play creepers imidately if they are drawn" do
@@ -591,7 +591,7 @@ describe "game" do
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
-            cardsDrawn = 2
+            cardsDrawn = 3
 
             # execute
             theGame.discard_and_draw(theFirstPlayer)
