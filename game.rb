@@ -187,10 +187,12 @@ class Game
 
   def draw_3_play_2_of_them(player)
     cardsDrawn = drawCards(player, 3)
-    firstOne = @logger.select_a_card(cardsDrawn, "which would you like to play first?")
-    firstOne.play(player, self)
-    secondOne = @logger.select_a_card(cardsDrawn, "which would you like to play next?")
-    secondOne.play(player, self)
+    firstOne = @interface.await.select_a_card(cardsDrawn, "which would you like to play first?")
+    @logger.debug "Here is the first card that was selected #{firstOne.value}"
+    firstOne.value.play(player, self)
+    @logger.debug "Going to select a second one"
+    secondOne = @interface.await.select_a_card(cardsDrawn, "which would you like to play next?")
+    secondOne.value.play(player, self)
     discard(cardsDrawn[0])
   end
 
