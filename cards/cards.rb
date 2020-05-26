@@ -1,7 +1,4 @@
-require 'concurrent'
-
 class Card
-  include Concurrent::Async
 
   attr_reader :card_type
   attr_reader :name
@@ -49,9 +46,9 @@ class Keeper < Card
   def play(player, game)
     player.keepers << self
     if @id == @@peace_id
-      game.await.resolve_war_rule(player)
+      game.resolve_war_rule(player)
     elsif @id == @@money_id
-      game.await.resolve_taxes_rule(player)
+      game.resolve_taxes_rule(player)
     end
   end
 
@@ -73,7 +70,7 @@ class Goal < Card
   end
 
   def play(player, game)
-    game.await.setGoal(self)
+    game.setGoal(self)
   end
 
   def met?(player, game)
@@ -140,9 +137,9 @@ class Creeper < Card
     player.add_creeper(self)
     case @id
     when 1
-      game.await.resolve_war_rule(player)
+      game.resolve_war_rule(player)
     when 2
-      game.await.resolve_taxes_rule(player)
+      game.resolve_taxes_rule(player)
     end
   end
 end

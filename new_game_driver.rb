@@ -36,7 +36,8 @@ class NewGameDriver
 
     def post_card_play_clean_up(player, card_to_play)
         @logger.debug "this should get logged sync"
-        card_to_play.await.play(player, @game)
+        @game.await.play_card(card_to_play, player)
+        # card_to_play.await.play(player, @game)
         @logger.debug "After card was played"
         @cardsPlayed += 1
         @logger.debug "Increment cards played"

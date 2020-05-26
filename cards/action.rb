@@ -13,35 +13,35 @@ class Action < Card
     when 1
       game.ruleBase.resetToBasic
     when 2
-      game.await.draw_2_and_use_em(player)
+      game.draw_2_and_use_em(player)
     when 3
-      game.await.jackpot(player)
+      game.jackpot(player)
     when 4
       game.ruleBase.removeLimits
     when 5
-      game.await.draw_3_play_2_of_them(player)
+      game.draw_3_play_2_of_them(player)
     when 6
-      game.await.discard_and_draw(player)
+      game.discard_and_draw(player)
     when 7
-      game.await.use_what_you_take(player)
+      game.use_what_you_take(player)
     when 8
-      game.await.taxation(player)
+      game.taxation(player)
     when 9
-      game.await.todaysSpecial(player)
+      game.todaysSpecial(player)
     when 10
-      game.await.mix_it_all_up(player)
+      game.mix_it_all_up(player)
     when 11
-      game.await.letsDoThatAgain(player)
+      game.letsDoThatAgain(player)
     when 12
-      game.await.everybody_gets_1(player)
+      game.everybody_gets_1(player)
     when 13
-      game.await.tradeHands(player)
+      game.tradeHands(player)
     when 14
-      game.await.rotateHands(player)
+      game.rotateHands(player)
     when 15
-      game.await.take_another_turn(player)
+      game.take_another_turn(player)
     when 16
-      game.await.exchange_keepers(player)
+      game.exchange_keepers(player)
     end
     game.discard(self)
   end
