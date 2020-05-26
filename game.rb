@@ -174,7 +174,7 @@ class Game
     @logger.debug "happens sync at the beginning of draw_2_and_use_em"
     cardsDrawn = drawCards(player, 2)
     # firstOne = @logger.select_a_card(cardsDrawn, "Which one would you like to play first?")
-    select_result = @interface.await.select_a_card(cardsDrawn, "Which one would you like to play first?")
+    select_result = @interface.await.choose_from_list(cardsDrawn, "Which one would you like to play first?")
     @logger.debug "Here is the selected card in draw_2_and_use_em: '#{select_result.value}'"
     selected_card = select_result.value
     selected_card.play(player, self)
@@ -187,11 +187,11 @@ class Game
 
   def draw_3_play_2_of_them(player)
     cardsDrawn = drawCards(player, 3)
-    firstOne = @interface.await.select_a_card(cardsDrawn, "which would you like to play first?")
+    firstOne = @interface.await.choose_from_list(cardsDrawn, "which would you like to play first?")
     @logger.debug "Here is the first card that was selected #{firstOne.value}"
     firstOne.value.play(player, self)
     @logger.debug "Going to select a second one"
-    secondOne = @interface.await.select_a_card(cardsDrawn, "which would you like to play next?")
+    secondOne = @interface.await.choose_from_list(cardsDrawn, "which would you like to play next?")
     secondOne.value.play(player, self)
     discard(cardsDrawn[0])
   end
@@ -212,7 +212,7 @@ class Game
       @logger.information "Too bad no body has any cards for you"
       return
     end
-    selectedPlayer = @interface.await.select_a_card(validOpponents, "which player would you like to pick from").value
+    selectedPlayer = @interface.await.choose_from_list(validOpponents, "which player would you like to pick from").value
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
     @logger.debug "playing #{selectedCard}"

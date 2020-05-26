@@ -128,7 +128,7 @@ class TrueCliInterface
     @output_stream.puts "here are the current rules:#{game.ruleBase}"
   end
 
-  def select_a_card(card_list, prompt="select a card")
+  def choose_from_list(card_list, prompt="select a card")
     @output_stream.puts prompt
     @output_stream.puts StringFormattingUtilities.indexed_display(card_list)
     whichCard = get_input.to_i
@@ -151,7 +151,7 @@ class TrueTestInterface
     @output_stream = output
   end
 
-  def select_a_card(card_list, prompt)
+  def choose_from_list(card_list, prompt)
     @card_list = card_list
     whichCard = @input_stream.gets.strip.to_i
     card_list.delete_at(whichCard)

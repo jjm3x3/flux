@@ -18,7 +18,7 @@ class GameCli
         while !@new_game_driver.await.turn_over?.value
           @logger.printPermanents(activePlayer)
 
-          cardToPlay = @interface.await.select_a_card(hand, "Select a card from your hand to play").value
+          cardToPlay = @interface.await.choose_from_list(hand, "Select a card from your hand to play").value
 
           @new_game_driver.await.post_card_play_clean_up(activePlayer, cardToPlay)
           cardsPlayed += 1

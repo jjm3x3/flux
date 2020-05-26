@@ -8,7 +8,7 @@ class GuiInputManager
         @gui = gui
     end
 
-    def select_a_card(card_list, prompt)
+    def choose_from_list(card_list, prompt)
         # @input_manager_log = File.open("input_manager.log", "a")
         puts "goint to display a card selection dialog"
         # @input_manager_log.puts "goint to display a card selection dialog"
