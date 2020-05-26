@@ -7,7 +7,6 @@ require "./game_interface.rb"
 
 
 class Game
-  include Concurrent::Async
 
   attr_accessor :ruleBase
   attr_accessor :players
