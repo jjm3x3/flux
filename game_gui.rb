@@ -79,6 +79,7 @@ class GameGui < Gosu::Window
                             @player_changed = true
                             setup_cached_player
                         end
+                        @redraw_hand = true
                     end
                     # @game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
 
