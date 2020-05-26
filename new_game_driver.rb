@@ -25,7 +25,6 @@ class NewGameDriver
     end
 
     def turn_over?
-        puts "Beginning of turn_over?"
         @logger.debug "Beginning of turn_over?"
         active_player_has_cards = active_player.hand.length > 0
         @logger.debug "Does the active player have cards #{active_player_has_cards}"
