@@ -1,7 +1,7 @@
 class GameCli
   def initialize(game, logger, new_game_driver)
       @logger = logger
-      @game_driver = game
+      @game = game
       @new_game_driver = new_game_driver
       @interface = TrueCliInterface.new
   end
@@ -9,7 +9,7 @@ class GameCli
   def run
       loop do
         activePlayer = @new_game_driver.await.active_player.value
-        @interface.display_game_state(@game_driver.game)
+        @interface.display_game_state(@game)
         @logger.information "\n#{activePlayer}'s turn"
 
         @new_game_driver.await.setup_new_turn
@@ -24,7 +24,7 @@ class GameCli
           cardsPlayed += 1
 
           hand = activePlayer.hand # really a sad sideeffect of much statefull programming
-          @logger.information "played: #{cardsPlayed} of play: #{@game_driver.game.ruleBase.playRule}"
+          @logger.information "played: #{cardsPlayed} of play: #{@game.ruleBase.playRule}"
         end
       end
   end
