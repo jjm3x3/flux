@@ -6,7 +6,7 @@ describe "gui_input_manager" do
     describe "choose_from_list" do
         it "works?" do
             testCard = Card.new
-            guiDouble = double("gui", :select_a_card => nil, :get_dialog_result => testCard)
+            guiDouble = double("gui", :display_list_dialog => nil, :get_dialog_result => testCard)
             sut = GuiInputManager.new(guiDouble)
 
             select_result = sut.await.choose_from_list([testCard], "prompt for a test")
@@ -16,7 +16,7 @@ describe "gui_input_manager" do
 
         it "should remove the selected card from the input card list" do
             testCard = Card.new
-            guiDouble = double("gui", :select_a_card => nil, :get_dialog_result => testCard)
+            guiDouble = double("gui", :display_list_dialog => nil, :get_dialog_result => testCard)
             sut = GuiInputManager.new(guiDouble)
 
             input_card_list = [testCard]

@@ -8,11 +8,11 @@ class GuiInputManager
         @gui = gui
     end
 
-    def choose_from_list(card_list, prompt)
+    def choose_from_list(list, prompt)
         # @input_manager_log = File.open("input_manager.log", "a")
         puts "goint to display a card selection dialog"
         # @input_manager_log.puts "goint to display a card selection dialog"
-        @gui.select_a_card(card_list, prompt)
+        @gui.display_list_dialog(list, prompt)
         puts "after dialog displayed"
         # @input_manager_log.puts "after dialog displayed"
         # @input_manager_log.flush
@@ -34,7 +34,7 @@ class GuiInputManager
         end
         # @input_manager_log.puts "What is the dialog_result: '#{dialog_result}''"
         # @input_manager_log.flush
-        card_list.delete(dialog_result)
+        list.delete(dialog_result)
         return dialog_result
     end
 end
