@@ -71,10 +71,6 @@ class CardDialog
 
     end
 
-    def set_selection_callback(&block)
-        @handle_result_block = block
-    end
-
     def draw
         if @visible
             @baground_image.draw(100, 100, ZOrder::DIALOG, 0.25, 0.25)
@@ -113,7 +109,6 @@ class CardDialog
             if card_button.is_clicked?
                 selectedCard = @card_list[cardIndex]
                 puts "#{selectedCard} was selected"
-                # @handle_result_block.call(selectedCard)
                 @selected_card = selectedCard
                 return true
             end
