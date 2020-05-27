@@ -175,6 +175,7 @@ class GameGui < Gosu::Window
     # "TrueGuiInterface" stuff
     def select_a_card(card_list, prompt="Select a card")
         @logger.debug "does this even get called?"
+        @current_dialog.set_prompt prompt
         @current_dialog.reset_result
         @current_dialog.set_cards(card_list)
         @current_dialog.show
