@@ -230,18 +230,18 @@ class Game
 
   def todaysSpecial(player)
     drawnCards = drawCards(player, 3)
-    cardToPlay = @logger.select_a_card(drawnCards, "pick a card to play")
+    cardToPlay = @interface.choose_from_list(drawnCards, "pick a card to play")
     cardToPlay.play(player, self)
 
     if @logger.ask_yes_no("is today your birthday")
-      cardToPlay = @logger.select_a_card(drawnCards, "pick a card to play")
+      cardToPlay = @interface.choose_from_list(drawnCards, "pick a card to play")
       cardToPlay.play(player, self)
 
-      cardToPlay = @logger.select_a_card(drawnCards, "pick a card to play")
+      cardToPlay = @interface.choose_from_list(drawnCards, "pick a card to play")
       cardToPlay.play(player, self)
     else
       if @logger.ask_yes_no "Is today a holiday or an anniversary"
-        cardToPlay = @logger.select_a_card(drawnCards, "pick a card to play")
+        cardToPlay = @interface.choose_from_list(drawnCards, "pick a card to play")
         cardToPlay.play(player, self)
       end
     end
