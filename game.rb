@@ -321,7 +321,7 @@ class Game
     opponentsText = opponents(player).map do |player|
       player.to_s
     end
-    selectedPlayer = @logger.select_a_player(opponents(player), "who would you like to trade hands with?")
+    selectedPlayer = @interface.await.choose_from_list(opponents(player), "who would you like to trade hands with?").value
     otherHand = selectedPlayer.hand
     selectedPlayer.hand = player.hand
     player.hand = otherHand
@@ -399,7 +399,7 @@ class Game
     eligibleOpponents.unshift(:no_one)
     selectedPlayer = :no_one
     loop do
-      selectedPlayer = @logger.select_a_player(eligibleOpponents, "Which player would you like to take a keeper from")
+      selectedPlayer = @interface.await.choose_from_list(eligibleOpponents, "Which player would you like to take a keeper from").value
       areYouSure = selectedPlayer != :no_one
       if selectedPlayer == :no_one
         areYouSure = @logger.ask_yes_no "Are you sure you don't want to trade with anyone?"
@@ -438,7 +438,7 @@ class Game
     playerHasPeace = player.has_peace?
     playerHasWar = player.has_war?
     if (playerHasPeace && playerHasWar)
-      selectedPlayer = @logger.select_a_player(opponents(player), "#{player} since you have peace. Who would you like to give war too?")
+      selectedPlayer = @interface.await.choose_from_list(opponents(player), "#{player} since you have peace. Who would you like to give war too?").value
       @logger.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
 
       selectedPlayer.add_creeper(player.take_war)
