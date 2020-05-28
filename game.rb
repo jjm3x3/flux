@@ -83,7 +83,7 @@ class Game
   def removeDownToKeeperLimit(player)
     while player.keepers.length > @ruleBase.keeperLimit
       @logger.information "Since the keeper limit is #{@ruleBase.keeperLimit} you must discard a keeper"
-      removeKeeper = @interface.choose_from_list(player.keepers, "Choose a keeper to discard")
+      removeKeeper = @interface.await.choose_from_list(player.keepers, "Choose a keeper to discard").value
       @discardPile << removeKeeper
       @logger.debug "discarding #{removeKeeper}"
     end
@@ -223,25 +223,25 @@ class Game
     newCardsForPlayer = opponents(player).select do |player|
       player.hand.size > 0
     end.map do |aPlayer|
-      @interface.choose_from_list(aPlayer.hand, "Choose a card to give to #{player}")
+      @interface.await.choose_from_list(aPlayer.hand, "Choose a card to give to #{player}").value
     end
     player.hand += newCardsForPlayer
   end
 
   def todaysSpecial(player)
     drawnCards = drawCards(player, 3)
-    cardToPlay = @interface.choose_from_list(drawnCards, "pick a card to play")
+    cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
     cardToPlay.play(player, self)
 
     if @logger.ask_yes_no("is today your birthday")
-      cardToPlay = @interface.choose_from_list(drawnCards, "pick a card to play")
+      cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
       cardToPlay.play(player, self)
 
-      cardToPlay = @interface.choose_from_list(drawnCards, "pick a card to play")
+      cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
       cardToPlay.play(player, self)
     else
       if @logger.ask_yes_no "Is today a holiday or an anniversary"
-        cardToPlay = @interface.choose_from_list(drawnCards, "pick a card to play")
+        cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
         cardToPlay.play(player, self)
       end
     end
@@ -294,7 +294,7 @@ class Game
       @logger.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
     end
-    pickedCard = @interface.choose_from_list(eligibleCards, "pick a card you would like to replay")
+    pickedCard = @interface.await.choose_from_list(eligibleCards, "pick a card you would like to replay").value
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
@@ -307,9 +307,9 @@ class Game
     playerCur = currentPlayer
     while cardsDrawn.length > 0
       if playerCur == currentPlayer
-        selectedCard = @interface.choose_from_list(cardsDrawn, "which card would you like to giver to yourself")
+        selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to giver to yourself").value
       else
-        selectedCard = @interface.choose_from_list(cardsDrawn, "which card would you like to give to #{@players[playerCur]}")
+        selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to give to #{@players[playerCur]}").value
       end
       @players[playerCur].hand << selectedCard
       playerCur += 1
@@ -413,12 +413,12 @@ class Game
     end
 
     if selectedPlayer.keepers.length > 1
-      myNewKeeper = @interface.choose_from_list(selectedPlayer.keepers, "Slect which Keeper you would like")
+      myNewKeeper = @interface.await.choose_from_list(selectedPlayer.keepers, "Slect which Keeper you would like").value
     else
       myNewKeeper = selectedPlayer.keepers.delete_at(0)
     end
     if player.keepers.length > 1
-      myOldKeeper = @interface.choose_from_list(player.keepers, "Which Keeper would you like to exchange")
+      myOldKeeper = @interface.await.choose_from_list(player.keepers, "Which Keeper would you like to exchange").value
     else
       myOldKeeper = player.keepers.delete_at(0)
     end
@@ -460,7 +460,7 @@ class Game
       if(eligiablePermanents.size == 0)
         discard(player.take_death)
       else
-        selectedCard = @interface.choose_from_list(eligiablePermanents, "Which permanent would you like to discard to death?")
+        selectedCard = @interface.await.choose_from_list(eligiablePermanents, "Which permanent would you like to discard to death?").value
         player.discard_permanent(selectedCard)
       end
     end
