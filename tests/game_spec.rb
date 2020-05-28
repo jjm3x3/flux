@@ -1277,7 +1277,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -1291,7 +1292,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -1306,7 +1308,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(0, "thing1")
             theGame.players[1].keepers << Keeper.new(0, "thing2")
@@ -1322,7 +1325,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(0, "thing1")
             firstPlayersOriginalKeeperCount = theFirstPlayer.keepers.size
@@ -1342,7 +1346,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
@@ -1362,7 +1367,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
@@ -1381,7 +1387,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\ny\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
@@ -1403,7 +1410,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
             peaceKeeper = Keeper.new(16, "a peace thing")
@@ -1424,7 +1432,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
             peaceKeeper = Keeper.new(16, "a peace thing")

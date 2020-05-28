@@ -413,12 +413,12 @@ class Game
     end
 
     if selectedPlayer.keepers.length > 1
-      myNewKeeper = @logger.select_a_card(selectedPlayer.keepers, "Slect which Keeper you would like")
+      myNewKeeper = @interface.choose_from_list(selectedPlayer.keepers, "Slect which Keeper you would like")
     else
       myNewKeeper = selectedPlayer.keepers.delete_at(0)
     end
     if player.keepers.length > 1
-      myOldKeeper = @logger.select_a_card(player.keepers, "Which Keeper would you like to exchange")
+      myOldKeeper = @interface.choose_from_list(player.keepers, "Which Keeper would you like to exchange")
     else
       myOldKeeper = player.keepers.delete_at(0)
     end
