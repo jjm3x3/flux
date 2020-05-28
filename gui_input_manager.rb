@@ -25,7 +25,7 @@ class GuiInputManager
         while !dialog_result
             # @input_manager_log.puts "Going to sleep since nothing is selected at #{Time.now}"
             # @input_manager_log.flush
-            sleep 0.5
+            sleep 0.125
             # @input_manager_log.puts "checking dialog_result at #{Time.now}"
             # @input_manager_log.flush
             dialog_result = @gui.get_dialog_result
