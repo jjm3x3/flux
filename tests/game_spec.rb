@@ -865,7 +865,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             theGame.discardPile << Action.new(3, "jackpot2", "here are some rules")
             theGame.discardPile << Rule.new("some draw rule", 1, "Draw 9 cards")
@@ -879,7 +880,7 @@ describe "game" do
             theGame.letsDoThatAgain(theFirstPlayer)
 
             # test
-            theTestInterface.cardList.select do |card|
+            aTrueTestInterface.card_list.select do |card|
                 expect(card.class).to_not eq Keeper
                 expect(card.class).to_not eq Goal
             end

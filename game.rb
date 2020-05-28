@@ -294,7 +294,7 @@ class Game
       @logger.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
     end
-    pickedCard = @logger.select_a_card(eligibleCards, "pick a card you would like to replay")
+    pickedCard = @interface.choose_from_list(eligibleCards, "pick a card you would like to replay")
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
