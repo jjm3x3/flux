@@ -223,7 +223,7 @@ class Game
     newCardsForPlayer = opponents(player).select do |player|
       player.hand.size > 0
     end.map do |aPlayer|
-      @logger.select_a_card(aPlayer.hand, "Choose a card to give to #{player}")
+      @interface.choose_from_list(aPlayer.hand, "Choose a card to give to #{player}")
     end
     player.hand += newCardsForPlayer
   end

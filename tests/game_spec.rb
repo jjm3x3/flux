@@ -649,7 +649,8 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -665,7 +666,8 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             theThirdPlayer = theGame.players[2]
