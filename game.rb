@@ -307,9 +307,9 @@ class Game
     playerCur = currentPlayer
     while cardsDrawn.length > 0
       if playerCur == currentPlayer
-        selectedCard = @logger.select_a_card(cardsDrawn, "which card would you like to giver to yourself")
+        selectedCard = @interface.choose_from_list(cardsDrawn, "which card would you like to giver to yourself")
       else
-        selectedCard = @logger.select_a_card(cardsDrawn, "which card would you like to give to #{@players[playerCur]}")
+        selectedCard = @interface.choose_from_list(cardsDrawn, "which card would you like to give to #{@players[playerCur]}")
       end
       @players[playerCur].hand << selectedCard
       playerCur += 1

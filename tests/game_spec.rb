@@ -893,7 +893,8 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             theGame.deck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
             originalDeckCount = theGame.deck.count
@@ -910,7 +911,8 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -928,7 +930,8 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             theGame.currentPlayerCounter = 8
 
@@ -944,7 +947,8 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             theGame.currentPlayerCounter = 9
 
@@ -960,7 +964,8 @@ describe "game" do
             numberOfPlayers = 3
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, theTestInterface, aTrueTestInterface)
             warCreeper = Creeper.new(1, "War", "with some rules text")
             theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
             theFirstPlayer = theGame.players[0]
@@ -978,7 +983,8 @@ describe "game" do
             numberOfPlayers = 3
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, theTestInterface, aTrueTestInterface)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
             theFirstPlayer = theGame.players[0]
