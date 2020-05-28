@@ -460,7 +460,7 @@ class Game
       if(eligiablePermanents.size == 0)
         discard(player.take_death)
       else
-        selectedCard = @logger.select_a_card(eligiablePermanents, "Which permanent would you like to discard to death?")
+        selectedCard = @interface.choose_from_list(eligiablePermanents, "Which permanent would you like to discard to death?")
         player.discard_permanent(selectedCard)
       end
     end

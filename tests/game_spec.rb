@@ -1564,7 +1564,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1583,7 +1584,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             deathCreeper = Creeper.new(3, "dead", "Some rules text")
             theFirstPlayer.add_creeper(deathCreeper)
