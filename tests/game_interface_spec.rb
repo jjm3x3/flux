@@ -10,7 +10,7 @@ describe "GameInterface" do
     describe "log_cards" do
         it "should print cards only using their to_s form" do
             #setup
-            logger = TestInterface.new("some string", test_outfile)
+            logger = TestLogger.new("some string", test_outfile)
 
             test_player = Player.new("test player")
             test_deck = Deck.new(logger)
@@ -26,7 +26,7 @@ describe "GameInterface" do
         it "should print a players keepers only using their to_s form" do
             #setup
             # logger = CliInterface.new(debug=true)
-            logger = TestInterface.new("some string", test_outfile)
+            logger = TestLogger.new("some string", test_outfile)
 
             test_keeper = Keeper.new(100, "A Test")
             test_player = Player.new("test player")

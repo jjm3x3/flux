@@ -8,11 +8,8 @@ describe "player" do
     describe "add_permanenet" do
         it "should add a keeper to the players keeper collection if the card is a keeper" do
             # setup
-            input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
             keeper1 = Keeper.new(1, "thing1")
-            theFirstPlayer = theGame.players[0]
+            theFirstPlayer = Player.new("The first player")
 
             # execute
             theFirstPlayer.add_permanent(keeper1)

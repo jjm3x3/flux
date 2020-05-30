@@ -196,7 +196,7 @@ class TrueTestInterface
   end
 end
 
-class TestInterface < GameInterface
+class TestLogger < GameInterface
   def initialize(input, output)
     @input_stream = input
     @output_stream = output
