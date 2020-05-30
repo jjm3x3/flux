@@ -2,6 +2,7 @@ require "Tempfile"
 require "io/console"
 require "./deck.rb"
 require "./game_interface.rb"
+require "./logger.rb"
 
 describe "deck" do
     test_outfile = Tempfile.new 'test_output'
