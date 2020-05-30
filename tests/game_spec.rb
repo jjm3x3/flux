@@ -1297,23 +1297,8 @@ describe "game" do
             theGame.exchange_keepers(theFirstPlayer)
 
             # test
-            expect(theTestInterface.prompted).to be nil
-        end
-
-        it "should not do anything if you have no keepers" do
-            # setup
-            input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
-            theFirstPlayer = theGame.players[0]
-
-            # execute
-            theGame.exchange_keepers(theFirstPlayer)
-
-            # test
             # a hacky way to check that there was no prompt
-            expect(theTestInterface.prompted).to be nil
+            expect(aTrueTestInterface.prompted).to be nil
         end
 
         it "should prompt the player if the player and at least one opponent has a keeper" do
