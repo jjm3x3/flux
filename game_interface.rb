@@ -42,7 +42,7 @@ class GameInterface
     @output_stream.puts "#{prompt}\n#{indexed_display(hand)}"
   end
 
-  def displayCardsDebug(hand,prompt="Here is your current hand:")
+  def log_cards(hand,prompt="Here is your current hand:")
     debug "#{prompt}\n#{indexed_display(hand)}"
   end
 

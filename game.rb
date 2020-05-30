@@ -336,7 +336,7 @@ class Game
 
     #candidate for debug
     @players.each do |player|
-      @logger.displayCardsDebug(player.hand, "What is my hand now #{player}:")
+      @logger.log_cards(player.hand, "What is my hand now #{player}:")
     end
 
     playerCur = currentPlayer
@@ -369,7 +369,7 @@ class Game
 
     # candidate for debug
     @players.each do |player|
-      @logger.displayCardsDebug(player.hand, "What is my hand now #{player}:")
+      @logger.log_cards(player.hand, "What is my hand now #{player}:")
     end
   end
 
@@ -435,7 +435,7 @@ class Game
     resolve_taxes_rule(player)
     resolve_taxes_rule(selectedPlayer)
 
-    @logger.displayCardsDebug(player.keepers, "Here are your Keepers after the exchange")
+    @logger.log_cards(player.keepers, "Here are your Keepers after the exchange")
 
   end
 

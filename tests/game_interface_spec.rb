@@ -7,19 +7,21 @@ describe "GameInterface" do
 
     test_outfile = Tempfile.new 'test_output'
 
-    it "should print cards only using their to_s form" do
-        #setup
-        logger = TestInterface.new("some string", test_outfile)
+    describe "log_cards" do
+        it "should print cards only using their to_s form" do
+            #setup
+            logger = TestInterface.new("some string", test_outfile)
 
-        test_player = Player.new("test player")
-        test_deck = Deck.new(logger)
-        test_player.set_hand(test_deck.drawCards(3))
+            test_player = Player.new("test player")
+            test_deck = Deck.new(logger)
+            test_player.set_hand(test_deck.drawCards(3))
 
-        # execute
-        logger.displayCardsDebug(test_player.hand)
+            # execute
+            logger.log_cards(test_player.hand)
 
-        #test
-        # no reall assertions for now... change test to see output
+            #test
+            # no reall assertions for now... change test to see output
+        end
     end
 
     test_outfile.unlink
