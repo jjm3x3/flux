@@ -197,33 +197,9 @@ class TrueTestInterface
 end
 
 class TestInterface < GameInterface
-  attr_accessor :cardList
-  attr_accessor :prompted
-  attr_accessor :indexed_output
-
   def initialize(input, output)
     @input_stream = input
     @output_stream = output
     @debug = true
-    @indexed_output = ""
   end
-
-  def displayCards(hand, prompt="Have some cards")
-    method(:displayCards).super_method.call(hand, prompt)
-    @prompted = true
-    @cardList = hand
-  end
-
-  def printKeepers(player, prompt="here are some keepers")
-    method(:printKeepers).super_method.call(player, prompt)
-    @keepers = player.keepers
-  end
-
-  def indexed_display(list)
-    @prompted = true
-    result = method(:indexed_display).super_method.call(list)
-    @indexed_output += result
-    result
-  end
-
 end
