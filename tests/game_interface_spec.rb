@@ -25,7 +25,7 @@ describe "BaseLogger" do
 
         it "should print a players keepers only using their to_s form" do
             #setup
-            # logger = CliInterface.new(debug=true)
+            # logger = CliLogger.new(debug=true)
             logger = TestLogger.new("some string", test_outfile)
 
             test_keeper = Keeper.new(100, "A Test")

@@ -56,7 +56,7 @@ class StringFormattingUtilities
   end
 end
 
-class CliInterface < BaseLogger
+class CliLogger < BaseLogger
   def initialize(debug)
     @output_stream = $stdout
     @input_stream = $stdin

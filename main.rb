@@ -20,7 +20,7 @@ end
 
 puts "starting game where debug: #{debug} and gui: #{gui}"
 
-logger = CliInterface.new(debug)
+logger = CliLogger.new(debug)
 if gui
   guiGame = GameGui.new(logger)
   guiGame.show
