@@ -164,12 +164,14 @@ class TrueTestInterface
   include Concurrent::Async
 
   attr_reader :card_list
+  attr_reader :prompted
   def initialize(input, output)
     @input_stream = input
     @output_stream = output
   end
 
   def choose_from_list(card_list, prompt)
+    @prompted = true
     @card_list = card_list
     whichCard = @input_stream.gets.strip.to_i
     card_list.delete_at(whichCard)

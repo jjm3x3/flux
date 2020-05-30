@@ -1330,7 +1330,7 @@ describe "game" do
             theGame.exchange_keepers(theFirstPlayer)
 
             # test
-            expect(theTestInterface.prompted).to_not be nil
+            expect(aTrueTestInterface.prompted).to_not be nil
         end
 
         it "should not change the number of keepers either player has" do
