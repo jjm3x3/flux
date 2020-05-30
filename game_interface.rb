@@ -1,7 +1,7 @@
 require 'concurrent'
 require "./direction.rb"
 
-class GameInterface
+class LoggerBase
 
   def print_permanents(player)
     prompt="here are the permanents #{player} has:"
@@ -61,7 +61,7 @@ class StringFormattingUtilities
   end
 end
 
-class CliInterface < GameInterface
+class CliInterface < LoggerBase
   def initialize(debug)
     @output_stream = $stdout
     @input_stream = $stdin
@@ -150,7 +150,7 @@ class TestInterface
   end
 end
 
-class TestLogger < GameInterface
+class TestLogger < LoggerBase
   def initialize(input, output)
     @input_stream = input
     @output_stream = output

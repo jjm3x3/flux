@@ -3,7 +3,7 @@ require "./game_interface.rb"
 require "./player.rb"
 require "./deck.rb"
 
-describe "GameInterface" do
+describe "LoggerBase" do
 
     test_outfile = Tempfile.new 'test_output'
 
