@@ -49,4 +49,17 @@ class GuiInputManager
         end
         return dialog_result == yes_string
     end
+
+    def ask_rotation(prompt)
+        clockwise_string = "Clockwise"
+        @gui.display_list_dialog([clockwise_string, "Counter Clockwise"], prompt)
+
+        dialog_result = nil
+        while !dialog_result
+            sleep @sleep_amount
+            dialog_result = @gui.get_dialog_result
+        end
+
+        return dialog_result == clockwise_string ? Direction::Clockwise : Direction::CounterClockwise
+    end
 end
