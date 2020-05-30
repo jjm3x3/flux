@@ -148,7 +148,7 @@ class TrueCliInterface
   end
 
   def ask_rotation(prompt="Which direction?")
-    @output_stream.puts "#{prompt} (Clockwise/counterClockwise)"
+    @output_stream.puts "#{prompt} (clockwise/CounterClockwise)"
     response = get_input
     response.start_with?("cl") ? Direction::Clockwise : Direction::CounterClockwise
   end
@@ -182,7 +182,7 @@ class TrueTestInterface
   end
 
   def ask_rotation(prompt="Which direction?")
-    @output_stream.puts "#{prompt} (Clockwise/counterClockwise)"
+    @output_stream.puts "#{prompt} (clockwise/CounterClockwise)"
     response = get_input
     response.start_with?("cl") ? Direction::Clockwise : Direction::CounterClockwise
   end
