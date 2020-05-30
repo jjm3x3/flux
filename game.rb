@@ -399,6 +399,7 @@ class Game
 
 
     eligibleOpponents.select do |aPlayer|
+      # TODO:: should consider that any player should be able to see this at any time
       @logger.log_cards(aPlayer.keepers, "Here are the keepers: #{aPlayer.to_s} has:")
     end
 

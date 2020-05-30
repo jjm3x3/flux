@@ -20,7 +20,8 @@ class Deck
     # put in for debugging
     # if @firstCard
     #   @firstCard = false
-    #   newInjectedCard = Action.new(2,"extra draw 2 an use em", "put some rule text here")
+    #   newInjectedCard = Action.new(14,"extra rotate hands", "put some rule text here")
+    # #   newInjectedCard = Limit.new("max of 1", 4, "put some rule text here", 1)
     #   drawnCards = [newInjectedCard]
     #   cardsToDraw -= 1
     # end
