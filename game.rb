@@ -332,7 +332,7 @@ class Game
   end
 
   def rotateHands(player)
-    direction = @logger.ask_rotation("Which way would you like to rotate? ")
+    direction = @interface.await.ask_rotation("Which way would you like to rotate?").value
 
     #candidate for debug
     @players.each do |player|
@@ -343,6 +343,7 @@ class Game
     tempHand = @players[playerCur].hand
     nextPlayer = -1
     while nextPlayer != currentPlayer
+      @logger.debug "the Direction is '#{direction}'"
       if direction == Direction::Clockwise
         @logger.debug "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length

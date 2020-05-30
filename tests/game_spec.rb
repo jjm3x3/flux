@@ -1059,7 +1059,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("thing")
             theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
             theGame.currentPlayerCounter = 10
@@ -1076,7 +1077,8 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("thing")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1091,7 +1093,8 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("thing")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
                 theFirstPlayer = theGame.players[0]
                 theLastPlayer = theGame.players[theGame.players.length-1]
                 lastPlayersOriginalCards = theLastPlayer.hand
@@ -1107,7 +1110,8 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("thing")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1123,7 +1127,8 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("thing")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
                 theGame.currentPlayerCounter = 11
@@ -1147,7 +1152,8 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("clockwise")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1162,7 +1168,8 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("clockwise")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
                 theFirstPlayer = theGame.players[0]
                 theSecondPlayer = theGame.players[1]
                 secondPlayersOriginalCards = theSecondPlayer.hand
@@ -1178,7 +1185,8 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("clockwise")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
                 theFirstPlayer = theGame.players[0]
                 thePlayerAfterThem = theGame.players[2]
                 playerAfterThemsCards = thePlayerAfterThem.hand
@@ -1195,7 +1203,8 @@ describe "game" do
                 # setup
                 input_stream = StringIO.new("clockwise")
                 theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                aTrueTestInterface = TrueTestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, theTestInterface, aTrueTestInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
                 theGame.currentPlayerCounter = 11
