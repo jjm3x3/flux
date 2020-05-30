@@ -2,6 +2,7 @@ require "Tempfile"
 require "./game_interface.rb"
 require "./player.rb"
 require "./deck.rb"
+require "./logger.rb"
 
 describe "BaseLogger" do
 
