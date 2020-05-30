@@ -6,6 +6,7 @@ class GuiInputManager
     def initialize(gui)
         super()
         @gui = gui
+        @sleep_amount = 0.125
     end
 
     def choose_from_list(list, prompt)
@@ -25,7 +26,7 @@ class GuiInputManager
         while !dialog_result
             # @input_manager_log.puts "Going to sleep since nothing is selected at #{Time.now}"
             # @input_manager_log.flush
-            sleep 0.125
+            sleep @sleep_amount
             # @input_manager_log.puts "checking dialog_result at #{Time.now}"
             # @input_manager_log.flush
             dialog_result = @gui.get_dialog_result
@@ -36,5 +37,16 @@ class GuiInputManager
         # @input_manager_log.flush
         list.delete(dialog_result)
         return dialog_result
+    end
+
+    def ask_yes_no(prompt)
+        yes_string = "Yes"
+        @gui.display_list_dialog([yes_string, "No"], prompt)
+        dialog_result = nil
+        while !dialog_result
+            sleep @sleep_amount
+            dialog_result = @gui.get_dialog_result
+        end
+        return dialog_result == yes_string
     end
 end
