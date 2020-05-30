@@ -3,13 +3,6 @@ require "./direction.rb"
 
 class GameInterface
 
-  def printKeepers(player, prompt="here are the keepers you have:")
-    keepersPrintOut = player.keepers.map do |keeper|
-      keeper.to_s
-    end
-    @output_stream.puts "#{prompt}\n #{keepersPrintOut}"
-  end
-
   def print_permanents(player)
     prompt="here are the permanents #{player} has:"
     permanentsPrintOut = []
@@ -38,43 +31,8 @@ class GameInterface
     @output_stream.puts message
   end
 
-  def displayCards(hand,prompt="Here is your current hand:")
-    @output_stream.puts "#{prompt}\n#{indexed_display(hand)}"
-  end
-
   def log_cards(hand,prompt="Here is your current hand:")
     debug "#{prompt}\n#{indexed_display(hand)}"
-  end
-
-  def ask_yes_no(prompt)
-    @output_stream.puts "#{prompt} (y/N)"
-    response = get_input
-    response == 'y' || response == 'Y'
-  end
-
-  def ask_rotation(prompt="Which direction?")
-    information "#{prompt} (clockwise/CounterClockwise)"
-    response = get_input
-    response.start_with?("cl") ? Direction::Clockwise : Direction::CounterClockwise
-  end
-
-  def isClockwise(direction)
-    direction == :clockwise
-  end
-
-  def select_a_card(card_list, prompt="Select a card")
-    information prompt
-    displayCards(card_list, "Here are your options")
-    whichCard = get_input.to_i
-    card_list.delete_at(whichCard)
-  end
-
-  def select_a_player(playerList, prompt="Select a player")
-    playerNames = indexed_display(playerList)
-    information prompt
-    information "#{playerNames}"
-    whichPlayer = get_input.to_i
-    playerList[whichPlayer]
   end
 
   def pause
@@ -82,11 +40,6 @@ class GameInterface
   end
 
   private
-  def get_input
-    input = @input_stream.gets
-    input.strip
-  end
-
   def indexed_display(list)
     return StringFormattingUtilities.indexed_display(list)
   end
