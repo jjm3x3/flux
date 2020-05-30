@@ -1,4 +1,5 @@
 require 'concurrent'
+require "./direction.rb"
 
 class GameInterface
 
@@ -54,7 +55,7 @@ class GameInterface
   def ask_rotation(prompt="Which direction?")
     information "#{prompt} (clockwise/CounterClockwise)"
     response = get_input
-    response.start_with?("cl") ? :clockwise : :counterClockwise
+    response.start_with?("cl") ? Direction::Clockwise : Direction::CounterClockwise
   end
 
   def isClockwise(direction)

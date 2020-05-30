@@ -343,7 +343,7 @@ class Game
     tempHand = @players[playerCur].hand
     nextPlayer = -1
     while nextPlayer != currentPlayer
-      if @logger.isClockwise(direction)
+      if direction == Direction::Clockwise
         @logger.debug "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
@@ -359,7 +359,7 @@ class Game
       @logger.debug "here is the value of nextPlayer: #{nextPlayer}"
     end
     @logger.trace "giving plyer #{playerCur+1} the hand\n\t#{tempHand}"
-    if @logger.isClockwise(direction)
+    if direction == Direction::Clockwise
       newNextPlayer = (playerCur - 1) % @players.length
     else
       newNextPlayer = (playerCur + 1) % @players.length
