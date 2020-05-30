@@ -160,11 +160,12 @@ class TrueCliInterface
   end
 end
 
-class TrueTestInterface
+class TestInterface
   include Concurrent::Async
 
   attr_reader :card_list
   attr_reader :prompted
+
   def initialize(input, output)
     @input_stream = input
     @output_stream = output
