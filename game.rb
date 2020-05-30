@@ -3,6 +3,7 @@ require "./deck.rb"
 require "./player.rb"
 require "./ruleBase.rb"
 require "./game_interface.rb"
+require "./logger.rb"
 
 
 class Game
@@ -14,14 +15,14 @@ class Game
   attr_accessor :currentPlayerCounter
   attr_reader :goal
 
-  def initialize(numberOfPlayers, anInterface, aTrueInterface = TrueCliInterface.new, aRandom = Random.new, aDeck = Deck.new(anInterface))
+  def initialize(numberOfPlayers, aLogger, aTrueInterface = TrueCliInterface.new, aRandom = Random.new, aDeck = Deck.new(aLogger))
 
-    @logger = anInterface
+    @logger = aLogger
     @interface = aTrueInterface
 
     @random = aRandom
 
-    @ruleBase = RuleBase.new(self, anInterface)
+    @ruleBase = RuleBase.new(self, aLogger)
     @deck = aDeck
     @discardPile = []
 
