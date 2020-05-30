@@ -229,17 +229,21 @@ class Game
   end
 
   def todaysSpecial(player)
+    @logger.debug "Executing todays_special"
     drawnCards = drawCards(player, 3)
     cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
     cardToPlay.play(player, self)
 
+    @logger.debug "First card played now figure out if any more should be played"
     if @interface.await.ask_yes_no("is today your birthday").value
+      @logger.debug "It is the current players birthday"
       cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
       cardToPlay.play(player, self)
 
       cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
       cardToPlay.play(player, self)
     else
+      @logger.debug "It is the not current players birthday is it at least a holiday or anniversary"
       if @interface.await.ask_yes_no("Is today a holiday or an anniversary").value
         cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
         cardToPlay.play(player, self)
