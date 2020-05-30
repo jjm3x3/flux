@@ -22,6 +22,22 @@ describe "GameInterface" do
             #test
             # no reall assertions for now... change test to see output
         end
+
+        it "should print a players keepers only using their to_s form" do
+            #setup
+            # logger = CliInterface.new(debug=true)
+            logger = TestInterface.new("some string", test_outfile)
+
+            test_keeper = Keeper.new(100, "A Test")
+            test_player = Player.new("test player")
+            test_player.add_permanent(test_keeper)
+
+            # execute
+            logger.log_cards(test_player.keepers)
+
+            #test
+            # no reall assertions for now... change test to see output
+        end
     end
 
     test_outfile.unlink

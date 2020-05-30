@@ -398,7 +398,7 @@ class Game
 
 
     eligibleOpponents.select do |aPlayer|
-      @logger.printKeepers(aPlayer, "Here are the keepers: #{aPlayer.to_s} has:")
+      @logger.log_cards(aPlayer.keepers, "Here are the keepers: #{aPlayer.to_s} has:")
     end
 
     eligibleOpponents.unshift(:no_one)
