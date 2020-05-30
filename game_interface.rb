@@ -18,7 +18,7 @@ class StringFormattingUtilities
   end
 end
 
-class TrueCliInterface
+class CliInterface
   include Concurrent::Async
 
   def initialize

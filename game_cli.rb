@@ -3,7 +3,7 @@ class GameCli
       @logger = logger
       @game = game
       @new_game_driver = new_game_driver
-      @interface = TrueCliInterface.new
+      @interface = CliInterface.new
   end
 
   def run
