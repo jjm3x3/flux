@@ -369,7 +369,7 @@ class Game
 
     # candidate for debug
     @players.each do |player|
-      @logger.displayCards(player.hand, "What is my hand now #{player}:")
+      @logger.displayCardsDebug(player.hand, "What is my hand now #{player}:")
     end
   end
 
