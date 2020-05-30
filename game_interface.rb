@@ -135,6 +135,12 @@ class TrueCliInterface
     card_list.delete_at(whichCard)
   end
 
+  def ask_yes_no(prompt)
+    @output_stream.puts "#{prompt} (y/N)"
+    response = get_input
+    response == 'y' || response == 'Y'
+  end
+
   private
   def get_input
     input = @input_stream.gets
@@ -155,6 +161,18 @@ class TrueTestInterface
     @card_list = card_list
     whichCard = @input_stream.gets.strip.to_i
     card_list.delete_at(whichCard)
+  end
+
+  def ask_yes_no(prompt)
+    @output_stream.puts "#{prompt} (y/N)"
+    response = get_input
+    response == 'y' || response == 'Y'
+  end
+
+  private
+  def get_input
+    input = @input_stream.gets
+    input.strip
   end
 end
 

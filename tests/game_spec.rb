@@ -718,7 +718,7 @@ describe "game" do
             expect(theFirstPlayer.keepers.size).to eq 1 # stand in for knowing how many cards got played
         end
 
-        it "should only play two cards if it is not your birthday but is a holidy" do
+        it "should only play two cards if it is not your birthday but is a holiday" do
             # setup
             input_stream = StringIO.new("0\nn\ny\n0\n")
             theTestInterface = TestInterface.new(input_stream, test_outfile)

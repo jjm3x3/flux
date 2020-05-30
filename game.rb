@@ -233,14 +233,14 @@ class Game
     cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
     cardToPlay.play(player, self)
 
-    if @logger.ask_yes_no("is today your birthday")
+    if @interface.await.ask_yes_no("is today your birthday").value
       cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
       cardToPlay.play(player, self)
 
       cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
       cardToPlay.play(player, self)
     else
-      if @logger.ask_yes_no "Is today a holiday or an anniversary"
+      if @interface.await.ask_yes_no("Is today a holiday or an anniversary").value
         cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
         cardToPlay.play(player, self)
       end
@@ -402,7 +402,7 @@ class Game
       selectedPlayer = @interface.await.choose_from_list(eligibleOpponents, "Which player would you like to take a keeper from").value
       areYouSure = selectedPlayer != :no_one
       if selectedPlayer == :no_one
-        areYouSure = @logger.ask_yes_no "Are you sure you don't want to trade with anyone?"
+        areYouSure = @interface.await.ask_yes_no("Are you sure you don't want to trade with anyone?").value
       end
       if areYouSure
         break
