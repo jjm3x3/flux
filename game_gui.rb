@@ -149,6 +149,12 @@ class GameGui < Gosu::Window
                 @redraw_hand = false
 
                 if @player_changed
+                    # TODO:: Make sure not to await anything here
+                    #
+                    #       after thinking more about this we can repro a bug
+                    #       by making sure the first player starts the game with
+                    #       two creepeprs one of them death
+                    #
                     @new_game_driver.await.setup_new_turn
                     @redraw_hand = true
 
