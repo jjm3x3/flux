@@ -290,7 +290,7 @@ class Game
       resolve_taxes_rule(aPlayer)
     end
 
-    @logger.printPermanents(player)
+    @logger.print_permanents(player)
   end
 
   def letsDoThatAgain(player)

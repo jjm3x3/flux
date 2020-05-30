@@ -9,7 +9,8 @@ class GameInterface
     @output_stream.puts "#{prompt}\n #{keepersPrintOut}"
   end
 
-  def printPermanents(player, prompt="here are the permanents you have:")
+  def print_permanents(player)
+    prompt="here are the permanents #{player} has:"
     permanentsPrintOut = []
     permanentsPrintOut += player.keepers.map do |keeper|
       keeper.to_s
@@ -17,7 +18,7 @@ class GameInterface
     permanentsPrintOut += player.creepers.map do |creeper|
       creeper.to_s
     end
-    @output_stream.puts "#{prompt}\n #{permanentsPrintOut}"
+    debug "#{prompt}\n #{permanentsPrintOut}"
   end
 
   def debug(message)
