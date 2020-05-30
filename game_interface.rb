@@ -1,7 +1,7 @@
 require 'concurrent'
 require "./direction.rb"
 
-class LoggerBase
+class BaseLogger
 
   def print_permanents(player)
     prompt="here are the permanents #{player} has:"
@@ -32,16 +32,11 @@ class LoggerBase
   end
 
   def log_cards(hand,prompt="Here is your current hand:")
-    debug "#{prompt}\n#{indexed_display(hand)}"
+    debug "#{prompt}\n#{StringFormattingUtilities.indexed_display(hand)}"
   end
 
   def pause
     @input_stream.gets
-  end
-
-  private
-  def indexed_display(list)
-    return StringFormattingUtilities.indexed_display(list)
   end
 end
 
@@ -61,7 +56,7 @@ class StringFormattingUtilities
   end
 end
 
-class CliInterface < LoggerBase
+class CliInterface < BaseLogger
   def initialize(debug)
     @output_stream = $stdout
     @input_stream = $stdin
@@ -150,7 +145,7 @@ class TestInterface
   end
 end
 
-class TestLogger < LoggerBase
+class TestLogger < BaseLogger
   def initialize(input, output)
     @input_stream = input
     @output_stream = output
