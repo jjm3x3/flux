@@ -1377,7 +1377,7 @@ describe "game" do
             theGame.exchange_keepers(theFirstPlayer)
 
             # test
-            expect(theTestInterface.indexed_output).to_not include theGame.players[2].to_s
+            expect(aTrueTestInterface.card_list).to_not include theGame.players[2].to_s
         end
 
         it "should not prompt to check if you are sure of your decision" do
