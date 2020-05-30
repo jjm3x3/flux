@@ -77,6 +77,10 @@ class GameInterface
     playerList[whichPlayer]
   end
 
+  def pause
+    @input_stream.gets
+  end
+
   private
   def get_input
     input = @input_stream.gets

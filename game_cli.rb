@@ -19,8 +19,10 @@ class GameCli
           print_permanents(activePlayer, prompt="here are the permanents you have:")
 
           cardToPlay = @interface.await.choose_from_list(hand, "Select a card from your hand to play").value
+          @logger.debug "Card selected is: '#{cardToPlay}'"
 
-          @new_game_driver.await.post_card_play_clean_up(activePlayer, cardToPlay)
+          play_result = @new_game_driver.await.post_card_play_clean_up(activePlayer, cardToPlay)
+          @logger.debug "What was the play result? '#{play_result.state}'"
           cardsPlayed += 1
 
           hand = activePlayer.hand # really a sad sideeffect of much statefull programming
