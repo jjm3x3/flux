@@ -1507,7 +1507,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
+            theGame = Game.new(numberOfPlayers=3, testLogger, CliInterface.new, Random.new, stacked_deck)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1584,7 +1585,8 @@ describe "game" do
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, Random.new, stacked_deck)
             theFirstPlayer = theGame.players[0]
             deathCreeper = Creeper.new(3, "dead", "Some rules text")
             theFirstPlayer.add_creeper(deathCreeper)
