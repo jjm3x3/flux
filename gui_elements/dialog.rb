@@ -80,6 +80,7 @@ class CardDialog
             cardsDisplayed += 1
         end
 
+        @height = (@font.height + @item_spacing) * cardsDisplayed + @boarder_width * 2
     end
 
     def draw
