@@ -1,4 +1,3 @@
-require "concurrent"
 require "./cards/cards.rb"
 require "./deck.rb"
 require "./player.rb"
@@ -16,7 +15,6 @@ class Game
   attr_reader :goal
 
   def initialize(numberOfPlayers, anInterface, aTrueInterface = TrueCliInterface.new, aRandom = Random.new, aDeck = Deck.new(anInterface))
-    super()
 
     @logger = anInterface
     @interface = aTrueInterface
