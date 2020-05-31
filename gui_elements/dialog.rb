@@ -57,8 +57,11 @@ class CardDialog
         @font = Gosu::Font.new(20)
         @card_buttons = []
         @selected_card = nil
-        @dialog_content_x_position = 120
-        @dialog_content_y_position = 120
+        @dialog_x_position = 100
+        @dialog_y_position = 100
+        @boarder_width = 20
+        @dialog_content_x_position = @dialog_x_position + @boarder_width
+        @dialog_content_y_position = @dialog_y_position + @boarder_width
         @item_spacing = 10
     end
 
