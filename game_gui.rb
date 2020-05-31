@@ -176,8 +176,8 @@ class GameGui < Gosu::Window
     def display_list_dialog(list, prompt="Select an option")
         @logger.debug "does this even get called?"
         @current_dialog.set_prompt prompt
-        @current_dialog.reset_result
         @current_dialog.set_cards(list)
+        @current_dialog.reset_result
         @current_dialog.show
     end
 
