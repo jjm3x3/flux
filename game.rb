@@ -84,9 +84,12 @@ class Game
   def removeDownToKeeperLimit(player)
     while player.keepers.length > @ruleBase.keeperLimit
       @logger.information "Since the keeper limit is #{@ruleBase.keeperLimit} you must discard a keeper"
-      removeKeeper = @interface.await.choose_from_list(player.keepers, "Choose a keeper to discard").value
-      @discardPile << removeKeeper
-      @logger.debug "discarding #{removeKeeper}"
+      choose_result = @interface.await.choose_from_list(player.keepers, "Choose a keeper to discard")
+      if choose_result.state != :fulfilled
+        @logger.debug "choose_result may not have been fulfilled because #{choose_result.reason}"
+      end
+      @discardPile << choose_result.value
+      @logger.debug "discarding #{choose_result.value}"
     end
   end
 
