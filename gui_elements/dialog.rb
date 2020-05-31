@@ -56,7 +56,6 @@ class CardDialog
         @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
         @font = Gosu::Font.new(20)
         @card_buttons = []
-        @result = Concurrent::AtomicReference.new
         @selected_card = nil
     end
 
@@ -99,7 +98,6 @@ class CardDialog
     end
 
     def get_result
-        # @result
         @selected_card
     end
 
