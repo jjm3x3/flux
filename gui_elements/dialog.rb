@@ -86,7 +86,7 @@ class CardDialog
     def draw
         if @visible
             my_green = Gosu::Color.new(255,0, 128,0)
-            Gosu::draw_rect(@dialog_x_position, @dialog_y_position, @width, @height, my_green, ZOrder::DIALOG_ITEMS)
+            Gosu::draw_rect(@dialog_x_position, @dialog_y_position, @width, @height, my_green, ZOrder::DIALOG)
             @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             @card_buttons.each do |card_button|
                 card_button.draw
