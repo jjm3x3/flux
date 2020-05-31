@@ -59,7 +59,7 @@ class CardDialog
         @selected_card = nil
         @dialog_x_position = 120
         @dialog_y_position = 120
-        @boarder_width = 10
+        @item_spacing = 10
     end
 
     def set_cards(card_list)
@@ -67,7 +67,7 @@ class CardDialog
         @card_buttons = []
         cardsDisplayed = 1 # accounts for prompt
         card_list.each do |card|
-            @card_buttons << Button.new(@window, "#{card}", @dialog_x_position, @dialog_y_position + @boarder_width * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::DIALOG_ITEMS)
+            @card_buttons << Button.new(@window, "#{card}", @dialog_x_position, @dialog_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::DIALOG_ITEMS)
             cardsDisplayed += 1
         end
 
@@ -76,7 +76,7 @@ class CardDialog
     def draw
         if @visible
             @baground_image.draw(100, 100, ZOrder::DIALOG, 0.25, 0.25)
-            @font.draw_text(@prompt, @dialog_x_position, @dialog_y_position + @boarder_width, ZOrder::DIALOG_ITEMS)
+            @font.draw_text(@prompt, @dialog_x_position, @dialog_y_position, ZOrder::DIALOG_ITEMS)
             @card_buttons.each do |card_button|
                 card_button.draw
             end
