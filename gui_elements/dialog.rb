@@ -50,7 +50,7 @@ class Dialog
 end
 
 class CardDialog
-    def initialize(window, background, font, logger)
+    def initialize(window, background, font, logger, dialog_prompts)
         @window = window
         @logger = logger
         @visible = false
@@ -64,6 +64,7 @@ class CardDialog
         @dialog_content_x_position = @dialog_x_position + @boarder_width
         @dialog_content_y_position = @dialog_y_position + @boarder_width
         @item_spacing = 10
+        @dialog_prompts = dialog_prompts
     end
 
     def set_cards(card_list)
