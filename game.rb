@@ -40,7 +40,7 @@ class Game
     @players.each do |player|
       firstHand = drawCards(player, 3) # basic rules draw three cards to start
       @logger.trace "draw your opening hand #{firstHand}"
-      player.hand = firstHand
+      player.set_hand(firstHand)
     end
 
     @currentPlayerCounter = 0
@@ -141,7 +141,7 @@ class Game
     # puts "here is #{numberOfCardsDrawn} < #{@ruleBase.drawRule}"
     if numberOfCardsDrawn < @ruleBase.drawRule
       lackingCards = @ruleBase.drawRule - numberOfCardsDrawn
-      currentPlayer.hand += drawCards(currentPlayer, lackingCards)
+      currentPlayer.add_cards_to_hand(drawCards(currentPlayer, lackingCards))
       numberOfCardsDrawn += lackingCards
     end
     numberOfCardsDrawn
@@ -194,7 +194,7 @@ class Game
   end
 
   def jackpot(player)
-    player.hand += drawCards(player, 3)
+    player.add_cards_to_hand(drawCards(player, 3))
   end
 
   def draw_3_play_2_of_them(player)
@@ -213,7 +213,7 @@ class Game
     player.hand.each do |card|
       discard(card)
     end
-    player.hand = drawCards(player, numberOfCardsToDraw)
+    player.set_hand(drawCards(player, numberOfCardsToDraw))
   end
 
   def use_what_you_take(player)
@@ -238,7 +238,7 @@ class Game
     end.map do |aPlayer|
       @interface.await.choose_from_list(aPlayer.hand, "Choose a card to give to #{player}").value
     end
-    player.hand += newCardsForPlayer
+    player.add_cards_to_hand(newCardsForPlayer)
   end
 
   def todaysSpecial(player)
@@ -339,9 +339,8 @@ class Game
       player.to_s
     end
     selectedPlayer = @interface.await.choose_from_list(opponents(player), "who would you like to trade hands with?").value
-    otherHand = selectedPlayer.hand
-    selectedPlayer.hand = player.hand
-    player.hand = otherHand
+    otherHand = selectedPlayer.set_hand(player.hand)
+    player.set_hand(otherHand)
   end
 
   def rotateHands(player)
