@@ -50,7 +50,7 @@ class Dialog
 end
 
 class CardDialog
-    def initialize(window)
+    def initialize(window, dialog_prompts)
         @window = window
         @visible = false
         @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
@@ -63,6 +63,8 @@ class CardDialog
         @dialog_content_x_position = @dialog_x_position + @boarder_width
         @dialog_content_y_position = @dialog_y_position + @boarder_width
         @item_spacing = 10
+
+        @dialog_prompts = dialog_prompts
 
         @height = (@font.height + @item_spacing) * 4 + @boarder_width * 2
         @width = 300

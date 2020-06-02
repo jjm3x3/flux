@@ -26,13 +26,17 @@ class GameGui < Gosu::Window
         @logger = logger
 
         @are_you_sure_dialog = Dialog.new(self)
-        @current_dialog = CardDialog.new(self)
+        @current_dialog = CardDialog.new(self, initialize_dialog_prompts)
         @new_game_driver = nil
 
         @current_cached_player = nil
         @current_player_future = nil
 
         @play_card_future = nil
+    end
+
+    def initialize_dialog_prompts
+        return {default: Gosu::Image.from_text("Some default prompt", 20), discard_down_to_limit: Gosu::Image.from_text("Player player2 Select a card to discard", 20)}
     end
 
     def button_up(id)
