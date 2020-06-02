@@ -2,6 +2,14 @@
 class Player
   attr_reader :creepers, :name, :keepers, :hand
 
+  def self.generate_players(number)
+      result = []
+      (1..number).select do |playerId|
+        result << Player.new("player" + playerId.to_s)
+      end
+      result
+  end
+
   def initialize(name)
     @name = name
     @keepers = []
