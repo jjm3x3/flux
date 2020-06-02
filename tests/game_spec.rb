@@ -129,7 +129,9 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.keepers = [Keeper.new(0, "thing1"), Keeper.new(0, "thing2"), Keeper.new(0, "thing3")]
+            theFirstPlayer.add_permanent(Keeper.new(0, "thing1"))
+            theFirstPlayer.add_permanent(Keeper.new(0, "thing2"))
+            theFirstPlayer.add_permanent(Keeper.new(0, "thing3"))
             keeperLimit = 2
             theGame.ruleBase.addRule(Limit.new("keeper limit 2", 4, "some dumb rules text", keeperLimit))
 
