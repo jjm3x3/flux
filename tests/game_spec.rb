@@ -281,7 +281,7 @@ describe "game" do
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
             aStackedDeck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
-            theGame = Game.new(numberOfPlayers=3, testLogger, TestInterface.new(input_stream, test_outfile), Random.new, aStackedDeck)
+            theGame = Game.new(numberOfPlayers=3, testLogger, TestInterface.new(input_stream, test_outfile), players=[], Random.new, aStackedDeck)
             keeper1 = Keeper.new(1, "thing1")
             keeper2 = Keeper.new(2, "thing2")
             theGame.setGoal(Goal.new("do a thing", [keeper1, keeper2], "some rule text"))
@@ -845,7 +845,7 @@ describe "game" do
             random.define_singleton_method(:rand) do |num|
                 0
             end
-            theGame = Game.new(numberOfPlayers=2, testLogger, TestInterface.new(input_stream, test_outfile), random)
+            theGame = Game.new(numberOfPlayers=3, testLogger, TestInterface.new(input_stream, test_outfile), players=[] ,random)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new(0, "Thing1")
             warCreeper = Creeper.new(1, "I am WAR", "some rules text")
@@ -1510,7 +1510,7 @@ describe "game" do
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
             stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
-            theGame = Game.new(numberOfPlayers=3, testLogger, CliInterface.new, Random.new, stacked_deck)
+            theGame = Game.new(numberOfPlayers=3, testLogger, CliInterface.new, players=[], Random.new, stacked_deck)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1588,7 +1588,7 @@ describe "game" do
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, Random.new, stacked_deck)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players=[], Random.new, stacked_deck)
             theFirstPlayer = theGame.players[0]
             deathCreeper = Creeper.new(3, "dead", "Some rules text")
             theFirstPlayer.add_creeper(deathCreeper)
