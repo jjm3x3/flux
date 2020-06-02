@@ -29,10 +29,7 @@ class Game
 
     @logger.debug "Setting up players"
     if players.size == 0
-      @players = []
-      (1..numberOfPlayers).select do |playerId|
-        @players << Player.new("player" + playerId.to_s)
-      end
+      @players = Player.generate_players(numberOfPlayers)
     else
       @players = players
     end
