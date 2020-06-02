@@ -28,9 +28,13 @@ class Game
     @discardPile = []
 
     @logger.debug "Setting up players"
-    @players = []
-    (1..numberOfPlayers).select do |playerId|
-      @players << Player.new("player" + playerId.to_s)
+    if players.size == 0
+      @players = []
+      (1..numberOfPlayers).select do |playerId|
+        @players << Player.new("player" + playerId.to_s)
+      end
+    else
+      @players = players
     end
 
     @players.each do |player|

@@ -11,6 +11,27 @@ describe "game" do
         theGame = Game.new(numberOfPlayers=3, testLogger)
     end
 
+    it "should build player array if it is not provided" do
+        testLogger = TestLogger.new("Some string", test_outfile)
+        expectedNumberOfPlayers = 3
+        theGame = Game.new(numberOfPlayers=expectedNumberOfPlayers, testLogger)
+
+        expect(theGame.players.size).to eq expectedNumberOfPlayers
+    end
+
+    it "should set the players to be the incomming ones if provided" do
+        testLogger = TestLogger.new("Some string", test_outfile)
+        expectedNumberOfPlayers = 8
+        players = []
+        (1..expectedNumberOfPlayers).select do |playerId|
+            players << Player.new("player" + playerId.to_s)
+        end
+        theGame = Game.new(numberOfPlayers=3, testLogger, TestInterface.new("some string", test_outfile), players=players)
+
+        expect(theGame.players.size).to eq expectedNumberOfPlayers
+
+    end
+
     describe "drawCards" do
         it "should draw bassed on the 'drawRule' if the count parmeter is :draw_rule" do
             # setup
