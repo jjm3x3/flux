@@ -1,32 +1,47 @@
 class GameCli
-  def initialize(game, logger)
+  def initialize(game, logger, new_game_driver)
       @logger = logger
-      @game_driver = game
-      @interface = TrueCliInterface.new
+      @game = game
+      @new_game_driver = new_game_driver
+      @interface = CliInterface.new
   end
 
   def run
       loop do
-        activePlayer = @game_driver.active_player
-        @interface.display_game_state(@game_driver.game)
+        activePlayer = @new_game_driver.await.active_player.value
+        @interface.display_game_state(@game)
         @logger.information "\n#{activePlayer}'s turn"
 
-        @game_driver.setup_new_turn
+        @new_game_driver.await.setup_new_turn
         hand = activePlayer.hand
         cardsPlayed = 0
-        while !@game_driver.turn_over?
-          @logger.printPermanents(activePlayer)
+        while !@new_game_driver.await.turn_over?.value
+          print_permanents(activePlayer, prompt="here are the permanents you have:")
 
-          cardToPlay = @logger.select_a_card(hand, "Select a card from your hand to play")
+          cardToPlay = @interface.await.choose_from_list(hand, "Select a card from your hand to play").value
+          @logger.debug "Card selected is: '#{cardToPlay}'"
 
-          @game_driver.post_card_play_clean_up(activePlayer, cardToPlay)
+          play_result = @new_game_driver.await.post_card_play_clean_up(activePlayer, cardToPlay)
+          @logger.debug "What was the play result? '#{play_result.state}'"
           cardsPlayed += 1
 
           hand = activePlayer.hand # really a sad sideeffect of much statefull programming
-          @logger.information "played: #{cardsPlayed} of play: #{@game_driver.game.ruleBase.playRule}"
+          @logger.information "played: #{cardsPlayed} of play: #{@game.ruleBase.playRule}"
         end
-        @game_driver.end_turn_cleanup
       end
+  end
+
+  private
+  def print_permanents(player, prompt="here are the permanents you have:")
+
+    permanentsPrintOut = []
+    permanentsPrintOut += player.keepers.map do |keeper|
+      keeper.to_s
+    end
+    permanentsPrintOut += player.creepers.map do |creeper|
+      creeper.to_s
+    end
+    @logger.information "#{prompt}\n #{permanentsPrintOut}"
   end
 
 end

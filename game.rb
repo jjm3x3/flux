@@ -3,9 +3,11 @@ require "./deck.rb"
 require "./player.rb"
 require "./ruleBase.rb"
 require "./game_interface.rb"
+require "./logger.rb"
 
 
 class Game
+
   attr_accessor :ruleBase
   attr_accessor :players
   attr_accessor :deck
@@ -13,12 +15,14 @@ class Game
   attr_accessor :currentPlayerCounter
   attr_reader :goal
 
-  def initialize(numberOfPlayers, anInterface = CliInterface.new, aRandom = Random.new, aDeck = Deck.new(anInterface))
+  def initialize(numberOfPlayers, aLogger, aTrueInterface = CliInterface.new, aRandom = Random.new, aDeck = Deck.new(aLogger))
 
-    @interface = anInterface
+    @logger = aLogger
+    @interface = aTrueInterface
+
     @random = aRandom
 
-    @ruleBase = RuleBase.new(self, anInterface)
+    @ruleBase = RuleBase.new(self, aLogger)
     @deck = aDeck
     @discardPile = []
 
@@ -29,7 +33,7 @@ class Game
 
     @players.each do |player|
       firstHand = drawCards(player, 3) # basic rules draw three cards to start
-      @interface.trace "draw your opening hand #{firstHand}"
+      @logger.trace "draw your opening hand #{firstHand}"
       player.hand = firstHand
     end
 
@@ -38,14 +42,14 @@ class Game
 
   def drawCards(player, count)
     expectedNumberOfCards = (count == :draw_rule ? @ruleBase.drawRule : count)
-    @interface.debug "expecting to draw #{expectedNumberOfCards} cards"
+    @logger.debug "expecting to draw #{expectedNumberOfCards} cards"
     drawnCards = @deck.drawCards(expectedNumberOfCards)
     loop do
-      @interface.debug "How many cards where actually drawn #{drawnCards.size}"
+      @logger.debug "How many cards where actually drawn #{drawnCards.size}"
       drawnCards = drawnCards.select do |card|
-        @interface.debug "What is this card? #{card.card_type}"
+        @logger.debug "What is this card? #{card.card_type}"
         if card.card_type == "Creeper"
-          @interface.debug "Found a creeper: #{card}"
+          @logger.debug "Found a creeper: #{card}"
           card.play(player, self)
         end
         card.card_type != "Creeper"
@@ -55,7 +59,7 @@ class Game
       else
       # TODO: should shuffle the discard back in the draw at this point
       if @deck.count == 0
-        @interface.debug "No cards left to draw"
+        @logger.debug "No cards left to draw"
         break
       end
       drawnCards += @deck.drawCards(expectedNumberOfCards - drawnCards.length)
@@ -79,25 +83,32 @@ class Game
 
   def removeDownToKeeperLimit(player)
     while player.keepers.length > @ruleBase.keeperLimit
-      @interface.information "Since the keeper limit is #{@ruleBase.keeperLimit} you must discard a keeper"
-      removeKeeper = @interface.select_a_card(player.keepers, "Choose a keeper to discard")
-      @discardPile << removeKeeper
-      @interface.debug "discarding #{removeKeeper}"
+      @logger.information "Since the keeper limit is #{@ruleBase.keeperLimit} you must discard a keeper"
+      choose_result = @interface.await.choose_from_list(player.keepers, "Choose a keeper to discard")
+      if choose_result.state != :fulfilled
+        @logger.debug "choose_result may not have been fulfilled because #{choose_result.reason}"
+      end
+      @discardPile << choose_result.value
+      @logger.debug "discarding #{choose_result.value}"
     end
   end
 
   def discardDownToLimit(player)
-    @interface.debug "The hand limit is #{@ruleBase.handLimit}"
+    @logger.debug "The hand limit is #{@ruleBase.handLimit}"
     while player.hand.count > @ruleBase.handLimit
-      removedCard = @interface.select_a_card(player.hand, "Player #{player}\n\tSelect a card to discard")
+      removedCard = @interface.await.choose_from_list(player.hand, "Player #{player}\n\tSelect a card to discard").value
       @discardPile << removedCard
-      @interface.debug "removing '#{removedCard}'"
+      @logger.debug "removing '#{removedCard}'"
     end
   end
 
   def discard(card)
-    @interface.debug "discarding #{card}"
+    @logger.debug "discarding #{card}"
     @discardPile << card
+  end
+
+  def play_limit
+    @ruleBase.playRule
   end
 
   def hasGoal?
@@ -109,12 +120,12 @@ class Game
   end
 
   def setGoal(newGoal)
-    @interface.information "changeing goal to #{newGoal}"
+    @logger.information "changeing goal to #{newGoal}"
     if @goal
       @discardPile << @goal
     end
     @goal = newGoal
-    @interface.debug "here is the new value of goal #{@goal}"
+    @logger.debug "here is the new value of goal #{@goal}"
   end
 
   def replenishHand(numberOfCardsDrawn, currentPlayer)
@@ -141,7 +152,7 @@ class Game
     @players.each do |player|
       winner ||= has_player_won?(player)
     end
-    @interface.debug "is there a winner? #{winner.to_s}\n"
+    @logger.debug "is there a winner? #{winner.to_s}\n"
     winner
   end
 
@@ -159,10 +170,17 @@ class Game
     end
   end
 
+  def play_card(card, player)
+    card.play(player, self)
+  end
+
   def draw_2_and_use_em(player)
+    @logger.debug "happens sync at the beginning of draw_2_and_use_em"
     cardsDrawn = drawCards(player, 2)
-    firstOne = @interface.select_a_card(cardsDrawn, "Which one would you like to play first?")
-    firstOne.play(player, self)
+    select_result = @interface.await.choose_from_list(cardsDrawn, "Which one would you like to play first?")
+    @logger.debug "Here is the selected card in draw_2_and_use_em: '#{select_result.value}'"
+    selected_card = select_result.value
+    selected_card.play(player, self)
     cardsDrawn[0].play(player, self)
   end
 
@@ -172,15 +190,17 @@ class Game
 
   def draw_3_play_2_of_them(player)
     cardsDrawn = drawCards(player, 3)
-    firstOne = @interface.select_a_card(cardsDrawn, "which would you like to play first?")
-    firstOne.play(player, self)
-    secondOne = @interface.select_a_card(cardsDrawn, "which would you like to play next?")
-    secondOne.play(player, self)
+    firstOne = @interface.await.choose_from_list(cardsDrawn, "which would you like to play first?")
+    @logger.debug "Here is the first card that was selected #{firstOne.value}"
+    firstOne.value.play(player, self)
+    @logger.debug "Going to select a second one"
+    secondOne = @interface.await.choose_from_list(cardsDrawn, "which would you like to play next?")
+    secondOne.value.play(player, self)
     discard(cardsDrawn[0])
   end
 
   def discard_and_draw(player)
-    numberOfCardsToDraw = player.hand.length - 1
+    numberOfCardsToDraw = player.hand.length
     player.hand.each do |card|
       discard(card)
     end
@@ -192,40 +212,44 @@ class Game
       opp.hand.size > 0
     end
     if(validOpponents.size == 0)
-      @interface.information "Too bad no body has any cards for you"
+      @logger.information "Too bad no body has any cards for you"
       return
     end
-    selectedPlayer = @interface.select_a_player(validOpponents, "which player would you like to pick from")
+    selectedPlayer = @interface.await.choose_from_list(validOpponents, "which player would you like to pick from").value
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
-    @interface.debug "playing #{selectedCard}"
+    @logger.debug "playing #{selectedCard}"
     selectedCard.play(player, self)
   end
 
   def taxation(player)
-    @interface.debug "playing taxation!"
+    @logger.debug "playing taxation!"
     newCardsForPlayer = opponents(player).select do |player|
       player.hand.size > 0
     end.map do |aPlayer|
-      @interface.select_a_card(aPlayer.hand, "Choose a card to give to #{player}")
+      @interface.await.choose_from_list(aPlayer.hand, "Choose a card to give to #{player}").value
     end
     player.hand += newCardsForPlayer
   end
 
   def todaysSpecial(player)
+    @logger.debug "Executing todays_special"
     drawnCards = drawCards(player, 3)
-    cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
+    cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
     cardToPlay.play(player, self)
 
-    if @interface.ask_yes_no("is today your birthday")
-      cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
+    @logger.debug "First card played now figure out if any more should be played"
+    if @interface.await.ask_yes_no("is today your birthday").value
+      @logger.debug "It is the current players birthday"
+      cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
       cardToPlay.play(player, self)
 
-      cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
+      cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
       cardToPlay.play(player, self)
     else
-      if @interface.ask_yes_no "Is today a holiday or an anniversary"
-        cardToPlay = @interface.select_a_card(drawnCards, "pick a card to play")
+      @logger.debug "It is the not current players birthday is it at least a holiday or anniversary"
+      if @interface.await.ask_yes_no("Is today a holiday or an anniversary").value
+        cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
         cardToPlay.play(player, self)
       end
     end
@@ -248,16 +272,16 @@ class Game
       aPlayer.clear_permanents
     end
 
-    @interface.debug "how many keepers do I have: #{allPermanents.count} but the length is #{allPermanents.length}"
-    @interface.debug "and here they are: \n#{allPermanents}"
+    @logger.debug "how many keepers do I have: #{allPermanents.count} but the length is #{allPermanents.length}"
+    @logger.debug "and here they are: \n#{allPermanents}"
     playerCur = @currentPlayerCounter
     random = @random
     while allPermanents.length > 0
-      @interface.debug "here are the keepers now: \n#{allPermanents}"
+      @logger.debug "here are the keepers now: \n#{allPermanents}"
       playerCur = playerCur % @players.length
       randomPosition = random.rand(allPermanents.length)
       aPermanent = allPermanents.delete_at(randomPosition)
-      @interface.debug "Trying to add the permanent #{aPermanent}"
+      @logger.debug "Trying to add the permanent #{aPermanent}"
       @players[playerCur].add_permanent(aPermanent)
       playerCur += 1
     end
@@ -270,19 +294,19 @@ class Game
       resolve_taxes_rule(aPlayer)
     end
 
-    @interface.printPermanents(player)
+    @logger.print_permanents(player)
   end
 
   def letsDoThatAgain(player)
     eligibleCards = @discardPile.select do |card|
-      @interface.debug "this card is of type: #{card.card_type}"
+      @logger.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
     end
-    pickedCard = @interface.select_a_card(eligibleCards, "pick a card you would like to replay")
+    pickedCard = @interface.await.choose_from_list(eligibleCards, "pick a card you would like to replay").value
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
-    @interface.information "replaying #{pickedCard}"
+    @logger.information "replaying #{pickedCard}"
     pickedCard.play(player, self)
   end
 
@@ -291,9 +315,9 @@ class Game
     playerCur = currentPlayer
     while cardsDrawn.length > 0
       if playerCur == currentPlayer
-        selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to giver to yourself")
+        selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to giver to yourself").value
       else
-        selectedCard = @interface.select_a_card(cardsDrawn, "which card would you like to give to #{@players[playerCur]}")
+        selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to give to #{@players[playerCur]}").value
       end
       @players[playerCur].hand << selectedCard
       playerCur += 1
@@ -305,41 +329,42 @@ class Game
     opponentsText = opponents(player).map do |player|
       player.to_s
     end
-    selectedPlayer = @interface.select_a_player(opponents(player), "who would you like to trade hands with?")
+    selectedPlayer = @interface.await.choose_from_list(opponents(player), "who would you like to trade hands with?").value
     otherHand = selectedPlayer.hand
     selectedPlayer.hand = player.hand
     player.hand = otherHand
   end
 
   def rotateHands(player)
-    direction = @interface.ask_rotation("Which way would you like to rotate? ")
+    direction = @interface.await.ask_rotation("Which way would you like to rotate?").value
 
     #candidate for debug
     @players.each do |player|
-      @interface.displayCardsDebug(player.hand, "What is my hand now #{player}:")
+      @logger.log_cards(player.hand, "What is my hand now #{player}:")
     end
 
     playerCur = currentPlayer
     tempHand = @players[playerCur].hand
     nextPlayer = -1
     while nextPlayer != currentPlayer
-      if @interface.isClockwise(direction)
-        @interface.debug "move clockwise"
+      @logger.debug "the Direction is '#{direction}'"
+      if direction == Direction::Clockwise
+        @logger.debug "move clockwise"
         nextPlayer  = (playerCur + 1) % @players.length
       else
-        @interface.debug "move counterclockwise playerCur: #{playerCur} nextPlayer: #{nextPlayer} "
+        @logger.debug "move counterclockwise playerCur: #{playerCur} nextPlayer: #{nextPlayer} "
         nextPlayer  = (playerCur - 1) % @players.length
       end
 
-      @interface.information "player #{playerCur+1} gets =  #{nextPlayer+1}'s hand "
-      @interface.trace "giving plyer #{playerCur+1} the hand\n\t#{@players[nextPlayer].hand}"
+      @logger.information "player #{playerCur+1} gets =  #{nextPlayer+1}'s hand "
+      @logger.trace "giving plyer #{playerCur+1} the hand\n\t#{@players[nextPlayer].hand}"
       @players[playerCur].set_hand(@players[nextPlayer].hand)
 
       playerCur = nextPlayer
-      @interface.debug "here is the value of nextPlayer: #{nextPlayer}"
+      @logger.debug "here is the value of nextPlayer: #{nextPlayer}"
     end
-    @interface.trace "giving plyer #{playerCur+1} the hand\n\t#{tempHand}"
-    if @interface.isClockwise(direction)
+    @logger.trace "giving plyer #{playerCur+1} the hand\n\t#{tempHand}"
+    if direction == Direction::Clockwise
       newNextPlayer = (playerCur - 1) % @players.length
     else
       newNextPlayer = (playerCur + 1) % @players.length
@@ -348,7 +373,7 @@ class Game
 
     # candidate for debug
     @players.each do |player|
-      @interface.displayCards(player.hand, "What is my hand now #{player}:")
+      @logger.log_cards(player.hand, "What is my hand now #{player}:")
     end
   end
 
@@ -358,7 +383,7 @@ class Game
 
   def exchange_keepers(player)
     if player.keepers.length == 0
-      @interface.information "Too bad you have no keepers"
+      @logger.information "Too bad you have no keepers"
       return
     end
     otherKeepers = false
@@ -366,7 +391,7 @@ class Game
       otherKeepers ||= player.keepers.length != 0
     end
     if !otherKeepers
-      @interface.information "Too bad you have no keepers"
+      @logger.information "Too bad you have no keepers"
       return
     end
 
@@ -377,16 +402,17 @@ class Game
 
 
     eligibleOpponents.select do |aPlayer|
-      @interface.printKeepers(aPlayer, "Here are the keepers: #{aPlayer.to_s} has:")
+      # TODO:: should consider that any player should be able to see this at any time
+      @logger.log_cards(aPlayer.keepers, "Here are the keepers: #{aPlayer.to_s} has:")
     end
 
     eligibleOpponents.unshift(:no_one)
     selectedPlayer = :no_one
     loop do
-      selectedPlayer = @interface.select_a_player(eligibleOpponents, "Which player would you like to take a keeper from")
+      selectedPlayer = @interface.await.choose_from_list(eligibleOpponents, "Which player would you like to take a keeper from").value
       areYouSure = selectedPlayer != :no_one
       if selectedPlayer == :no_one
-        areYouSure = @interface.ask_yes_no "Are you sure you don't want to trade with anyone?"
+        areYouSure = @interface.await.ask_yes_no("Are you sure you don't want to trade with anyone?").value
       end
       if areYouSure
         break
@@ -397,12 +423,12 @@ class Game
     end
 
     if selectedPlayer.keepers.length > 1
-      myNewKeeper = @interface.select_a_card(selectedPlayer.keepers, "Slect which Keeper you would like")
+      myNewKeeper = @interface.await.choose_from_list(selectedPlayer.keepers, "Slect which Keeper you would like").value
     else
       myNewKeeper = selectedPlayer.keepers.delete_at(0)
     end
     if player.keepers.length > 1
-      myOldKeeper = @interface.select_a_card(player.keepers, "Which Keeper would you like to exchange")
+      myOldKeeper = @interface.await.choose_from_list(player.keepers, "Which Keeper would you like to exchange").value
     else
       myOldKeeper = player.keepers.delete_at(0)
     end
@@ -414,7 +440,7 @@ class Game
     resolve_taxes_rule(player)
     resolve_taxes_rule(selectedPlayer)
 
-    @interface.displayCardsDebug(player.keepers, "Here are your Keepers after the exchange")
+    @logger.log_cards(player.keepers, "Here are your Keepers after the exchange")
 
   end
 
@@ -422,8 +448,8 @@ class Game
     playerHasPeace = player.has_peace?
     playerHasWar = player.has_war?
     if (playerHasPeace && playerHasWar)
-      selectedPlayer = @interface.select_a_player(opponents(player), "#{player} since you have peace. Who would you like to give war too?")
-      @interface.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
+      selectedPlayer = @interface.await.choose_from_list(opponents(player), "#{player} since you have peace. Who would you like to give war too?").value
+      @logger.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
 
       selectedPlayer.add_creeper(player.take_war)
     end
@@ -444,7 +470,7 @@ class Game
       if(eligiablePermanents.size == 0)
         discard(player.take_death)
       else
-        selectedCard = @interface.select_a_card(eligiablePermanents, "Which permanent would you like to discard to death?")
+        selectedCard = @interface.await.choose_from_list(eligiablePermanents, "Which permanent would you like to discard to death?").value
         player.discard_permanent(selectedCard)
       end
     end

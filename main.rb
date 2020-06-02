@@ -18,11 +18,14 @@ ARGV.each do |arg|
   end
 end
 
-logger = CliInterface.new(debug)
+puts "starting game where debug: #{debug} and gui: #{gui}"
+
+logger = CliLogger.new(debug)
 if gui
   guiGame = GameGui.new(logger)
   guiGame.show
 else
-  gameDriver = GameCli.new(GameDriver.new(Game.new(3, logger), logger), logger)
+  theGame = Game.new(3, logger)
+  gameDriver = GameCli.new(theGame, logger, GameDriver.new(theGame, logger))
   gameDriver.run
 end

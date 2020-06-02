@@ -14,6 +14,17 @@ describe "cards" do
 
                 expect(sut == nil).to be false
             end
+
+            # since we have started using the concurrent-ruby package
+            # we need to make sure that this doesn't result in an exception
+            # or else every time we retun a card from an async method
+            # an exception will be raised due to trying to check equality
+            # with the Concurrent::NULL
+            it "should handle Concurrent::NULL" do
+                sut = Keeper.new(1, "THING")
+
+                expect(sut == Concurrent::NULL).to be false
+            end
         end
     end
 

@@ -3,6 +3,8 @@ require './gui_elements/button.rb'
 require './gui_elements/game_stats.rb'
 require './gui_elements/dialog.rb'
 require './game.rb'
+require './gui_input_manager.rb'
+require './game_driver.rb'
 
 class GameGui < Gosu::Window
     def initialize(logger)
@@ -22,19 +24,34 @@ class GameGui < Gosu::Window
         @redraw_hand = true
 
         @logger = logger
+
         @are_you_sure_dialog = Dialog.new(self)
+        @current_dialog = CardDialog.new(self)
+        @new_game_driver = nil
+
+        @current_cached_player = nil
+        @current_player_future = nil
+
+        @play_card_future = nil
     end
 
     def button_up(id)
         if @left_click_down
             puts "left button released"
             @left_click_down = false
+            if @current_dialog != nil && @current_dialog.is_visible?
+                if @current_dialog.handle_result
+                    @current_dialog.hide
+                    return
+                end
+            end
             if @are_you_sure_dialog.is_visible?
                 @are_you_sure_dialog.handle_result do |clicked|
                     if clicked == :yes_clicked
                         puts "I am starting a game then"
-                        @game = Game.new(3, @logger)
-                        @game_driver = GameDriver.new(@game, @logger)
+                        @game = Game.new(3, @logger, GuiInputManager.new(self))
+                        @new_game_driver = GameDriver.new(@game, @logger)
+                        @current_cached_player = @new_game_driver.await.active_player.value
                     elsif clicked == :no_clicked
                         puts "no selected"
                     else
@@ -45,23 +62,28 @@ class GameGui < Gosu::Window
             end
             if @new_game_button.is_clicked?
                 @are_you_sure_dialog.show
+                return
             end
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
                 if cardButton.is_clicked?
-                    activePlayer = @game_driver.active_player
+                    activePlayer = @new_game_driver.await.active_player.value
 
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
                     puts "you clicked a card button #{cardToPlay}"
 
-                    @game_driver.post_card_play_clean_up(activePlayer, cardToPlay)
+                    @play_card_future = @new_game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
+                    @play_card_future.add_observer do |time, value|
+                        if value # this means the turn is over
+                            @player_changed = true
+                            setup_cached_player
+                        end
+                        @redraw_hand = true
+                    end
 
                     @redraw_hand = true
 
-                    if @game_driver.turn_over?
-                        @game_driver.end_turn_cleanup
-                        @player_changed = true
-                    end
+                    return
                 end
                 clickedCard += 1
             end
@@ -85,7 +107,10 @@ class GameGui < Gosu::Window
         @bakground_image.draw(0,0,0)
 
         @are_you_sure_dialog.draw
-        if !@game_driver
+        if @current_dialog != nil
+            @current_dialog.draw
+        end
+        if !@new_game_driver
         # for main menu
             @new_game_button.draw
         else
@@ -93,7 +118,7 @@ class GameGui < Gosu::Window
             @are_you_sure_dialog.hide
             @game_stats.draw(@game)
 
-            activePlayer = @game_driver.active_player
+            activePlayer = @current_cached_player
             @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
             @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
@@ -124,7 +149,13 @@ class GameGui < Gosu::Window
                 @redraw_hand = false
 
                 if @player_changed
-                    @game_driver.setup_new_turn
+                    # TODO:: Make sure not to await anything here
+                    #
+                    #       after thinking more about this we can repro a bug
+                    #       by making sure the first player starts the game with
+                    #       two creepeprs one of them death
+                    #
+                    @new_game_driver.await.setup_new_turn
                     @redraw_hand = true
 
                     @player_changed = false
@@ -134,6 +165,31 @@ class GameGui < Gosu::Window
                     cardButton.draw
                 end
             end
+        end
+    end
+
+    def get_dialog_result
+        @current_dialog.get_result
+    end
+
+    # "TrueGuiInterface" stuff... well it used to be
+    def display_list_dialog(list, prompt="Select an option")
+        @logger.debug "does this even get called?"
+        @current_dialog.set_prompt prompt
+        @current_dialog.reset_result
+        @current_dialog.set_cards(list)
+        @current_dialog.show
+    end
+
+    private
+    def setup_cached_player
+        @current_player_future = @new_game_driver.async.active_player
+        @current_player_future.add_observer do |time, value|
+            @logger.debug "Here is the time #{time}"
+            @logger.debug "Here is the value #{value}"
+            @current_cached_player = value
+            @player_changed = true
+            @redraw_hand = true
         end
     end
 

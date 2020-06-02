@@ -1,3 +1,5 @@
+.byebug_history
 cards.db
 new-winow.txt
 assets/*
+*.log

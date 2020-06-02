@@ -7,17 +7,17 @@ describe "game" do
     test_outfile = Tempfile.new 'test_output'
 
     it "should construct" do
-        theTestInterface = TestInterface.new("some string", test_outfile)
-        theGame = Game.new(numberOfPlayers=3, theTestInterface)
+        testLogger = TestLogger.new("some string", test_outfile)
+        theGame = Game.new(numberOfPlayers=3, testLogger)
     end
 
     describe "drawCards" do
         it "should draw bassed on the 'drawRule' if the count parmeter is :draw_rule" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
+            theGame.deck = StackedDeck.new(testLogger)
             theFirstPlayer = theGame.players[0]
             theDecksOriginalSize = theGame.deck.count
 
@@ -31,9 +31,9 @@ describe "game" do
         it "should draw enough cards including creepers to make sure it returns the expected number" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream,test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface, [Creeper.new(10000, "Screem", "Some very scary rule text")])
+            testLogger = TestLogger.new(input_stream,test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
+            theGame.deck = StackedDeck.new(testLogger, [Creeper.new(10000, "Screem", "Some very scary rule text")])
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -46,9 +46,9 @@ describe "game" do
         it "should never return any creepers" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream,test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface,
+            testLogger = TestLogger.new(input_stream,test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
+            theGame.deck = StackedDeck.new(testLogger,
                 [Creeper.new(10000, "Screem", "Some very scary rule text"),
                 Creeper.new(10001, "Lonelyness", "There is no one there"),
                 Creeper.new(10002, "Depression", "There is no one there"),
@@ -69,9 +69,9 @@ describe "game" do
         it "should draw enough cards including any number of creepers to make sure it returns the expected number" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream,test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface,
+            testLogger = TestLogger.new(input_stream,test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
+            theGame.deck = StackedDeck.new(testLogger,
                 [Creeper.new(10000, "Screem", "Some very scary rule text"),
                 Creeper.new(10001, "Lonelyness", "There is no one there")])
             theFirstPlayer = theGame.players[0]
@@ -86,7 +86,7 @@ describe "game" do
         it "should draw as many cards as it can from the deck and stop when there are no more" do
             # setup
             input_stream = StringIO.new("")
-            thetestinterface = TestInterface.new(input_stream, test_outfile)
+            thetestinterface = TestLogger.new(input_stream, test_outfile)
             thegame = Game.new(numberofplayers=3, thetestinterface)
             theWholeDeck = [Keeper.new(10000, "wall art"),
                     Keeper.new(10001, "new car smell")]
@@ -105,7 +105,7 @@ describe "game" do
         it "should stop trying to draw if there are no more cards to draw" do
             # setup
             input_stream = StringIO.new("")
-            thetestinterface = TestInterface.new(input_stream, test_outfile)
+            thetestinterface = TestLogger.new(input_stream, test_outfile)
             thegame = Game.new(numberofplayers=3, thetestinterface)
             thegame.deck = StackedDeck.new(thetestinterface,
                 [Creeper.new(10000, "screem", "some very scary rule text"),
@@ -125,8 +125,9 @@ describe "game" do
         it "should make sure that the player has no more keepers than the current keeper limit" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers = [Keeper.new(0, "thing1"), Keeper.new(0, "thing2"), Keeper.new(0, "thing3")]
             keeperLimit = 2
@@ -140,12 +141,13 @@ describe "game" do
         end
     end
 
-    describe "removeDownToHandLimit" do
-        it "should make sure that the player has no more keepers than the current keeper limit" do
+    describe "discardDownToLimit" do
+        it "should make sure that the player has no more cards in hand than the current hand limit" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             handLimit = 2
             theGame.ruleBase.addRule(Limit.new("hand limit 2", 3, "some dumb rules text", handLimit))
@@ -162,8 +164,8 @@ describe "game" do
         it "should return the same number of cards if none are to be drawn" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 1
@@ -178,8 +180,8 @@ describe "game" do
         it "should return a number greater if there are cards to be drawn" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
@@ -194,12 +196,12 @@ describe "game" do
         it "should remove cards from the deck if it draws cards" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
-            theGame.deck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty= false, withCreepers=false)
+            theGame.deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty= false, withCreepers=false)
             countOfDeckToStart = theGame.deck.count
 
             # execute
@@ -212,10 +214,10 @@ describe "game" do
         it "should play creepers imidately if they are drawn" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
@@ -230,10 +232,10 @@ describe "game" do
         it "should remove expected number plus the number of creeper cards from deck" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
@@ -251,8 +253,8 @@ describe "game" do
         it "should be false for a brand new game" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
 
             # execute , test
             expect(theGame.winner).to be false
@@ -263,8 +265,8 @@ describe "game" do
         it "should return false if the game has no goal" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             # asume that a new game has no goal
 
@@ -275,9 +277,9 @@ describe "game" do
         it "should return true if the goal has been met" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            aStackedDeck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface, Random.new, aStackedDeck)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            aStackedDeck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
+            theGame = Game.new(numberOfPlayers=3, testLogger, TestInterface.new(input_stream, test_outfile), Random.new, aStackedDeck)
             keeper1 = Keeper.new(1, "thing1")
             keeper2 = Keeper.new(2, "thing2")
             theGame.setGoal(Goal.new("do a thing", [keeper1, keeper2], "some rule text"))
@@ -292,8 +294,8 @@ describe "game" do
         it "should return false if the goal has been met but the player has any creepers" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             keeper1 = Keeper.new(1, "thing1")
             keeper2 = Keeper.new(2, "thing2")
             theGame.setGoal(Goal.new("do a thing", [keeper1, keeper2], "some rule text"))
@@ -312,8 +314,8 @@ describe "game" do
         it "should only get the opponents of the player that is passed in" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             currentPlayerCounter = 0 # set active player to "player1"
 
             # execute
@@ -331,9 +333,9 @@ describe "game" do
         it "should draw 3 cards from the deck" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -347,9 +349,9 @@ describe "game" do
         it "increase the players hand size by 3" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
 
@@ -363,10 +365,10 @@ describe "game" do
         it "should play creepers imidately if they are drawn" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -380,10 +382,10 @@ describe "game" do
         it "should remove expected number plus the number of creeper cards from deck" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
+            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
@@ -401,12 +403,13 @@ describe "game" do
         it "should play all the cards" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             fakeCard1 = FakeCard.new("thing1")
             fakeCard2 = FakeCard.new("thing2")
             cardsToPutOnTop = [fakeCard1, fakeCard2]
-            theGame.deck = StackedDeck.new(theTestInterface, cardsToPutOnTop) # this ensures that the card played doesn't require input of its own
+            theGame.deck = StackedDeck.new(testLogger, cardsToPutOnTop) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -415,15 +418,16 @@ describe "game" do
             # test
             expect(fakeCard1.played).to be true
             expect(fakeCard2.played).to be true
-            expect(theTestInterface.cardList.size).to eq 1 # will just play the last card no matter what
+            expect(testInterface.card_list.size).to eq 1 # will just play the last card no matter what
         end
 
         it "should draw 2 cards from the deck" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -437,10 +441,11 @@ describe "game" do
         it "should play creepers imidately if they are drawn" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -454,10 +459,11 @@ describe "game" do
         it "should remove expected number plus the number of creeper cards from deck" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
+            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
@@ -475,24 +481,26 @@ describe "game" do
         it "should leave one card remaining and play the others" do
             # setup
             input_stream = StringIO.new("0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
 
             # execute
             theGame.draw_3_play_2_of_them(theFirstPlayer)
 
             # test
-            expect(theTestInterface.cardList.size).to eq 1
+            expect(testInterface.card_list.size).to eq 1
         end
 
         it "should draw 3 cards from the deck" do
             # setup
             input_stream = StringIO.new("0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -506,10 +514,11 @@ describe "game" do
         it "should play creepers imidately if they are drawn" do
             # setup
             input_stream = StringIO.new("0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -523,10 +532,11 @@ describe "game" do
         it "should remove expected number plus the number of creeper cards from deck" do
             # setup
             input_stream = StringIO.new("0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
+            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
@@ -544,8 +554,8 @@ describe "game" do
         it "should not include this card when determining how many cards to draw" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
 
@@ -553,16 +563,16 @@ describe "game" do
             theGame.discard_and_draw(theFirstPlayer)
 
             # test
-            expect(theFirstPlayer.hand.size).to eq firstPlayersOriginalCardsCount - 1
+            expect(theFirstPlayer.hand.size).to eq firstPlayersOriginalCardsCount
         end
 
         it "should play creepers imidately if they are drawn" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -576,14 +586,14 @@ describe "game" do
         it "should remove expected number plus the number of creeper cards from deck" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
+            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
-            cardsDrawn = 2
+            cardsDrawn = 3
 
             # execute
             theGame.discard_and_draw(theFirstPlayer)
@@ -597,10 +607,11 @@ describe "game" do
         it "should play a card at random from the selected player" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            testLogger = TestLogger.new(input_stream, test_outfile)
             numberOfPlayers = 3
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             theSecondPlayer.hand = [FakeCard.new("thing1"), FakeCard.new("thing2"), FakeCard.new("thing3")]
@@ -616,10 +627,10 @@ describe "game" do
         it "should not play any cards if no other player has a hand" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            testLogger = TestLogger.new(input_stream, test_outfile)
             numberOfPlayers = 2
-            theGame = Game.new(numberOfPlayers, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface)
+            theGame = Game.new(numberOfPlayers, testLogger)
+            theGame.deck = StackedDeck.new(testLogger)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             theSecondPlayer.set_hand([])
@@ -636,9 +647,10 @@ describe "game" do
         it "the first player should get some number of cards 1 less than the number of the players in game when the game is new" do
             # setup
             input_stream = StringIO.new("0\n0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            testLogger = TestLogger.new(input_stream, test_outfile)
             numberOfPlayers = 3
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -652,9 +664,10 @@ describe "game" do
         it "the second and third players should get be down 1 card when the game is new" do
             # setup
             input_stream = StringIO.new("0\n0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            testLogger = TestLogger.new(input_stream, test_outfile)
             numberOfPlayers = 3
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             theThirdPlayer = theGame.players[2]
@@ -674,9 +687,10 @@ describe "game" do
         it "should draw 3 cards" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
 
@@ -690,9 +704,10 @@ describe "game" do
         it "should only play one card if it is not your birthday or a holiday" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
 
@@ -703,12 +718,13 @@ describe "game" do
             expect(theFirstPlayer.keepers.size).to eq 1 # stand in for knowing how many cards got played
         end
 
-        it "should only play two cards if it is not your birthday but is a holidy" do
+        it "should only play two cards if it is not your birthday but is a holiday" do
             # setup
             input_stream = StringIO.new("0\nn\ny\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
 
@@ -722,9 +738,10 @@ describe "game" do
         it "should play all three cards if it is you birthday" do
             # setup
             input_stream = StringIO.new("0\ny\n0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theGame.deck = StackedDeck.new(theTestInterface) # this ensures that the card played doesn't require input of its own
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
 
@@ -738,10 +755,11 @@ describe "game" do
         it "should play creepers imidately if they are drawn" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -755,10 +773,11 @@ describe "game" do
         it "should remove expected number plus the number of creeper cards from deck" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
+            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
@@ -776,8 +795,8 @@ describe "game" do
         it "should maintain the same number of keepers" do
             # setup
             input_stream = StringIO.new("0")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new(0, "Thing1")
             keeper2 = Keeper.new(0, "thing2")
@@ -800,8 +819,8 @@ describe "game" do
         it "should randomly move creepers as well" do
             # setup
             input_stream = StringIO.new("0")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=1000, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=1000, testLogger)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new(0, "Thing1")
             keeper2 = Keeper.new(0, "thing2")
@@ -819,12 +838,12 @@ describe "game" do
         it "should resolve the war rule so that no person ends up with peace and war" do
             # setup
             input_stream = StringIO.new("0")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
+            testLogger = TestLogger.new(input_stream, test_outfile)
             random = Object.new
             random.define_singleton_method(:rand) do |num|
                 0
             end
-            theGame = Game.new(numberOfPlayers=2, theTestInterface, random)
+            theGame = Game.new(numberOfPlayers=2, testLogger, TestInterface.new(input_stream, test_outfile), random)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new(0, "Thing1")
             warCreeper = Creeper.new(1, "I am WAR", "some rules text")
@@ -845,8 +864,9 @@ describe "game" do
         it "should non contain any keepers or goals" do
             # setup
             input_stream = StringIO.new("0")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theGame.discardPile << Action.new(3, "jackpot2", "here are some rules")
             theGame.discardPile << Rule.new("some draw rule", 1, "Draw 9 cards")
@@ -860,7 +880,7 @@ describe "game" do
             theGame.letsDoThatAgain(theFirstPlayer)
 
             # test
-            theTestInterface.cardList.select do |card|
+            testInterface.card_list.select do |card|
                 expect(card.class).to_not eq Keeper
                 expect(card.class).to_not eq Goal
             end
@@ -872,10 +892,11 @@ describe "game" do
             # setup
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
-            theGame.deck = StackedDeck.new(theTestInterface, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
+            theGame.deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
             originalDeckCount = theGame.deck.count
 
             # execute
@@ -889,8 +910,9 @@ describe "game" do
             # setup
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -907,8 +929,9 @@ describe "game" do
             # setup
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theGame.currentPlayerCounter = 8
 
@@ -923,8 +946,9 @@ describe "game" do
             # setup
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theGame.currentPlayerCounter = 9
 
@@ -939,10 +963,11 @@ describe "game" do
             # setup
             numberOfPlayers = 3
             input_stream = StringIO.new("0\n" * numberOfPlayers)
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(theTestInterface, [warCreeper])
+            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -957,10 +982,11 @@ describe "game" do
             # setup
             numberOfPlayers = 3
             input_stream = StringIO.new("0\n" * numberOfPlayers)
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(theTestInterface, stackedCreepers)
+            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
@@ -978,8 +1004,9 @@ describe "game" do
         it "should not leave the first player with the same hand" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -993,8 +1020,9 @@ describe "game" do
         it "should trade the two hands" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             firstPlayersOriginalCards = theFirstPlayer.hand
@@ -1011,8 +1039,9 @@ describe "game" do
         it "every other players hands should remain untouched" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theOtherPlayer = theGame.players[2]
             otherPlayersOriginalCards = theOtherPlayer.hand
@@ -1029,8 +1058,9 @@ describe "game" do
         it "should handle if the currentPlayer is set to a number of a player which does not exist" do
             # setup
             input_stream = StringIO.new("thing")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
             theGame.currentPlayerCounter = 10
@@ -1046,8 +1076,9 @@ describe "game" do
             it "first player should not have the hand they started with" do
                 # setup
                 input_stream = StringIO.new("thing")
-                theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                testLogger = TestLogger.new(input_stream, test_outfile)
+                testInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1061,8 +1092,9 @@ describe "game" do
             it "first player should have the hand of the last player" do
                 # setup
                 input_stream = StringIO.new("thing")
-                theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                testLogger = TestLogger.new(input_stream, test_outfile)
+                testInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
                 theFirstPlayer = theGame.players[0]
                 theLastPlayer = theGame.players[theGame.players.length-1]
                 lastPlayersOriginalCards = theLastPlayer.hand
@@ -1077,8 +1109,9 @@ describe "game" do
             it "second player should have the hand of the first player" do
                 # setup
                 input_stream = StringIO.new("thing")
-                theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                testLogger = TestLogger.new(input_stream, test_outfile)
+                testInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1093,8 +1126,9 @@ describe "game" do
             it "should not  let any hands be duplicated" do
                 # setup
                 input_stream = StringIO.new("thing")
-                theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                testLogger = TestLogger.new(input_stream, test_outfile)
+                testInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
                 theGame.currentPlayerCounter = 11
@@ -1117,8 +1151,9 @@ describe "game" do
             it "first player should not have the hand they started with" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                testLogger = TestLogger.new(input_stream, test_outfile)
+                testInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1132,8 +1167,9 @@ describe "game" do
             it "first player should have the hand of the second player" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                testLogger = TestLogger.new(input_stream, test_outfile)
+                testInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
                 theFirstPlayer = theGame.players[0]
                 theSecondPlayer = theGame.players[1]
                 secondPlayersOriginalCards = theSecondPlayer.hand
@@ -1148,8 +1184,9 @@ describe "game" do
             it "second player should have the hand of the player after them" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                testLogger = TestLogger.new(input_stream, test_outfile)
+                testInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
                 theFirstPlayer = theGame.players[0]
                 thePlayerAfterThem = theGame.players[2]
                 playerAfterThemsCards = thePlayerAfterThem.hand
@@ -1165,8 +1202,9 @@ describe "game" do
             it "should not  let any hands be duplicated" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                theTestInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, theTestInterface)
+                testLogger = TestLogger.new(input_stream, test_outfile)
+                testInterface = TestInterface.new(input_stream, test_outfile)
+                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
                 theGame.currentPlayerCounter = 11
@@ -1191,8 +1229,8 @@ describe "game" do
             pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             originalCurrentPlayer = theGame.currentPlayer
             currentPlayerCounter = 0
@@ -1211,8 +1249,8 @@ describe "game" do
             pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theGame.ruleBase.addRule(Rule.new("play more", 2, "play 2"))
             theFirstPlayer = theGame.players[0]
             originalCurrentPlayer = theGame.currentPlayer
@@ -1231,8 +1269,8 @@ describe "game" do
             pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n0\n0\n0\n0\n0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theGame.ruleBase.addRule(Limit.new("low hand limit", 3, "no cards", 0))
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
@@ -1250,22 +1288,9 @@ describe "game" do
         it "should not do anything if you have no keepers" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
-            theFirstPlayer = theGame.players[0]
-
-            # execute
-            theGame.exchange_keepers(theFirstPlayer)
-
-            # test
-            expect(theTestInterface.prompted).to be nil
-        end
-
-        it "should not do anything if you have no keepers" do
-            # setup
-            input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -1273,14 +1298,15 @@ describe "game" do
 
             # test
             # a hacky way to check that there was no prompt
-            expect(theTestInterface.prompted).to be nil
+            expect(testInterface.prompted).to be nil
         end
 
         it "should prompt the player if the player and at least one opponent has a keeper" do
             # setup
             input_stream = StringIO.new("1\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(0, "thing1")
             theGame.players[1].keepers << Keeper.new(0, "thing2")
@@ -1289,14 +1315,15 @@ describe "game" do
             theGame.exchange_keepers(theFirstPlayer)
 
             # test
-            expect(theTestInterface.prompted).to_not be nil
+            expect(testInterface.prompted).to_not be nil
         end
 
         it "should not change the number of keepers either player has" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(0, "thing1")
             firstPlayersOriginalKeeperCount = theFirstPlayer.keepers.size
@@ -1315,8 +1342,9 @@ describe "game" do
         it "should change which keepers each player has" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
@@ -1335,8 +1363,9 @@ describe "game" do
         it "should not prompt with any players which have no keepers" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
@@ -1348,14 +1377,15 @@ describe "game" do
             theGame.exchange_keepers(theFirstPlayer)
 
             # test
-            expect(theTestInterface.indexed_output).to_not include theGame.players[2].to_s
+            expect(testInterface.card_list).to_not include theGame.players[2].to_s
         end
 
         it "should not prompt to check if you are sure of your decision" do
             # setup
             input_stream = StringIO.new("0\ny\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
@@ -1376,8 +1406,9 @@ describe "game" do
         it "should make sure that the originating player does not end up with war and peace" do
             # setup
             input_stream = StringIO.new("1\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
             peaceKeeper = Keeper.new(16, "a peace thing")
@@ -1397,8 +1428,9 @@ describe "game" do
         it "should make sure that the other player does not end up with war and peace" do
             # setup
             input_stream = StringIO.new("1\n0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
             peaceKeeper = Keeper.new(16, "a peace thing")
@@ -1420,8 +1452,9 @@ describe "game" do
         it "should ensure that if the player to play it has peace they don't end with it" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")
             warCreeper = Creeper.new(1, "War", "Some rules text")
@@ -1437,8 +1470,9 @@ describe "game" do
         it "should give war to selected player" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")
             warCreeper = Creeper.new(1, "War", "Some rules text")
@@ -1456,8 +1490,8 @@ describe "game" do
         it "should make sure that if the player has taxes but not money they end up with taxes" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             taxesCreeper = Creeper.new(2, "Taxes", "Some rules text")
             theFirstPlayer.add_creeper(taxesCreeper)
@@ -1472,8 +1506,9 @@ describe "game" do
         it "should make sure that if the player has money but not taxes they end up with money" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
+            theGame = Game.new(numberOfPlayers=3, testLogger, CliInterface.new, Random.new, stacked_deck)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1488,8 +1523,8 @@ describe "game" do
         it "should make sure that if the player has taxes and money they end up with neither" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1507,8 +1542,8 @@ describe "game" do
         it "should result in both being discarded" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1528,8 +1563,9 @@ describe "game" do
         it "should result in one less permanent" do
             # setup
             input_stream = StringIO.new("0\n")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1547,8 +1583,10 @@ describe "game" do
         it "if death stand alone it should consume itself" do
             # setup
             input_stream = StringIO.new("")
-            theTestInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, theTestInterface)
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, Random.new, stacked_deck)
             theFirstPlayer = theGame.players[0]
             deathCreeper = Creeper.new(3, "dead", "Some rules text")
             theFirstPlayer.add_creeper(deathCreeper)

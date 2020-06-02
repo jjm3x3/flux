@@ -20,7 +20,9 @@ class Deck
     # put in for debugging
     # if @firstCard
     #   @firstCard = false
-    #   drawnCards = [@cards.delete_at(@cards.length-1)]
+    #   newInjectedCard = Action.new(14,"extra rotate hands", "put some rule text here")
+    # #   newInjectedCard = Limit.new("max of 1", 4, "put some rule text here", 1)
+    #   drawnCards = [newInjectedCard]
     #   cardsToDraw -= 1
     # end
     @interface.debug "draw #{cardsToDraw} card(s) from the game..."
@@ -41,7 +43,7 @@ class Deck
     end
     # this filters out "nil" cards when there are no more cards in the deck to draw
     drawnCards = drawnCards.select do |card|
-      card 
+      card
     end
     if (drawnCards.size > 0 && Util.are_all_nil(drawnCards))
       return []
