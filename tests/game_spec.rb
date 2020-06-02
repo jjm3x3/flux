@@ -616,7 +616,7 @@ describe "game" do
             theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
-            theSecondPlayer.hand = [FakeCard.new("thing1"), FakeCard.new("thing2"), FakeCard.new("thing3")]
+            theSecondPlayer.set_hand([FakeCard.new("thing1"), FakeCard.new("thing2"), FakeCard.new("thing3")])
             secondPlayersOriginalCardsCount = theSecondPlayer.hand.size
 
             # execute
