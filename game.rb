@@ -96,9 +96,12 @@ class Game
   def discardDownToLimit(player)
     @logger.debug "The hand limit is #{@ruleBase.handLimit}"
     while player.hand.count > @ruleBase.handLimit
-      removedCard = @interface.await.choose_from_list(player.hand, "Player #{player} Select a card to discard").value
-      @discardPile << removedCard
-      @logger.debug "removing '#{removedCard}'"
+      choose_result = @interface.await.choose_from_list(player.hand, :discard_down_to_limit)
+      if choose_result != :fulfilled
+        @logger.debug "choose_result may not have been fulfilled because #{choose_result.reason}"
+      end
+      @discardPile << choose_result.value
+      @logger.debug "removing '#{choose_result.value}'"
     end
   end
 

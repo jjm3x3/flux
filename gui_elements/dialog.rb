@@ -125,9 +125,10 @@ class CardDialog
         @selected_card = nil
     end
 
-    def set_prompt(text)
-        @prompt = text
-        @width = @font.text_width(@prompt) + @boarder_width * 2
+    def set_prompt(prompt_id)
+        @current_prompt_image = @dialog_prompts[prompt_id]
+
+        @width = @current_prompt_image.width + @boarder_width * 2
     end
 
     def handle_result
