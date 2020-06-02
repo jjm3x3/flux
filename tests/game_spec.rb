@@ -845,7 +845,7 @@ describe "game" do
             random.define_singleton_method(:rand) do |num|
                 0
             end
-            theGame = Game.new(numberOfPlayers=3, testLogger, TestInterface.new(input_stream, test_outfile), players=[] ,random)
+            theGame = Game.new(numberOfPlayers=2, testLogger, TestInterface.new(input_stream, test_outfile), players=[] ,random)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new(0, "Thing1")
             warCreeper = Creeper.new(1, "I am WAR", "some rules text")

@@ -22,10 +22,12 @@ class Game
 
     @random = aRandom
 
+    @logger.debug "Initialize some game stuff"
     @ruleBase = RuleBase.new(self, aLogger)
     @deck = aDeck
     @discardPile = []
 
+    @logger.debug "Setting up players"
     @players = []
     (1..numberOfPlayers).select do |playerId|
       @players << Player.new("player" + playerId.to_s)
