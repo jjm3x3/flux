@@ -67,7 +67,9 @@ class CardDialog
         @dialog_prompts = dialog_prompts
 
         @height = (@font.height + @item_spacing) * 4 + @boarder_width * 2
-        @width = 300
+        @current_prompt_image = dialog_prompts[:default]
+        @width = @current_prompt_image.width + @boarder_width * 2
+
     end
 
     def set_cards(card_list)
@@ -89,7 +91,8 @@ class CardDialog
         if @visible
             my_green = Gosu::Color.new(255,0, 128,0)
             Gosu::draw_rect(@dialog_x_position, @dialog_y_position, @width, @height, my_green, ZOrder::DIALOG)
-            @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
+            # @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
+            @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             @card_buttons.each do |card_button|
                 card_button.draw
             end
