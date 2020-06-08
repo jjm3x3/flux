@@ -56,7 +56,10 @@ class GameGui < Gosu::Window
                         numberOfPlayers = 3
                         players = []
                         (1..numberOfPlayers).select do |playerId|
-                            players << Player.new("player" + playerId.to_s)
+                            player_name = "player" + playerId.to_s
+                            player = Player.new(player_name)
+                            players << player
+                            @current_dialog.add_prompt(player.discard_prompt_name, Gosu::Image.from_text("Player #{player_name} Select a card to discard", 20))
                         end
                         @game = Game.new(3, @logger, GuiInputManager.new(self), players)
                         @new_game_driver = GameDriver.new(@game, @logger)
