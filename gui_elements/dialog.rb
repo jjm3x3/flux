@@ -69,6 +69,10 @@ class CardDialog
         @draw_prompt_image = false
     end
 
+    def add_prompt(symbol, prompt_image)
+        @dialog_prompts[symbol] = prompt_image
+    end
+
     def set_cards(card_list)
         @card_list = card_list
         @card_buttons = []
