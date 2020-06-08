@@ -133,6 +133,10 @@ class Player
     oldHand
   end
 
+  def discard_prompt_name
+    "discard_down_to_limit_#{@name}".to_sym
+  end
+
   def to_s
     @name
   end
