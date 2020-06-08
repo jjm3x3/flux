@@ -197,11 +197,11 @@ class Game
 
   def draw_3_play_2_of_them(player)
     cardsDrawn = drawCards(player, 3)
-    firstOne = @interface.await.choose_from_list(cardsDrawn, "which would you like to play first?")
+    firstOne = @interface.await.choose_from_list(cardsDrawn, :play_first_prompt)
     @logger.debug "Here is the first card that was selected #{firstOne.value}"
     firstOne.value.play(player, self)
     @logger.debug "Going to select a second one"
-    secondOne = @interface.await.choose_from_list(cardsDrawn, "which would you like to play next?")
+    secondOne = @interface.await.choose_from_list(cardsDrawn, :play_next_prompt)
     secondOne.value.play(player, self)
     discard(cardsDrawn[0])
   end
