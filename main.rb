@@ -25,7 +25,8 @@ puts "starting game where debug: #{debug} and gui: #{gui}"
 prompt_strings = {
   default: "Some default prompt",
   play_first_prompt: "Which one would you like to play first?",
-  select_a_card_to_play_prompt: "Select a card from your hand to play"
+  select_a_card_to_play_prompt: "Select a card from your hand to play",
+  discard_down_to_keeper_limit: "Choose a keeper to discard"
 }
 
 logger = CliLogger.new(debug)
