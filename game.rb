@@ -183,7 +183,7 @@ class Game
   def draw_2_and_use_em(player)
     @logger.debug "happens sync at the beginning of draw_2_and_use_em"
     cardsDrawn = drawCards(player, 2)
-    select_result = @interface.await.choose_from_list(cardsDrawn, :draw_2_and_use_em_prompt)
+    select_result = @interface.await.choose_from_list(cardsDrawn, :play_first_prompt)
     @logger.debug "Here is the selected card in draw_2_and_use_em: '#{select_result.value}'"
     selected_card = select_result.value
     selected_card.play(player, self)
