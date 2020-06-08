@@ -49,7 +49,12 @@ class GameGui < Gosu::Window
                 @are_you_sure_dialog.handle_result do |clicked|
                     if clicked == :yes_clicked
                         puts "I am starting a game then"
-                        @game = Game.new(3, @logger, GuiInputManager.new(self))
+                        numberOfPlayers = 3
+                        players = []
+                        (1..numberOfPlayers).select do |playerId|
+                            players << Player.new("player" + playerId.to_s)
+                        end
+                        @game = Game.new(3, @logger, GuiInputManager.new(self), players)
                         @new_game_driver = GameDriver.new(@game, @logger)
                         @current_cached_player = @new_game_driver.await.active_player.value
                     elsif clicked == :no_clicked
