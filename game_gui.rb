@@ -41,6 +41,7 @@ class GameGui < Gosu::Window
             discard_down_to_keeper_limit: Gosu::Image.from_text("Choose a keeper to discard", 20),
             play_first_prompt: Gosu::Image.from_text("Which one would you like to play first?", 20),
             play_next_prompt: Gosu::Image.from_text("which would you like to play next?", 20),
+            which_player_to_pick_from_prompt: Gosu::Image.from_text("which player would you like to pick from", 20),
             discard_down_to_limit: Gosu::Image.from_text("Player player2 Select a card to discard", 20)
         }
     end
