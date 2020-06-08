@@ -27,6 +27,7 @@ prompt_strings = {
   discard_down_to_keeper_limit: "Choose a keeper to discard"
   play_first_prompt: "Which one would you like to play first?",
   play_next_prompt: "which would you like to play next?",
+  which_player_to_pick_from_prompt: "which player would you like to pick from",
   select_a_card_to_play_prompt: "Select a card from your hand to play",
 }
 

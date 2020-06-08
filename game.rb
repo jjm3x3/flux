@@ -222,7 +222,7 @@ class Game
       @logger.information "Too bad no body has any cards for you"
       return
     end
-    selectedPlayer = @interface.await.choose_from_list(validOpponents, "which player would you like to pick from").value
+    selectedPlayer = @interface.await.choose_from_list(validOpponents, :which_player_to_pick_from_prompt).value
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
     @logger.debug "playing #{selectedCard}"
