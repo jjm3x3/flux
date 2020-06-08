@@ -39,6 +39,7 @@ class GameGui < Gosu::Window
         return {
             default: Gosu::Image.from_text("Some default prompt", 20),
             discard_down_to_keeper_limit: Gosu::Image.from_text("Choose a keeper to discard", 20),
+            draw_2_and_use_em_prompt: Gosu::Image.from_text("Which one would you like to play first?", 20),
             discard_down_to_limit: Gosu::Image.from_text("Player player2 Select a card to discard", 20)
         }
     end
