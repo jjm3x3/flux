@@ -342,7 +342,7 @@ class Game
   end
 
   def rotateHands(player)
-    direction = @interface.await.ask_rotation("Which way would you like to rotate?").value
+    direction = @interface.await.ask_rotation(:rotation_prompt).value
 
     #candidate for debug
     @players.each do |player|
