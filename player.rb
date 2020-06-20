@@ -137,6 +137,10 @@ class Player
     "discard_down_to_limit_#{@name}".to_sym
   end
 
+  def taxation_prompt_name
+    "taxation_prompt_#{@name}}".to_sym
+  end
+
   def to_s
     @name
   end
