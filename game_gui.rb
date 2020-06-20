@@ -42,7 +42,10 @@ class GameGui < Gosu::Window
             play_first_prompt: Gosu::Image.from_text("Which one would you like to play first?", 20),
             play_next_prompt: Gosu::Image.from_text("which would you like to play next?", 20),
             which_player_to_pick_from_prompt: Gosu::Image.from_text("which player would you like to pick from", 20),
-            discard_down_to_limit: Gosu::Image.from_text("Player player2 Select a card to discard", 20)
+            discard_down_to_limit: Gosu::Image.from_text("Player player2 Select a card to discard", 20),
+            choose_card_to_play_prompt: Gosu::Image.from_text("pick a card to play", 20),
+            birthday_prompt: Gosu::Image.from_text("is today your birthday", 20),
+            holiday_anniversary_prompt: Gosu::Image.from_text("Is today a holiday or an anniversary", 20)
         }
     end
 
