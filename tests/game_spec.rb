@@ -748,6 +748,26 @@ describe "game" do
             expect(theSecondPlayer.hand.size).to eq secondPlayersOriginalCardsCount - 1
             expect(theThirdPlayer.hand.size).to eq thridPlayersOriginalCardsCount - 1
         end
+
+        it "should skip players who have no cards" do
+            # setup
+            input_stream = StringIO.new("0\n0\n0\n")
+            testLogger = TestLogger.new(input_stream, test_outfile)
+            numberOfPlayers = 2
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            player_doubles = [double("player1", hand: [FakeCard.new("make believe")], taxation_prompt_name: "some prompt", add_cards_to_hand: nil)]
+            player_2s_fake_card = FakeCard.new("some thing else")
+            player_doubles << double("player2", hand: [player_2s_fake_card], add_cards_to_hand: nil)
+            theGame = Game.new(numberOfPlayers=2, testLogger, testInterface, player_doubles)
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            theGame.taxation(theFirstPlayer)
+
+            # test
+            expect(testInterface.card_list).not_to include(player_2s_fake_card)
+        end
+
     end
 
     describe "todaysSpecial" do
