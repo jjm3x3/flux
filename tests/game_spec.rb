@@ -171,6 +171,7 @@ describe "game" do
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             handLimit = 2
             theGame.ruleBase.addRule(Limit.new("hand limit 2", 3, "some dumb rules text", handLimit))
@@ -594,6 +595,7 @@ describe "game" do
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, testLogger)
+            theGame.setup
             warCreeper = Creeper.new(1, "War", "with some rules text")
             theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
@@ -611,6 +613,7 @@ describe "game" do
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, testLogger)
+            theGame.setup
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
@@ -674,6 +677,7 @@ describe "game" do
             numberOfPlayers = 3
             testInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -684,13 +688,14 @@ describe "game" do
             expect(theFirstPlayer.hand.size).to eq firstPlayersOriginalCards.size + (numberOfPlayers-1)
         end
 
-        it "the second and third players should get be down 1 card when the game is new" do
+        it "the second and third players should get be down 1 card when the game is setup" do
             # setup
             input_stream = StringIO.new("0\n0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             numberOfPlayers = 3
             testInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             theThirdPlayer = theGame.players[2]
@@ -944,7 +949,7 @@ describe "game" do
 
             # test
             theGame.players.select do |player|
-                expect(player.hand.length).to eq 4 # since the opening hand size is 3
+                expect(player.hand.length).to eq 1 # since the opening hand size is 3
             end
         end
 
@@ -1030,6 +1035,7 @@ describe "game" do
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1102,6 +1108,7 @@ describe "game" do
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                theGame.setup
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1152,6 +1159,7 @@ describe "game" do
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                theGame.setup
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
                 theGame.currentPlayerCounter = 11
@@ -1177,6 +1185,7 @@ describe "game" do
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                theGame.setup
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1228,6 +1237,7 @@ describe "game" do
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                theGame.setup
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
                 theGame.currentPlayerCounter = 11

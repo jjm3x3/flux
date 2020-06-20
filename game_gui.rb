@@ -70,6 +70,7 @@ class GameGui < Gosu::Window
                             @current_dialog.add_prompt(player.taxation_prompt_name, Gosu::Image.from_text("Choose a card to give to #{player_name}", 20))
                         end
                         @game = Game.new(3, @logger, GuiInputManager.new(self), players)
+                        @game.setup
                         @new_game_driver = GameDriver.new(@game, @logger)
                         @current_cached_player = @new_game_driver.await.active_player.value
                     elsif clicked == :no_clicked
