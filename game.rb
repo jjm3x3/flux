@@ -325,9 +325,9 @@ class Game
     playerCur = currentPlayer
     while cardsDrawn.length > 0
       if playerCur == currentPlayer
-        selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to giver to yourself").value
+        selectedCard = @interface.await.choose_from_list(cardsDrawn, :give_card_to_yourself_prompt).value
       else
-        selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to give to #{@players[playerCur]}").value
+        selectedCard = @interface.await.choose_from_list(cardsDrawn, @players[playerCur].give_card_to_player_prompt_name).value
       end
       @players[playerCur].hand << selectedCard
       playerCur += 1
