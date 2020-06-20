@@ -20,9 +20,11 @@ class Deck
     # put in for debugging
     # if @firstCard
     #   @firstCard = false
-    #   newInjectedCard = Action.new(14,"extra rotate hands", "put some rule text here")
-    #   #newInjectedCard = Limit.new("max of 1", 3, "put some rule text here", 1)
+    #   # newInjectedCard = Action.new(16,"extra exchange keepers", "put some rule text here")
+    #   # newInjectedCard = Limit.new("no keepers", 4, "put some rule text here", 0)
+    #   newInjectedCard = Creeper.new(1, "wanna be war", "Some rule text")
     #   drawnCards = [newInjectedCard]
+    #   drawnCards << Keeper.new(16, "pease")
     #   cardsToDraw -= 1
     # end
     @interface.debug "draw #{cardsToDraw} card(s) from the game..."
