@@ -336,7 +336,7 @@ class Game
     opponentsText = opponents(player).map do |player|
       player.to_s
     end
-    selectedPlayer = @interface.await.choose_from_list(opponents(player), "who would you like to trade hands with?").value
+    selectedPlayer = @interface.await.choose_from_list(opponents(player), :trade_hands_prompt).value
     otherHand = selectedPlayer.set_hand(player.hand)
     player.set_hand(otherHand)
   end

@@ -32,7 +32,8 @@ prompt_strings = {
   choose_card_to_play_prompt: "pick a card to play",
   birthday_prompt: "is today your birthday",
   holiday_anniversary_prompt: "Is today a holiday or an anniversary",
-  replay_prompt: "pick a card you would like to replay"
+  replay_prompt: "pick a card you would like to replay",
+  trade_hands_prompt: "who would you like to trade hands with?"
 }
 
 logger = CliLogger.new(debug)
