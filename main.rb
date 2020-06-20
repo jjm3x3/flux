@@ -29,6 +29,7 @@ else
   players = Player.generate_players(3)
   cli_interface = CliInterface.new
   theGame = Game.new(logger, cli_interface, players)
+  theGame.setup
   gameDriver = GameCli.new(theGame, logger, GameDriver.new(theGame, logger), cli_interface)
   gameDriver.run
 end

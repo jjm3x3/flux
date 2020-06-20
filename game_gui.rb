@@ -52,6 +52,7 @@ class GameGui < Gosu::Window
                         numberOfPlayers = 3
                         players = Player.generate_players(numberOfPlayers)
                         @game = Game.new(@logger, GuiInputManager.new(self), players)
+                        @game.setup
                         @new_game_driver = GameDriver.new(@game, @logger)
                         @current_cached_player = @new_game_driver.await.active_player.value
                     elsif clicked == :no_clicked
