@@ -474,13 +474,15 @@ class Game
 
   def resolve_death_rule(player)
     if(player.has_death?)
+      @logger.debug "Player has death, determining eleigible permananets"
       eligiablePermanents = player.permanents.select do |perm|
         perm.card_type != "Creeper" || !perm.is_death?
       end
+      @logger.debug "Determined elegible permanents"
       if(eligiablePermanents.size == 0)
         discard(player.take_death)
       else
-        selectedCard = @interface.await.choose_from_list(eligiablePermanents, "Which permanent would you like to discard to death?").value
+        selectedCard = @interface.await.choose_from_list(eligiablePermanents, :death_discard_prompt).value
         player.discard_permanent(selectedCard)
       end
     end
