@@ -138,7 +138,7 @@ class Player
   end
 
   def taxation_prompt_name
-    "taxation_prompt_#{@name}}".to_sym
+    "taxation_prompt_#{@name}".to_sym
   end
 
   def to_s
