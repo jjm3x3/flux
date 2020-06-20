@@ -47,7 +47,8 @@ class GameGui < Gosu::Window
             birthday_prompt: Gosu::Image.from_text("is today your birthday", 20),
             holiday_anniversary_prompt: Gosu::Image.from_text("Is today a holiday or an anniversary", 20),
             replay_prompt: Gosu::Image.from_text("pick a card you would like to replay", 20),
-            give_card_to_yourself_prompt: Gosu::Image.from_text("which card would you like to giver to yourself", 20)
+            give_card_to_yourself_prompt: Gosu::Image.from_text("which card would you like to giver to yourself", 20),
+            trade_hands_prompt: Gosu::Image.from_text("who would you like to trade hands with?", 20)
         }
     end
 
