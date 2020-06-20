@@ -45,7 +45,8 @@ class GameGui < Gosu::Window
             discard_down_to_limit: Gosu::Image.from_text("Player player2 Select a card to discard", 20),
             choose_card_to_play_prompt: Gosu::Image.from_text("pick a card to play", 20),
             birthday_prompt: Gosu::Image.from_text("is today your birthday", 20),
-            holiday_anniversary_prompt: Gosu::Image.from_text("Is today a holiday or an anniversary", 20)
+            holiday_anniversary_prompt: Gosu::Image.from_text("Is today a holiday or an anniversary", 20),
+            replay_prompt: Gosu::Image.from_text("pick a card you would like to replay",20)
         }
     end
 
