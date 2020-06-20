@@ -49,7 +49,11 @@ class GameGui < Gosu::Window
             replay_prompt: Gosu::Image.from_text("pick a card you would like to replay", 20),
             give_card_to_yourself_prompt: Gosu::Image.from_text("which card would you like to giver to yourself", 20),
             trade_hands_prompt: Gosu::Image.from_text("who would you like to trade hands with?", 20),
-            rotation_prompt: Gosu::Image.from_text("Which way would you like to rotate?", 20)
+            rotation_prompt: Gosu::Image.from_text("Which way would you like to rotate?", 20),
+            pick_a_keeper_from_prompt: Gosu::Image.from_text("Which player would you like to take a keeper from", 20),
+            are_you_sure_no_trade_prompt: Gosu::Image.from_text("Are you sure you don't want to trade with anyone?", 20),
+            select_a_keeper_prompt: Gosu::Image.from_text("Slect which Keeper you would like", 20),
+            keeper_to_give_prompt: Gosu::Image.from_text("Which player would you like to take a keeper from", 20)
         }
     end
 
