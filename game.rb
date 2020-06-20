@@ -415,10 +415,10 @@ class Game
     eligibleOpponents.unshift(:no_one)
     selectedPlayer = :no_one
     loop do
-      selectedPlayer = @interface.await.choose_from_list(eligibleOpponents, "Which player would you like to take a keeper from").value
+      selectedPlayer = @interface.await.choose_from_list(eligibleOpponents, :pick_a_keeper_from_prompt).value
       areYouSure = selectedPlayer != :no_one
       if selectedPlayer == :no_one
-        areYouSure = @interface.await.ask_yes_no("Are you sure you don't want to trade with anyone?").value
+        areYouSure = @interface.await.ask_yes_no(:are_you_sure_no_trade_prompt).value
       end
       if areYouSure
         break
@@ -429,12 +429,12 @@ class Game
     end
 
     if selectedPlayer.keepers.length > 1
-      myNewKeeper = @interface.await.choose_from_list(selectedPlayer.keepers, "Slect which Keeper you would like").value
+      myNewKeeper = @interface.await.choose_from_list(selectedPlayer.keepers, :select_a_keeper_prompt).value
     else
       myNewKeeper = selectedPlayer.keepers.delete_at(0)
     end
     if player.keepers.length > 1
-      myOldKeeper = @interface.await.choose_from_list(player.keepers, "Which Keeper would you like to exchange").value
+      myOldKeeper = @interface.await.choose_from_list(player.keepers, :keeper_to_give_prompt).value
     else
       myOldKeeper = player.keepers.delete_at(0)
     end

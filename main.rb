@@ -35,6 +35,10 @@ prompt_strings = {
   replay_prompt: "pick a card you would like to replay",
   trade_hands_prompt: "who would you like to trade hands with?",
   rotation_prompt: "Which way would you like to rotate?"
+  pick_a_keeper_from_prompt: "Which player would you like to take a keeper from",
+  are_you_sure_no_trade_prompt: "Are you sure you don't want to trade with anyone?",
+  select_a_keeper_prompt: "Slect which Keeper you would like",
+  keeper_to_give_prompt: "Which player would you like to take a keeper from"
 }
 
 logger = CliLogger.new(debug)
