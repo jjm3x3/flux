@@ -29,6 +29,9 @@ prompt_strings = {
   play_next_prompt: "which would you like to play next?",
   which_player_to_pick_from_prompt: "which player would you like to pick from",
   select_a_card_to_play_prompt: "Select a card from your hand to play",
+  choose_card_to_play_prompt: "pick a card to play",
+  birthday_prompt: "is today your birthday",
+  holiday_anniversary_prompt: "Is today a holiday or an anniversary"
 }
 
 logger = CliLogger.new(debug)
