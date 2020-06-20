@@ -141,6 +141,10 @@ class Player
     "give_#{@name}_prompt".to_sym
   end
 
+  def move_war_prompt_name
+    "#{@name}_move_ward_prompt".to_sym
+  end
+
   def to_s
     @name
   end
