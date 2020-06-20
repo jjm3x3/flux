@@ -309,7 +309,7 @@ class Game
       @logger.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
     end
-    pickedCard = @interface.await.choose_from_list(eligibleCards, "pick a card you would like to replay").value
+    pickedCard = @interface.await.choose_from_list(eligibleCards, :replay_prompt).value
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
