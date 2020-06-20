@@ -137,8 +137,8 @@ class Player
     "discard_down_to_limit_#{@name}".to_sym
   end
 
-  def taxation_prompt_name
-    "taxation_prompt_#{@name}".to_sym
+  def give_card_to_player_prompt_name
+    "give_#{@name}_prompt".to_sym
   end
 
   def to_s

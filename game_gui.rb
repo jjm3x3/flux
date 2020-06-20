@@ -71,7 +71,7 @@ class GameGui < Gosu::Window
                             player = Player.new(player_name)
                             players << player
                             @current_dialog.add_prompt(player.discard_prompt_name, Gosu::Image.from_text("Player #{player_name} Select a card to discard", 20))
-                            @current_dialog.add_prompt(player.taxation_prompt_name, Gosu::Image.from_text("Choose a card to give to #{player_name}", 20))
+                            @current_dialog.add_prompt(player.give_card_to_player_prompt_name, Gosu::Image.from_text("Choose a card to give to #{player_name}", 20))
                         end
                         @game = Game.new(3, @logger, GuiInputManager.new(self), players)
                         @game.setup
