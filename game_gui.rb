@@ -53,7 +53,8 @@ class GameGui < Gosu::Window
             pick_a_keeper_from_prompt: Gosu::Image.from_text("Which player would you like to take a keeper from", 20),
             are_you_sure_no_trade_prompt: Gosu::Image.from_text("Are you sure you don't want to trade with anyone?", 20),
             select_a_keeper_prompt: Gosu::Image.from_text("Slect which Keeper you would like", 20),
-            keeper_to_give_prompt: Gosu::Image.from_text("Which player would you like to take a keeper from", 20)
+            keeper_to_give_prompt: Gosu::Image.from_text("Which player would you like to take a keeper from", 20),
+            death_discard_prompt: Gosu::Image.from_text("Which permanent would you like to discard to death?", 20)
         }
     end
 
