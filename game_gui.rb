@@ -123,6 +123,15 @@ class GameGui < Gosu::Window
             @left_click_down = true
 
         end
+
+        if @new_game_driver && @player_changed
+            new_turn_future = @new_game_driver.async.setup_new_turn
+            new_turn_future.add_observer do |time, value|
+                @redraw_hand = true
+
+                @player_changed = false
+            end
+        end
     end
 
     def needs_cursor?
@@ -174,18 +183,6 @@ class GameGui < Gosu::Window
 
                 @redraw_hand = false
 
-                if @player_changed
-                    # TODO:: Make sure not to await anything here
-                    #
-                    #       after thinking more about this we can repro a bug
-                    #       by making sure the first player starts the game with
-                    #       two creepeprs one of them death
-                    #
-                    @new_game_driver.await.setup_new_turn
-                    @redraw_hand = true
-
-                    @player_changed = false
-                end
             else
                 @current_displayed_cards.each do |cardButton|
                     cardButton.draw
