@@ -42,8 +42,8 @@ class GameGui < Gosu::Window
             if @current_dialog != nil && @current_dialog.is_visible?
                 if @current_dialog.handle_result
                     @current_dialog.hide
-                    return
                 end
+                return
             end
             if @are_you_sure_dialog.is_visible?
                 @are_you_sure_dialog.handle_result do |clicked|
