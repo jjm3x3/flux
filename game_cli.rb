@@ -1,9 +1,9 @@
 class GameCli
-  def initialize(game, logger, new_game_driver)
+  def initialize(game, logger, new_game_driver, interface)
       @logger = logger
       @game = game
       @new_game_driver = new_game_driver
-      @interface = CliInterface.new
+      @interface = interface
   end
 
   def run
