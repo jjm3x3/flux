@@ -7,7 +7,7 @@ require './gui_input_manager.rb'
 require './game_driver.rb'
 
 class GameGui < Gosu::Window
-    def initialize(logger)
+    def initialize(logger, prompt_strings)
         super 640, 960
         self.caption = "Fluxx"
 
