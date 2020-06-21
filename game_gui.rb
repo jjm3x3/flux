@@ -126,11 +126,11 @@ class GameGui < Gosu::Window
 
         if @new_game_driver && @player_changed
             @logger.debug "GameGui::update Player has changed setting up new turn"
+            @player_changed = false
             new_turn_future = @new_game_driver.async.setup_new_turn
             new_turn_future.add_observer do |time, value|
                 @redraw_hand = true
 
-                @player_changed = false
             end
         end
     end
