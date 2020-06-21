@@ -31,7 +31,8 @@ class GameGui < Gosu::Window
             Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true),
             Gosu::Font.new(20),
             logger,
-            initialize_dialog_prompts)
+            initialize_dialog_prompts(prompt_strings))
+
         @new_game_driver = nil
 
         @current_cached_player = nil
@@ -40,8 +41,13 @@ class GameGui < Gosu::Window
         @play_card_future = nil
     end
 
-    def initialize_dialog_prompts
-        return {default: Gosu::Image.from_text("Some default prompt", 20), discard_down_to_limit: Gosu::Image.from_text("Player playerX Select a card to discard", 20)}
+    def initialize_dialog_prompts(prompt_strings)
+        result = {}
+        prompt_strings.map do |key, prompt_string|
+            result[key] = Gosu::Image.from_text(prompt_string, 20)
+        end
+
+        return result
     end
 
     def button_up(id)
