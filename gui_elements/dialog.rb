@@ -57,9 +57,12 @@ class CardDialog
         @font = Gosu::Font.new(20)
         @card_buttons = []
         @selected_card = nil
-        @dialog_x_position = 120
-        @dialog_y_position = 120
-        @boarder_width = 10
+        @dialog_x_position = 100
+        @dialog_y_position = 100
+        @boarder_width = 20
+        @dialog_content_x_position = @dialog_x_position + @boarder_width
+        @dialog_content_y_position = @dialog_y_position + @boarder_width
+        @item_spacing = 10
     end
 
     def set_cards(card_list)
@@ -67,7 +70,10 @@ class CardDialog
         @card_buttons = []
         cardsDisplayed = 1 # accounts for prompt
         card_list.each do |card|
-            @card_buttons << Button.new(@window, "#{card}", @dialog_x_position, @dialog_y_position + @boarder_width * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::DIALOG_ITEMS)
+            @card_buttons << Button.new(@window, "#{card}",
+                                @dialog_content_x_position,
+                                @dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
+                                ZOrder::DIALOG_ITEMS)
             cardsDisplayed += 1
         end
 
@@ -75,8 +81,8 @@ class CardDialog
 
     def draw
         if @visible
-            @baground_image.draw(100, 100, ZOrder::DIALOG, 0.25, 0.25)
-            @font.draw_text(@prompt, @dialog_x_position, @dialog_y_position + @boarder_width, ZOrder::DIALOG_ITEMS)
+            @baground_image.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, 0.25, 0.25)
+            @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             @card_buttons.each do |card_button|
                 card_button.draw
             end
