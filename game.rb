@@ -27,12 +27,7 @@ class Game
     @deck = aDeck
     @discardPile = []
 
-    @logger.debug "Setting up players"
-    if players.size == 0
-      @players = Player.generate_players(numberOfPlayers)
-    else
-      @players = players
-    end
+    @players = players
 
     @players.each do |player|
       firstHand = drawCards(player, 3) # basic rules draw three cards to start
