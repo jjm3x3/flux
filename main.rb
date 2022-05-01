@@ -1,3 +1,4 @@
+#!/usr/local/bin/ruby
 require "./game.rb"
 require "./game_interface.rb"
 require "./game_cli.rb"
