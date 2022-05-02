@@ -65,6 +65,7 @@ class CardDialog
         @dialog_content_y_position = @dialog_y_position + @boarder_width
         @item_spacing = 10
         @dialog_prompts = dialog_prompts
+        @current_prompt_image = dialog_prompts[:default]
     end
 
     def set_cards(card_list)
@@ -84,7 +85,8 @@ class CardDialog
     def draw
         if @visible
             @baground_image.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, 0.25, 0.25)
-            @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
+            # @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
+            @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             @card_buttons.each do |card_button|
                 card_button.draw
             end
