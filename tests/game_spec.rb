@@ -8,20 +8,7 @@ describe "game" do
 
     it "should construct" do
         testLogger = TestLogger.new("some string", test_outfile)
-        theGame = Game.new(numberOfPlayers=3, testLogger)
-    end
-
-    it "should set the players to be the incomming ones if provided" do
-        testLogger = TestLogger.new("Some string", test_outfile)
-        expectedNumberOfPlayers = 8
-        players = []
-        (1..expectedNumberOfPlayers).select do |playerId|
-            players << Player.new("player" + playerId.to_s)
-        end
-        theGame = Game.new(numberOfPlayers=3, testLogger, TestInterface.new("some string", test_outfile), players=players)
-
-        expect(theGame.players.size).to eq expectedNumberOfPlayers
-
+        theGame = Game.new(testLogger)
     end
 
     describe "drawCards" do
