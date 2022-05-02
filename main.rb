@@ -27,7 +27,7 @@ if gui
   guiGame.show
 else
   players = Player.generate_players(3)
-  theGame = Game.new(3, logger, CliInterface.new, players)
+  theGame = Game.new(logger, CliInterface.new, players)
   gameDriver = GameCli.new(theGame, logger, GameDriver.new(theGame, logger))
   gameDriver.run
 end
