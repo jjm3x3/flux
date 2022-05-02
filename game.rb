@@ -15,7 +15,7 @@ class Game
   attr_accessor :currentPlayerCounter
   attr_reader :goal
 
-  def initialize(numberOfPlayers, aLogger, aTrueInterface = CliInterface.new, players=[], aRandom = Random.new, aDeck = Deck.new(aLogger))
+  def initialize(aLogger, aTrueInterface = CliInterface.new, players=[], aRandom = Random.new, aDeck = Deck.new(aLogger))
 
     @logger = aLogger
     @interface = aTrueInterface
