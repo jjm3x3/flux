@@ -983,7 +983,8 @@ describe "game" do
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theGame.deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
             originalDeckCount = theGame.deck.count
@@ -1001,7 +1002,8 @@ describe "game" do
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -1020,7 +1022,8 @@ describe "game" do
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, testLogger, testInterface)
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theGame.currentPlayerCounter = 8
 
@@ -1037,7 +1040,8 @@ describe "game" do
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, testLogger, testInterface)
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theGame.currentPlayerCounter = 9
 
@@ -1054,7 +1058,8 @@ describe "game" do
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, testLogger, testInterface)
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
             theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
@@ -1073,7 +1078,8 @@ describe "game" do
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers, testLogger, testInterface)
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
@@ -1095,7 +1101,9 @@ describe "game" do
             input_stream = StringIO.new("0") # 0 indexed?
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1111,7 +1119,9 @@ describe "game" do
             input_stream = StringIO.new("0") # 0 indexed?
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             firstPlayersOriginalCards = theFirstPlayer.hand
@@ -1130,7 +1140,9 @@ describe "game" do
             input_stream = StringIO.new("0") # 0 indexed?
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theOtherPlayer = theGame.players[2]
             otherPlayersOriginalCards = theOtherPlayer.hand
@@ -1149,7 +1161,9 @@ describe "game" do
             input_stream = StringIO.new("thing")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCards = theFirstPlayer.hand
             theGame.currentPlayerCounter = 10
@@ -1167,7 +1181,9 @@ describe "game" do
                 input_stream = StringIO.new("thing")
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                numberOfPlayers = 3
+                players = Player.generate_players(numberOfPlayers)
+                theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1183,7 +1199,9 @@ describe "game" do
                 input_stream = StringIO.new("thing")
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                numberOfPlayers = 3
+                players = Player.generate_players(numberOfPlayers)
+                theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
                 theFirstPlayer = theGame.players[0]
                 theLastPlayer = theGame.players[theGame.players.length-1]
                 lastPlayersOriginalCards = theLastPlayer.hand
@@ -1200,7 +1218,9 @@ describe "game" do
                 input_stream = StringIO.new("thing")
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                numberOfPlayers = 3
+                players = Player.generate_players(numberOfPlayers)
+                theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1217,7 +1237,9 @@ describe "game" do
                 input_stream = StringIO.new("thing")
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                numberOfPlayers = 3
+                players = Player.generate_players(numberOfPlayers)
+                theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
                 theGame.currentPlayerCounter = 11
@@ -1242,7 +1264,9 @@ describe "game" do
                 input_stream = StringIO.new("clockwise")
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                numberOfPlayers = 3
+                players = Player.generate_players(numberOfPlayers)
+                theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
 
@@ -1258,7 +1282,9 @@ describe "game" do
                 input_stream = StringIO.new("clockwise")
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                numberOfPlayers = 3
+                players = Player.generate_players(numberOfPlayers)
+                theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
                 theFirstPlayer = theGame.players[0]
                 theSecondPlayer = theGame.players[1]
                 secondPlayersOriginalCards = theSecondPlayer.hand
@@ -1275,7 +1301,9 @@ describe "game" do
                 input_stream = StringIO.new("clockwise")
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                numberOfPlayers = 3
+                players = Player.generate_players(numberOfPlayers)
+                theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
                 theFirstPlayer = theGame.players[0]
                 thePlayerAfterThem = theGame.players[2]
                 playerAfterThemsCards = thePlayerAfterThem.hand
@@ -1293,7 +1321,9 @@ describe "game" do
                 input_stream = StringIO.new("clockwise")
                 testLogger = TestLogger.new(input_stream, test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
-                theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+                numberOfPlayers = 3
+                players = Player.generate_players(numberOfPlayers)
+                theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
                 theGame.currentPlayerCounter = 11
