@@ -298,7 +298,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             # asume that a new game has no goal
 
@@ -310,8 +312,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
             aStackedDeck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
-            theGame = Game.new(numberOfPlayers=3, testLogger, TestInterface.new(input_stream, test_outfile), players=[], Random.new, aStackedDeck)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players, Random.new, aStackedDeck)
             keeper1 = Keeper.new(1, "thing1")
             keeper2 = Keeper.new(2, "thing2")
             theGame.setGoal(Goal.new("do a thing", [keeper1, keeper2], "some rule text"))
@@ -327,7 +331,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             keeper1 = Keeper.new(1, "thing1")
             keeper2 = Keeper.new(2, "thing2")
             theGame.setGoal(Goal.new("do a thing", [keeper1, keeper2], "some rule text"))
@@ -347,7 +353,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             currentPlayerCounter = 0 # set active player to "player1"
 
             # execute
@@ -366,7 +374,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
@@ -382,7 +392,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
@@ -398,7 +410,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
             theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
@@ -415,7 +429,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
@@ -437,7 +453,8 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             fakeCard1 = FakeCard.new("thing1")
             fakeCard2 = FakeCard.new("thing2")
             cardsToPutOnTop = [fakeCard1, fakeCard2]
@@ -458,7 +475,8 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
@@ -475,7 +493,8 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
             theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
@@ -493,7 +512,8 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
@@ -515,7 +535,8 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
 
@@ -531,7 +552,8 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
@@ -548,7 +570,8 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
             theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
@@ -566,7 +589,8 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
@@ -587,7 +611,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
 
@@ -602,7 +628,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
             theGame.deck = StackedDeck.new(testLogger, [warCreeper])
             theFirstPlayer = theGame.players[0]
@@ -619,7 +647,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
@@ -640,9 +670,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            numberOfPlayers = 3
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            players = Player.generate_players(3)
+            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players)
             theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
@@ -660,8 +690,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 2
-            theGame = Game.new(numberOfPlayers, testLogger)
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theGame.deck = StackedDeck.new(testLogger)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
