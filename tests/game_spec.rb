@@ -758,7 +758,7 @@ describe "game" do
             player_doubles = [double("player1", hand: [FakeCard.new("make believe")], taxation_prompt_name: "some prompt", add_cards_to_hand: nil)]
             player_2s_fake_card = FakeCard.new("some thing else")
             player_doubles << double("player2", hand: [player_2s_fake_card], add_cards_to_hand: nil)
-            theGame = Game.new(numberOfPlayers=2, testLogger, testInterface, player_doubles)
+            theGame = Game.new(testLogger, testInterface, player_doubles)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -949,7 +949,7 @@ describe "game" do
                 0
             end
             testInterface = TestInterface.new(input_stream, test_outfile)
-            numberOfPlayers = 3
+            numberOfPlayers = 2
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players, random)
             theFirstPlayer = theGame.players[0]
