@@ -1409,7 +1409,9 @@ describe "game" do
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -1425,7 +1427,9 @@ describe "game" do
             input_stream = StringIO.new("1\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(0, "thing1")
             theGame.players[1].keepers << Keeper.new(0, "thing2")
@@ -1442,7 +1446,9 @@ describe "game" do
             input_stream = StringIO.new("1\n0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(0, "thing1")
             firstPlayersOriginalKeeperCount = theFirstPlayer.keepers.size
@@ -1463,7 +1469,9 @@ describe "game" do
             input_stream = StringIO.new("1\n0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
@@ -1484,7 +1492,9 @@ describe "game" do
             input_stream = StringIO.new("1\n0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
@@ -1504,7 +1514,9 @@ describe "game" do
             input_stream = StringIO.new("0\ny\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalKeeper = Keeper.new(0, "thing1")
             theFirstPlayer.keepers << firstPlayersOriginalKeeper
@@ -1527,7 +1539,9 @@ describe "game" do
             input_stream = StringIO.new("1\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
             peaceKeeper = Keeper.new(16, "a peace thing")
@@ -1549,7 +1563,9 @@ describe "game" do
             input_stream = StringIO.new("1\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
             peaceKeeper = Keeper.new(16, "a peace thing")
@@ -1573,7 +1589,9 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")
             warCreeper = Creeper.new(1, "War", "Some rules text")
@@ -1591,7 +1609,9 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")
             warCreeper = Creeper.new(1, "War", "Some rules text")
@@ -1610,7 +1630,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             taxesCreeper = Creeper.new(2, "Taxes", "Some rules text")
             theFirstPlayer.add_creeper(taxesCreeper)
@@ -1626,8 +1649,11 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
             stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
-            theGame = Game.new(numberOfPlayers=3, testLogger, CliInterface.new, players=[], Random.new, stacked_deck)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players, Random.new, stacked_deck)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1643,7 +1669,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1662,7 +1691,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1684,7 +1716,9 @@ describe "game" do
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1705,7 +1739,9 @@ describe "game" do
             testLogger = TestLogger.new(input_stream, test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
-            theGame = Game.new(numberOfPlayers=3, testLogger, testInterface, players=[], Random.new, stacked_deck)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(numberOfPlayers, testLogger, testInterface, players, Random.new, stacked_deck)
             theFirstPlayer = theGame.players[0]
             deathCreeper = Creeper.new(3, "dead", "Some rules text")
             theFirstPlayer.add_creeper(deathCreeper)
