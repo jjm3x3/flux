@@ -722,7 +722,7 @@ describe "game" do
             expect(theFirstPlayer.hand.size).to eq firstPlayersOriginalCards.size + (numberOfPlayers-1)
         end
 
-        it "the second and third players should get be down 1 card when the game is setup" do
+        it "the second and third players should be down 1 card when the game is setup" do
             # setup
             input_stream = StringIO.new("0\n0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
@@ -1009,7 +1009,7 @@ describe "game" do
 
             # test
             theGame.players.select do |player|
-                expect(player.hand.length).to eq 1 # since the opening hand size is 3
+                expect(player.hand.length).to eq 1 # since no hands
             end
         end
 
