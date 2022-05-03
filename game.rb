@@ -15,21 +15,19 @@ class Game
   attr_accessor :currentPlayerCounter
   attr_reader :goal
 
-  def initialize(numberOfPlayers, aLogger, aTrueInterface = CliInterface.new, aRandom = Random.new, aDeck = Deck.new(aLogger))
+  def initialize(aLogger, aTrueInterface = CliInterface.new, players=[], aRandom = Random.new, aDeck = Deck.new(aLogger))
 
     @logger = aLogger
     @interface = aTrueInterface
 
     @random = aRandom
 
+    @logger.debug "Initialize some game stuff"
     @ruleBase = RuleBase.new(self, aLogger)
     @deck = aDeck
     @discardPile = []
 
-    @players = []
-    (1..numberOfPlayers).select do |playerId|
-      @players << Player.new("player" + playerId.to_s)
-    end
+    @players = players
 
     @players.each do |player|
       firstHand = drawCards(player, 3) # basic rules draw three cards to start
