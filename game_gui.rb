@@ -37,12 +37,15 @@ class GameGui < Gosu::Window
 
     def button_up(id)
         if @left_click_down
-            puts "left button released"
+            @logger.debug "left button released"
             @left_click_down = false
             if @current_dialog != nil && @current_dialog.is_visible?
+                @logger.debug "There is a current dialog"
                 if @current_dialog.handle_result
+                    @logger.debug "Handling dialog result"
                     @current_dialog.hide
                 end
+                @logger.debug "Handle result call false so return"
                 return
             end
             if @are_you_sure_dialog.is_visible?
@@ -69,11 +72,14 @@ class GameGui < Gosu::Window
             end
             clickedCard = 0
             @current_displayed_cards.each do |cardButton|
+                @logger.debug "Checking card '#{cardButton}'"
                 if cardButton.is_clicked?
+                    @logger.debug "Awaiting active_player from game_driver"
                     activePlayer = @new_game_driver.await.active_player.value
 
+                    @logger.debug "Getting card from players hand"
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
-                    puts "you clicked a card button #{cardToPlay}"
+                    @logger.debug "you clicked a card button #{cardToPlay}"
 
                     @play_card_future = @new_game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
                     @play_card_future.add_observer do |time, value|

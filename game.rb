@@ -144,6 +144,7 @@ class Game
   end
 
   def active_player
+    @logger.debug "Game: Fetching active player out of list of players"
     players[currentPlayer]
   end
 

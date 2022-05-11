@@ -65,6 +65,7 @@ class GameDriver
     end
 
     def active_player
+        @logger.debug "GameDriver: Getting active_player from game"
         @game.active_player
     end
 
