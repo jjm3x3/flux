@@ -29,13 +29,16 @@ class Game
 
     @players = players
 
+    @currentPlayerCounter = 0
+  end
+
+  def setup
+    # deal openings hands
     @players.each do |player|
       firstHand = drawCards(player, 3) # basic rules draw three cards to start
       @logger.trace "draw your opening hand #{firstHand}"
       player.set_hand(firstHand)
     end
-
-    @currentPlayerCounter = 0
   end
 
   def drawCards(player, count)
