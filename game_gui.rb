@@ -74,8 +74,10 @@ class GameGui < Gosu::Window
             @current_displayed_cards.each do |cardButton|
                 @logger.debug "Checking card '#{cardButton}'"
                 if cardButton.is_clicked?
-                    @logger.debug "Awaiting active_player from game_driver"
-                    activePlayer = @new_game_driver.await.active_player.value
+                    @logger.debug "Starting awaiting active_player from game_driver"
+                    active_player_result = @new_game_driver.await.active_player
+                    @logger.debug "Get activePlayer value out of await result"
+                    activePlayer = active_player_result.value
 
                     @logger.debug "Getting card from players hand"
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
