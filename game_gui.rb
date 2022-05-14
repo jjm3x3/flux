@@ -72,6 +72,7 @@ class GameGui < Gosu::Window
                         numberOfPlayers = 3
                         players = Player.generate_players(numberOfPlayers)
                         PlayerPromptGenerator.generate_prompts(players, @user_prompt_templates).each do |key, prompt|
+                            # TODO:: should check to make sure @current_dialog exists
                             @current_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
                         end
                         @game = Game.new(@logger, GuiInputManager.new(self), players)
