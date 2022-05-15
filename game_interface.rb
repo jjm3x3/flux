@@ -30,6 +30,7 @@ class BaseTextInterface
   end
 
   def choose_from_list(card_list, prompt_key)
+    if !prompt_key; raise "prompt_key missing"; end
     if !@prompts.has_key? prompt_key; raise "prompt_key missing from prompts collection"; end
     @output_stream.puts @prompts[prompt_key]
     @output_stream.puts StringFormattingUtilities.indexed_display(card_list)
