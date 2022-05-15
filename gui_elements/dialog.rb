@@ -123,7 +123,7 @@ class CardDialog
         @selected_card = nil
     end
 
-    def set_prompt(text, prompt_key=:default)
+    def set_prompt(text, prompt_key)
         should_change_current_prompt  = prompt_key != :default
         if should_change_current_prompt
             @current_prompt_image = @dialog_prompts[prompt_key]

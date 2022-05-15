@@ -194,8 +194,14 @@ class GameGui < Gosu::Window
 
     # "TrueGuiInterface" stuff... well it used to be
     def display_list_dialog(list, prompt="Select an option")
-        @logger.debug "does this even get called?"
-        @current_dialog.set_prompt prompt
+        @logger.debug "GameGui::display_list_dialog called with prompt: '#{prompt}'"
+        if prompt.is_a?(String)
+            @logger.debug "Prompt is_a string"
+            @current_dialog.set_prompt(prompt, :default)
+        else
+            @logger.debug "prompt is_a symb"
+            @current_dialog.set_prompt("", prompt)
+        end
         @current_dialog.reset_result
         @current_dialog.set_cards(list)
         @current_dialog.show
