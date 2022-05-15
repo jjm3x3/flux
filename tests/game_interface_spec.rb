@@ -25,7 +25,7 @@ describe "TestInterface" do
             # setup
             input_stream = StringIO.new("0")
             sut = TestInterface.new(input_stream, test_outfile)
-            expected_prompt = :some_expected_prompt
+            expected_prompt = :play_first_prompt
 
 
             # execute

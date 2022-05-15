@@ -34,6 +34,7 @@ class BaseTextInterface
     if prompt.is_a?(String)
       @output_stream.puts prompt
     else # assumed to be symbol
+      if !@user_prompts.has_key? prompt; raise "prompt_key missing from prompts collection"; end
       @output_stream.puts @user_prompts[prompt]
     end
     @output_stream.puts StringFormattingUtilities.indexed_display(card_list)
