@@ -25,8 +25,6 @@ class BaseTextInterface
     super()
     @prompts = {
       default: "Some default prompt",
-      play_first_prompt: "Which one would you like to play first?",
-      select_a_card_to_play_prompt: "Select a card from your hand to play"
     }
     @prompts = @prompts.merge(prompts)
   end
