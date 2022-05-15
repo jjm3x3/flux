@@ -21,13 +21,14 @@ end
 class BaseTextInterface
   include Concurrent::Async
 
-  def initialize
+  def initialize(prompts)
     super()
     @prompts = {
       default: "Some default prompt",
       play_first_prompt: "Which one would you like to play first?",
       select_a_card_to_play_prompt: "Select a card from your hand to play"
     }
+    @prompts = @prompts.merge(prompts)
   end
 
   def choose_from_list(card_list, prompt="Choose an option")
@@ -64,7 +65,7 @@ end
 class CliInterface < BaseTextInterface
 
   def initialize
-    super()
+    super({})
     @output_stream = $stdout
     @input_stream = $stdin
   end
@@ -84,7 +85,7 @@ class TestInterface < BaseTextInterface
   attr_reader :prompted
 
   def initialize(input, output)
-    super()
+    super({})
     @input_stream = input
     @output_stream = output
   end
