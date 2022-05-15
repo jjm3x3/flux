@@ -41,7 +41,7 @@ class GameGui < Gosu::Window
     end
 
     def initialize_dialog_prompts
-        return {default: Gosu::Image.from_text("Some default prompt", 20), discard_down_to_limit: Gosu::Image.from_text("Player player2 Select a card to discard", 20)}
+        return {default: Gosu::Image.from_text("Some default prompt", 20), discard_down_to_limit: Gosu::Image.from_text("Player playerX Select a card to discard", 20)}
     end
 
     def button_up(id)
