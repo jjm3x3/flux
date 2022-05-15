@@ -44,5 +44,16 @@ describe "TestInterface" do
             # execute & test (should not raise error)
             sut.choose_from_list([1,2,3], :default)
         end
+
+        it "should raise an error when prompt_key is missing from prompts collection" do
+            # setup
+            input_stream = StringIO.new("0")
+            sut = TestInterface.new(input_stream, test_outfile)
+
+            # execute & test
+            expect do
+                sut.choose_from_list([1,2,3], :missing_key)
+            end.to raise_error("prompt_key missing from prompts collection")
+        end
     end
 end
