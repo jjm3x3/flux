@@ -23,7 +23,7 @@ class BaseTextInterface
 
   def initialize
     super()
-    @user_prompts = {
+    @prompts = {
       default: "Some default prompt",
       play_first_prompt: "Which one would you like to play first?",
       select_a_card_to_play_prompt: "Select a card from your hand to play"
@@ -34,8 +34,8 @@ class BaseTextInterface
     if prompt.is_a?(String)
       @output_stream.puts prompt
     else # assumed to be symbol
-      if !@user_prompts.has_key? prompt; raise "prompt_key missing from prompts collection"; end
-      @output_stream.puts @user_prompts[prompt]
+      if !@prompts.has_key? prompt; raise "prompt_key missing from prompts collection"; end
+      @output_stream.puts @prompts[prompt]
     end
     @output_stream.puts StringFormattingUtilities.indexed_display(card_list)
     whichCard = get_input.to_i
