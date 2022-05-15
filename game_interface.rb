@@ -64,8 +64,8 @@ end
 
 class CliInterface < BaseTextInterface
 
-  def initialize
-    super({})
+  def initialize(prompts={})
+    super(prompts)
     @output_stream = $stdout
     @input_stream = $stdin
   end
@@ -84,8 +84,8 @@ class TestInterface < BaseTextInterface
   attr_reader :card_list
   attr_reader :prompted
 
-  def initialize(input, output)
-    super({})
+  def initialize(input, output, prompts={})
+    super(prompts)
     @input_stream = input
     @output_stream = output
   end
