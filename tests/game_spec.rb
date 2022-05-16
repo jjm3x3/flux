@@ -136,7 +136,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                {discard_down_to_keeper_limit: "Choose a keeper to discard"})
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
