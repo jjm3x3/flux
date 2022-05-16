@@ -124,8 +124,11 @@ class CardDialog
     end
 
     def set_prompt(text, prompt_key)
+        @logger.debug "set_prompt: got text: '#{text}' & prompt_key: '#{prompt_key}'"
         should_change_current_prompt  = prompt_key != :default
+        @logger.debug "set_prompt: change current_prompt_image cond: '#{should_change_current_prompt}'"
         if should_change_current_prompt
+            @logger.debug "set_prompt: dialog_prompts contents: #{@dialog_prompts}"
             @current_prompt_image = @dialog_prompts[prompt_key]
             @current_prompt_changed = true
             return
