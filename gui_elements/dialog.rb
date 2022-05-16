@@ -50,11 +50,11 @@ class Dialog
 end
 
 class CardDialog
-    def initialize(window, logger)
+    def initialize(window, background, logger)
         @window = window
         @logger = logger
         @visible = false
-        @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
+        @baground_image = background
         @font = Gosu::Font.new(20)
         @card_buttons = []
         @selected_card = nil
