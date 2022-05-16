@@ -446,7 +446,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { play_first_prompt: "Which one would you like to play first?" })
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
             fakeCard1 = FakeCard.new("thing1")
@@ -468,7 +469,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { play_first_prompt: "Which one would you like to play first?" })
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
             theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
@@ -486,7 +488,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { play_first_prompt: "Which one would you like to play first?" })
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
@@ -505,7 +508,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { play_first_prompt: "Which one would you like to play first?" })
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
