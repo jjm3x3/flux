@@ -66,7 +66,7 @@ class CardDialog
         @item_spacing = 10
         @dialog_prompts = dialog_prompts
         @current_prompt_image = dialog_prompts[:default]
-        @current_prompt_changed = false
+        @draw_prompt_image = false
     end
 
     def set_cards(card_list)
@@ -86,7 +86,7 @@ class CardDialog
     def draw
         if @visible
             @baground_image.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, 0.25, 0.25)
-            if @current_prompt_changed
+            if @draw_prompt_image
                 @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             else
                 @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
@@ -128,12 +128,12 @@ class CardDialog
         if prompt.is_a?(String)
             @logger.debug "Prompt is_a string"
             @prompt = prompt
-            @current_prompt_changed = false
+            @draw_prompt_image = false
         else
             @logger.debug "prompt is_a symb"
             @logger.debug "set_prompt: dialog_prompts contents: #{@dialog_prompts}"
             @current_prompt_image = @dialog_prompts[prompt]
-            @current_prompt_changed = true
+            @draw_prompt_image = true
         end
     end
 
