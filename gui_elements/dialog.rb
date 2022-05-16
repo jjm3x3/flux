@@ -50,12 +50,12 @@ class Dialog
 end
 
 class CardDialog
-    def initialize(window, background, logger)
+    def initialize(window, background, font, logger)
         @window = window
         @logger = logger
         @visible = false
         @baground_image = background
-        @font = Gosu::Font.new(20)
+        @font = font
         @card_buttons = []
         @selected_card = nil
         @dialog_x_position = 100

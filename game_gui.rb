@@ -29,6 +29,7 @@ class GameGui < Gosu::Window
         @current_dialog = CardDialog.new(
             self,
             Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true),
+            Gosu::Font.new(20),
             logger)
         @new_game_driver = nil
 
