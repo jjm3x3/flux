@@ -26,7 +26,7 @@ class GameGui < Gosu::Window
         @logger = logger
 
         @are_you_sure_dialog = Dialog.new(self)
-        @current_dialog = CardDialog.new(self)
+        @current_dialog = CardDialog.new(self, logger)
         @new_game_driver = nil
 
         @current_cached_player = nil
