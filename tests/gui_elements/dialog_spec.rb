@@ -13,12 +13,13 @@ describe "CardDialog" do
             background_double = double("background", draw: nil)
             font_double = instance_double("font", draw_text: nil)
             input_stream = StringIO.new("")
-            test_logger = TestLogger.new(input_stream, $stdout)
+            test_logger = TestLogger.new(input_stream, test_outfile)
             sut = CardDialog.new(
                 gui_double,
                 background_double,
                 font_double,
-                test_logger)
+                test_logger,
+                {})
             expected_prompt_text = "Some prompt text"
 
             # setup lite
