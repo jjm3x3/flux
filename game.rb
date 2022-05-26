@@ -36,7 +36,7 @@ class Game
     # deal openings hands
     @players.each do |player|
       firstHand = drawCards(player, 3) # basic rules draw three cards to start
-      @logger.trace "draw your opening hand #{firstHand}"
+      @logger.debug "draw your opening hand #{firstHand}"
       player.set_hand(firstHand)
     end
   end

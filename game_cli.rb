@@ -10,7 +10,7 @@ class GameCli
       loop do
         activePlayer = @new_game_driver.await.active_player.value
         @interface.display_game_state(@game)
-        @logger.information "\n#{activePlayer}'s turn"
+        @logger.info "\n#{activePlayer}'s turn"
 
         @new_game_driver.await.setup_new_turn
         hand = activePlayer.hand
@@ -29,7 +29,7 @@ class GameCli
           cardsPlayed += 1
 
           hand = activePlayer.hand # really a sad sideeffect of much statefull programming
-          @logger.information "played: #{cardsPlayed} of play: #{@game.ruleBase.playRule}"
+          @logger.info "played: #{cardsPlayed} of play: #{@game.ruleBase.playRule}"
         end
       end
   end
@@ -44,7 +44,7 @@ class GameCli
     permanentsPrintOut += player.creepers.map do |creeper|
       creeper.to_s
     end
-    @logger.information "#{prompt}\n #{permanentsPrintOut}"
+    @logger.info "#{prompt}\n #{permanentsPrintOut}"
   end
 
 end
