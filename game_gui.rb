@@ -26,7 +26,11 @@ class GameGui < Gosu::Window
         @logger = logger
 
         @are_you_sure_dialog = Dialog.new(self)
-        @current_dialog = CardDialog.new(self)
+        @current_dialog = CardDialog.new(
+            self,
+            Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true),
+            Gosu::Font.new(20),
+            logger)
         @new_game_driver = nil
 
         @current_cached_player = nil
