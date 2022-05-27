@@ -100,7 +100,7 @@ class Game
       removed_card_result = @interface.await.choose_from_list(player.hand, "Player #{player} Select a card to discard")
       @logger.debug "Game::discardDownToLimit: What state is the removed_card_result: #{removed_card_result.state}"
       if removed_card_result.state != :fulfilled
-        @logger.debug "choose_result may not have been fulfilled because #{removed_card_result.reason}"
+        @logger.info "choose_result may not have been fulfilled because #{removed_card_result.reason}"
       end
       card_to_remove = removed_card_result.value
       @discardPile << card_to_remove
