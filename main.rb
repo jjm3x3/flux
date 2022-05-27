@@ -21,9 +21,16 @@ end
 
 puts "starting game where debug: #{debug} and gui: #{gui}"
 
+
+prompt_strings = {
+  default: "Some default prompt",
+  play_first_prompt: "Which one would you like to play first?",
+  select_a_card_to_play_prompt: "Select a card from your hand to play"
+}
+
 logger = CliLogger.new(debug)
 if gui
-  guiGame = GameGui.new(logger)
+  guiGame = GameGui.new(logger, prompt_strings)
   guiGame.show
 else
   players = Player.generate_players(3)
