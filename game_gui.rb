@@ -30,13 +30,18 @@ class GameGui < Gosu::Window
             self,
             Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true),
             Gosu::Font.new(20),
-            logger)
+            logger,
+            initialize_dialog_prompts)
         @new_game_driver = nil
 
         @current_cached_player = nil
         @current_player_future = nil
 
         @play_card_future = nil
+    end
+
+    def initialize_dialog_prompts
+        return {default: Gosu::Image.from_text("Some default prompt", 20), discard_down_to_limit: Gosu::Image.from_text("Player playerX Select a card to discard", 20)}
     end
 
     def button_up(id)
@@ -189,7 +194,7 @@ class GameGui < Gosu::Window
 
     # "TrueGuiInterface" stuff... well it used to be
     def display_list_dialog(list, prompt="Select an option")
-        @logger.debug "does this even get called?"
+        @logger.debug "GameGui::display_list_dialog called with prompt: '#{prompt}'"
         @current_dialog.set_prompt prompt
         @current_dialog.reset_result
         @current_dialog.set_cards(list)

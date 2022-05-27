@@ -50,7 +50,7 @@ class Dialog
 end
 
 class CardDialog
-    def initialize(window, background, font, logger)
+    def initialize(window, background, font, logger, dialog_prompts)
         @window = window
         @logger = logger
         @visible = false
@@ -64,6 +64,9 @@ class CardDialog
         @dialog_content_x_position = @dialog_x_position + @boarder_width
         @dialog_content_y_position = @dialog_y_position + @boarder_width
         @item_spacing = 10
+        @dialog_prompts = dialog_prompts
+        @current_prompt_image = dialog_prompts[:default]
+        @draw_prompt_image = false
     end
 
     def set_cards(card_list)
@@ -71,6 +74,7 @@ class CardDialog
         @card_buttons = []
         cardsDisplayed = 1 # accounts for prompt
         card_list.each do |card|
+            #TODO:: need to generate these statically
             @card_buttons << Button.new(@window, "#{card}",
                                 @dialog_content_x_position,
                                 @dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
@@ -83,7 +87,11 @@ class CardDialog
     def draw
         if @visible
             @baground_image.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, 0.25, 0.25)
-            @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
+            if @draw_prompt_image
+                @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
+            else
+                @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
+            end
             @card_buttons.each do |card_button|
                 card_button.draw
             end
@@ -116,8 +124,18 @@ class CardDialog
         @selected_card = nil
     end
 
-    def set_prompt(text)
-        @prompt = text
+    def set_prompt(prompt)
+        @logger.debug "set_prompt: got prompt: '#{prompt}'"
+        if prompt.is_a?(String)
+            @logger.debug "Prompt is_a string"
+            @prompt = prompt
+            @draw_prompt_image = false
+        else
+            @logger.debug "prompt is_a symb"
+            @logger.debug "set_prompt: dialog_prompts contents: #{@dialog_prompts}"
+            @current_prompt_image = @dialog_prompts[prompt]
+            @draw_prompt_image = true
+        end
     end
 
     def handle_result
