@@ -74,6 +74,7 @@ class CardDialog
         @card_buttons = []
         cardsDisplayed = 1 # accounts for prompt
         card_list.each do |card|
+            #TODO:: need to generate these statically
             @card_buttons << Button.new(@window, "#{card}",
                                 @dialog_content_x_position,
                                 @dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
