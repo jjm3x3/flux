@@ -24,8 +24,8 @@ describe "TestInterface" do
         it "should not output the exact symbol text" do
             # setup
             input_stream = StringIO.new("0")
-            sut = TestInterface.new(input_stream, test_outfile)
-            expected_prompt = :play_first_prompt
+            sut = TestInterface.new(input_stream, test_outfile, {some_expected_prompt: "Some expected prompt"})
+            expected_prompt = :some_expected_prompt
 
 
             # execute
