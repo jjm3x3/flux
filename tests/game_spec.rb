@@ -765,7 +765,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { choose_card_to_play_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -784,7 +785,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { choose_card_to_play_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -803,7 +805,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\nn\ny\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { choose_card_to_play_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -822,7 +825,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\ny\n0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { choose_card_to_play_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -841,7 +845,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { choose_card_to_play_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -861,7 +866,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { choose_card_to_play_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
