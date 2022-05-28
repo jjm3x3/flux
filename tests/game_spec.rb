@@ -1755,7 +1755,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile, 
+                { death_discard_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
