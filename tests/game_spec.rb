@@ -1118,7 +1118,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile, 
+                { trade_hands_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -1137,7 +1138,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile, 
+                { trade_hands_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -1158,7 +1160,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0") # 0 indexed?
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile, 
+                { trade_hands_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
