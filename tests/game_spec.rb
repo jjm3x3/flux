@@ -678,7 +678,8 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { which_player_to_pick_from_prompt: "" })
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
             theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
