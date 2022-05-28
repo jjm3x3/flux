@@ -38,6 +38,9 @@ jobs:
       
       - name: install deps
         run: bundle install
+        
+      - name: Seed cards.db
+        run: ruby cardsdb.rb
 
       - name: Run tests
         run: rspec tests
