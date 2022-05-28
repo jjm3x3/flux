@@ -25,13 +25,18 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-      - name: Bundler CLI
+      - name: Setup Ruby (including bundle install)
         # You may pin to the exact commit or the version.
-        # uses: CultureHQ/actions-bundler@285f68b1d2059b91ca1eb26683263cf1960e7161
-        uses: CultureHQ/actions-bundler@v1.0.0
-
-      - name: Install deps (bundle)
-        run: bundle install
+        # uses: ruby/setup-ruby@8029ebd6e5bd8f4e0d6f7623ea76a01ec5b1010d
+        uses: ruby/setup-ruby@v1.110.0
+        with:
+          rubygems: Gemfile.lock
+          # The version of Bundler to install. Either 'none', 'latest', 'Gemfile.lock', or a version number (e.g., 1, 2, 2.1, 2.1.4).
+          # For 'Gemfile.lock', the version is determined based on the BUNDLED WITH section from the file Gemfile.lock, $BUNDLE_GEMFILE.lock or gems.locked.
+          # Defaults to 'default', which means 'Gemfile.lock' if the file exists and 'latest' otherwise.
+      
+          bundler: true
+          # Run "bundle install", and cache the result automatically. Either true or false.
 
       - name: Run tests
         run: rspec tests
