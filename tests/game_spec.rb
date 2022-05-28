@@ -1452,7 +1452,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { pick_a_keeper_from_prompt: "", are_you_sure_no_trade_prompt: "",
+                select_a_keeper_prompt: "", keeper_to_give_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -1471,7 +1473,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { pick_a_keeper_from_prompt: "", are_you_sure_no_trade_prompt: "",
+                select_a_keeper_prompt: "", keeper_to_give_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -1494,7 +1498,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { pick_a_keeper_from_prompt: "", are_you_sure_no_trade_prompt: "",
+                select_a_keeper_prompt: "", keeper_to_give_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -1517,7 +1523,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { pick_a_keeper_from_prompt: "", are_you_sure_no_trade_prompt: "",
+                select_a_keeper_prompt: "", keeper_to_give_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -1539,7 +1547,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\ny\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { pick_a_keeper_from_prompt: "", are_you_sure_no_trade_prompt: "",
+                select_a_keeper_prompt: "", keeper_to_give_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -1564,7 +1574,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { pick_a_keeper_from_prompt: "", are_you_sure_no_trade_prompt: "",
+                select_a_keeper_prompt: "", keeper_to_give_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)
@@ -1588,7 +1600,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n")
             testLogger = TestLogger.new(input_stream, test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile,
+                { pick_a_keeper_from_prompt: "", are_you_sure_no_trade_prompt: "",
+                select_a_keeper_prompt: "", keeper_to_give_prompt: "" })
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
             theGame = Game.new(testLogger, testInterface, players)

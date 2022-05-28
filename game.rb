@@ -415,7 +415,11 @@ class Game
     eligibleOpponents.unshift(:no_one)
     selectedPlayer = :no_one
     loop do
-      selectedPlayer = @interface.await.choose_from_list(eligibleOpponents, :pick_a_keeper_from_prompt).value
+      selected_player_result = @interface.await.choose_from_list(eligibleOpponents, :pick_a_keeper_from_prompt)
+      if selected_player_result.state != :fulfilled
+        @logger.information "Something has gone wrong in the choosing process"
+      end
+      selectedPlayer = selected_player_result.value
       areYouSure = selectedPlayer != :no_one
       if selectedPlayer == :no_one
         areYouSure = @interface.await.ask_yes_no(:are_you_sure_no_trade_prompt).value
