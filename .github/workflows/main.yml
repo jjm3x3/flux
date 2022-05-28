@@ -30,7 +30,7 @@ jobs:
         # uses: ruby/setup-ruby@8029ebd6e5bd8f4e0d6f7623ea76a01ec5b1010d
         uses: ruby/setup-ruby@v1.110.0
         with:
-          ruby-version: latest
+          ruby-version: 3.1.2
           rubygems: Gemfile.lock
           # The version of Bundler to install. Either 'none', 'latest', 'Gemfile.lock', or a version number (e.g., 1, 2, 2.1, 2.1.4).
           # For 'Gemfile.lock', the version is determined based on the BUNDLED WITH section from the file Gemfile.lock, $BUNDLE_GEMFILE.lock or gems.locked.
