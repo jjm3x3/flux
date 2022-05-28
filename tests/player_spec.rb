@@ -1,4 +1,4 @@
-require "Tempfile"
+require "tempfile"
 require "./game.rb"
 
 describe "player" do

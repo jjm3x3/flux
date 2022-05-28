@@ -1,5 +1,5 @@
 require "./game.rb"
-require "Tempfile"
+require "tempfile"
 require "io/console"
 
 describe "game" do

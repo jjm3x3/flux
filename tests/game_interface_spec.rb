@@ -1,5 +1,5 @@
 require "./game_interface.rb"
-require "Tempfile"
+require "tempfile"
 require "io/console"
 
 describe "TestInterface" do
