@@ -23,7 +23,8 @@ class Deck
     #   # newInjectedCard = Action.new(16,"extra exchange keepers", "put some rule text here")
     #   # newInjectedCard = Limit.new("no keepers", 4, "put some rule text here", 0)
     #   newInjectedCard = Creeper.new(1, "wanna be war", "Some rule text")
-    #   drawnCards = [newInjectedCard]
+    #   newInjectedCard2 = Creeper.new(3, "wanna be death", "Some rule text")
+    #   drawnCards = [newInjectedCard, newInjectedCard2]
     #   drawnCards << Keeper.new(16, "pease")
     #   cardsToDraw -= 1
     # end
