@@ -25,8 +25,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-      - name: Install bundler
-        run: gem install bundler
+      - name: Bundler CLI
+        # You may pin to the exact commit or the version.
+        # uses: CultureHQ/actions-bundler@285f68b1d2059b91ca1eb26683263cf1960e7161
+        uses: CultureHQ/actions-bundler@v1.0.0
 
       - name: Install deps (bundle)
         run: bundle install
