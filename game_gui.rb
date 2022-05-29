@@ -71,6 +71,9 @@ class GameGui < Gosu::Window
                         puts "I am starting a game then"
                         numberOfPlayers = 3
                         players = Player.generate_players(numberOfPlayers)
+                        PlayerPromptGenerator.generate_prompts(players, @user_prompt_templates).each do |key, prompt|
+                            @current_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
+                        end
                         @game = Game.new(@logger, GuiInputManager.new(self), players)
                         @game.setup
                         @new_game_driver = GameDriver.new(@game, @logger)
