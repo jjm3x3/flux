@@ -8,6 +8,9 @@ class PlayerPromptGenerator
         key = prompt_hash[:key_template].gsub(/{name}/, player.name).to_sym
         prompt = prompt_hash[:value_template].gsub(/{name}/, player.name)
         result[key] = prompt
+        player.define_singleton_method(prompt_name.to_sym) do
+          return key
+        end
       end
     end
     return result
