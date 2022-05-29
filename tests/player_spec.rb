@@ -6,8 +6,8 @@ describe "PlayerPromptGenerator" do
 
         user_specific_prompts = {
           some_prompt_name: {
-              key_template: "some_key",
-              value_template: "some_value"}
+              key_template: "Some_key_name_{name}",
+              value_template: "Some prompt where a name like: '{name}' belongs"}
         }
 
         it "should generate a prompt per uesr" do

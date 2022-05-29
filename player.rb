@@ -1,6 +1,15 @@
 class PlayerPromptGenerator
   def self.generate_prompts(players, prompt_templates)
     result = {}
+    players.each do |player|
+
+      prompt_templates.each do |prompt_name, prompt_hash|
+        puts prompt_hash
+        key = prompt_hash[:key_template].gsub(/{name}/, player.name).to_sym
+        prompt = prompt_hash[:value_template].gsub(/{name}/, player.name)
+        result[key] = prompt
+      end
+    end
     return result
   end
 end
