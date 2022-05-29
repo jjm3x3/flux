@@ -1,3 +1,9 @@
+class PlayerPromptGenerator
+  def self.generate_prompts(players, prompt_templates)
+    result = {}
+    return result
+  end
+end
 
 class Player
   attr_reader :creepers, :name, :keepers, :hand
