@@ -16,6 +16,16 @@ describe "PlayerPromptGenerator" do
             expect(result.size).to eq 2 # there should be two prompts one for each player
         end
 
+        it "should add a property to the user in order to recal the prompt" do
+            players = Player.generate_players(2)
+            result = PlayerPromptGenerator.generate_prompts(players, user_specific_prompts)
+
+            players.each do |player|
+                user_specific_prompts.each do |key, value|
+                    expect(player.respond_to?(key.to_sym)).to be true
+                end
+            end
+        end
     end
 end
 
