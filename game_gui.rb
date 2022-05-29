@@ -7,7 +7,7 @@ require './gui_input_manager.rb'
 require './game_driver.rb'
 
 class GameGui < Gosu::Window
-    def initialize(logger, prompt_strings)
+    def initialize(logger, prompt_strings, user_prompt_templates)
         super 640, 960
         self.caption = "Fluxx"
 
@@ -26,6 +26,7 @@ class GameGui < Gosu::Window
         @logger = logger
 
         @are_you_sure_dialog = Dialog.new(self)
+
         @current_dialog = CardDialog.new(
             self,
             Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true),
@@ -33,6 +34,7 @@ class GameGui < Gosu::Window
             logger,
             initialize_dialog_prompts(prompt_strings))
 
+        @user_prompt_templates = user_prompt_templates
         @new_game_driver = nil
 
         @current_cached_player = nil

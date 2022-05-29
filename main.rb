@@ -31,7 +31,7 @@ user_specific_prompts = {
 
 logger = CliLogger.new(debug)
 if gui
-  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS)
+  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, user_specific_prompts)
   guiGame.show
 else
   players = Player.generate_players(3)
