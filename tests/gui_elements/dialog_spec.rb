@@ -99,8 +99,8 @@ describe "CardDialog" do
                 {})
             expected_prompt_key = :some_prompt_key
 
-            # setup lite
-            # sut.add_prompt(expected_prompt_key, double("SomeGosuImage"))
+            # execute the test
+            sut.add_prompt(expected_prompt_key, double("SomeGosuImage"))
 
             # Assert this should not fail
             sut.set_prompt(expected_prompt_key)
