@@ -1,4 +1,4 @@
-require "Tempfile"
+require "tempfile"
 require "io/console"
 require "./util.rb"
 

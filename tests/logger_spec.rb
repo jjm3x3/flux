@@ -1,4 +1,4 @@
-require "Tempfile"
+require "tempfile"
 require "./game_interface.rb"
 require "./player.rb"
 require "./deck.rb"
