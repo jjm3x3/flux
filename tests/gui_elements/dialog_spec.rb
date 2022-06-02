@@ -81,7 +81,10 @@ describe "CardDialog" do
             end.to raise_error("prompt_key missing from prompts collection")
         end
 
-        it "should have an add_prompt method which will prevent set_prompt from raising an error" do
+    end
+
+    describe "add_prompt" do
+        it "should exist to prevent set_prompt from raising an error" do
             # setup
             gui_double = double("gui")
             background_double = double("background", draw: nil)
