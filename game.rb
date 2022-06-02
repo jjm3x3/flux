@@ -201,8 +201,11 @@ class Game
     @logger.debug "Here is the first card that was selected #{firstOne.value}"
     firstOne.value.play(player, self)
     @logger.debug "Going to select a second one"
-    secondOne = @interface.await.choose_from_list(cardsDrawn, :play_next_prompt)
-    secondOne.value.play(player, self)
+    second_choice_result = @interface.await.choose_from_list(cardsDrawn, :play_next_prompt)
+    if second_choice_result.state != :fulfilled
+      @logger.debug "second_choice_result may not have been fulfilled because: '#{second_choice_result.reason}'"
+    end
+    second_choice_result.value.play(player, self)
     discard(cardsDrawn[0])
   end
 
