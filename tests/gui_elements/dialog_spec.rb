@@ -59,5 +59,27 @@ describe "CardDialog" do
             # execute
             sut.draw
         end
+
+        it "should have an add_prompt method which will prevent set_prompt from raising an error" do
+            # setup
+            gui_double = double("gui")
+            background_double = double("background", draw: nil)
+            font_double = instance_double("font", draw_text: nil)
+            input_stream = StringIO.new("")
+            test_logger = TestLogger.new(input_stream, test_outfile)
+            sut = CardDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                {})
+            expected_prompt_key = :some_prompt_key
+
+            # setup lite
+            # sut.add_prompt(expected_prompt_key, double("SomeGosuImage"))
+
+            # Assert this should not fail
+            sut.set_prompt(expected_prompt_key)
+        end
     end
 end
