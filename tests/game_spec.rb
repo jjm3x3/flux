@@ -1,7 +1,8 @@
-require "./game.rb"
-require "tempfile"
-require "./constants/prompts.rb"
 require "io/console"
+require "tempfile"
+
+require "./constants/prompts.rb"
+require "./game.rb"
 
 describe "game" do
 
