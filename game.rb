@@ -85,7 +85,7 @@ class Game
   def removeDownToKeeperLimit(player)
     while player.keepers.length > @ruleBase.keeperLimit
       @logger.information "Since the keeper limit is #{@ruleBase.keeperLimit} you must discard a keeper"
-      choose_result = @interface.await.choose_from_list(player.keepers, "Choose a keeper to discard")
+      choose_result = @interface.await.choose_from_list(player.keepers, :discard_down_to_keeper_limit)
       if choose_result.state != :fulfilled
         @logger.debug "choose_result may not have been fulfilled because #{choose_result.reason}"
       end
@@ -100,7 +100,7 @@ class Game
       removed_card_result = @interface.await.choose_from_list(player.hand, "Player #{player} Select a card to discard")
       @logger.debug "Game::discardDownToLimit: What state is the removed_card_result: #{removed_card_result.state}"
       if removed_card_result.state != :fulfilled
-        @logger.info "choose_result may not have been fulfilled because #{removed_card_result.reason}"
+        @logger.information "choose_result may not have been fulfilled because #{removed_card_result.reason}"
       end
       card_to_remove = removed_card_result.value
       @discardPile << card_to_remove
@@ -184,7 +184,7 @@ class Game
   def draw_2_and_use_em(player)
     @logger.debug "happens sync at the beginning of draw_2_and_use_em"
     cardsDrawn = drawCards(player, 2)
-    select_result = @interface.await.choose_from_list(cardsDrawn, "Which one would you like to play first?")
+    select_result = @interface.await.choose_from_list(cardsDrawn, :play_first_prompt)
     @logger.debug "Here is the selected card in draw_2_and_use_em: '#{select_result.value}'"
     selected_card = select_result.value
     selected_card.play(player, self)
@@ -197,11 +197,11 @@ class Game
 
   def draw_3_play_2_of_them(player)
     cardsDrawn = drawCards(player, 3)
-    firstOne = @interface.await.choose_from_list(cardsDrawn, "which would you like to play first?")
+    firstOne = @interface.await.choose_from_list(cardsDrawn, :play_first_prompt)
     @logger.debug "Here is the first card that was selected #{firstOne.value}"
     firstOne.value.play(player, self)
     @logger.debug "Going to select a second one"
-    secondOne = @interface.await.choose_from_list(cardsDrawn, "which would you like to play next?")
+    secondOne = @interface.await.choose_from_list(cardsDrawn, :play_next_prompt)
     secondOne.value.play(player, self)
     discard(cardsDrawn[0])
   end
@@ -222,7 +222,7 @@ class Game
       @logger.information "Too bad no body has any cards for you"
       return
     end
-    selectedPlayer = @interface.await.choose_from_list(validOpponents, "which player would you like to pick from").value
+    selectedPlayer = @interface.await.choose_from_list(validOpponents, :which_player_to_pick_from_prompt).value
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
     @logger.debug "playing #{selectedCard}"
@@ -242,21 +242,21 @@ class Game
   def todaysSpecial(player)
     @logger.debug "Executing todays_special"
     drawnCards = drawCards(player, 3)
-    cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
+    cardToPlay = @interface.await.choose_from_list(drawnCards, :choose_card_to_play_prompt).value
     cardToPlay.play(player, self)
 
     @logger.debug "First card played now figure out if any more should be played"
-    if @interface.await.ask_yes_no("is today your birthday").value
+    if @interface.await.ask_yes_no(:birthday_prompt).value
       @logger.debug "It is the current players birthday"
-      cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
+      cardToPlay = @interface.await.choose_from_list(drawnCards, :choose_card_to_play_prompt).value
       cardToPlay.play(player, self)
 
-      cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
+      cardToPlay = @interface.await.choose_from_list(drawnCards, :choose_card_to_play_prompt).value
       cardToPlay.play(player, self)
     else
       @logger.debug "It is the not current players birthday is it at least a holiday or anniversary"
-      if @interface.await.ask_yes_no("Is today a holiday or an anniversary").value
-        cardToPlay = @interface.await.choose_from_list(drawnCards, "pick a card to play").value
+      if @interface.await.ask_yes_no(:holiday_anniversary_prompt).value
+        cardToPlay = @interface.await.choose_from_list(drawnCards, :choose_card_to_play_prompt).value
         cardToPlay.play(player, self)
       end
     end
@@ -309,7 +309,7 @@ class Game
       @logger.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
     end
-    pickedCard = @interface.await.choose_from_list(eligibleCards, "pick a card you would like to replay").value
+    pickedCard = @interface.await.choose_from_list(eligibleCards, :replay_prompt).value
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
@@ -336,13 +336,13 @@ class Game
     opponentsText = opponents(player).map do |player|
       player.to_s
     end
-    selectedPlayer = @interface.await.choose_from_list(opponents(player), "who would you like to trade hands with?").value
+    selectedPlayer = @interface.await.choose_from_list(opponents(player), :trade_hands_prompt).value
     otherHand = selectedPlayer.set_hand(player.hand)
     player.set_hand(otherHand)
   end
 
   def rotateHands(player)
-    direction = @interface.await.ask_rotation("Which way would you like to rotate?").value
+    direction = @interface.await.ask_rotation(:rotation_prompt).value
 
     #candidate for debug
     @players.each do |player|
@@ -415,10 +415,14 @@ class Game
     eligibleOpponents.unshift(:no_one)
     selectedPlayer = :no_one
     loop do
-      selectedPlayer = @interface.await.choose_from_list(eligibleOpponents, "Which player would you like to take a keeper from").value
+      selected_player_result = @interface.await.choose_from_list(eligibleOpponents, :pick_a_keeper_from_prompt)
+      if selected_player_result.state != :fulfilled
+        @logger.information "Something has gone wrong in the choosing process"
+      end
+      selectedPlayer = selected_player_result.value
       areYouSure = selectedPlayer != :no_one
       if selectedPlayer == :no_one
-        areYouSure = @interface.await.ask_yes_no("Are you sure you don't want to trade with anyone?").value
+        areYouSure = @interface.await.ask_yes_no(:are_you_sure_no_trade_prompt).value
       end
       if areYouSure
         break
@@ -429,12 +433,12 @@ class Game
     end
 
     if selectedPlayer.keepers.length > 1
-      myNewKeeper = @interface.await.choose_from_list(selectedPlayer.keepers, "Slect which Keeper you would like").value
+      myNewKeeper = @interface.await.choose_from_list(selectedPlayer.keepers, :select_a_keeper_prompt).value
     else
       myNewKeeper = selectedPlayer.keepers.delete_at(0)
     end
     if player.keepers.length > 1
-      myOldKeeper = @interface.await.choose_from_list(player.keepers, "Which Keeper would you like to exchange").value
+      myOldKeeper = @interface.await.choose_from_list(player.keepers, :keeper_to_give_prompt).value
     else
       myOldKeeper = player.keepers.delete_at(0)
     end
@@ -470,13 +474,15 @@ class Game
 
   def resolve_death_rule(player)
     if(player.has_death?)
+      @logger.debug "Player has death, determining eleigible permananets"
       eligiablePermanents = player.permanents.select do |perm|
         perm.card_type != "Creeper" || !perm.is_death?
       end
+      @logger.debug "Determined elegible permanents"
       if(eligiablePermanents.size == 0)
         discard(player.take_death)
       else
-        selectedCard = @interface.await.choose_from_list(eligiablePermanents, "Which permanent would you like to discard to death?").value
+        selectedCard = @interface.await.choose_from_list(eligiablePermanents, :death_discard_prompt).value
         player.discard_permanent(selectedCard)
       end
     end

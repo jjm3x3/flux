@@ -18,7 +18,7 @@ class GameCli
         while !@new_game_driver.await.turn_over?.value
           print_permanents(activePlayer, prompt="here are the permanents you have:")
 
-          cardToPlay = @interface.await.choose_from_list(hand, "Select a card from your hand to play").value
+          cardToPlay = @interface.await.choose_from_list(hand, :select_a_card_to_play_prompt).value
           @logger.debug "Card selected is: '#{cardToPlay}'"
 
           play_result = @new_game_driver.await.post_card_play_clean_up(activePlayer, cardToPlay)
