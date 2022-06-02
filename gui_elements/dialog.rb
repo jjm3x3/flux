@@ -137,6 +137,7 @@ class CardDialog
         else
             @logger.debug "prompt is_a symb"
             @logger.debug "set_prompt: dialog_prompts contents: #{@dialog_prompts}"
+            if !@dialog_prompts.has_key? prompt; raise "prompt_key missing from prompts collection"; end
             @current_prompt_image = @dialog_prompts[prompt]
             @draw_prompt_image = true
         end
