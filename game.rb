@@ -356,7 +356,7 @@ class Game
 
     #candidate for debug
     @players.each do |player|
-      @logger.log_cards(player.hand, "What is my hand now #{player}:")
+      @logger.debug "What is my hand now #{player}:\n#{StringFormattingUtilities.indexed_display(player.hand)}"
     end
 
     playerCur = currentPlayer
@@ -389,7 +389,7 @@ class Game
 
     # candidate for debug
     @players.each do |player|
-      @logger.log_cards(player.hand, "What is my hand now #{player}:")
+      @logger.debug "What is my hand now #{player}:\n#{StringFormattingUtilities.indexed_display(player.hand)}"
     end
   end
 
@@ -419,7 +419,7 @@ class Game
 
     eligibleOpponents.select do |aPlayer|
       # TODO:: should consider that any player should be able to see this at any time
-      @logger.log_cards(aPlayer.keepers, "Here are the keepers: #{aPlayer.to_s} has:")
+      @logger.debug "Here are the keepers: #{aPlayer.to_s} has:\n#{StringFormattingUtilities.indexed_display(aPlyer.keepers)}"
     end
 
     eligibleOpponents.unshift(:no_one)
@@ -460,7 +460,7 @@ class Game
     resolve_taxes_rule(player)
     resolve_taxes_rule(selectedPlayer)
 
-    @logger.log_cards(player.keepers, "Here are your Keepers after the exchange")
+    @logger.debug "Here are your Keepers after the exchange\n#{StringFormattingUtilities.indexed_display(plyer.keepers)}"
 
   end
 
