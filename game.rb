@@ -419,7 +419,7 @@ class Game
 
     eligibleOpponents.select do |aPlayer|
       # TODO:: should consider that any player should be able to see this at any time
-      @logger.debug "Here are the keepers: #{aPlayer.to_s} has:\n#{StringFormattingUtilities.indexed_display(aPlyer.keepers)}"
+      @logger.debug "Here are the keepers: #{aPlayer.to_s} has:\n#{StringFormattingUtilities.indexed_display(aPlayer.keepers)}"
     end
 
     eligibleOpponents.unshift(:no_one)
@@ -460,7 +460,7 @@ class Game
     resolve_taxes_rule(player)
     resolve_taxes_rule(selectedPlayer)
 
-    @logger.debug "Here are your Keepers after the exchange\n#{StringFormattingUtilities.indexed_display(plyer.keepers)}"
+    @logger.debug "Here are your Keepers after the exchange\n#{StringFormattingUtilities.indexed_display(player.keepers)}"
 
   end
 

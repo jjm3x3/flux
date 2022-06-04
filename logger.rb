@@ -28,10 +28,6 @@ class BaseLogger
     @output_stream.puts message
   end
 
-  def log_cards(hand,prompt="Here is your current hand:")
-    debug "#{prompt}\n#{StringFormattingUtilities.indexed_display(hand)}"
-  end
-
   def pause
     @input_stream.gets
   end
