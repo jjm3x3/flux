@@ -77,6 +77,18 @@ class CliInterface < BaseTextInterface
     activePlayer = game_driver.await.active_player.value
     @output_stream.puts "\n#{activePlayer}'s turn"
   end
+
+  def print_permanents(player, prompt="here are the permanents you have:")
+
+    permanentsPrintOut = []
+    permanentsPrintOut += player.keepers.map do |keeper|
+      keeper.to_s
+    end
+    permanentsPrintOut += player.creepers.map do |creeper|
+      creeper.to_s
+    end
+    @output_stream.puts "#{prompt}\n #{permanentsPrintOut}"
+  end
 end
 
 class TestInterface < BaseTextInterface

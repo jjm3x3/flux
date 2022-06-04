@@ -15,7 +15,7 @@ class GameCli
         hand = activePlayer.hand
         cardsPlayed = 0
         while !@new_game_driver.await.turn_over?.value
-          print_permanents(activePlayer, prompt="here are the permanents you have:")
+          @interface.await.print_permanents(activePlayer, prompt="here are the permanents you have:")
 
           cardToPlay = @interface.await.choose_from_list(hand, :select_a_card_to_play_prompt).value
           @logger.debug "Card selected is: '#{cardToPlay}'"
@@ -34,16 +34,5 @@ class GameCli
   end
 
   private
-  def print_permanents(player, prompt="here are the permanents you have:")
-
-    permanentsPrintOut = []
-    permanentsPrintOut += player.keepers.map do |keeper|
-      keeper.to_s
-    end
-    permanentsPrintOut += player.creepers.map do |creeper|
-      creeper.to_s
-    end
-    @logger.info "#{prompt}\n #{permanentsPrintOut}"
-  end
 
 end
