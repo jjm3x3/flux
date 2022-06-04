@@ -6,7 +6,6 @@ module Constants
         discard_down_to_keeper_limit: "Choose a keeper to discard",
         play_next_prompt: "which would you like to play next?",
         which_player_to_pick_from_prompt: "which player would you like to pick from",
-        discard_down_to_limit: "Player player2 Select a card to discard",
         choose_card_to_play_prompt: "pick a card to play",
         birthday_prompt: "is today your birthday",
         holiday_anniversary_prompt: "Is today a holiday or an anniversary",
