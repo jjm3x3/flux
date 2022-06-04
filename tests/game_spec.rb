@@ -710,8 +710,9 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n0\n")
             testLogger = Logger.new(test_outfile)
             numberOfPlayers = 3
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theGame.setup
             theFirstPlayer = theGame.players[0]
@@ -729,8 +730,9 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n0\n")
             testLogger = Logger.new(test_outfile)
             numberOfPlayers = 3
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theGame.setup
             theFirstPlayer = theGame.players[0]
