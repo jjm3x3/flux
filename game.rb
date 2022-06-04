@@ -321,12 +321,15 @@ class Game
     cardsDrawn = drawCards(player, @players.length)
     playerCur = currentPlayer
     while cardsDrawn.length > 0
+      @logger.debug "Game::everbody_gets_1: Number of cards left to deal out: #{cardsDrawn.length}"
+      player_to_select_card_for = @players[playerCur]
       if playerCur == currentPlayer
         selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to giver to yourself").value
       else
         selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to give to #{@players[playerCur]}").value
       end
-      @players[playerCur].hand << selectedCard
+      @logger.debug "Game::everbody_gets_1: Player #{player_to_select_card_for.to_s} has a hand of length: #{player_to_select_card_for.hand.length}}"
+      player_to_select_card_for.hand << selectedCard
       playerCur += 1
       playerCur %= @players.length
     end
