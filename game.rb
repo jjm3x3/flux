@@ -324,7 +324,11 @@ class Game
       @logger.debug "Game::everbody_gets_1: Number of cards left to deal out: #{cardsDrawn.length}"
       player_to_select_card_for = @players[playerCur]
       if playerCur == currentPlayer
-        selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to giver to yourself").value
+        choose_result = @interface.await.choose_from_list(cardsDrawn, "which card would you like to giver to yourself")
+        if choose_result.state != :fulfilled
+          @logger.warn  "choose_result may not have been fulfilled because #{choose_result.reason}"
+        end
+        selectedCard = choose_result.value
       else
         selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to give to #{@players[playerCur]}").value
       end
