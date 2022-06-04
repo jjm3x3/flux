@@ -59,5 +59,51 @@ describe "CardDialog" do
             # execute
             sut.draw
         end
+
+        it "should raise an error if the prompt is a symbol which doesn't exist in the dialog_prompts" do
+            # setup
+            gui_double = double("gui")
+            background_double = double("background", draw: nil)
+            font_double = instance_double("font", draw_text: nil)
+            input_stream = StringIO.new("")
+            test_logger = TestLogger.new(input_stream, test_outfile)
+            sut = CardDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                {})
+            expected_prompt_key = :some_prompt_key
+
+            # Execute and Assert this should not fail
+            expect do
+                sut.set_prompt(expected_prompt_key)
+            end.to raise_error("prompt_key missing from prompts collection")
+        end
+
+    end
+
+    describe "add_prompt" do
+        it "should exist to prevent set_prompt from raising an error" do
+            # setup
+            gui_double = double("gui")
+            background_double = double("background", draw: nil)
+            font_double = instance_double("font", draw_text: nil)
+            input_stream = StringIO.new("")
+            test_logger = TestLogger.new(input_stream, test_outfile)
+            sut = CardDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                {})
+            expected_prompt_key = :some_prompt_key
+
+            # execute the test
+            sut.add_prompt(expected_prompt_key, double("SomeGosuImage"))
+
+            # Assert this should not fail
+            sut.set_prompt(expected_prompt_key)
+        end
     end
 end
