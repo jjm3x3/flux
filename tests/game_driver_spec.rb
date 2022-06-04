@@ -56,7 +56,7 @@ describe "GameDriver" do
         it "should play cards..... :?" do
             # setup
             input_stream = StringIO.new("0\n")
-            testLogger = TestLogger.new(input_stream,test_outfile)
+            testLogger = Logger.new(test_outfile)
 
             cardDouble = double("card", :play => nil)
             gameDouble = double("game")

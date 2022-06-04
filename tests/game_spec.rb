@@ -137,7 +137,7 @@ describe "game" do
         it "should make sure that the player has no more keepers than the current keeper limit" do
             # setup
             input_stream = StringIO.new("0\n")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
@@ -306,7 +306,7 @@ describe "game" do
         it "should return true if the goal has been met" do
             # setup
             input_stream = StringIO.new("")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
             aStackedDeck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
@@ -325,7 +325,7 @@ describe "game" do
         it "should return false if the goal has been met but the player has any creepers" do
             # setup
             input_stream = StringIO.new("")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
@@ -686,7 +686,7 @@ describe "game" do
         it "should not play any cards if no other player has a hand" do
             # setup
             input_stream = StringIO.new("")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 2
             players = Player.generate_players(numberOfPlayers)
@@ -950,7 +950,7 @@ describe "game" do
         it "should non contain any keepers or goals" do
             # setup
             input_stream = StringIO.new("0")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
@@ -1159,7 +1159,7 @@ describe "game" do
         it "should handle if the currentPlayer is set to a number of a player which does not exist" do
             # setup
             input_stream = StringIO.new("thing")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
@@ -1179,7 +1179,7 @@ describe "game" do
             it "first player should not have the hand they started with" do
                 # setup
                 input_stream = StringIO.new("thing")
-                testLogger = TestLogger.new(input_stream, test_outfile)
+                testLogger = Logger.new(test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 numberOfPlayers = 3
                 players = Player.generate_players(numberOfPlayers)
@@ -1198,7 +1198,7 @@ describe "game" do
             it "first player should have the hand of the last player" do
                 # setup
                 input_stream = StringIO.new("thing")
-                testLogger = TestLogger.new(input_stream, test_outfile)
+                testLogger = Logger.new(test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 numberOfPlayers = 3
                 players = Player.generate_players(numberOfPlayers)
@@ -1217,7 +1217,7 @@ describe "game" do
             it "second player should have the hand of the first player" do
                 # setup
                 input_stream = StringIO.new("thing")
-                testLogger = TestLogger.new(input_stream, test_outfile)
+                testLogger = Logger.new(test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 numberOfPlayers = 3
                 players = Player.generate_players(numberOfPlayers)
@@ -1236,7 +1236,7 @@ describe "game" do
             it "should not  let any hands be duplicated" do
                 # setup
                 input_stream = StringIO.new("thing")
-                testLogger = TestLogger.new(input_stream, test_outfile)
+                testLogger = Logger.new(test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 numberOfPlayers = 3
                 players = Player.generate_players(numberOfPlayers)
@@ -1264,7 +1264,7 @@ describe "game" do
             it "first player should not have the hand they started with" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                testLogger = TestLogger.new(input_stream, test_outfile)
+                testLogger = Logger.new(test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 numberOfPlayers = 3
                 players = Player.generate_players(numberOfPlayers)
@@ -1283,7 +1283,7 @@ describe "game" do
             it "first player should have the hand of the second player" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                testLogger = TestLogger.new(input_stream, test_outfile)
+                testLogger = Logger.new(test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 numberOfPlayers = 3
                 players = Player.generate_players(numberOfPlayers)
@@ -1302,7 +1302,7 @@ describe "game" do
             it "second player should have the hand of the player after them" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                testLogger = TestLogger.new(input_stream, test_outfile)
+                testLogger = Logger.new(test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 numberOfPlayers = 3
                 players = Player.generate_players(numberOfPlayers)
@@ -1322,7 +1322,7 @@ describe "game" do
             it "should not  let any hands be duplicated" do
                 # setup
                 input_stream = StringIO.new("clockwise")
-                testLogger = TestLogger.new(input_stream, test_outfile)
+                testLogger = Logger.new(test_outfile)
                 testInterface = TestInterface.new(input_stream, test_outfile)
                 numberOfPlayers = 3
                 players = Player.generate_players(numberOfPlayers)
@@ -1411,7 +1411,7 @@ describe "game" do
         it "should not do anything if you have no keepers" do
             # setup
             input_stream = StringIO.new("")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
