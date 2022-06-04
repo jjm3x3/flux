@@ -373,13 +373,13 @@ class Game
       end
 
       @logger.info "player #{playerCur+1} gets =  #{nextPlayer+1}'s hand "
-      @logger.trace "giving plyer #{playerCur+1} the hand\n\t#{@players[nextPlayer].hand}"
+      @logger.debug "giving plyer #{playerCur+1} the hand\n\t#{@players[nextPlayer].hand}"
       @players[playerCur].set_hand(@players[nextPlayer].hand)
 
       playerCur = nextPlayer
       @logger.debug "here is the value of nextPlayer: #{nextPlayer}"
     end
-    @logger.trace "giving plyer #{playerCur+1} the hand\n\t#{tempHand}"
+    @logger.debug "giving plyer #{playerCur+1} the hand\n\t#{tempHand}"
     if direction == Direction::Clockwise
       newNextPlayer = (playerCur - 1) % @players.length
     else

@@ -18,12 +18,6 @@ class BaseLogger
     end
   end
 
-  def trace(message)
-    if @trace
-      @output_stream.puts message
-    end
-  end
-
   def warn(message)
     @output_stream.puts message
   end
