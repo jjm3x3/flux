@@ -24,10 +24,6 @@ class BaseLogger
     end
   end
 
-  def information(message)
-    @output_stream.puts message
-  end
-
   def warn(message)
     @output_stream.puts message
   end

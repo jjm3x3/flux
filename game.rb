@@ -84,7 +84,7 @@ class Game
 
   def removeDownToKeeperLimit(player)
     while player.keepers.length > @ruleBase.keeperLimit
-      @logger.information "Since the keeper limit is #{@ruleBase.keeperLimit} you must discard a keeper"
+      @logger.info "Since the keeper limit is #{@ruleBase.keeperLimit} you must discard a keeper"
       choose_result = @interface.await.choose_from_list(player.keepers, :discard_down_to_keeper_limit)
       if choose_result.state != :fulfilled
         @logger.debug "choose_result may not have been fulfilled because #{choose_result.reason}"
@@ -100,7 +100,7 @@ class Game
       removed_card_result = @interface.await.choose_from_list(player.hand, "Player #{player} Select a card to discard")
       @logger.debug "Game::discardDownToLimit: What state is the removed_card_result: #{removed_card_result.state}"
       if removed_card_result.state != :fulfilled
-        @logger.information "choose_result may not have been fulfilled because #{removed_card_result.reason}"
+        @logger.info "choose_result may not have been fulfilled because #{removed_card_result.reason}"
       end
       card_to_remove = removed_card_result.value
       @discardPile << card_to_remove
@@ -126,7 +126,7 @@ class Game
   end
 
   def setGoal(newGoal)
-    @logger.information "changeing goal to #{newGoal}"
+    @logger.info "changeing goal to #{newGoal}"
     if @goal
       @discardPile << @goal
     end
@@ -222,7 +222,7 @@ class Game
       opp.hand.size > 0
     end
     if(validOpponents.size == 0)
-      @logger.information "Too bad no body has any cards for you"
+      @logger.info "Too bad no body has any cards for you"
       return
     end
     selectedPlayer = @interface.await.choose_from_list(validOpponents, :which_player_to_pick_from_prompt).value
@@ -316,7 +316,7 @@ class Game
     @discardPile = @discardPile.select do |card|
       card != pickedCard
     end
-    @logger.information "replaying #{pickedCard}"
+    @logger.info "replaying #{pickedCard}"
     pickedCard.play(player, self)
   end
 
@@ -372,7 +372,7 @@ class Game
         nextPlayer  = (playerCur - 1) % @players.length
       end
 
-      @logger.information "player #{playerCur+1} gets =  #{nextPlayer+1}'s hand "
+      @logger.info "player #{playerCur+1} gets =  #{nextPlayer+1}'s hand "
       @logger.trace "giving plyer #{playerCur+1} the hand\n\t#{@players[nextPlayer].hand}"
       @players[playerCur].set_hand(@players[nextPlayer].hand)
 
@@ -399,7 +399,7 @@ class Game
 
   def exchange_keepers(player)
     if player.keepers.length == 0
-      @logger.information "Too bad you have no keepers"
+      @logger.info "Too bad you have no keepers"
       return
     end
     otherKeepers = false
@@ -407,7 +407,7 @@ class Game
       otherKeepers ||= player.keepers.length != 0
     end
     if !otherKeepers
-      @logger.information "Too bad you have no keepers"
+      @logger.info "Too bad you have no keepers"
       return
     end
 
@@ -427,7 +427,7 @@ class Game
     loop do
       selected_player_result = @interface.await.choose_from_list(eligibleOpponents, :pick_a_keeper_from_prompt)
       if selected_player_result.state != :fulfilled
-        @logger.information "Something has gone wrong in the choosing process"
+        @logger.info "Something has gone wrong in the choosing process"
       end
       selectedPlayer = selected_player_result.value
       areYouSure = selectedPlayer != :no_one
