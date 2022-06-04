@@ -23,19 +23,13 @@ end
 puts "starting game where debug: #{debug} and gui: #{gui}"
 
 
-user_specific_prompts = {
-  discard_prompt_name: {
-      key_template: "discard_down_to_limit_{name}",
-      value_template: "Player {name} Select a card to discard"}
-}
-
 logger = CliLogger.new(debug)
 if gui
-  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, user_specific_prompts)
+  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS)
   guiGame.show
 else
   players = Player.generate_players(3)
-  player_prompts = PlayerPromptGenerator.generate_prompts(players, user_specific_prompts)
+  player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
   prompt_strings = Constants::PROMPT_STRINGS.merge(player_prompts)
   cli_interface = CliInterface.new(prompt_strings)
   theGame = Game.new(logger, cli_interface, players)
