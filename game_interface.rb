@@ -68,12 +68,14 @@ class CliInterface < BaseTextInterface
     @input_stream = $stdin
   end
 
-  def display_game_state(game)
+  def display_game_state(game, game_driver)
     @output_stream.puts "\e[2J\e[f"
     @output_stream.puts "The deck has #{game.deck.count} cards in it"
     @output_stream.puts "the discard has #{game.discardPile.length} card(s) in it"
     @output_stream.puts "here is the current goal: #{game.goal}"
     @output_stream.puts "here are the current rules:#{game.ruleBase}"
+    activePlayer = game_driver.await.active_player.value
+    @output_stream.puts "\n#{activePlayer}'s turn"
   end
 end
 

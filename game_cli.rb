@@ -9,8 +9,7 @@ class GameCli
   def run
       loop do
         activePlayer = @new_game_driver.await.active_player.value
-        @interface.display_game_state(@game)
-        @logger.info "\n#{activePlayer}'s turn"
+        @interface.await.display_game_state(@game, @new_game_driver)
 
         @new_game_driver.await.setup_new_turn
         hand = activePlayer.hand
