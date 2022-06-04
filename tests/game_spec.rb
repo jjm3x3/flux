@@ -1550,9 +1550,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n")
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS.merge(player_prompts))
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
@@ -1574,9 +1575,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n")
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS.merge(player_prompts))
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
@@ -1600,9 +1602,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")
@@ -1620,9 +1623,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")

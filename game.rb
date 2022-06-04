@@ -468,7 +468,7 @@ class Game
     playerHasPeace = player.has_peace?
     playerHasWar = player.has_war?
     if (playerHasPeace && playerHasWar)
-      selectedPlayer = @interface.await.choose_from_list(opponents(player), "#{player} since you have peace. Who would you like to give war too?").value
+      selectedPlayer = @interface.await.choose_from_list(opponents(player), player.move_war_prompt_name).value
       @logger.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
 
       selectedPlayer.add_creeper(player.take_war)
