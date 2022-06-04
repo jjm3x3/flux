@@ -24,7 +24,7 @@ class GameCli
           play_result = @new_game_driver.await.post_card_play_clean_up(activePlayer, cardToPlay)
           @logger.debug "What was the play result? '#{play_result.state}'"
           if play_result.state != :fulfilled
-            @logger.debug "play_result may not have been fulfilled because: '#{play_result.reason}'"
+            @logger.warn "play_result may not have been fulfilled because: '#{play_result.reason}'"
           end
           cardsPlayed += 1
 
