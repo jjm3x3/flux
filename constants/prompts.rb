@@ -21,8 +21,13 @@ module Constants
     }
 
     USER_SPECIFIC_PROMPTS = {
-      discard_prompt_name: {
-          key_template: "discard_down_to_limit_{name}",
-          value_template: "Player {name} Select a card to discard"}
+        discard_prompt_name: {
+            key_template: "discard_down_to_limit_{name}",
+            value_template: "Player {name} Select a card to discard"
+        },
+        taxation_prompt_name: {
+            key_template: "give_card_to_player_{name}",
+            value_template: "Choose a card to give to {name}"
+        }
     }
 end
