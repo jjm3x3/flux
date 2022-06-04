@@ -236,7 +236,7 @@ class Game
     newCardsForPlayer = opponents(player).select do |player|
       player.hand.size > 0
     end.map do |aPlayer|
-      @interface.await.choose_from_list(aPlayer.hand, "Choose a card to give to #{player}").value
+      @interface.await.choose_from_list(aPlayer.hand, player.taxation_prompt_name).value
     end
     player.add_cards_to_hand(newCardsForPlayer)
   end
