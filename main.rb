@@ -5,6 +5,7 @@ require "./game_cli.rb"
 require "./game_gui.rb"
 require "./game_driver.rb"
 require "./constants/prompts.rb"
+require "./constants/stacked_decks.rb"
 
 debug=false
 gui=false
@@ -26,20 +27,7 @@ logger = Logger.new($stdout)
 logger.level = debug ? Logger::DEBUG : Logger::INFO
 
 # the_deck = Deck.new(logger)
-keeper1 = Keeper.new(1, "one")
-keeper2 = Keeper.new(2, "two")
-the_deck = StackedDeck.new(logger, [
-  keeper1,
-  Keeper.new(0, "doesn't matter"),
-  Keeper.new(0, "doesn't matter"),
-  Keeper.new(0, "doesn't matter"),
-  Keeper.new(0, "doesn't matter"),
-  Keeper.new(0, "doesn't matter"),
-  Keeper.new(0, "doesn't matter"),
-  keeper2,
-  Goal.new("one and two", [keeper1, keeper2], "Have keeper1 & keeper2"),
-  Rule.new("Play forever", 2, "XXXXXa"),
-])
+the_deck = StackedDecks.stacked_deck_factory(logger, StackedDecks::QUICK_WIN)
 
 if gui
   guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS)
