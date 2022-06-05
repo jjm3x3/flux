@@ -8,9 +8,12 @@ class GameCli
 
   def run
       loop do
+        @logger.debug "Getting active_player from driver"
         activePlayer = @new_game_driver.await.active_player.value
+        @logger.debug "Going to display game state"
         @interface.await.display_game_state(@game, @new_game_driver)
 
+        @logger.debug "Setting up a new turn"
         @new_game_driver.await.setup_new_turn
         hand = activePlayer.hand
         cardsPlayed = 0
