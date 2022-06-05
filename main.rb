@@ -30,7 +30,7 @@ logger.level = debug ? Logger::DEBUG : Logger::INFO
 the_deck = StackedDecks.stacked_deck_factory(logger, StackedDecks::QUICK_WIN)
 
 if gui
-  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS)
+  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS, the_deck)
   guiGame.show
 else
   players = Player.generate_players(3)
