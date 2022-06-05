@@ -72,6 +72,10 @@ class CliInterface < BaseTextInterface
     @output_stream.puts "here is the current goal: #{game.goal}"
     @output_stream.puts "here are the current rules:#{game.ruleBase}"
     activePlayer = game_driver.await.active_player.value
+    game.opponents(activePlayer).each do |player|
+      print_permanents(player, "Here are the permanants #{player} has:")
+      @output_stream.puts "With #{player.hand.length} cards in hand"
+    end
     @output_stream.puts "\n#{activePlayer}'s turn"
   end
 
