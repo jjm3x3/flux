@@ -1,6 +1,34 @@
 require "tempfile"
 require "./game.rb"
 
+describe "PlayerPromptGenerator" do
+    describe "generate_prompts" do
+
+        user_specific_prompts = {
+          some_prompt_name: {
+              key_template: "Some_key_name_{name}",
+              value_template: "Some prompt where a name like: '{name}' belongs"}
+        }
+
+        it "should generate a prompt per uesr" do
+            players = Player.generate_players(2)
+            result = PlayerPromptGenerator.generate_prompts(players, user_specific_prompts)
+            expect(result.size).to eq 2 # there should be two prompts one for each player
+        end
+
+        it "should add a property to the user in order to recal the prompt" do
+            players = Player.generate_players(2)
+            result = PlayerPromptGenerator.generate_prompts(players, user_specific_prompts)
+
+            players.each do |player|
+                user_specific_prompts.each do |key, value|
+                    expect(player.respond_to?(key.to_sym)).to be true
+                end
+            end
+        end
+    end
+end
+
 describe "player" do
 
     test_outfile = Tempfile.new 'test_output'

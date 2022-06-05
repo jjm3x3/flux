@@ -25,11 +25,13 @@ puts "starting game where debug: #{debug} and gui: #{gui}"
 
 logger = CliLogger.new(debug)
 if gui
-  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS)
+  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS)
   guiGame.show
 else
   players = Player.generate_players(3)
-  cli_interface = CliInterface.new(Constants::PROMPT_STRINGS)
+  player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+  prompt_strings = Constants::PROMPT_STRINGS.merge(player_prompts)
+  cli_interface = CliInterface.new(prompt_strings)
   theGame = Game.new(logger, cli_interface, players)
   theGame.setup
   gameDriver = GameCli.new(theGame, logger, GameDriver.new(theGame, logger), cli_interface)

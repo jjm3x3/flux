@@ -1,3 +1,20 @@
+class PlayerPromptGenerator
+  def self.generate_prompts(players, prompt_templates)
+    result = {}
+    players.each do |player|
+
+      prompt_templates.each do |prompt_name, prompt_hash|
+        key = prompt_hash[:key_template].gsub(/{name}/, player.name).to_sym
+        prompt = prompt_hash[:value_template].gsub(/{name}/, player.name)
+        result[key] = prompt
+        player.define_singleton_method(prompt_name.to_sym) do
+          return key
+        end
+      end
+    end
+    return result
+  end
+end
 
 class Player
   attr_reader :creepers, :name, :keepers, :hand
