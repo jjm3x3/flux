@@ -10,9 +10,6 @@ class BaseLogger
     @output_stream.puts message
   end
 
-  def pause
-    @input_stream.gets
-  end
 end
 
 class CliLogger < BaseLogger
