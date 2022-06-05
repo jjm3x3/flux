@@ -201,8 +201,11 @@ class Game
     @logger.debug "Here is the first card that was selected #{firstOne.value}"
     firstOne.value.play(player, self)
     @logger.debug "Going to select a second one"
-    secondOne = @interface.await.choose_from_list(cardsDrawn, :play_next_prompt)
-    secondOne.value.play(player, self)
+    second_choice_result = @interface.await.choose_from_list(cardsDrawn, :play_next_prompt)
+    if second_choice_result.state != :fulfilled
+      @logger.warn "second_choice_result may not have been fulfilled because: '#{second_choice_result.reason}'"
+    end
+    second_choice_result.value.play(player, self)
     discard(cardsDrawn[0])
   end
 
@@ -321,12 +324,19 @@ class Game
     cardsDrawn = drawCards(player, @players.length)
     playerCur = currentPlayer
     while cardsDrawn.length > 0
+      @logger.debug "Game::everbody_gets_1: Number of cards left to deal out: #{cardsDrawn.length}"
+      player_to_select_card_for = @players[playerCur]
       if playerCur == currentPlayer
-        selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to giver to yourself").value
+        choose_result = @interface.await.choose_from_list(cardsDrawn, "which card would you like to giver to yourself")
+        if choose_result.state != :fulfilled
+          @logger.warn  "choose_result may not have been fulfilled because #{choose_result.reason}"
+        end
+        selectedCard = choose_result.value
       else
         selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to give to #{@players[playerCur]}").value
       end
-      @players[playerCur].hand << selectedCard
+      @logger.debug "Game::everbody_gets_1: Player #{player_to_select_card_for.to_s} has a hand of length: #{player_to_select_card_for.hand.length}}"
+      player_to_select_card_for.hand << selectedCard
       playerCur += 1
       playerCur %= @players.length
     end
