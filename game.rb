@@ -304,7 +304,7 @@ class Game
       resolve_taxes_rule(aPlayer)
     end
 
-    @logger.print_permanents(player)
+    # TODO:: may need to redraw permanants in both CLI/GUI
   end
 
   def letsDoThatAgain(player)

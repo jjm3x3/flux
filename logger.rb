@@ -1,17 +1,5 @@
 
 class BaseLogger
-  def print_permanents(player)
-    prompt="here are the permanents #{player} has:"
-    permanentsPrintOut = []
-    permanentsPrintOut += player.keepers.map do |keeper|
-      keeper.to_s
-    end
-    permanentsPrintOut += player.creepers.map do |creeper|
-      creeper.to_s
-    end
-    debug "#{prompt}\n #{permanentsPrintOut}"
-  end
-
   def debug(message)
     if @debug
       @output_stream.puts message
