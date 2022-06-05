@@ -7,7 +7,7 @@ class GameCli
   end
 
   def run
-      loop do
+      while !@new_game_driver.await.has_winner.value
         activePlayer = @new_game_driver.await.active_player.value
         @interface.await.display_game_state(@game, @new_game_driver)
 
