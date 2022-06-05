@@ -33,6 +33,10 @@ class GameCli
           break if @new_game_driver.await.has_winner.value
           @logger.debug "no winner coninute"
           @new_game_driver.await.post_card_play_clean_up
+
+          if cardsPlayed > 1000 # just some really absurd number to make sure this stops in case of a bug
+            raise "Somehow 1000 cards were played this should not be possible"
+          end
         end
         break if @new_game_driver.await.has_winner.value
       end
