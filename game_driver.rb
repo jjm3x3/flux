@@ -69,6 +69,10 @@ class GameDriver
         @game.active_player
     end
 
+    def has_winner
+      @game.winner
+    end
+
     private
     def checkForWinner
       if @game.winner
