@@ -25,4 +25,9 @@ module StackedDecks
         Creeper.new(3, "extra death", "some rules text"),
         Creeper.new(2, "extra taxes", "some rules text"),
     ]
+
+    STARTS_WITH_NO_HAND_LIMIT =
+    [
+        Limit.new("max of 1", 3, "put some rule text here", 1)
+    ]
 end
