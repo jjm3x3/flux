@@ -151,7 +151,7 @@ class GameGui < Gosu::Window
     def update
 
         if Gosu.button_down? Gosu::MS_LEFT and !@left_click_down
-            puts "left button click"
+            @logger.debug "left button click"
             @left_click_down = true
 
         end

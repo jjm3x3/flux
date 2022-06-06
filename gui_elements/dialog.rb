@@ -119,7 +119,7 @@ class AsyncDialog < SimpleDialog
         @option_buttons.each do |option_button|
             if option_button.is_clicked?
                 selected_option = @option_list[option_index]
-                @logger.debug "#{selected_option} was selected"
+                @logger.debug "CardDialog::handle_result: #{selected_option} was selected"
                 @selected_option = selected_option
                 return true
             end
