@@ -33,18 +33,19 @@ class GameDriver
         return result
     end
 
-    def post_card_play_clean_up(player, card_to_play)
+    def play_card(player, card_to_play)
         @logger.debug "this should get logged sync"
         @game.play_card(card_to_play, player)
         @logger.debug "After card was played"
         @cardsPlayed += 1
         @logger.debug "Increment cards played"
-        checkForWinner # should check for a winner before discarding
-        @logger.debug "Checked for winner"
-        @game.enforceNonActivePlayerLimits(player)
+    end
+
+    def post_card_play_clean_up
+        @game.enforceNonActivePlayerLimits(active_player)
         @logger.info "the discard has #{@game.discardPile.length} card(s) in it"
         # do something if the discard need reshufleing
-        @cardsDrawn = @game.replenishHand(@cardsDrawn, player)
+        @cardsDrawn = @game.replenishHand(@cardsDrawn, active_player)
         @logger.debug "Finished post_card_play_clean_up"
         if turn_over?
             @logger.debug "The turn is over proceed to end_turn_cleanup"
