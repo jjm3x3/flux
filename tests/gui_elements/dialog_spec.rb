@@ -33,6 +33,26 @@ describe "CardDialog" do
             sut.draw
         end
 
+        it "should raise an error if the prompt_key is nil" do
+            # setup
+            gui_double = double("gui")
+            background_double = double("background", draw: nil)
+            font_double = instance_double("font", draw_text: nil)
+            input_stream = StringIO.new("")
+            test_logger = Logger.new(test_outfile)
+            sut = CardDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                {})
+
+            # Execute and Assert this should not fail
+            expect do
+                sut.set_prompt(nil)
+            end.to raise_error("prompt_key is nil")
+        end
+
         it "should raise an error if the prompt is a symbol which doesn't exist in the dialog_prompts" do
             # setup
             gui_double = double("gui")
