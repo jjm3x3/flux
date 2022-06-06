@@ -19,4 +19,10 @@ module StackedDecks
             Goal.new("one and two", [keeper1, keeper2], "Have keeper1 & keeper2"),
             Rule.new("Play forever", 2, "XXXXXa"),
         ]
+
+    DISCARD_TO_DEATH_ON_FIRST_TURN =
+    [
+        Creeper.new(3, "extra death", "some rules text"),
+        Creeper.new(2, "extra taxes", "some rules text"),
+    ]
 end
