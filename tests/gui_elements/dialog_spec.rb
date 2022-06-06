@@ -1,6 +1,5 @@
 require "./gui_elements/dialog.rb"
 require "tempfile"
-require "./logger.rb"
 
 describe "CardDialog" do
 

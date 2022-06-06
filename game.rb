@@ -3,7 +3,6 @@ require "./deck.rb"
 require "./player.rb"
 require "./ruleBase.rb"
 require "./game_interface.rb"
-require "./logger.rb"
 
 
 class Game
