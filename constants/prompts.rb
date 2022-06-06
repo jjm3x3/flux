@@ -21,8 +21,17 @@ module Constants
     }
 
     USER_SPECIFIC_PROMPTS = {
-      discard_prompt_name: {
-          key_template: "discard_down_to_limit_{name}",
-          value_template: "Player {name} Select a card to discard"}
+        discard_prompt_name: {
+            key_template: "discard_down_to_limit_{name}",
+            value_template: "Player {name} Select a card to discard"
+        },
+        give_card_to_player_prompt_name: {
+            key_template: "give_card_to_player_{name}",
+            value_template: "Choose a card to give to {name}"
+        },
+        move_war_prompt_name: {
+            key_template: "{name}_move_war_prompt",
+            value_template: "{name} since you have peace. Who would you like to give war to?"
+        }
     }
 end

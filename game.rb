@@ -96,7 +96,7 @@ class Game
   def discardDownToLimit(player)
     @logger.debug "The hand limit is #{@ruleBase.handLimit}"
     while player.hand.count > @ruleBase.handLimit
-      removed_card_result = @interface.await.choose_from_list(player.hand, "Player #{player} Select a card to discard")
+      removed_card_result = @interface.await.choose_from_list(player.hand, player.discard_prompt_name)
       @logger.debug "Game::discardDownToLimit: What state is the removed_card_result: #{removed_card_result.state}"
       if removed_card_result.state != :fulfilled
         @logger.info "choose_result may not have been fulfilled because #{removed_card_result.reason}"
@@ -236,7 +236,8 @@ class Game
     newCardsForPlayer = opponents(player).select do |player|
       player.hand.size > 0
     end.map do |aPlayer|
-      @interface.await.choose_from_list(aPlayer.hand, "Choose a card to give to #{player}").value
+      @logger.debug "prompting #{aPlayer} to give a card to #{player}"
+      @interface.await.choose_from_list(aPlayer.hand, player.give_card_to_player_prompt_name).value
     end
     player.add_cards_to_hand(newCardsForPlayer)
   end
@@ -326,13 +327,13 @@ class Game
       @logger.debug "Game::everbody_gets_1: Number of cards left to deal out: #{cardsDrawn.length}"
       player_to_select_card_for = @players[playerCur]
       if playerCur == currentPlayer
-        choose_result = @interface.await.choose_from_list(cardsDrawn, "which card would you like to giver to yourself")
+        choose_result = @interface.await.choose_from_list(cardsDrawn, :give_card_to_yourself_prompt)
         if choose_result.state != :fulfilled
           @logger.warn  "choose_result may not have been fulfilled because #{choose_result.reason}"
         end
         selectedCard = choose_result.value
       else
-        selectedCard = @interface.await.choose_from_list(cardsDrawn, "which card would you like to give to #{@players[playerCur]}").value
+        selectedCard = @interface.await.choose_from_list(cardsDrawn, player_to_select_card_for.give_card_to_player_prompt_name).value
       end
       @logger.debug "Game::everbody_gets_1: Player #{player_to_select_card_for.to_s} has a hand of length: #{player_to_select_card_for.hand.length}}"
       player_to_select_card_for.hand << selectedCard
@@ -467,7 +468,7 @@ class Game
     playerHasPeace = player.has_peace?
     playerHasWar = player.has_war?
     if (playerHasPeace && playerHasWar)
-      selectedPlayer = @interface.await.choose_from_list(opponents(player), "#{player} since you have peace. Who would you like to give war too?").value
+      selectedPlayer = @interface.await.choose_from_list(opponents(player), player.move_war_prompt_name).value
       @logger.debug "Who is the selected playar #{selectedPlayer}\n who is the original #{player}"
 
       selectedPlayer.add_creeper(player.take_war)

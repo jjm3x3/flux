@@ -160,8 +160,9 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS.merge(player_prompts))
             theGame = Game.new(testLogger, testInterface, players)
             theGame.setup
             theFirstPlayer = theGame.players[0]
@@ -709,8 +710,9 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n0\n")
             testLogger = Logger.new(test_outfile)
             numberOfPlayers = 3
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theGame.setup
             theFirstPlayer = theGame.players[0]
@@ -728,8 +730,9 @@ describe "game" do
             input_stream = StringIO.new("0\n0\n0\n")
             testLogger = Logger.new(test_outfile)
             numberOfPlayers = 3
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theGame.setup
             theFirstPlayer = theGame.players[0]
@@ -980,8 +983,9 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theGame.deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
@@ -999,8 +1003,9 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS.merge(player_prompts))
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
@@ -1019,8 +1024,9 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theGame.currentPlayerCounter = 8
@@ -1037,8 +1043,9 @@ describe "game" do
             numberOfPlayers = 4
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theGame.currentPlayerCounter = 9
@@ -1055,8 +1062,9 @@ describe "game" do
             numberOfPlayers = 3
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
             theGame.deck = StackedDeck.new(testLogger, [warCreeper])
@@ -1075,8 +1083,9 @@ describe "game" do
             numberOfPlayers = 3
             input_stream = StringIO.new("0\n" * numberOfPlayers)
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
@@ -1541,9 +1550,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n")
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS.merge(player_prompts))
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
@@ -1565,9 +1575,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("1\n0\n")
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS.merge(player_prompts))
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             catKeeper = Keeper.new(1000, "Cat")
@@ -1591,9 +1602,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")
@@ -1611,9 +1623,10 @@ describe "game" do
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
             theFirstPlayer.keepers << Keeper.new(16, "wanna be peace")
