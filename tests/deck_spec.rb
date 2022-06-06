@@ -11,8 +11,8 @@ describe "deck" do
         it "should not break if there are no more cards to draw" do
             # setup
             input_stream = StringIO.new("0")
-            testLogger = TestLogger.new(input_stream, test_outfile)
-            theDeck = Deck.new(testLogger)
+            test_logger = Logger.new(test_outfile)
+            theDeck = Deck.new(test_logger)
 
             # execute, test
             # this should not break!
@@ -26,8 +26,8 @@ describe "deck" do
         it "should attempt to draw as many cards as it can" do
             # setup
             input_stream = StringIO.new("0")
-            testLogger = TestLogger.new(input_stream, test_outfile)
-            theDeck = Deck.new(testLogger)
+            test_logger = Logger.new(test_outfile)
+            theDeck = Deck.new(test_logger)
             # setup the deck so there is only one card left to draw
             (1..(theDeck.count-1)).each do |itteration|
                 theDeck.send(:drawACard)
@@ -41,8 +41,8 @@ describe "deck" do
         it "Should return an empty list if it can not draw 1 card" do
             # setup
             input_stream = StringIO.new("0")
-            testLogger = TestLogger.new(input_stream, test_outfile)
-            theDeck = Deck.new(testLogger)
+            test_logger = Logger.new(test_outfile)
+            theDeck = Deck.new(test_logger)
             # setup the deck so there is only one card left to draw
             (1..theDeck.count).each do |itteration|
                 theDeck.send(:drawACard)
@@ -56,8 +56,8 @@ describe "deck" do
         it "Should return an empty list if it can not draw any cards" do
             # setup
             input_stream = StringIO.new("0")
-            testLogger = TestLogger.new(input_stream, test_outfile)
-            theDeck = Deck.new(testLogger)
+            test_logger = Logger.new(test_outfile)
+            theDeck = Deck.new(test_logger)
             # setup the deck so there are no cards left to draw
             (1..theDeck.count).each do |itteration|
                 theDeck.send(:drawACard)
@@ -71,8 +71,8 @@ describe "deck" do
         it "Should return a list with no nils in it" do
             # setup
             input_stream = StringIO.new("0")
-            testLogger = TestLogger.new(input_stream, test_outfile)
-            theDeck = Deck.new(testLogger)
+            test_logger = Logger.new(test_outfile)
+            theDeck = Deck.new(test_logger)
             # setup the deck so there is only one card left to draw
             (1..(theDeck.count-2)).each do |itteration|
                 theDeck.send(:drawACard)

@@ -8,8 +8,8 @@ describe "GameDriver" do
 
     describe "setup_new_turn" do
         it "should not call resolve_death_rule if they do not has_death?" do
-            input_stream = StringIO.new("")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            test_logger = Logger.new(test_outfile)
+            theDeck = Deck.new(test_logger)
             gameDouble = double("game", :drawCards => ["a card"])
             allow(gameDouble).to receive(:playCards)
             allow(gameDouble).to receive(:discardDownToLimit)
@@ -20,7 +20,7 @@ describe "GameDriver" do
             allow(playerDouble).to receive(:add_cards_to_hand)
 
             allow(gameDouble).to receive(:active_player).and_return(playerDouble)
-            gameDriver = GameDriver.new(gameDouble, testLogger)
+            gameDriver = GameDriver.new(gameDouble, test_logger)
 
             # execute
             gameDriver.setup_new_turn
@@ -30,8 +30,7 @@ describe "GameDriver" do
         end
 
         it "should call resolve_death_rule if they has_death?" do
-            input_stream = StringIO.new("")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            test_logger = Logger.new(test_outfile)
             gameDouble = double("game", :drawCards => ["a card"])
             allow(gameDouble).to receive(:playCards)
             allow(gameDouble).to receive(:discardDownToLimit)
@@ -42,7 +41,7 @@ describe "GameDriver" do
             allow(playerDouble).to receive(:add_cards_to_hand)
 
             allow(gameDouble).to receive(:active_player).and_return(playerDouble)
-            gameDriver = GameDriver.new(gameDouble, testLogger)
+            gameDriver = GameDriver.new(gameDouble, test_logger)
 
             # execute
             gameDriver.setup_new_turn
@@ -55,8 +54,7 @@ describe "GameDriver" do
     describe "post_card_play_clean_up" do
         it "should play cards..... :?" do
             # setup
-            input_stream = StringIO.new("0\n")
-            testLogger = Logger.new(test_outfile)
+            test_logger = Logger.new(test_outfile)
 
             cardDouble = double("card", :play => nil)
             gameDouble = double("game")
@@ -70,7 +68,7 @@ describe "GameDriver" do
             allow(gameDouble).to receive(:discardDownToLimit)
             allow(gameDouble).to receive(:removeDownToKeeperLimit)
             allow(gameDouble).to receive(:progress_turn)
-            gameDriver = GameDriver.new(gameDouble, testLogger)
+            gameDriver = GameDriver.new(gameDouble, test_logger)
             playerDouble = double("player")
 
             # execute

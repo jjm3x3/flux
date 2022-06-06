@@ -13,7 +13,7 @@ describe "CardDialog" do
             background_double = double("background", draw: nil)
             font_double = instance_double("font", draw_text: nil)
             input_stream = StringIO.new("")
-            test_logger = TestLogger.new(input_stream, test_outfile)
+            test_logger = Logger.new(test_outfile)
             sut = CardDialog.new(
                 gui_double,
                 background_double,
@@ -39,7 +39,7 @@ describe "CardDialog" do
             background_double = double("background", draw: nil)
             font_double = instance_double("font")
             input_stream = StringIO.new("")
-            test_logger = TestLogger.new(input_stream, test_outfile)
+            test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image", draw: nil)
             expected_prompt_key = :some_expected_prompt
             sut = CardDialog.new(
@@ -66,7 +66,7 @@ describe "CardDialog" do
             background_double = double("background", draw: nil)
             font_double = instance_double("font", draw_text: nil)
             input_stream = StringIO.new("")
-            test_logger = TestLogger.new(input_stream, test_outfile)
+            test_logger = Logger.new(test_outfile)
             sut = CardDialog.new(
                 gui_double,
                 background_double,
@@ -90,7 +90,7 @@ describe "CardDialog" do
             background_double = double("background", draw: nil)
             font_double = instance_double("font", draw_text: nil)
             input_stream = StringIO.new("")
-            test_logger = TestLogger.new(input_stream, test_outfile)
+            test_logger = Logger.new(test_outfile)
             sut = CardDialog.new(
                 gui_double,
                 background_double,
