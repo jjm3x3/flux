@@ -14,8 +14,6 @@ describe "GameCli" do
             player_double = double("player", :hand => [])
             game_driver_active_player_result_double = double("game_driver_active_player_result",
                 :value => player_double)
-            game_driver_turn_over_result_double = double("game_driver_turn_over_result",
-                :value => false)
             game_driver_play_card_result_double =
                 double(
                     "game_driver_play_card_result",
@@ -35,7 +33,6 @@ describe "GameCli" do
             game_driver_async_double = double("game_driver_async",
                 :active_player => game_driver_active_player_result_double,
                 :setup_new_turn => nil,
-                :turn_over? => game_driver_turn_over_result_double,
                 :play_card => game_driver_play_card_result_double,
                 :post_card_play_clean_up => game_driver_post_card_play_clean_up_result_double,
                 :has_winner => game_driver_has_winner_result_double)
