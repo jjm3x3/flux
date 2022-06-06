@@ -22,8 +22,9 @@ end
 
 puts "starting game where debug: #{debug} and gui: #{gui}"
 
+logger = Logger.new($stdout)
+logger.level = debug ? Logger::DEBUG : Logger::INFO
 
-logger = CliLogger.new(debug)
 if gui
   guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS)
   guiGame.show

@@ -9,14 +9,13 @@ class GameCli
   def run
       loop do
         activePlayer = @new_game_driver.await.active_player.value
-        @interface.display_game_state(@game)
-        @logger.information "\n#{activePlayer}'s turn"
+        @interface.await.display_game_state(@game, @new_game_driver)
 
         @new_game_driver.await.setup_new_turn
         hand = activePlayer.hand
         cardsPlayed = 0
         while !@new_game_driver.await.turn_over?.value
-          print_permanents(activePlayer, prompt="here are the permanents you have:")
+          @interface.await.print_permanents(activePlayer, prompt="here are the permanents you have:")
 
           cardToPlay = @interface.await.choose_from_list(hand, :select_a_card_to_play_prompt).value
           @logger.debug "Card selected is: '#{cardToPlay}'"
@@ -29,22 +28,11 @@ class GameCli
           cardsPlayed += 1
 
           hand = activePlayer.hand # really a sad sideeffect of much statefull programming
-          @logger.information "played: #{cardsPlayed} of play: #{@game.ruleBase.playRule}"
+          @logger.info "played: #{cardsPlayed} of play: #{@game.ruleBase.playRule}"
         end
       end
   end
 
   private
-  def print_permanents(player, prompt="here are the permanents you have:")
-
-    permanentsPrintOut = []
-    permanentsPrintOut += player.keepers.map do |keeper|
-      keeper.to_s
-    end
-    permanentsPrintOut += player.creepers.map do |creeper|
-      creeper.to_s
-    end
-    @logger.information "#{prompt}\n #{permanentsPrintOut}"
-  end
 
 end

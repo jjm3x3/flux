@@ -42,7 +42,7 @@ class GameDriver
         checkForWinner # should check for a winner before discarding
         @logger.debug "Checked for winner"
         @game.enforceNonActivePlayerLimits(player)
-        @logger.information "the discard has #{@game.discardPile.length} card(s) in it"
+        @logger.info "the discard has #{@game.discardPile.length} card(s) in it"
         # do something if the discard need reshufleing
         @cardsDrawn = @game.replenishHand(@cardsDrawn, player)
         @logger.debug "Finished post_card_play_clean_up"
