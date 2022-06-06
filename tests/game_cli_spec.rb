@@ -6,7 +6,7 @@ describe "GameCli" do
     test_outfile = Tempfile.new 'test_output'
 
     describe "run" do
-        it "should run" do
+        it "should progress the first players turn after two plays and end the game after 2000 plays" do
             # setup
             rule_base_double = double("rule_base", :playRule => Float::INFINITY)
             game_double = double("game", :ruleBase => rule_base_double)
@@ -54,7 +54,7 @@ describe "GameCli" do
             sut.run
 
             # test
-            # ...something here
+            # Should not throw exception or run forever
         end
     end
 end
