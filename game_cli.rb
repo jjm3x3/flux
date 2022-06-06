@@ -7,7 +7,7 @@ class GameCli
   end
 
   def run
-      while !@new_game_driver.await.has_winner.value
+      loop do
         activePlayer = @new_game_driver.await.active_player.value
         @interface.await.display_game_state(@game, @new_game_driver)
 
@@ -29,7 +29,11 @@ class GameCli
 
           hand = activePlayer.hand # really a sad sideeffect of much statefull programming
           @logger.info "played: #{cardsPlayed} of play: #{@game.ruleBase.playRule}"
+          @logger.debug "Check if winner"
+          break if @new_game_driver.await.has_winner.value
+          @logger.debug "no winner coninute"
         end
+        break if @new_game_driver.await.has_winner.value
       end
   end
 
