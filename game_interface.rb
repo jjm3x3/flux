@@ -90,6 +90,10 @@ class CliInterface < BaseTextInterface
     end
     @output_stream.puts "#{prompt}\n #{permanentsPrintOut}"
   end
+
+  def display_message(message)
+    @output_stream.puts message
+  end
 end
 
 class TestInterface < BaseTextInterface
