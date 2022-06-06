@@ -125,6 +125,7 @@ class CardDialog
 
     def set_prompt(prompt_key)
         @logger.debug "set_prompt: got prompt_key: '#{prompt_key}'"
+        if !prompt_key; raise "prompt_key is nil"; end
         if !@dialog_prompts.has_key? prompt_key; raise "prompt_key missing from prompts collection"; end
         @current_prompt_image = @dialog_prompts[prompt_key]
     end
