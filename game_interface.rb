@@ -29,13 +29,10 @@ class BaseTextInterface
     @prompts = @prompts.merge(prompts)
   end
 
-  def choose_from_list(card_list, prompt="Choose an option")
-    if prompt.is_a?(String)
-      @output_stream.puts prompt
-    else # assumed to be symbol
-      if !@prompts.has_key? prompt; raise "prompt_key missing from prompts collection"; end
-      @output_stream.puts @prompts[prompt]
-    end
+  def choose_from_list(card_list, prompt_key)
+    if !prompt_key; raise "prompt_key missing"; end
+    if !@prompts.has_key? prompt_key; raise "prompt_key missing from prompts collection"; end
+    @output_stream.puts @prompts[prompt_key]
     @output_stream.puts StringFormattingUtilities.indexed_display(card_list)
     whichCard = get_input.to_i
     card_list.delete_at(whichCard)

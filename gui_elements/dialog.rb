@@ -66,7 +66,6 @@ class CardDialog
         @item_spacing = 10
         @dialog_prompts = dialog_prompts
         @current_prompt_image = dialog_prompts[:default]
-        @draw_prompt_image = false
     end
 
     def add_prompt(symbol, prompt_image)
@@ -91,11 +90,7 @@ class CardDialog
     def draw
         if @visible
             @baground_image.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, 0.25, 0.25)
-            if @draw_prompt_image
-                @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
-            else
-                @font.draw_text(@prompt, @dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
-            end
+            @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             @card_buttons.each do |card_button|
                 card_button.draw
             end
@@ -128,18 +123,11 @@ class CardDialog
         @selected_card = nil
     end
 
-    def set_prompt(prompt)
-        @logger.debug "set_prompt: got prompt: '#{prompt}'"
-        if prompt.is_a?(String)
-            @logger.debug "Prompt is_a string"
-            @prompt = prompt
-            @draw_prompt_image = false
-        else
-            @logger.debug "prompt is_a symb"
-            if !@dialog_prompts.has_key? prompt; raise "prompt_key missing from prompts collection"; end
-            @current_prompt_image = @dialog_prompts[prompt]
-            @draw_prompt_image = true
-        end
+    def set_prompt(prompt_key)
+        @logger.debug "set_prompt: got prompt_key: '#{prompt_key}'"
+        if !prompt_key; raise "prompt_key is nil"; end
+        if !@dialog_prompts.has_key? prompt_key; raise "prompt_key missing from prompts collection"; end
+        @current_prompt_image = @dialog_prompts[prompt_key]
     end
 
     def handle_result
