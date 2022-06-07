@@ -7,7 +7,7 @@ require './gui_input_manager.rb'
 require './game_driver.rb'
 
 class GameGui < Gosu::Window
-    def initialize(logger, prompt_strings, user_prompt_templates)
+    def initialize(logger, prompt_strings, user_prompt_templates, deck)
         super 640, 960
         self.caption = "Fluxx"
 
@@ -35,6 +35,8 @@ class GameGui < Gosu::Window
             initialize_dialog_prompts(prompt_strings))
 
         @user_prompt_templates = user_prompt_templates
+        @deck = deck
+
         @new_game_driver = nil
 
         @current_cached_player = nil
@@ -75,7 +77,7 @@ class GameGui < Gosu::Window
                             # TODO:: should check to make sure @current_dialog exists
                             @current_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
                         end
-                        @game = Game.new(@logger, GuiInputManager.new(self), players)
+                        @game = Game.new(@logger, GuiInputManager.new(self), players, Random.new, @deck)
                         @game.setup
                         @new_game_driver = GameDriver.new(@game, @logger)
                         @current_cached_player = @new_game_driver.await.active_player.value
