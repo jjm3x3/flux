@@ -28,6 +28,11 @@ class GameGui < Gosu::Window
 
         @are_you_sure_dialog = Dialog.new(self, @button_options)
 
+        dialog_background = Gosu::record(10,10) do
+            my_green = Gosu::Color.new(255,0, 128, 0)
+            Gosu::draw_rect(0, 0, 10, 10, my_green, ZOrder::DIALOG)
+        end
+
         @current_dialog = CardDialog.new(
             self,
             Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true),
