@@ -10,7 +10,7 @@ describe "CardDialog" do
         it "should not call draw_text on font when prompt symbol is passed" do
             # setup
             gui_double = double("gui")
-            background_double = double("background", draw: nil)
+            background_double = double("background", width: 1, draw: nil)
             font_double = instance_double("font")
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
