@@ -14,7 +14,7 @@ describe "CardDialog" do
             font_double = instance_double("font")
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
-            prompt_image_double = double("prompt image", draw: nil)
+            prompt_image_double = double("prompt image", width: 1, draw: nil)
             expected_prompt_key = :some_expected_prompt
             sut = CardDialog.new(
                 gui_double,
@@ -88,6 +88,7 @@ describe "CardDialog" do
             font_double = instance_double("font", draw_text: nil)
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image", width: 1)
             sut = CardDialog.new(
                 gui_double,
                 background_double,
@@ -98,7 +99,7 @@ describe "CardDialog" do
             expected_prompt_key = :some_prompt_key
 
             # execute the test
-            sut.add_prompt(expected_prompt_key, double("SomeGosuImage"))
+            sut.add_prompt(expected_prompt_key, prompt_image_double)
 
             # Assert this should not fail
             sut.set_prompt(expected_prompt_key)
@@ -113,7 +114,33 @@ describe "CardDialog" do
             font_double = instance_double("font")
             test_logger = Logger.new(test_outfile)
             expected_width = 300 / background_double.width
-            prompt_image_double = double("prompt image", draw: nil)
+            prompt_image_double = double("prompt image", width: 1, draw: nil)
+            expected_prompt_key = :some_expected_prompt
+            sut = CardDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                {expected_prompt_key => prompt_image_double})
+            sut.set_prompt(expected_prompt_key)
+            sut.show
+
+
+            # execute
+            sut.draw
+
+            # test
+            expect(background_double).to have_received(:draw).with(anything, anything, anything, expected_width, anything)
+        end
+
+        it "should call draw with a width based on the prompt" do
+            # setup
+            gui_double = double("gui")
+            background_double = double("background", width: 1, draw: nil)
+            font_double = instance_double("font")
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image", width: 400, draw: nil)
+            expected_width = (prompt_image_double.width + 20 * 2) / background_double.width
             expected_prompt_key = :some_expected_prompt
             sut = CardDialog.new(
                 gui_double,

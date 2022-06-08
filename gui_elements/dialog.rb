@@ -133,6 +133,8 @@ class CardDialog
         if !prompt_key; raise "prompt_key is nil"; end
         if !@dialog_prompts.has_key? prompt_key; raise "prompt_key missing from prompts collection"; end
         @current_prompt_image = @dialog_prompts[prompt_key]
+        # assuming the prompt is the longest thing set dialog width based on it
+        @width = @current_prompt_image.width + @boarder_width * 2
     end
 
     def handle_result
