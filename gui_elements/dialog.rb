@@ -89,7 +89,8 @@ class CardDialog
                                 @button_options)
             cardsDisplayed += 1
         end
-
+        # note cardsDisaplyed is really cardsDisplayed + 1 for the prompt
+        @height = (@font.height + @item_spacing) * cardsDisplayed + @boarder_width * 2
     end
 
     def draw
