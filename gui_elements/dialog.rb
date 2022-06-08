@@ -67,6 +67,8 @@ class CardDialog
         @item_spacing = 10
         @dialog_prompts = dialog_prompts
         @current_prompt_image = dialog_prompts[:default]
+        # height is assigned fairly arbitrarily here (assumes 3 options and prompt = 4)
+        @height = (@font.height + @item_spacing) * 4 + @boarder_width * 2
         @width = 300
     end
 
@@ -94,7 +96,8 @@ class CardDialog
         if !@current_prompt_image; raise "Cannot draw a dialog without setting the prompt"; end
         if @visible
             x_scale = @width / @background.width
-            @background.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, x_scale, 30)
+            y_scale = @height / @background.height
+            @background.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, x_scale, y_scale)
 
             @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             @card_buttons.each do |card_button|

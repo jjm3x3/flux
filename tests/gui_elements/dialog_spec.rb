@@ -10,8 +10,8 @@ describe "CardDialog" do
         it "should not call draw_text on font when prompt symbol is passed" do
             # setup
             gui_double = double("gui")
-            background_double = double("background", width: 1, draw: nil)
-            font_double = instance_double("font")
+            background_double = double("background", width: 1, height: 1, draw: nil)
+            font_double = instance_double("font", height: 1)
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image", width: 1, draw: nil)
@@ -39,7 +39,7 @@ describe "CardDialog" do
             # setup
             gui_double = double("gui")
             background_double = double("background", draw: nil)
-            font_double = instance_double("font", draw_text: nil)
+            font_double = instance_double("font", height: 1)
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
             sut = CardDialog.new(
@@ -60,7 +60,7 @@ describe "CardDialog" do
             # setup
             gui_double = double("gui")
             background_double = double("background", draw: nil)
-            font_double = instance_double("font", draw_text: nil)
+            font_double = instance_double("font", height:1, draw_text: nil)
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
             sut = CardDialog.new(
@@ -85,7 +85,7 @@ describe "CardDialog" do
             # setup
             gui_double = double("gui")
             background_double = double("background", draw: nil)
-            font_double = instance_double("font", draw_text: nil)
+            font_double = instance_double("font", height: 1, draw_text: nil)
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image", width: 1)
@@ -111,7 +111,7 @@ describe "CardDialog" do
             # setup
             gui_double = double("gui")
             background_double = double("background", width: 1, draw: nil)
-            font_double = instance_double("font")
+            font_double = instance_double("font", height:1)
             test_logger = Logger.new(test_outfile)
             expected_width = 300 / background_double.width
             prompt_image_double = double("prompt image", width: 1, draw: nil)
@@ -134,8 +134,8 @@ describe "CardDialog" do
         it "should call draw with a width based on the prompt" do
             # setup
             gui_double = double("gui")
-            background_double = double("background", width: 1, draw: nil)
-            font_double = instance_double("font")
+            background_double = double("background", width: 1, height: 1, draw: nil)
+            font_double = instance_double("font", height: 1)
             test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image", width: 400, draw: nil)
             expected_width = (prompt_image_double.width + 20 * 2) / background_double.width
