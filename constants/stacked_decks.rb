@@ -30,4 +30,11 @@ module StackedDecks
     [
         Limit.new("max of 1", 3, "put some rule text here", 1)
     ]
+
+    EXTRA_LONG_DIALOG_COMBO =
+    [
+        Limit.new("No hands", 3, "some rules text", 0),
+        Rule.new("Draw 9", 1, "XXXXX9"),
+        Rule.new("Play tree", 2, "XXXXX3"),
+    ]
 end
