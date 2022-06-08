@@ -1,3 +1,4 @@
+require "./gui_elements/button.rb"
 require "./gui_elements/zorder.rb"
 
 class Dialog
