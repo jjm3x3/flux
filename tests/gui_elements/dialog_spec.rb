@@ -122,15 +122,13 @@ describe "CardDialog" do
                 font_double,
                 test_logger,
                 {expected_prompt_key => prompt_image_double})
-            sut.set_prompt(expected_prompt_key)
             sut.show
 
 
-            # execute
-            sut.draw
-
-            # test
-            expect(background_double).to have_received(:draw).with(anything, anything, anything, expected_width, anything)
+            # Execute and Assert this should not fail
+            expect do
+                sut.draw
+            end.to raise_error("Cannot draw a dialog without setting the prompt")
         end
 
         it "should call draw with a width based on the prompt" do

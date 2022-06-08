@@ -91,6 +91,7 @@ class CardDialog
     end
 
     def draw
+        if !@current_prompt_image; raise "Cannot draw a dialog without setting the prompt"; end
         if @visible
             x_scale = @width / @background.width
             @background.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, x_scale, 30)
