@@ -54,7 +54,7 @@ class CardDialog
         @window = window
         @logger = logger
         @visible = false
-        @baground_image = background
+        @background = background
         @font = font
         @button_options = button_options
         @card_buttons = []
@@ -91,7 +91,8 @@ class CardDialog
 
     def draw
         if @visible
-            @baground_image.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, 0.25, 0.25)
+            @background.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, 30, 30)
+
             @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             @card_buttons.each do |card_button|
                 card_button.draw
