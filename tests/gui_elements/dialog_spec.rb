@@ -104,4 +104,32 @@ describe "CardDialog" do
             sut.set_prompt(expected_prompt_key)
         end
     end
+
+    describe "draw" do
+        it "should call draw with the right intial width" do
+            # setup
+            gui_double = double("gui")
+            background_double = double("background", width: 1, draw: nil)
+            font_double = instance_double("font")
+            test_logger = Logger.new(test_outfile)
+            expected_width = 300 / background_double.width
+            prompt_image_double = double("prompt image", draw: nil)
+            expected_prompt_key = :some_expected_prompt
+            sut = CardDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                {expected_prompt_key => prompt_image_double})
+            sut.set_prompt(expected_prompt_key)
+            sut.show
+
+
+            # execute
+            sut.draw
+
+            # test
+            expect(background_double).to have_received(:draw).with(anything, anything, anything, expected_width, anything)
+        end
+    end
 end
