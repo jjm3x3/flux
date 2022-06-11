@@ -21,7 +21,7 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {expected_prompt_key => prompt_image_double},
+                dialog_prompts={expected_prompt_key => prompt_image_double},
                 button_options={})
 
             # setup lite
@@ -121,7 +121,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {expected_prompt_key => prompt_image_double})
+                dialog_prompts={expected_prompt_key => prompt_image_double},
+                button_options={})
             sut.show
 
 
@@ -145,7 +146,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {expected_prompt_key => prompt_image_double})
+                dialog_prompts={expected_prompt_key => prompt_image_double},
+                button_options={})
             sut.set_prompt(expected_prompt_key)
             sut.show
 
@@ -173,7 +175,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {expected_prompt_key => prompt_image_double})
+                dialog_prompts={expected_prompt_key => prompt_image_double},
+                button_options={})
             sut.set_prompt(expected_prompt_key)
             sut.show
 
@@ -186,11 +189,10 @@ describe "CardDialog" do
         end
 
         it "should call draw with a height that is based on how many cards are set" do
-            pending("This test requires that buttons can be created which intern requries that buttons don't depend on Gosu")
             # setup
             gui_double = double("gui")
             background_double = double("background", width: 1, height: 1, draw: nil)
-            font_double = instance_double("font", height: 1)
+            font_double = instance_double("font", height: 1, draw_text: nil)
             test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image", width: 400, draw: nil)
             mock_card_list = [1,2,3]
@@ -203,7 +205,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {expected_prompt_key => prompt_image_double})
+                dialog_prompts={expected_prompt_key => prompt_image_double},
+                button_options={is_pressed: -> () {} })
             sut.set_prompt(expected_prompt_key)
             sut.set_cards(mock_card_list)
             sut.show
