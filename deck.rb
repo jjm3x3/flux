@@ -73,8 +73,10 @@ class Deck
     @interface.debug "Deck:buildDeck: Start deck building"
     db = SQLite3::Database.new "cards.db"
     @interface.debug "Deck:buildDeck: DB handle created"
+    cards_in_deck = {keepers: 0, goals: 0, rules: 0, actions: 0, creepers: 0}
     db.execute("select * from keepers;") do |row|
       deck << Keeper.new(row[0], row[1])
+      cards_in_deck[:keepers]  += 1
     end
     db.execute("select * from goals;") do |row|
       cards = JSON.parse(row[2]).map do |index|
@@ -82,6 +84,7 @@ class Deck
         deck[index-1]
       end
       deck << Goal.new(row[1],cards,row[3])
+      cards_in_deck[:goals]  += 1
     end
     db.execute("select * from rules;") do |row|
       name = row[1]
@@ -94,14 +97,17 @@ class Deck
       else
         deck << Rule.new(row[1], row[2], row[3])
       end
+      cards_in_deck[:rules]  += 1
     end
     db.execute("select * from actions;") do |row|
       deck << Action.new(row[0], row[1], row[2])
+      cards_in_deck[:actions]  += 1
     end
     db.execute("select * from creepers;") do |row|
       deck << Creeper.new(row[0], row[1], row[2])
+      cards_in_deck[:creepers]  += 1
     end
-    @interface.debug "deck starts with #{deck.length} cards"
+    @interface.debug "deck starts with #{deck.length} cards of types #{cards_in_deck}"
     deck
   end
 
