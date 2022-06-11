@@ -14,5 +14,20 @@ describe "Button" do
             # nothing much to assert just making sure this works
         end
     end
+
+    describe "draw" do
+        it "should draw" do
+            # setup
+            window_double = double("window")
+            font_double = double("font", draw_text: nil)
+            sut = Button.new(window_double, font_double, "HI", 1,1,1)
+
+            # execute
+            sut.draw
+
+            # assert
+            # nothing much to assert just making sure this works
+        end
+    end
 end
 
