@@ -11,13 +11,15 @@ class Button
         @is_pressed = options[:is_pressed]
         @pressed_color = options[:pressed_color]
         @unpressed_color = options[:unpressed_color]
+        @height = @image.height + 6
+        @width = @image.width + 6
     end
 
     def draw
         left_click_down = @is_pressed.call
 
         textcolor = left_click_down && intersects ? @pressed_color : @unpressed_color
-        @image.draw(@x , @y, @z, 1, 1, textcolor)
+        @image.draw(@x + 3, @y + 3, @z, 1, 1, textcolor)
     end
 
     def is_clicked?
@@ -44,8 +46,8 @@ class Button
 
     private
     def intersects
-        x_max = @image.width
-        y_max = @image.height
+        x_max = @width
+        y_max = @height
         mouse_past_left = @window.mouse_x > @x
         mouse_past_right = @window.mouse_x >= @x + x_max
         mouse_below_top = @window.mouse_y > @y
