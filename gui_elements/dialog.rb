@@ -97,6 +97,10 @@ class SimpleDialog
         @width = @current_prompt_image.width + @boarder_width * 2
     end
 
+    def is_clicked?
+        intersects && @visible
+    end
+
     def handle_result
         option_index = 0
         @option_buttons.each do |option_button|
@@ -107,6 +111,19 @@ class SimpleDialog
             end
             option_index += 1
         end
+    end
+
+    def set_position(x, y)
+        @dialog_x_position = x
+        @dialog_y_position = y
+    end
+
+    private
+    def intersects
+        @window.mouse_x > @dialog_x_position &&
+        @window.mouse_x < @dialog_x_position + @width &&
+        @window.mouse_y > @dialog_y_position &&
+        @window.mouse_y < @dialog_y_position + @height
     end
 end
 
