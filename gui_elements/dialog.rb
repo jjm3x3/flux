@@ -17,8 +17,6 @@ class SimpleDialog
         @dialog_x_position = 100
         @dialog_y_position = 100
         @boarder_width = 20
-        @dialog_content_x_position = @dialog_x_position + @boarder_width
-        @dialog_content_y_position = @dialog_y_position + @boarder_width
         @item_spacing = 10
 
         # height is assigned fairly arbitrarily here (assumes 3 options and prompt = 4)
@@ -36,15 +34,26 @@ class SimpleDialog
         items_displayed = 1 # accounts for prompt
         list.each do |card|
             #TODO:: need to generate these statically
-            @option_buttons << Button.new(@window, @font, "#{card}",
-                                @dialog_content_x_position,
-                                @dialog_content_y_position + @item_spacing * items_displayed + @font.height * items_displayed,
+            @option_buttons << Button.new(
+                                @window,
+                                @font,
+                                "#{card}",
+                                dialog_content_x_position,
+                                dialog_content_y_position + @item_spacing * items_displayed + @font.height * items_displayed,
                                 ZOrder::DIALOG_ITEMS,
                                 @button_options)
             items_displayed += 1
         end
         # note cardsDisaplyed is really cardsDisplayed + 1 for the prompt
         @height = (@font.height + @item_spacing) * items_displayed + @boarder_width * 2
+    end
+
+    def dialog_content_x_position
+        @dialog_x_position + @boarder_width
+    end
+
+    def dialog_content_y_position
+        @dialog_y_position + @boarder_width
     end
 
     def draw
@@ -54,7 +63,7 @@ class SimpleDialog
             y_scale = @height / @background.height
             @background.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, x_scale, y_scale)
 
-            @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
+            @current_prompt_image.draw(dialog_content_x_position, dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             @option_buttons.each do |option_button|
                 option_button.draw
             end
