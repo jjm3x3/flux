@@ -20,7 +20,7 @@ describe "Button" do
             # setup
             window_double = double("window")
             font_double = double("font", draw_text: nil)
-            sut = Button.new(window_double, font_double, "HI", 1,1,1)
+            sut = Button.new(window_double, font_double, "HI", 1,1,1, {is_pressed: ->() {} })
 
             # execute
             sut.draw

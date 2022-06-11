@@ -5,10 +5,11 @@ class Dialog
         @visible = false
         @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
         @font = Gosu::Font.new(20)
-        @yes_button = Button.new(window, @font, "Yes", 120, 120, ZOrder::DIALOG_ITEMS)
+        button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: -> () { window.is_left_button_pressed }}
+        @yes_button = Button.new(window, @font, "Yes", 120, 120, ZOrder::DIALOG_ITEMS, button_options)
         widthOfYesButtonGuess = 30
         spaceBetweenButtonts = 40
-        @no_button = Button.new(window, @font, "No", 120 + widthOfYesButtonGuess + spaceBetweenButtonts, 120, ZOrder::DIALOG_ITEMS  )
+        @no_button = Button.new(window, @font, "No", 120 + widthOfYesButtonGuess + spaceBetweenButtonts, 120, ZOrder::DIALOG_ITEMS, button_options)
     end
 
     def draw
@@ -56,6 +57,7 @@ class CardDialog
         @visible = false
         @baground_image = background
         @font = font
+        @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: -> () { window.is_left_button_pressed }}
         @card_buttons = []
         @selected_card = nil
         @dialog_x_position = 100
@@ -81,7 +83,8 @@ class CardDialog
             @card_buttons << Button.new(@window, @font, "#{card}",
                                 @dialog_content_x_position,
                                 @dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
-                                ZOrder::DIALOG_ITEMS)
+                                ZOrder::DIALOG_ITEMS,
+                                @button_options)
             cardsDisplayed += 1
         end
 
