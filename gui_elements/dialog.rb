@@ -117,6 +117,15 @@ class SimpleDialog
     def set_position(x, y)
         @dialog_x_position = x
         @dialog_y_position = y
+
+        cardsDisplayed = 1 # accounts for prompt
+        @card_buttons.each do |button|
+            button.set_position(
+                dialog_content_x_position,
+                dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
+            )
+            cardsDisplayed += 1
+        end
     end
 
     private

@@ -28,6 +28,11 @@ class Button
         @visible = is_visible
     end
 
+    def set_position(x, y)
+        @x = x
+        @y = y
+    end
+
     private
     def intersects
         mouse_past_left = @window.mouse_x > @x
