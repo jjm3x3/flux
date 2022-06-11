@@ -19,6 +19,9 @@ class Button
         left_click_down = @is_pressed.call
 
         textcolor = left_click_down && intersects ? @pressed_color : @unpressed_color
+        my_red = Gosu::Color.new(0xFFB6402B)
+        my_red_pressed = Gosu::Color.new(0xFF9C3625)
+
         @image.draw(@x + 3, @y + 3, @z, 1, 1, textcolor)
     end
 
