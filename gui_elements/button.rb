@@ -1,11 +1,11 @@
 class Button
-    def initialize(window, text, x, y, z)
+    def initialize(window, font, text, x, y, z)
         @window = window
         @text = text
         @x = x
         @y = y
         @z = z
-        @font = Gosu::Font.new(20)
+        @font = font
         @visible = true
     end
 
