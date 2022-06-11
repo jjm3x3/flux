@@ -2,6 +2,7 @@ require "./gui_elements/button.rb"
 require "./gui_elements/zorder.rb"
 
 class SimpleDialog
+    attr_reader :dialog_x_position, :dialog_y_position
     def initialize(window, background, font, logger, dialog_prompts, button_options)
         @window = window
         @background = background
