@@ -21,7 +21,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {expected_prompt_key => prompt_image_double})
+                {expected_prompt_key => prompt_image_double},
+                {})
 
             # setup lite
             sut.set_prompt(expected_prompt_key)
@@ -46,7 +47,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {})
+                dialog_prompts={},
+                options={})
 
             # Execute and Assert this should not fail
             expect do
@@ -66,7 +68,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {})
+                dialog_prompts={},
+                options={})
             expected_prompt_key = :some_prompt_key
 
             # Execute and Assert this should not fail
@@ -90,7 +93,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {})
+                dialog_prompts={},
+                options={})
             expected_prompt_key = :some_prompt_key
 
             # execute the test

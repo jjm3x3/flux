@@ -1,11 +1,10 @@
 require "./gui_elements/zorder.rb"
 
 class Dialog
-    def initialize(window)
+    def initialize(window, button_options)
         @visible = false
         @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
         @font = Gosu::Font.new(20)
-        button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: -> () { window.is_left_button_pressed }}
         @yes_button = Button.new(window, @font, "Yes", 120, 120, ZOrder::DIALOG_ITEMS, button_options)
         widthOfYesButtonGuess = 30
         spaceBetweenButtonts = 40
@@ -51,13 +50,13 @@ class Dialog
 end
 
 class CardDialog
-    def initialize(window, background, font, logger, dialog_prompts)
+    def initialize(window, background, font, logger, dialog_prompts, button_options)
         @window = window
         @logger = logger
         @visible = false
         @baground_image = background
         @font = font
-        @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: -> () { window.is_left_button_pressed }}
+        @button_options = button_options
         @card_buttons = []
         @selected_card = nil
         @dialog_x_position = 100

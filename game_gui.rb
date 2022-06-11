@@ -26,14 +26,14 @@ class GameGui < Gosu::Window
 
         @logger = logger
 
-        @are_you_sure_dialog = Dialog.new(self)
+        @are_you_sure_dialog = Dialog.new(self, @button_options)
 
         @current_dialog = CardDialog.new(
             self,
             Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true),
             Gosu::Font.new(20),
             logger,
-            initialize_dialog_prompts(prompt_strings))
+            initialize_dialog_prompts(prompt_strings), @button_options)
 
         @user_prompt_templates = user_prompt_templates
         @deck = deck
