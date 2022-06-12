@@ -1,3 +1,4 @@
+require "./gui_elements/button.rb"
 require "./gui_elements/zorder.rb"
 
 class Dialog
@@ -54,7 +55,7 @@ class CardDialog
         @window = window
         @logger = logger
         @visible = false
-        @baground_image = background
+        @background = background
         @font = font
         @button_options = button_options
         @card_buttons = []
@@ -67,6 +68,9 @@ class CardDialog
         @item_spacing = 10
         @dialog_prompts = dialog_prompts
         @current_prompt_image = dialog_prompts[:default]
+        # height is assigned fairly arbitrarily here (assumes 3 options and prompt = 4)
+        @height = (@font.height + @item_spacing) * 4 + @boarder_width * 2
+        @width = 300
     end
 
     def add_prompt(symbol, prompt_image)
@@ -86,12 +90,17 @@ class CardDialog
                                 @button_options)
             cardsDisplayed += 1
         end
-
+        # note cardsDisaplyed is really cardsDisplayed + 1 for the prompt
+        @height = (@font.height + @item_spacing) * cardsDisplayed + @boarder_width * 2
     end
 
     def draw
+        if !@current_prompt_image; raise "Cannot draw a dialog without setting the prompt"; end
         if @visible
-            @baground_image.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, 0.25, 0.25)
+            x_scale = @width / @background.width
+            y_scale = @height / @background.height
+            @background.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, x_scale, y_scale)
+
             @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
             @card_buttons.each do |card_button|
                 card_button.draw
@@ -130,6 +139,8 @@ class CardDialog
         if !prompt_key; raise "prompt_key is nil"; end
         if !@dialog_prompts.has_key? prompt_key; raise "prompt_key missing from prompts collection"; end
         @current_prompt_image = @dialog_prompts[prompt_key]
+        # assuming the prompt is the longest thing set dialog width based on it
+        @width = @current_prompt_image.width + @boarder_width * 2
     end
 
     def handle_result
