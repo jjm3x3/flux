@@ -64,6 +64,19 @@ class GameGui < Gosu::Window
         @left_click_down
     end
 
+    def start_a_new_game
+       @logger.debug "I am starting a game then"
+       numberOfPlayers = 3
+       players = Player.generate_players(numberOfPlayers)
+       PlayerPromptGenerator.generate_prompts(players, @user_prompt_templates).each do |key, prompt|
+           # TODO:: should check to make sure @current_dialog exists
+           @current_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
+       end
+       @game = Game.new(@logger, GuiInputManager.new(self), players, Random.new, @deck)
+       @game.setup
+       @new_game_driver = GameDriver.new(@game, @logger)
+       @current_cached_player = @new_game_driver.await.active_player.value
+    end
 
     def button_up(id)
         if @left_click_down
@@ -81,17 +94,7 @@ class GameGui < Gosu::Window
             if @are_you_sure_dialog.is_visible?
                 @are_you_sure_dialog.handle_result do |clicked|
                     if clicked == :yes_clicked
-                        puts "I am starting a game then"
-                        numberOfPlayers = 3
-                        players = Player.generate_players(numberOfPlayers)
-                        PlayerPromptGenerator.generate_prompts(players, @user_prompt_templates).each do |key, prompt|
-                            # TODO:: should check to make sure @current_dialog exists
-                            @current_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
-                        end
-                        @game = Game.new(@logger, GuiInputManager.new(self), players, Random.new, @deck)
-                        @game.setup
-                        @new_game_driver = GameDriver.new(@game, @logger)
-                        @current_cached_player = @new_game_driver.await.active_player.value
+                        start_a_new_game
                     elsif clicked == :no_clicked
                         puts "no selected"
                     else
