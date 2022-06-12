@@ -1,18 +1,21 @@
 class Button
-    def initialize(window, text, x, y, z)
+    def initialize(window, font, text, x, y, z, options={})
         @window = window
         @text = text
         @x = x
         @y = y
         @z = z
-        @font = Gosu::Font.new(20)
+        @font = font
         @visible = true
+        @is_pressed = options[:is_pressed]
+        @pressed_color = options[:pressed_color]
+        @unpressed_color = options[:unpressed_color]
     end
 
     def draw
-        left_click_down = Gosu.button_down? Gosu::MS_LEFT
+        left_click_down = @is_pressed.call
 
-        textcolor = left_click_down && intersects ? Gosu::Color::BLACK : Gosu::Color::WHITE
+        textcolor = left_click_down && intersects ? @pressed_color : @unpressed_color
         @font.draw_text(@text, @x , @y, @z , 1.0, 1.0, textcolor)
     end
 

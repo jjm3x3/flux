@@ -1,5 +1,6 @@
 require "./gui_elements/dialog.rb"
 require "tempfile"
+require "logger"
 
 describe "CardDialog" do
 
@@ -20,7 +21,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {expected_prompt_key => prompt_image_double})
+                {expected_prompt_key => prompt_image_double},
+                button_options={})
 
             # setup lite
             sut.set_prompt(expected_prompt_key)
@@ -45,7 +47,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {})
+                dialog_prompts={},
+                button_options={})
 
             # Execute and Assert this should not fail
             expect do
@@ -65,7 +68,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {})
+                dialog_prompts={},
+                button_options={})
             expected_prompt_key = :some_prompt_key
 
             # Execute and Assert this should not fail
@@ -89,7 +93,8 @@ describe "CardDialog" do
                 background_double,
                 font_double,
                 test_logger,
-                {})
+                dialog_prompts={},
+                button_options={})
             expected_prompt_key = :some_prompt_key
 
             # execute the test

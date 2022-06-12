@@ -15,7 +15,8 @@ class GameGui < Gosu::Window
         @font = Gosu::Font.new(20)
 
         @left_click_down = false
-        @new_game_button = Button.new(self, "New Game?", 10, 10, ZOrder::GAME_ITEMS)
+        @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: method(:is_left_button_pressed)}
+        @new_game_button = Button.new(self, @font, "New Game?", 10, 10, ZOrder::GAME_ITEMS, @button_options)
         @game_stats = GameStats.new(10, 10)
         @game = nil
         @current_displayed_cards = []
@@ -25,14 +26,14 @@ class GameGui < Gosu::Window
 
         @logger = logger
 
-        @are_you_sure_dialog = Dialog.new(self)
+        @are_you_sure_dialog = Dialog.new(self, @button_options)
 
         @current_dialog = CardDialog.new(
             self,
             Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true),
             Gosu::Font.new(20),
             logger,
-            initialize_dialog_prompts(prompt_strings))
+            initialize_dialog_prompts(prompt_strings), @button_options)
 
         @user_prompt_templates = user_prompt_templates
         @deck = deck
@@ -53,6 +54,11 @@ class GameGui < Gosu::Window
 
         return result
     end
+
+    def is_left_button_pressed
+        @left_click_down
+    end
+
 
     def button_up(id)
         if @left_click_down
@@ -184,7 +190,7 @@ class GameGui < Gosu::Window
                 cardsDisplayed = 0
                 @current_displayed_cards = []
                 activePlayer.hand.each do |card|
-                    newCardButton = Button.new(self, "#{card}", 20, (permanents_start_y + permanents_height + 10 + @font.height) + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::GAME_ITEMS)
+                    newCardButton = Button.new(self, @font, "#{card}", 20, (permanents_start_y + permanents_height + 10 + @font.height) + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::GAME_ITEMS, @button_options)
                     newCardButton.draw
                     @current_displayed_cards << newCardButton
                     cardsDisplayed += 1

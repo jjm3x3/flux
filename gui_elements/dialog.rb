@@ -1,14 +1,14 @@
 require "./gui_elements/zorder.rb"
 
 class Dialog
-    def initialize(window)
+    def initialize(window, button_options)
         @visible = false
         @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
         @font = Gosu::Font.new(20)
-        @yes_button = Button.new(window, "Yes", 120, 120, ZOrder::DIALOG_ITEMS)
+        @yes_button = Button.new(window, @font, "Yes", 120, 120, ZOrder::DIALOG_ITEMS, button_options)
         widthOfYesButtonGuess = 30
         spaceBetweenButtonts = 40
-        @no_button = Button.new(window, "No", 120 + widthOfYesButtonGuess + spaceBetweenButtonts, 120, ZOrder::DIALOG_ITEMS  )
+        @no_button = Button.new(window, @font, "No", 120 + widthOfYesButtonGuess + spaceBetweenButtonts, 120, ZOrder::DIALOG_ITEMS, button_options)
     end
 
     def draw
@@ -50,12 +50,13 @@ class Dialog
 end
 
 class CardDialog
-    def initialize(window, background, font, logger, dialog_prompts)
+    def initialize(window, background, font, logger, dialog_prompts, button_options)
         @window = window
         @logger = logger
         @visible = false
         @baground_image = background
         @font = font
+        @button_options = button_options
         @card_buttons = []
         @selected_card = nil
         @dialog_x_position = 100
@@ -78,10 +79,11 @@ class CardDialog
         cardsDisplayed = 1 # accounts for prompt
         card_list.each do |card|
             #TODO:: need to generate these statically
-            @card_buttons << Button.new(@window, "#{card}",
+            @card_buttons << Button.new(@window, @font, "#{card}",
                                 @dialog_content_x_position,
                                 @dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
-                                ZOrder::DIALOG_ITEMS)
+                                ZOrder::DIALOG_ITEMS,
+                                @button_options)
             cardsDisplayed += 1
         end
 
