@@ -208,7 +208,7 @@ describe "CardDialog" do
                 dialog_prompts={expected_prompt_key => prompt_image_double},
                 button_options={is_pressed: -> () {} })
             sut.set_prompt(expected_prompt_key)
-            sut.set_cards(mock_card_list)
+            sut.set_options(mock_card_list)
             sut.show
 
 
