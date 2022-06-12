@@ -104,14 +104,16 @@ class GameGui < Gosu::Window
                 @logger.debug "Handle result call false so return"
                 return
             end
-            if @are_you_sure_dialog.is_visible?
-                @are_you_sure_dialog.handle_result do |clicked|
-                    if clicked == :yes_clicked
+            if @are_you_sure_dialog && @are_you_sure_dialog.is_visible?
+                @are_you_sure_dialog.handle_result do |result|
+                    @logger.debug "GameGui:button_up: are you sure dialog result is: #{result}"
+                    if result == "Yes"
                         start_a_new_game
-                    elsif clicked == :no_clicked
-                        puts "no selected"
-                    else
-                        puts "nothing selected"
+                    # should do things for other cases
+                    # elsif clicked == :no_clicked
+                    #     puts "no selected"
+                    # else
+                    #     puts "nothing selected"
                     end
                 end
                 return
