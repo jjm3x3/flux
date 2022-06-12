@@ -59,12 +59,23 @@ class GameGui < Gosu::Window
         @user_prompt_templates = user_prompt_templates
         @deck = deck
 
+        @button_images = create_card_images(@deck)
+
         @new_game_driver = nil
 
         @current_cached_player = nil
         @current_player_future = nil
 
         @play_card_future = nil
+    end
+
+    def create_card_images(deck)
+        result = {}
+        deck.each do |card|
+            result[card.name] = Gosu::Image.from_text(card.name.to_s, 20)
+        end
+
+        return result
     end
 
     def initialize_dialog_prompts(prompt_strings)
