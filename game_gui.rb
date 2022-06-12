@@ -26,19 +26,32 @@ class GameGui < Gosu::Window
 
         @logger = logger
 
-        @are_you_sure_dialog = Dialog.new(self, @button_options)
-
         dialog_background = Gosu::record(10,10) do
             my_green = Gosu::Color.new(255,0, 128, 0)
             Gosu::draw_rect(0, 0, 10, 10, my_green, ZOrder::DIALOG)
         end
+
+        dialog_prompts = initialize_dialog_prompts(prompt_strings)
+
+        # @are_you_sure_dialog = Dialog.new(self, @button_options)
+        @are_you_sure_dialog = SimpleDialog.new(
+            self,
+            dialog_background,
+            Gosu::Font.new(20),
+            logger,
+            dialog_prompts,
+            @button_options)
+
+        @are_you_sure_dialog.set_options(["Yes", "No"])
+        @are_you_sure_dialog.set_prompt :play_a_game_prompt
 
         @current_dialog = CardDialog.new(
             self,
             dialog_background,
             Gosu::Font.new(20),
             logger,
-            initialize_dialog_prompts(prompt_strings), @button_options)
+            dialog_prompts,
+            @button_options)
 
         @user_prompt_templates = user_prompt_templates
         @deck = deck
