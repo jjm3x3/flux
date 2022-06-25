@@ -25,11 +25,9 @@ class GuiInputManager
         yes_string = "Yes"
         @gui.display_simple_dialog([yes_string, "No"], prompt)
         dialog_result = nil
-        puts "Before starting the loop the result is: '#{@gui.get_simple_dialog_result}'"
         while !dialog_result
             sleep @sleep_amount
             dialog_result = @gui.get_simple_dialog_result
-            puts "What is the result '#{dialog_result}'"
         end
         return dialog_result == yes_string
     end
