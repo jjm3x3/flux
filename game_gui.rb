@@ -33,7 +33,6 @@ class GameGui < Gosu::Window
 
         dialog_prompts = initialize_dialog_prompts(prompt_strings)
 
-        # @are_you_sure_dialog = Dialog.new(self, @button_options)
         @are_you_sure_dialog = SimpleDialog.new(
             self,
             dialog_background,
@@ -109,12 +108,8 @@ class GameGui < Gosu::Window
                     @logger.debug "GameGui:button_up: are you sure dialog result is: #{result}"
                     if result == "Yes"
                         start_a_new_game
-                    # should do things for other cases
-                    # elsif clicked == :no_clicked
-                    #     puts "no selected"
-                    # else
-                    #     puts "nothing selected"
                     end
+                    # TODO:: do things for other cases
                 end
                 return
             end
