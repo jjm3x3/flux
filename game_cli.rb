@@ -36,7 +36,7 @@ class GameCli
         end
         break if @new_game_driver.await.has_winner.value
       end
-      @interface.await.display_message("Congradulations Someone is a Winner!!")
+      @interface.await.display_message(:exit)
   end
 
   private

@@ -92,7 +92,11 @@ class CliInterface < BaseTextInterface
   end
 
   def display_message(message)
-    @output_stream.puts message
+    if message.is_a?(Symbol) && @prompts.has_key?(message)
+      @output_stream.puts @prompts[message]
+    else
+      @output_stream.puts message
+    end
   end
 end
 
