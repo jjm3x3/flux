@@ -33,7 +33,7 @@ class GameGui < Gosu::Window
 
         dialog_prompts = initialize_dialog_prompts(prompt_strings)
 
-        @are_you_sure_dialog = SimpleDialog.new(
+        @simple_dialog = SimpleDialog.new(
             self,
             dialog_background,
             Gosu::Font.new(20),
@@ -41,8 +41,8 @@ class GameGui < Gosu::Window
             dialog_prompts,
             @button_options)
 
-        @are_you_sure_dialog.set_options(["Yes", "No"])
-        @are_you_sure_dialog.set_prompt :play_a_game_prompt
+        @simple_dialog.set_options(["Yes", "No"])
+        @simple_dialog.set_prompt :play_a_game_prompt
 
         @current_dialog = CardDialog.new(
             self,
@@ -103,8 +103,8 @@ class GameGui < Gosu::Window
                 @logger.debug "Handle result call false so return"
                 return
             end
-            if @are_you_sure_dialog && @are_you_sure_dialog.is_visible?
-                @are_you_sure_dialog.handle_result do |result|
+            if @simple_dialog && @simple_dialog.is_visible?
+                @simple_dialog.handle_result do |result|
                     @logger.debug "GameGui:button_up: are you sure dialog result is: #{result}"
                     if result == "Yes"
                         start_a_new_game
@@ -114,7 +114,7 @@ class GameGui < Gosu::Window
                 return
             end
             if @new_game_button.is_clicked?
-                @are_you_sure_dialog.show
+                @simple_dialog.show
                 return
             end
             clickedCard = 0
@@ -174,7 +174,7 @@ class GameGui < Gosu::Window
     def draw
         @bakground_image.draw(0,0,0)
 
-        @are_you_sure_dialog.draw
+        @simple_dialog.draw
         if @current_dialog != nil
             @current_dialog.draw
         end
@@ -183,7 +183,7 @@ class GameGui < Gosu::Window
             @new_game_button.draw
         else
             @new_game_button.set_visibility(false)
-            @are_you_sure_dialog.hide
+            @simple_dialog.hide
             @game_stats.draw(@game)
 
             activePlayer = @current_cached_player
