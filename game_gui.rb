@@ -106,6 +106,7 @@ class GameGui < Gosu::Window
             if @simple_dialog && @simple_dialog.is_visible?
                 @simple_dialog.handle_result do |result|
                     @logger.debug "GameGui:button_up: are you sure dialog result is: #{result}"
+                    @simple_dialog.hide
                     if result == "Yes"
                         @new_game_button.set_visibility false
                         start_a_new_game
@@ -181,7 +182,6 @@ class GameGui < Gosu::Window
             @simple_dialog.draw
             return
         end
-        @simple_dialog.hide
         @game_stats.draw(@game)
 
         activePlayer = @current_cached_player
@@ -219,6 +219,7 @@ class GameGui < Gosu::Window
                 cardButton.draw
             end
         end
+        @simple_dialog.draw
         @list_dialog.draw
     end
 
