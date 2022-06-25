@@ -14,24 +14,6 @@ OptionParser.new do |opt|
   opt.on("--gui") { |o| options[:gui] = o }
 end.parse!
 
-puts options
-
-# exit 0
-
-debug=false
-gui=false
-
-ARGV.each do |arg|
-  if arg[0] == '-' && arg[1] == '-'
-    if arg[2..-1] == "debug"
-      debug=true
-    end
-    if arg[2..-1] == "gui"
-      gui=true
-    end
-  end
-end
-
 puts "starting game where debug: #{options[:debug] == true} and gui: #{options[:gui] == true}"
 
 logger = Logger.new($stdout)
