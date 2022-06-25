@@ -174,13 +174,13 @@ class GameGui < Gosu::Window
     def draw
         @bakground_image.draw(0,0,0)
 
-        @simple_dialog.draw
         if @list_dialog != nil
             @list_dialog.draw
         end
         if !@new_game_driver
-        # for main menu
+            # for main menu
             @new_game_button.draw
+            @simple_dialog.draw
         else
             @new_game_button.set_visibility(false)
             @simple_dialog.hide
