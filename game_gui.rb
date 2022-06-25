@@ -44,7 +44,7 @@ class GameGui < Gosu::Window
         @simple_dialog.set_options(["Yes", "No"])
         @simple_dialog.set_prompt :play_a_game_prompt
 
-        @current_dialog = CardDialog.new(
+        @list_dialog = CardDialog.new(
             self,
             dialog_background,
             Gosu::Font.new(20),
@@ -81,8 +81,8 @@ class GameGui < Gosu::Window
        numberOfPlayers = 3
        players = Player.generate_players(numberOfPlayers)
        PlayerPromptGenerator.generate_prompts(players, @user_prompt_templates).each do |key, prompt|
-           # TODO:: should check to make sure @current_dialog exists
-           @current_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
+           # TODO:: should check to make sure @list_dialog exists
+           @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
        end
        @game = Game.new(@logger, GuiInputManager.new(self), players, Random.new, @deck)
        @game.setup
@@ -94,11 +94,11 @@ class GameGui < Gosu::Window
         if @left_click_down
             @logger.debug "left button released"
             @left_click_down = false
-            if @current_dialog != nil && @current_dialog.is_visible?
+            if @list_dialog != nil && @list_dialog.is_visible?
                 @logger.debug "There is a current dialog"
-                if @current_dialog.handle_result
+                if @list_dialog.handle_result
                     @logger.debug "Handling dialog result"
-                    @current_dialog.hide
+                    @list_dialog.hide
                 end
                 @logger.debug "Handle result call false so return"
                 return
@@ -175,8 +175,8 @@ class GameGui < Gosu::Window
         @bakground_image.draw(0,0,0)
 
         @simple_dialog.draw
-        if @current_dialog != nil
-            @current_dialog.draw
+        if @list_dialog != nil
+            @list_dialog.draw
         end
         if !@new_game_driver
         # for main menu
@@ -225,16 +225,16 @@ class GameGui < Gosu::Window
     end
 
     def get_dialog_result
-        @current_dialog.get_result
+        @list_dialog.get_result
     end
 
     # "TrueGuiInterface" stuff... well it used to be
     def display_list_dialog(list, prompt_key)
         @logger.debug "GameGui::display_list_dialog called with prompt_key: '#{prompt_key}'"
-        @current_dialog.set_options(list)
-        @current_dialog.set_prompt prompt_key
-        @current_dialog.reset_result
-        @current_dialog.show
+        @list_dialog.set_options(list)
+        @list_dialog.set_prompt prompt_key
+        @list_dialog.reset_result
+        @list_dialog.show
     end
 
     private
