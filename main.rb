@@ -24,7 +24,7 @@ logger.level = log_level
 the_deck = Deck.new(logger)
 # the_deck = StackedDecks.stacked_deck_factory(logger, StackedDecks::QUICK_WIN)
 
-if options[:gui]
+if !options[:cli]
   guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS, the_deck)
   guiGame.show
 else
