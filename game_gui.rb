@@ -211,6 +211,10 @@ class GameGui < Gosu::Window
         @game_stats.draw(@game)
 
         activePlayer = @current_cached_player
+        # adding a nil check here since during game setup there is a race condtion
+        if !activePlayer
+            return
+        end
         @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
         @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
