@@ -11,6 +11,8 @@ class GameGui < Gosu::Window
         super 640, 960
         self.caption = "Fluxx"
 
+        @gui_input_manager =  GuiInputManager.new(self)
+
         @bakground_image = Gosu::Image.new("assets/onlinePurpleSquare.jpg", tileable: true)
         @font = Gosu::Font.new(20)
 
@@ -85,7 +87,7 @@ class GameGui < Gosu::Window
            # TODO:: should check to make sure @list_dialog exists
            @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
        end
-       @game = Game.new(@logger, GuiInputManager.new(self), players, Random.new, @deck)
+       @game = Game.new(@logger, @gui_input_manager, players, Random.new, @deck)
        @game.setup
        @new_game_driver = GameDriver.new(@game, @logger)
        @current_cached_player = @new_game_driver.await.active_player.value
