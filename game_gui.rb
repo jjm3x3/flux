@@ -107,6 +107,7 @@ class GameGui < Gosu::Window
                 @simple_dialog.handle_result do |result|
                     @logger.debug "GameGui:button_up: are you sure dialog result is: #{result}"
                     if result == "Yes"
+                        @new_game_button.set_visibility false
                         start_a_new_game
                     end
                     # TODO:: do things for other cases
@@ -179,7 +180,6 @@ class GameGui < Gosu::Window
             @new_game_button.draw
             @simple_dialog.draw
         else
-            @new_game_button.set_visibility(false)
             @simple_dialog.hide
             @game_stats.draw(@game)
 
