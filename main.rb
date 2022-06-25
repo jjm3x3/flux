@@ -69,6 +69,21 @@ if options[:cli]
   gameDriver = GameCli.new(theGame, logger, GameDriver.new(theGame, logger), cli_interface)
   gameDriver.run
 else
-  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS, the_deck)
+  guiGame = nil
+
+  loop do
+    begin
+      guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS, the_deck)
+      break
+    rescue Exception => ex
+      logger.debug "Creating game failed because: #{ex}"
+      logger.debug "Stacktrace: #{ex.backtrace}"
+      logger.debug "Stacktrace: #{ex.backtrace.inspect}"
+    end
+    sleep_duration = 10
+    logger.debug "Going to sleep and try in #{sleep_duration} sec(s)..."
+    sleep sleep_duration
+  end
+
   guiGame.show
 end

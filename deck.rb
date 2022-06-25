@@ -60,7 +60,9 @@ class Deck
 
   def buildDeck
     deck = []
+    @interface.debug "Deck:buildDeck: Start deck building"
     db = SQLite3::Database.new "cards.db"
+    @interface.debug "Deck:buildDeck: DB handle created"
     db.execute("select * from keepers;") do |row|
       deck << Keeper.new(row[0], row[1])
     end
