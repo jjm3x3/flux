@@ -102,6 +102,9 @@ class GameGui < Gosu::Window
                 if @list_dialog.handle_result
                     @logger.debug "Handling dialog result"
                     @list_dialog.hide
+                    if @list_dialog.get_result == "Back to Main Menu"
+                        @new_game_driver = nil
+                    end
                 end
                 @logger.debug "Handle result call false so return"
                 return
@@ -169,10 +172,8 @@ class GameGui < Gosu::Window
             if @card_played
                 @card_played = false
                 if @new_game_driver.await.has_winner.value
-                    # win flow
-                    @simple_dialog.set_options(["Back to Main Menu"])
-                    @simple_dialog.set_prompt(:exit)
-                    @simple_dialog.show
+                    # May want to use the returned observer
+                    @gui_input_manager.async.choose_from_list(["Back to Main Menu"], :exit)
                 elsif
                     clean_up_future = @new_game_driver.async.post_card_play_clean_up
                     clean_up_future.add_observer do |time, value|
