@@ -108,6 +108,13 @@ class GameGui < Gosu::Window
             end
             if @simple_dialog && @simple_dialog.is_visible?
                 if @simple_dialog.handle_result
+                    @simple_dialog.hide
+                end
+                return
+            end
+            if @new_game_button.is_clicked?
+                start_game_future = @gui_input_manager.async.ask_yes_no(:play_a_game_prompt)
+                start_game_future.add_observer do |time, value|
                     current_result = @simple_dialog.get_result
                     @logger.debug "GameGui::button_up: the dialog starting a new game has result '#{current_result}'"
                     @simple_dialog.hide
@@ -118,11 +125,8 @@ class GameGui < Gosu::Window
                         @new_game_driver = nil
                     end
                     # TODO:: do things for other cases
+                    @logger.debug "GameGui:button_up: start_game_future came back with value: #{value}"
                 end
-                return
-            end
-            if @new_game_button.is_clicked?
-                @simple_dialog.show
                 return
             end
             clickedCard = 0
