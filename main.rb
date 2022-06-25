@@ -32,7 +32,7 @@ ARGV.each do |arg|
   end
 end
 
-puts "starting game where debug: #{options[:debug]} and gui: #{options[:gui]}"
+puts "starting game where debug: #{options[:debug] == true} and gui: #{options[:gui] == true}"
 
 logger = Logger.new($stdout)
 logger.level = options[:debug] ? Logger::DEBUG : Logger::INFO
