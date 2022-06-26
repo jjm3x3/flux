@@ -3,14 +3,40 @@ require "Logger"
 boot_strapping_logger = Logger.new("boot_strap.log")
 boot_strapping_logger.debug "Starting up game!"
 
-require "optparse"
-require "./game.rb"
-require "./game_interface.rb"
-require "./game_cli.rb"
-require "./game_gui.rb"
-require "./game_driver.rb"
-require "./constants/prompts.rb"
-require "./constants/stacked_decks.rb"
+loop do
+  begin
+    boot_strapping_logger.info "requiring deps"
+    require "optparse"
+    boot_strapping_logger.info "optparse required"
+    require "./game.rb"
+    boot_strapping_logger.info "game.rb required"
+    # TODO:: known issue with requireing game_interface which requires concurrent
+    #        seems like concurrent-ruby does some logger intialization which leads
+    #        to a warning like
+    #        `already initialized constant Logger::ProgName`
+    #        there doesn't seem to be any practical issue with this at this time.
+    require "./game_interface.rb"
+    boot_strapping_logger.info "game_interface.rb required"
+    require "./game_cli.rb"
+    boot_strapping_logger.info "game_cli.rb required"
+    require "./game_gui.rb"
+    boot_strapping_logger.info "game_gui.rb required"
+    require "./game_driver.rb"
+    boot_strapping_logger.info "game_driver.rb required"
+    require "./constants/prompts.rb"
+    boot_strapping_logger.info "constants/prompts.rb required"
+    require "./constants/stacked_decks.rb"
+    boot_strapping_logger.info "constants/stacked_decks.rb required"
+    break
+  rescue LoadError => ex
+    boot_strapping_logger.debug "loading some lib failed because: #{ex}"
+    boot_strapping_logger.debug "Stacktrace: #{ex.backtrace}"
+    boot_strapping_logger.debug "Stacktrace: #{ex.backtrace.inspect}"
+  end
+  sleep_duration = 10
+  boot_strapping_logger.debug "Going to sleep and try in #{sleep_duration} sec(s)..."
+  sleep sleep_duration
+end
 
 options = {}
 OptionParser.new do |opt|
