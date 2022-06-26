@@ -18,7 +18,8 @@ end.parse!
 log_level = (options[:log_level] ? options[:log_level] : Logger::DEBUG)
 puts "starting game where log_level: #{log_level} and cli #{options[:cli] == true}"
 
-logger = Logger.new($stdout)
+output_stream = options[:log_to_shell] ? $stdout : "fluxx.log"
+logger = Logger.new(output_stream)
 logger.level = log_level
 
 the_deck = Deck.new(logger)
