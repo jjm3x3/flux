@@ -1,4 +1,8 @@
 #!/usr/local/bin/ruby
+require "Logger"
+boot_strapping_logger = Logger.new("boot_strap.log")
+boot_strapping_logger.debug "Starting up game!"
+
 require "optparse"
 require "./game.rb"
 require "./game_interface.rb"
