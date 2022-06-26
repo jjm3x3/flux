@@ -11,6 +11,7 @@ require "./constants/stacked_decks.rb"
 options = {}
 OptionParser.new do |opt|
   opt.on("--debug") { |o| options[:debug] = o }
+  opt.on("--log-level LEVEL") { |o| options[:log_level] = o }
   opt.on("--gui") { |o| options[:gui] = o }
 end.parse!
 
