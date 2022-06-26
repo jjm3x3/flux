@@ -21,10 +21,14 @@ end.parse!
 
 log_level = (options[:log_level] ? options[:log_level] : Logger::DEBUG)
 puts "starting game where log_level: #{log_level} and cli #{options[:cli] == true}"
+boot_strapping_logger.info "starting game where log_level: #{log_level} and cli #{options[:cli] == true}"
 
 output_stream = options[:log_to_shell] ? $stdout : "fluxx.log"
 logger = Logger.new(output_stream)
 logger.level = log_level
+
+logger.debug "Starting up game!"
+boot_strapping_logger.close  # the app/game logger can take it from here
 
 the_deck = Deck.new(logger)
 # the_deck = StackedDecks.stacked_deck_factory(logger, StackedDecks::QUICK_WIN)
