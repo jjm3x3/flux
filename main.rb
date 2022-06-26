@@ -59,10 +59,7 @@ boot_strapping_logger.close  # the app/game logger can take it from here
 the_deck = Deck.new(logger)
 # the_deck = StackedDecks.stacked_deck_factory(logger, StackedDecks::QUICK_WIN)
 
-if !options[:cli]
-  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS, the_deck)
-  guiGame.show
-else
+if options[:cli]
   players = Player.generate_players(3)
   player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
   prompt_strings = Constants::PROMPT_STRINGS.merge(player_prompts)
@@ -71,4 +68,7 @@ else
   theGame.setup
   gameDriver = GameCli.new(theGame, logger, GameDriver.new(theGame, logger), cli_interface)
   gameDriver.run
+else
+  guiGame = GameGui.new(logger, Constants::PROMPT_STRINGS, Constants::USER_SPECIFIC_PROMPTS, the_deck)
+  guiGame.show
 end
