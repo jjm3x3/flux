@@ -15,7 +15,8 @@ OptionParser.new do |opt|
   opt.on("--gui") { |o| options[:gui] = o }
 end.parse!
 
-puts "starting game where debug: #{options[:debug] == true} and gui: #{options[:gui] == true}"
+log_level = (options[:log_level] ? options[:log_level] : Logger::DEBUG)
+puts "starting game where debug: #{options[:debug] == true} and log_level: #{log_level} and gui: #{options[:gui] == true}"
 
 logger = Logger.new($stdout)
 logger.level = options[:debug] ? Logger::DEBUG : Logger::INFO
