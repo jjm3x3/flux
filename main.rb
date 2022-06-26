@@ -19,7 +19,7 @@ log_level = (options[:log_level] ? options[:log_level] : Logger::DEBUG)
 puts "starting game where debug: #{options[:debug] == true} and log_level: #{log_level} and gui: #{options[:gui] == true}"
 
 logger = Logger.new($stdout)
-logger.level = options[:debug] ? Logger::DEBUG : Logger::INFO
+logger.level = log_level
 
 the_deck = Deck.new(logger)
 # the_deck = StackedDecks.stacked_deck_factory(logger, StackedDecks::QUICK_WIN)
