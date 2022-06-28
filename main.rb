@@ -10,14 +10,15 @@ require "./constants/stacked_decks.rb"
 
 options = {}
 OptionParser.new do |opt|
-  opt.on("--debug") { |o| options[:debug] = o }
+  opt.on("--log-level LEVEL") { |o| options[:log_level] = o }
   opt.on("--gui") { |o| options[:gui] = o }
 end.parse!
 
-puts "starting game where debug: #{options[:debug] == true} and gui: #{options[:gui] == true}"
+log_level = (options[:log_level] ? options[:log_level] : Logger::DEBUG)
+puts "starting game where log_level: #{log_level} and gui: #{options[:gui] == true}"
 
 logger = Logger.new($stdout)
-logger.level = options[:debug] ? Logger::DEBUG : Logger::INFO
+logger.level = log_level
 
 the_deck = Deck.new(logger)
 # the_deck = StackedDecks.stacked_deck_factory(logger, StackedDecks::QUICK_WIN)
