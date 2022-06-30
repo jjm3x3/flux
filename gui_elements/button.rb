@@ -20,7 +20,8 @@ class Button
     end
 
     def is_clicked?
-        intersects && @visible
+        result = intersects && @visible
+        return result
     end
 
     def set_visibility(is_visible)
@@ -29,6 +30,10 @@ class Button
 
     private
     def intersects
-        @window.mouse_x > @x && @window.mouse_x < @x + @font.text_width(@text) && @window.mouse_y > @y && @window.mouse_y < @y + @font.height
+        mouse_past_left = @window.mouse_x > @x
+        mouse_past_right = @window.mouse_x >= @x + @font.text_width(@text)
+        mouse_below_top = @window.mouse_y > @y
+        mouse_above_bottom = @window.mouse_y < @y + @font.height
+        mouse_past_left && !mouse_past_right && mouse_below_top && mouse_above_bottom
     end
 end

@@ -220,3 +220,65 @@ describe "CardDialog" do
         end
     end
 end
+
+describe "CardDialog" do
+
+    test_outfile = Tempfile.new 'test_output'
+
+    describe "handle_result" do
+        it "submitted block should be called" do
+            gui_double = double("gui", mouse_x: 125, mouse_y: 138)
+            background_double = double("background")
+            font_double = instance_double("font", height: 5, text_width: 20, draw_text: nil)
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image")
+            mock_card_list = [1,2,3]
+            sut = SimpleDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                dialog_prompts={},
+                button_options={is_pressed: -> () {} })
+            sut.set_options(mock_card_list)
+            sut.show
+            block_gets_called = false
+
+            # execute
+            sut.handle_result do |result|
+                block_gets_called = true
+            end
+
+            # test
+            expect(block_gets_called).to be true
+        end
+
+        it "expected result should be yielded" do
+            gui_double = double("gui", mouse_x: 125, mouse_y: 138)
+            background_double = double("background")
+            font_double = instance_double("font", height: 5, text_width: 20, draw_text: nil)
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image")
+            mock_card_list = [1,2,3]
+            sut = SimpleDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                dialog_prompts={},
+                button_options={is_pressed: -> () {} })
+            sut.set_options(mock_card_list)
+            sut.show
+            expected_result = mock_card_list[0]
+            actual_result = nil
+
+            # execute
+            sut.handle_result do |result|
+                actual_result = result
+            end
+
+            # test
+            expect(actual_result).to be_equal expected_result
+        end
+    end
+end
