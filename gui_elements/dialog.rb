@@ -128,14 +128,6 @@ class SimpleDialog
         @visible
     end
 
-    def get_result
-        @selected_option
-    end
-
-    def reset_result
-        @selected_option = nil
-    end
-
     def set_prompt(prompt_key)
         @logger.debug "set_prompt: got prompt_key: '#{prompt_key}'"
         if !prompt_key; raise "prompt_key is nil"; end
@@ -143,6 +135,32 @@ class SimpleDialog
         @current_prompt_image = @dialog_prompts[prompt_key]
         # assuming the prompt is the longest thing set dialog width based on it
         @width = @current_prompt_image.width + @boarder_width * 2
+    end
+
+    def handle_result
+        option_index = 0
+        @option_buttons.each do |option_button|
+            if option_button.is_clicked?
+                selected_option = @option_list[option_index]
+                @logger.debug "#{selected_option} was selected"
+                yield @option_list[option_index]
+            end
+            option_index += 1
+        end
+    end
+end
+
+class AsyncDialog < SimpleDialog
+    def initialize(window, background, font, logger, dialog_prompts, button_options)
+        super(window, background, font, logger, dialog_prompts, button_options)
+    end
+
+    def get_result
+        @selected_option
+    end
+
+    def reset_result
+        @selected_option = nil
     end
 
     def handle_result
@@ -160,7 +178,7 @@ class SimpleDialog
     end
 end
 
-class CardDialog < SimpleDialog
+class CardDialog < AsyncDialog
     def initialize(window, background, font, logger, dialog_prompts, button_options)
         super(window, background, font, logger, dialog_prompts, button_options)
     end
