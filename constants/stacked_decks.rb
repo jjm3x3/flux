@@ -1,3 +1,5 @@
+require "./cards/cards.rb"
+
 module StackedDecks
     def StackedDecks.stacked_deck_factory(logger, deck_list)
         StackedDeck.new(logger, deck_list)
