@@ -173,7 +173,10 @@ class GameGui < Gosu::Window
                 @card_played = false
                 if @new_game_driver.await.has_winner.value
                     # May want to use the returned observer
-                    @gui_input_manager.async.choose_from_list(["Back to Main Menu"], :exit)
+                    choose_future = @gui_input_manager.async.choose_from_list(["Back to Main Menu"], :exit)
+                    choose_future.add_observer do |time, value, reason|
+                        @logger.debug "on exit future result: Value: #{value} reason: #{reason}"
+                    end
                 elsif
                     clean_up_future = @new_game_driver.async.post_card_play_clean_up
                     clean_up_future.add_observer do |time, value|
