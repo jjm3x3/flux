@@ -111,6 +111,8 @@ class GameGui < Gosu::Window
                     if result == "Yes"
                         @new_game_button.set_visibility false
                         start_a_new_game
+                    elsif result == "Back to Main Menu"
+                        @new_game_driver = nil
                     end
                     # TODO:: do things for other cases
                 end
@@ -161,6 +163,9 @@ class GameGui < Gosu::Window
                 @card_played = false
                 if @new_game_driver.await.has_winner.value
                     # win flow
+                    @simple_dialog.set_options(["Back to Main Menu"])
+                    @simple_dialog.set_prompt(:exit)
+                    @simple_dialog.show
                 elsif
                     clean_up_future = @new_game_driver.async.post_card_play_clean_up
                     clean_up_future.add_observer do |time, value|
