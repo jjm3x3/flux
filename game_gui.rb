@@ -105,10 +105,11 @@ class GameGui < Gosu::Window
                 return
             end
             if @simple_dialog && @simple_dialog.is_visible?
-                @simple_dialog.handle_result do |result|
-                    @logger.debug "GameGui:button_up: are you sure dialog result is: #{result}"
+                if @simple_dialog.handle_result
+                    current_result = @simple_dialog.get_result
+                    @logger.debug "GameGui::button_up: the dialog starting a new game has result '#{current_result}'"
                     @simple_dialog.hide
-                    if result == "Yes"
+                    if current_result == "Yes"
                         @new_game_button.set_visibility false
                         start_a_new_game
                     elsif result == "Back to Main Menu"
