@@ -34,7 +34,7 @@ class GameGui < Gosu::Window
 
         dialog_prompts = initialize_dialog_prompts(prompt_strings)
 
-        @simple_dialog = SimpleDialog.new(
+        @simple_dialog = AsyncDialog.new(
             self,
             dialog_background,
             Gosu::Font.new(20),
