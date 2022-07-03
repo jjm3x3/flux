@@ -157,8 +157,6 @@ class GameGui < Gosu::Window
             @left_click_down = true
             @previous_x = mouse_x
             @previous_y = mouse_y
-            @dialog_x = @current_dialog.dialog_x_position
-            @dialog_y = @current_dialog.dialog_y_position
             @dialog_clicked = @current_dialog.is_clicked?
         end
 
@@ -167,9 +165,9 @@ class GameGui < Gosu::Window
             x_diff = mouse_x - @previous_x
             y_diff = mouse_y - @previous_y
 
-            @dialog_x = @dialog_x + x_diff
-            @dialog_y = @dialog_y + y_diff
-            @current_dialog.set_position(@dialog_x, @dialog_y)
+            dialog_x = @current_dialog.dialog_x_position + x_diff
+            dialog_y = @current_dialog.dialog_y_position + y_diff
+            @current_dialog.set_position(dialog_x, dialog_y)
             @previous_x = mouse_x
             @previous_y = mouse_y
         end
