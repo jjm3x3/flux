@@ -25,6 +25,12 @@ class SimpleDialog
         @width = 300
     end
 
+    def check_clicked_at(x, y)
+        @previous_x = x
+        @previous_y = y
+        return is_clicked?
+    end
+
     def add_prompt(symbol, prompt_image)
         @dialog_prompts[symbol] = prompt_image
     end
@@ -117,6 +123,22 @@ class SimpleDialog
     def set_position(x, y)
         @dialog_x_position = x
         @dialog_y_position = y
+
+        cardsDisplayed = 1 # accounts for prompt
+        @card_buttons.each do |button|
+            button.set_position(
+                dialog_content_x_position,
+                dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
+            )
+            cardsDisplayed += 1
+        end
+    end
+
+    def set_relative_position(x, y)
+        @dialog_x_position = @dialog_x_position + (x - @previous_x)
+        @dialog_y_position = @dialog_y_position + (y - @previous_y)
+        @previous_x = x
+        @previous_y = y
 
         cardsDisplayed = 1 # accounts for prompt
         @card_buttons.each do |button|

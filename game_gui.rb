@@ -155,21 +155,11 @@ class GameGui < Gosu::Window
         if Gosu.button_down? Gosu::MS_LEFT and !@left_click_down
             @logger.debug "left button click"
             @left_click_down = true
-            @previous_x = mouse_x
-            @previous_y = mouse_y
-            @dialog_clicked = @current_dialog.is_clicked?
+            @dialog_clicked = @current_dialog.check_clicked_at(mouse_x, mouse_y)
         end
 
-        same_position = @previous_x == mouse_x && @previous_y == mouse_y
-        if @left_click_down && @dialog_clicked && !same_position
-            x_diff = mouse_x - @previous_x
-            y_diff = mouse_y - @previous_y
-
-            dialog_x = @current_dialog.dialog_x_position + x_diff
-            dialog_y = @current_dialog.dialog_y_position + y_diff
-            @current_dialog.set_position(dialog_x, dialog_y)
-            @previous_x = mouse_x
-            @previous_y = mouse_y
+        if @left_click_down && @dialog_clicked
+            @current_dialog.set_relative_position(mouse_x, mouse_y)
         end
 
         if @new_game_driver
