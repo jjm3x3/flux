@@ -752,10 +752,10 @@ describe "game" do
         it "should skip players who have no cards" do
             # setup
             input_stream = StringIO.new("0\n0\n0\n")
-            testLogger = TestLogger.new(input_stream, test_outfile)
+            testLogger = Logger.new(test_outfile)
             numberOfPlayers = 2
-            testInterface = TestInterface.new(input_stream, test_outfile)
-            player_doubles = [double("player1", hand: [FakeCard.new("make believe")], taxation_prompt_name: "some prompt", add_cards_to_hand: nil)]
+            testInterface = TestInterface.new(input_stream, test_outfile, {prompt: "some prompt"})
+            player_doubles = [double("player1", hand: [FakeCard.new("make believe")], give_card_to_player_prompt_name: :prompt, add_cards_to_hand: nil)]
             player_2s_fake_card = FakeCard.new("some thing else")
             player_doubles << double("player2", hand: [player_2s_fake_card], add_cards_to_hand: nil)
             theGame = Game.new(testLogger, testInterface, player_doubles)
@@ -948,9 +948,10 @@ describe "game" do
             random.define_singleton_method(:rand) do |num|
                 0
             end
-            testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 2
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players, random)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new(0, "Thing1")
