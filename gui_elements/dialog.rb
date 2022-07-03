@@ -124,14 +124,7 @@ class SimpleDialog
         @dialog_x_position = x
         @dialog_y_position = y
 
-        cardsDisplayed = 1 # accounts for prompt
-        @card_buttons.each do |button|
-            button.set_position(
-                dialog_content_x_position,
-                dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
-            )
-            cardsDisplayed += 1
-        end
+        set_content_position
     end
 
     def set_relative_position(x, y)
@@ -140,14 +133,7 @@ class SimpleDialog
         @previous_x = x
         @previous_y = y
 
-        cardsDisplayed = 1 # accounts for prompt
-        @card_buttons.each do |button|
-            button.set_position(
-                dialog_content_x_position,
-                dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
-            )
-            cardsDisplayed += 1
-        end
+        set_content_position
     end
 
     private
@@ -156,6 +142,17 @@ class SimpleDialog
         @window.mouse_x < @dialog_x_position + @width &&
         @window.mouse_y > @dialog_y_position &&
         @window.mouse_y < @dialog_y_position + @height
+    end
+
+    def set_content_position
+        cardsDisplayed = 1 # accounts for prompt
+        @card_buttons.each do |button|
+            button.set_position(
+                dialog_content_x_position,
+                dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
+            )
+            cardsDisplayed += 1
+        end
     end
 end
 
