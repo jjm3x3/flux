@@ -12,6 +12,7 @@ class Button
         @text_color = options[:text_color]
         @unpressed_background_image = options[:unpressed_background_image]
         @pressed_background_image = options[:pressed_background_image]
+        @tool_tip = options[:tool_tip]
         @height = @image.height + 6
         @width = @image.width + 6
     end
@@ -26,6 +27,9 @@ class Button
             button_image.draw(@x, @y, @z, x_scale, y_scale)
         end
         @image.draw(@x + 3, @y + 3, @z, 1, 1, @text_color)
+        if intersects && @tool_tip
+            @tool_tip.draw
+        end
     end
 
     def is_clicked?

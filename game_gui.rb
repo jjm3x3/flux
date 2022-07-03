@@ -3,6 +3,7 @@ require './gui_elements/button.rb'
 require './gui_elements/game_stats.rb'
 require './gui_elements/dialog.rb'
 require './gui_elements/player_permanents.rb'
+require './gui_elements/tool_tip.rb'
 require './game.rb'
 require './gui_input_manager.rb'
 require './gui_util.rb'
@@ -83,6 +84,8 @@ class GameGui < Gosu::Window
         @new_game_driver = nil
 
         @play_card_future = nil
+
+        @a_tool_tip = ToolTip.new(self, Gosu::Image.from_text("I am a tooltip", 20))
     end
 
     def create_card_images(deck)
@@ -275,20 +278,29 @@ class GameGui < Gosu::Window
 
             cardsDisplayed = 0
             @current_displayed_cards = []
-            hand_x = 0
             left_shift = (@game_state.active_player.cards_in_hand.count / 5) * 40
             hand_x = (@game_stats_and_current_player_base_x + 20) - left_shift
             @game_state.active_player.cards_in_hand.each do |card|
+                these_button_options = @button_options.clone
+                tool_tip_text = nil
+                # TODO:: need to fix this since card is now always a string it will never respond to rule_text
+                if card.respond_to?(:rule_text)  
+                    tool_tip_text = card.rule_text
+                else
+                    tool_tip_text = card.name
+                end
+                these_button_options[:tool_tip] = ToolTip.new(self, Gosu::Image.from_text(tool_tip_text,20))
                 if cardsDisplayed >= 5
                     cardsDisplayed = 0
                     hand_x += 185
                 end
-                newCardButton = Button.new(self,
+                newCardButton = Button.new(
+                    self,
                     Gosu::Image.from_text("#{card}", 20),
                     hand_x,
                     (current_player_hand_y + 30) + 10 * cardsDisplayed + @font.height * cardsDisplayed,
                     ZOrder::GAME_ITEMS,
-                    @button_options)
+                    these_button_options)
                 newCardButton.draw
                 @current_displayed_cards << newCardButton
                 cardsDisplayed += 1
@@ -300,6 +312,7 @@ class GameGui < Gosu::Window
             @current_displayed_cards.each do |cardButton|
                 cardButton.draw
             end
+            # @a_tool_tip.draw
         end
         @simple_dialog.draw
         @list_dialog.draw
