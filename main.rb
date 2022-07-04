@@ -87,3 +87,4 @@ else
 
   guiGame.show
 end
+# adding a comment to see if this tricks AV
