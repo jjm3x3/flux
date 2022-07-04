@@ -51,8 +51,8 @@ describe "GameDriver" do
         end
     end
 
-    describe "post_card_play_clean_up" do
-        it "should play cards..... :?" do
+    describe "play_card" do
+        it "should play a card" do
             # setup
             test_logger = Logger.new(test_outfile)
 
@@ -72,10 +72,38 @@ describe "GameDriver" do
             playerDouble = double("player")
 
             # execute
-            gameDriver.post_card_play_clean_up(playerDouble, cardDouble)
+            gameDriver.play_card(playerDouble, cardDouble)
 
             # test
             expect(gameDouble).to have_received(:play_card)
+
+        end
+    end
+    describe "post_card_play_clean_up" do
+        it "should not play cards" do
+            # setup
+            test_logger = Logger.new(test_outfile)
+
+            cardDouble = double("card", :play => nil)
+            gameDouble = double("game")
+            allow(gameDouble).to receive(:winner).and_return(false)
+            allow(gameDouble).to receive(:enforceNonActivePlayerLimits)
+            allow(gameDouble).to receive(:discardPile).and_return([])
+            allow(gameDouble).to receive(:replenishHand)
+            allow(gameDouble).to receive(:play_card)
+            allow(gameDouble).to receive(:active_player).and_return(Player.new("Goeff"))
+            allow(gameDouble).to receive(:play_limit).and_return(1)
+            allow(gameDouble).to receive(:discardDownToLimit)
+            allow(gameDouble).to receive(:removeDownToKeeperLimit)
+            allow(gameDouble).to receive(:progress_turn)
+            gameDriver = GameDriver.new(gameDouble, test_logger)
+            playerDouble = double("player")
+
+            # execute
+            gameDriver.post_card_play_clean_up
+
+            # test
+            expect(gameDouble).to_not have_received(:play_card)
         end
     end
 

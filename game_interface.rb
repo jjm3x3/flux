@@ -90,6 +90,14 @@ class CliInterface < BaseTextInterface
     end
     @output_stream.puts "#{prompt}\n #{permanentsPrintOut}"
   end
+
+  def display_message(message)
+    if message.is_a?(Symbol) && @prompts.has_key?(message)
+      @output_stream.puts @prompts[message]
+    else
+      @output_stream.puts message
+    end
+  end
 end
 
 class TestInterface < BaseTextInterface

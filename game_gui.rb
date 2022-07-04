@@ -23,6 +23,7 @@ class GameGui < Gosu::Window
 
         @player_changed = true
         @redraw_hand = true
+        @card_played = false
 
         @logger = logger
 
@@ -110,6 +111,8 @@ class GameGui < Gosu::Window
                     if result == "Yes"
                         @new_game_button.set_visibility false
                         start_a_new_game
+                    elsif result == "Back to Main Menu"
+                        @new_game_driver = nil
                     end
                     # TODO:: do things for other cases
                 end
@@ -132,12 +135,9 @@ class GameGui < Gosu::Window
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
                     @logger.debug "you clicked a card button #{cardToPlay}"
 
-                    @play_card_future = @new_game_driver.async.post_card_play_clean_up(activePlayer, cardToPlay)
+                    @play_card_future = @new_game_driver.async.play_card(activePlayer, cardToPlay)
                     @play_card_future.add_observer do |time, value|
-                        if value # this means the turn is over
-                            @player_changed = true
-                            setup_cached_player
-                        end
+                        @card_played = true
                         @redraw_hand = true
                     end
 
@@ -153,18 +153,37 @@ class GameGui < Gosu::Window
     def update
 
         if Gosu.button_down? Gosu::MS_LEFT and !@left_click_down
-            puts "left button click"
+            @logger.debug "left button click"
             @left_click_down = true
 
         end
 
-        if @new_game_driver && @player_changed
-            @logger.debug "GameGui::update Player has changed setting up new turn"
-            @player_changed = false
-            new_turn_future = @new_game_driver.async.setup_new_turn
-            new_turn_future.add_observer do |time, value|
-                @redraw_hand = true
+        if @new_game_driver
+            if @card_played
+                @card_played = false
+                if @new_game_driver.await.has_winner.value
+                    # win flow
+                    @simple_dialog.set_options(["Back to Main Menu"])
+                    @simple_dialog.set_prompt(:exit)
+                    @simple_dialog.show
+                elsif
+                    clean_up_future = @new_game_driver.async.post_card_play_clean_up
+                    clean_up_future.add_observer do |time, value|
+                        if value # this means the turn is over
+                            @player_changed = true
+                            setup_cached_player
+                        end
+                        @redraw_hand =true
+                    end
+                end
 
+            elsif @player_changed
+                @logger.debug "GameGui::update Player has changed setting up new turn"
+                @player_changed = false
+                new_turn_future = @new_game_driver.async.setup_new_turn
+                new_turn_future.add_observer do |time, value|
+                    @redraw_hand = true
+                end
             end
         end
     end

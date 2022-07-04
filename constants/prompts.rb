@@ -19,6 +19,7 @@ module Constants
         select_a_keeper_prompt: "Slect which Keeper you would like",
         trade_hands_prompt: "who would you like to trade hands with?",
         which_player_to_pick_from_prompt: "which player would you like to pick from",
+        exit: "There was a winner and the game is over!!",
     }
 
     USER_SPECIFIC_PROMPTS = {
