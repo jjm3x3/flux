@@ -2,7 +2,7 @@ require "./gui_elements/dialog.rb"
 require "tempfile"
 require "logger"
 
-describe "CardDialog" do
+describe "SimpleDialog" do
 
     test_outfile = Tempfile.new 'test_output'
 
@@ -16,7 +16,7 @@ describe "CardDialog" do
             test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image", width: 1, draw: nil)
             expected_prompt_key = :some_expected_prompt
-            sut = CardDialog.new(
+            sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
@@ -42,7 +42,7 @@ describe "CardDialog" do
             font_double = instance_double("font", height: 1)
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
-            sut = CardDialog.new(
+            sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
@@ -63,7 +63,7 @@ describe "CardDialog" do
             font_double = instance_double("font", height:1, draw_text: nil)
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
-            sut = CardDialog.new(
+            sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
@@ -89,7 +89,7 @@ describe "CardDialog" do
             input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image", width: 1)
-            sut = CardDialog.new(
+            sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
@@ -116,7 +116,7 @@ describe "CardDialog" do
             expected_width = 300 / background_double.width
             prompt_image_double = double("prompt image", width: 1, draw: nil)
             expected_prompt_key = :some_expected_prompt
-            sut = CardDialog.new(
+            sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
@@ -141,7 +141,7 @@ describe "CardDialog" do
             prompt_image_double = double("prompt image", width: 400, draw: nil)
             expected_width = (prompt_image_double.width + 20 * 2) / background_double.width
             expected_prompt_key = :some_expected_prompt
-            sut = CardDialog.new(
+            sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
@@ -170,7 +170,7 @@ describe "CardDialog" do
             # all assumptions and constants is executed
             expected_height = (font_double.height + 10) * 4 + 20 * 2
             expected_prompt_key = :some_expected_prompt
-            sut = CardDialog.new(
+            sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
@@ -200,7 +200,7 @@ describe "CardDialog" do
             # all assumptions and constants is executed
             expected_height = (font_double.height + 10) * (mock_card_list.length + 1) + 20 * 2
             expected_prompt_key = :some_expected_prompt
-            sut = CardDialog.new(
+            sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
@@ -208,7 +208,7 @@ describe "CardDialog" do
                 dialog_prompts={expected_prompt_key => prompt_image_double},
                 button_options={is_pressed: -> () {} })
             sut.set_prompt(expected_prompt_key)
-            sut.set_cards(mock_card_list)
+            sut.set_options(mock_card_list)
             sut.show
 
 
@@ -217,6 +217,63 @@ describe "CardDialog" do
 
             # test
             expect(background_double).to have_received(:draw).with(anything, anything, anything, anything, expected_height)
+        end
+    end
+
+    describe "handle_result" do
+        it "submitted block should be called" do
+            gui_double = double("gui", mouse_x: 125, mouse_y: 138)
+            background_double = double("background")
+            font_double = instance_double("font", height: 5, text_width: 20, draw_text: nil)
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image")
+            mock_card_list = [1,2,3]
+            sut = SimpleDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                dialog_prompts={},
+                button_options={is_pressed: -> () {} })
+            sut.set_options(mock_card_list)
+            sut.show
+            block_gets_called = false
+
+            # execute
+            sut.handle_result do |result|
+                block_gets_called = true
+            end
+
+            # test
+            expect(block_gets_called).to be true
+        end
+
+        it "expected result should be yielded" do
+            gui_double = double("gui", mouse_x: 125, mouse_y: 138)
+            background_double = double("background")
+            font_double = instance_double("font", height: 5, text_width: 20, draw_text: nil)
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image")
+            mock_card_list = [1,2,3]
+            sut = SimpleDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                dialog_prompts={},
+                button_options={is_pressed: -> () {} })
+            sut.set_options(mock_card_list)
+            sut.show
+            expected_result = mock_card_list[0]
+            actual_result = nil
+
+            # execute
+            sut.handle_result do |result|
+                actual_result = result
+            end
+
+            # test
+            expect(actual_result).to be_equal expected_result
         end
     end
 end

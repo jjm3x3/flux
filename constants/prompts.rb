@@ -1,6 +1,7 @@
 module Constants
     PROMPT_STRINGS = {
         default: "Some default prompt",
+        play_a_game_prompt: "Would you like to play a game?",
         are_you_sure_no_trade_prompt: "Are you sure you don't want to trade with anyone?",
         birthday_prompt: "is today your birthday",
         choose_card_to_play_prompt: "pick a card to play",

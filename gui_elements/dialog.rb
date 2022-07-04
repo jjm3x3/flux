@@ -1,73 +1,26 @@
 require "./gui_elements/button.rb"
 require "./gui_elements/zorder.rb"
 
-class Dialog
-    def initialize(window, button_options)
-        @visible = false
-        @baground_image = Gosu::Image.new("assets/onlineGreenSquare2.png", tileable: true)
-        @font = Gosu::Font.new(20)
-        @yes_button = Button.new(window, @font, "Yes", 120, 120, ZOrder::DIALOG_ITEMS, button_options)
-        widthOfYesButtonGuess = 30
-        spaceBetweenButtonts = 40
-        @no_button = Button.new(window, @font, "No", 120 + widthOfYesButtonGuess + spaceBetweenButtonts, 120, ZOrder::DIALOG_ITEMS, button_options)
-    end
-
-    def draw
-        if @visible
-            @baground_image.draw(100, 100, ZOrder::DIALOG, 0.25, 0.25)
-            @yes_button.set_visibility true
-            @no_button.set_visibility true
-            @yes_button.draw
-            @no_button.draw
-        end
-    end
-
-    def show
-        @visible = true
-        @yes_button.set_visibility true
-        @no_button.set_visibility true
-    end
-
-    def hide
-        @visible = false
-        @yes_button.set_visibility false
-        @no_button.set_visibility false
-    end
-
-    def is_visible?
-        @visible
-    end
-
-    def handle_result
-        if @yes_button.is_clicked?
-            yield(:yes_clicked)
-        elsif @no_button.is_clicked?
-            yield(:no_clicked)
-        else
-            yield(:nothing_clicked)
-        end
-    end
-
-end
-
-class CardDialog
+class SimpleDialog
     def initialize(window, background, font, logger, dialog_prompts, button_options)
         @window = window
-        @logger = logger
-        @visible = false
         @background = background
         @font = font
+        @logger = logger
+        @dialog_prompts = dialog_prompts
+        @current_prompt_image = dialog_prompts[:default]
         @button_options = button_options
-        @card_buttons = []
-        @selected_card = nil
+        @visible = false
+
+        @option_buttons = []
+        @selected_option = nil
         @dialog_x_position = 100
         @dialog_y_position = 100
         @boarder_width = 20
         @dialog_content_x_position = @dialog_x_position + @boarder_width
         @dialog_content_y_position = @dialog_y_position + @boarder_width
         @item_spacing = 10
-        @dialog_prompts = dialog_prompts
-        @current_prompt_image = dialog_prompts[:default]
+
         # height is assigned fairly arbitrarily here (assumes 3 options and prompt = 4)
         @height = (@font.height + @item_spacing) * 4 + @boarder_width * 2
         @width = 300
@@ -77,21 +30,21 @@ class CardDialog
         @dialog_prompts[symbol] = prompt_image
     end
 
-    def set_cards(card_list)
-        @card_list = card_list
-        @card_buttons = []
-        cardsDisplayed = 1 # accounts for prompt
-        card_list.each do |card|
+    def set_options(list)
+        @option_list = list
+        @option_buttons = []
+        items_displayed = 1 # accounts for prompt
+        list.each do |card|
             #TODO:: need to generate these statically
-            @card_buttons << Button.new(@window, @font, "#{card}",
+            @option_buttons << Button.new(@window, @font, "#{card}",
                                 @dialog_content_x_position,
-                                @dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
+                                @dialog_content_y_position + @item_spacing * items_displayed + @font.height * items_displayed,
                                 ZOrder::DIALOG_ITEMS,
                                 @button_options)
-            cardsDisplayed += 1
+            items_displayed += 1
         end
         # note cardsDisaplyed is really cardsDisplayed + 1 for the prompt
-        @height = (@font.height + @item_spacing) * cardsDisplayed + @boarder_width * 2
+        @height = (@font.height + @item_spacing) * items_displayed + @boarder_width * 2
     end
 
     def draw
@@ -102,36 +55,28 @@ class CardDialog
             @background.draw(@dialog_x_position, @dialog_y_position, ZOrder::DIALOG, x_scale, y_scale)
 
             @current_prompt_image.draw(@dialog_content_x_position, @dialog_content_y_position, ZOrder::DIALOG_ITEMS)
-            @card_buttons.each do |card_button|
-                card_button.draw
+            @option_buttons.each do |option_button|
+                option_button.draw
             end
         end
     end
 
     def show
         @visible = true
-        @card_buttons.each do |card_button|
-            card_button.set_visibility true
+        @option_buttons.each do |option_button|
+            option_button.set_visibility true
         end
     end
 
     def hide
         @visible = false
-        @card_buttons.each do |card_button|
-            card_button.set_visibility false
+        @option_buttons.each do |option_button|
+            option_button.set_visibility false
         end
     end
 
     def is_visible?
         @visible
-    end
-
-    def get_result
-        @selected_card
-    end
-
-    def reset_result
-        @selected_card = nil
     end
 
     def set_prompt(prompt_key)
@@ -144,16 +89,48 @@ class CardDialog
     end
 
     def handle_result
-        cardIndex = 0
-        @card_buttons.each do |card_button|
-            if card_button.is_clicked?
-                selectedCard = @card_list[cardIndex]
-                puts "#{selectedCard} was selected"
-                @selected_card = selectedCard
+        option_index = 0
+        @option_buttons.each do |option_button|
+            if option_button.is_clicked?
+                selected_option = @option_list[option_index]
+                @logger.debug "#{selected_option} was selected"
+                yield @option_list[option_index]
+            end
+            option_index += 1
+        end
+    end
+end
+
+class AsyncDialog < SimpleDialog
+    def initialize(window, background, font, logger, dialog_prompts, button_options)
+        super(window, background, font, logger, dialog_prompts, button_options)
+    end
+
+    def get_result
+        @selected_option
+    end
+
+    def reset_result
+        @selected_option = nil
+    end
+
+    def handle_result
+        option_index = 0
+        @option_buttons.each do |option_button|
+            if option_button.is_clicked?
+                selected_option = @option_list[option_index]
+                @logger.debug "#{selected_option} was selected"
+                @selected_option = selected_option
                 return true
             end
-            cardIndex += 1
+            option_index += 1
         end
         return false
+    end
+end
+
+class CardDialog < AsyncDialog
+    def initialize(window, background, font, logger, dialog_prompts, button_options)
+        super(window, background, font, logger, dialog_prompts, button_options)
     end
 end
