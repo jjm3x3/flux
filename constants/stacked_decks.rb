@@ -39,4 +39,10 @@ module StackedDecks
         Rule.new("Draw 9", 1, "XXXXX9"),
         Rule.new("Play tree", 2, "XXXXX3"),
     ]
+
+    NON_CARD_DIALOGS =
+    [
+        Rule.new("Play forever", 2, "XXXXXa"),
+        Action.new(9, "What a special day", "Rules for todays special")
+    ]
 end

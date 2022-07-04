@@ -11,6 +11,8 @@ class GameGui < Gosu::Window
         super 640, 960
         self.caption = "Fluxx"
 
+        @gui_input_manager =  GuiInputManager.new(self)
+
         @bakground_image = Gosu::Image.new("assets/onlinePurpleSquare.jpg", tileable: true)
         @font = Gosu::Font.new(20)
 
@@ -34,7 +36,7 @@ class GameGui < Gosu::Window
 
         dialog_prompts = initialize_dialog_prompts(prompt_strings)
 
-        @simple_dialog = SimpleDialog.new(
+        @simple_dialog = AsyncDialog.new(
             self,
             dialog_background,
             Gosu::Font.new(20),
@@ -85,7 +87,7 @@ class GameGui < Gosu::Window
            # TODO:: should check to make sure @list_dialog exists
            @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
        end
-       @game = Game.new(@logger, GuiInputManager.new(self), players, Random.new, @deck)
+       @game = Game.new(@logger, @gui_input_manager, players, Random.new, @deck)
        @game.setup
        @new_game_driver = GameDriver.new(@game, @logger)
        @current_cached_player = @new_game_driver.await.active_player.value
@@ -105,21 +107,26 @@ class GameGui < Gosu::Window
                 return
             end
             if @simple_dialog && @simple_dialog.is_visible?
-                @simple_dialog.handle_result do |result|
-                    @logger.debug "GameGui:button_up: are you sure dialog result is: #{result}"
+                if @simple_dialog.handle_result
                     @simple_dialog.hide
-                    if result == "Yes"
+                end
+                return
+            end
+            if @new_game_button.is_clicked?
+                start_game_future = @gui_input_manager.async.ask_yes_no(:play_a_game_prompt)
+                start_game_future.add_observer do |time, value|
+                    current_result = @simple_dialog.get_result
+                    @logger.debug "GameGui::button_up: the dialog starting a new game has result '#{current_result}'"
+                    @simple_dialog.hide
+                    if current_result == "Yes"
                         @new_game_button.set_visibility false
                         start_a_new_game
                     elsif result == "Back to Main Menu"
                         @new_game_driver = nil
                     end
                     # TODO:: do things for other cases
+                    @logger.debug "GameGui:button_up: start_game_future came back with value: #{value}"
                 end
-                return
-            end
-            if @new_game_button.is_clicked?
-                @simple_dialog.show
                 return
             end
             clickedCard = 0
@@ -204,6 +211,10 @@ class GameGui < Gosu::Window
         @game_stats.draw(@game)
 
         activePlayer = @current_cached_player
+        # adding a nil check here since during game setup there is a race condtion
+        if !activePlayer
+            return
+        end
         @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
         @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
@@ -242,11 +253,24 @@ class GameGui < Gosu::Window
         @list_dialog.draw
     end
 
+    # "TrueGuiInterface" stuff... well it used to be
     def get_dialog_result
         @list_dialog.get_result
     end
 
-    # "TrueGuiInterface" stuff... well it used to be
+    def get_simple_dialog_result
+        @simple_dialog.get_result
+    end
+
+    def display_simple_dialog(list, prompt_key)
+        @logger.debug "GameGui::display_simple_dialog called with prompt_key: '#{prompt_key}'"
+        @simple_dialog.set_options(list)
+        @simple_dialog.set_prompt prompt_key
+        @simple_dialog.reset_result
+        @logger.debug "After reseting the result of the simple dialog is '#{}'"
+        @simple_dialog.show
+    end
+
     def display_list_dialog(list, prompt_key)
         @logger.debug "GameGui::display_list_dialog called with prompt_key: '#{prompt_key}'"
         @list_dialog.set_options(list)
