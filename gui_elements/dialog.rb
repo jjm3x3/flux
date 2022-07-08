@@ -146,7 +146,7 @@ class SimpleDialog
 
     def set_content_position
         cardsDisplayed = 1 # accounts for prompt
-        @card_buttons.each do |button|
+        @option_buttons.each do |button|
             button.set_position(
                 dialog_content_x_position,
                 dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
