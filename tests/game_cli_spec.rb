@@ -26,7 +26,7 @@ describe "GameCli" do
             allow(game_driver_post_card_play_clean_up_result_double).to receive(:value).and_return(false, false, true)
             game_driver_has_winner_result_double = double("game_driver_has_result")
             has_winner_call_count = 0
-            allow(game_driver_has_winner_result_double).to receive(:value) do 
+            allow(game_driver_has_winner_result_double).to receive(:value) do
                has_winner_call_count += 1
                has_winner_call_count < 2000 ? false : true
             end
