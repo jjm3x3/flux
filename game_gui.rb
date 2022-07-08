@@ -12,6 +12,10 @@ class GameGui < Gosu::Window
         self.caption = "Fluxx"
 
         @bakground_image = Gosu::Image.new("assets/onlinePurpleSquare.jpg", tileable: true)
+        @game_background = Gosu::record(10, 10) do
+            my_purple = Gosu::Color.new(255, 120, 40, 139)
+            Gosu::draw_rect(0,0, 10, 10, my_purple, ZOrder::BAKGROUND)
+        end
         @font = Gosu::Font.new(20)
 
         @left_click_down = false
