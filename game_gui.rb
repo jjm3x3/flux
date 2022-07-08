@@ -206,7 +206,7 @@ class GameGui < Gosu::Window
     end
 
     def draw
-        @bakground_image.draw(0,0,0)
+        @game_background.draw(0, 0, ZOrder::BAKGROUND, width/10, height/10)
 
         if !@new_game_driver
             # for main menu
