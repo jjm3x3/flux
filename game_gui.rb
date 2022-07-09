@@ -21,7 +21,7 @@ class GameGui < Gosu::Window
         @left_click_down = false
         @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: method(:is_left_button_pressed)}
         @new_game_button = Button.new(self, Gosu::Image.from_text("New Game?", 20), 10, 10, ZOrder::GAME_ITEMS, @button_options)
-        @game_stats = GameStats.new(10, 10)
+        @game_stats = GameStats.new(400, 10)
         @current_displayed_cards = []
 
         @player_changed = true
