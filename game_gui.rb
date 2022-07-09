@@ -285,11 +285,11 @@ class GameGui < Gosu::Window
                 tool_tip_text = nil
                 # TODO:: need to fix this since card is now always a string it will never respond to rule_text
                 if card.respond_to?(:rule_text)  
-                    tool_tip_text = card.rule_text
+                    tool_tip_image = get_text_image(card.rule_text)
                 else
-                    tool_tip_text = card.name
+                    tool_tip_image = Gosu::Image.from_text(tool_tip_text,20)
                 end
-                these_button_options[:tool_tip] = ToolTip.new(self, Gosu::Image.from_text(tool_tip_text,20))
+                these_button_options[:tool_tip] = ToolTip.new(self, tool_tip_image)
                 if cardsDisplayed >= 5
                     cardsDisplayed = 0
                     hand_x += 185
