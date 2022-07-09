@@ -281,4 +281,31 @@ describe "SimpleDialog" do
             expect(background_double).to have_received(:draw).with(expected_x, expected_y, anything, anything, anything)
         end
     end
+
+    describe "check_clicked" do
+        it "should return true when provided windows mouse_x and mouse_y are within the boarders of the dialog" do
+            gui_double = double("gui", mouse_x: 120, mouse_y: 150)
+            background_double = double("background", width: 10, height: 10, draw: nil)
+            font_double = instance_double("font", height: 5)
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image", width: 40, draw: nil)
+            expected_prompt_key = :some_expected_prompt
+            sut = SimpleDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                dialog_prompts={expected_prompt_key => prompt_image_double},
+                button_options={is_pressed: -> () {} })
+            sut.set_prompt(expected_prompt_key)
+            sut.show
+
+            # execute
+            result = sut.check_clicked
+
+            # test
+            expect(result).to be true
+        end
+    end
+
 end
