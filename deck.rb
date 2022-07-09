@@ -99,8 +99,8 @@ end
 
 class StackedDeck < Deck
 
-  def initialize(anInterface, cardsToPutOnTop = [], startEmpty=false, withCreepers=true)
-    super(anInterface)
+  def initialize(logger, cardsToPutOnTop = [], startEmpty=false, withCreepers=true)
+    super(logger)
     if startEmpty
       @cards = []
     end

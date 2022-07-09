@@ -748,6 +748,25 @@ describe "game" do
             expect(theSecondPlayer.hand.size).to eq secondPlayersOriginalCardsCount - 1
             expect(theThirdPlayer.hand.size).to eq thridPlayersOriginalCardsCount - 1
         end
+
+        it "should skip players who have no cards" do
+            # setup
+            input_stream = StringIO.new("0\n0\n0\n")
+            testLogger = Logger.new($stdout)
+            numberOfPlayers = 2
+            testInterface = TestInterface.new(input_stream, test_outfile, {prompt: "some prompt"})
+            player_doubles = [double("player1", hand: [FakeCard.new("make believe")], give_card_to_player_prompt_name: :prompt, add_cards_to_hand: nil)]
+            player_doubles << double("player2", hand: [], add_cards_to_hand: nil)
+            theGame = Game.new(testLogger, testInterface, player_doubles)
+            theFirstPlayer = theGame.players[0]
+
+            # execute
+            theGame.taxation(theFirstPlayer)
+
+            # test
+            expect(testInterface.prompted).not_to be true
+        end
+
     end
 
     describe "todaysSpecial" do
@@ -928,9 +947,10 @@ describe "game" do
             random.define_singleton_method(:rand) do |num|
                 0
             end
-            testInterface = TestInterface.new(input_stream, test_outfile)
-            numberOfPlayers = 3
+            numberOfPlayers = 2
             players = Player.generate_players(numberOfPlayers)
+            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
+            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             theGame = Game.new(testLogger, testInterface, players, random)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new(0, "Thing1")
