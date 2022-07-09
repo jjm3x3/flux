@@ -54,14 +54,6 @@ class SimpleDialog
         @height = (@font.height + @item_spacing) * items_displayed + @boarder_width * 2
     end
 
-    def dialog_content_x_position
-        @dialog_x_position + @boarder_width
-    end
-
-    def dialog_content_y_position
-        @dialog_y_position + @boarder_width
-    end
-
     def draw
         if !@current_prompt_image; raise "Cannot draw a dialog without setting the prompt"; end
         if @visible
@@ -152,6 +144,14 @@ class SimpleDialog
             )
             cardsDisplayed += 1
         end
+    end
+
+    def dialog_content_x_position
+        @dialog_x_position + @boarder_width
+    end
+
+    def dialog_content_y_position
+        @dialog_y_position + @boarder_width
     end
 end
 
