@@ -318,6 +318,32 @@ class GameGui < Gosu::Window
         @list_dialog.draw
     end
 
+    def get_text_image(text)
+        words = text.split(" ")
+        lines = []
+        current_line = ""
+        words.each do |word|
+            @logger.debug "add word #{word} to tool tip"
+            if current_line.size + 1 + word.size > 30
+                lines << current_line
+                current_line = word + " "
+            else
+                current_line += word + " "
+            end
+        end
+        @logger.debug "the lines for the tip are #{lines}"
+        width = @font.text_width("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")  # shoudl be 30
+        height = (@font.height + 5) * lines.size
+        text_image = Gosu::record(width.to_i, height) do
+            line_count = 0
+            lines.each do |line|
+                @font.draw_text(line, 0, line_count * (@font.height + 5), ZOrder::DIALOG_ITEMS, 1.0, 1.0, Gosu::Color::WHITE)
+                line_count += 1
+            end
+        end
+        return text_image
+    end
+
     def get_dialog_result
         @list_dialog.get_result
     end
