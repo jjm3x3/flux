@@ -308,4 +308,36 @@ describe "SimpleDialog" do
         end
     end
 
+    describe "set_relative_position" do
+        it "should draw based what what is porvided in set_relative_position and infered from check_clicked" do
+            gui_double = double("gui", mouse_x: 120, mouse_y: 150)
+            background_double = double("background", width: 10, height: 10, draw: nil)
+            font_double = instance_double("font", height: 5)
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image", width: 40, draw: nil)
+            expected_prompt_key = :some_expected_prompt
+            draged_to_x = 130
+            draged_to_y = 160
+            expected_dialog_anchor_x = 100 + (draged_to_x - gui_double.mouse_x)
+            expected_dialog_anchor_y = 100 + (draged_to_y - gui_double.mouse_y)
+            sut = SimpleDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                dialog_prompts={expected_prompt_key => prompt_image_double},
+                button_options={is_pressed: -> () {} })
+            sut.set_prompt(expected_prompt_key)
+            sut.show
+
+            # execute
+            sut.check_clicked  # sets previous x,y at 120,150
+            sut.set_relative_position(draged_to_x, draged_to_y)
+            sut.draw
+
+
+            # test
+            expect(background_double).to have_received(:draw).with(expected_dialog_anchor_x, expected_dialog_anchor_y, anything, anything, anything)
+        end
+    end
 end
