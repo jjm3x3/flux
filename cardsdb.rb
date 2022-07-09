@@ -114,7 +114,7 @@ SQL
   [6, "Discard & Draw", "Disacrd your entire hand, then draw as many cards as you discarded. Do not count this card when determining how many replacement cards to draw."],
   [7, "Use What You Take", "Take a card at random from another player's hand, and play it"],
   [8, "Taxation!", "Each player mush choose 1 card from his or her hand and give it to you"],
-  [9, "Today's Special!", "Set your hand aside and draw 3 cards.  If today is your birthday, play all 3 cards. If today is a holoday or a specaial annicersary, play 2 of the cards. If it's just another day, play only 1 card. Discard the remainder."],
+  [9, "Today's Special!", "Set your hand aside and draw 3 cards. If today is your birthday, play all 3 cards. If today is a holiday or a specaial annicersary, play 2 of the cards. If it's just another day, play only 1 card. Discard the remainder."],
   [10, "Mix It All Up", "Gather up all Keepers and Creepers on the table, shuggle them together and deal them back out to all players, starting with yourself. These cards go back into play in front of whoever receives them."],
   [11, "Let's Do That Again!", "Search through the discard pile. Take any Action or New Rule card you wish and immediately play it. Anyone may look through the disacrd pile at any time, but the order of what's in the pile should not be changed."],
   [12, "Everybody Gets 1", "Set your hand aside. Count the number of players in the game (including yourself). Draw enough cards to give 1 card to each player, then do so. You decide who gets what."],
