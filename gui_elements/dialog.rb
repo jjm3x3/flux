@@ -24,9 +24,9 @@ class SimpleDialog
         @width = 300
     end
 
-    def check_clicked_at(x, y)
-        @previous_x = x
-        @previous_y = y
+    def check_clicked
+        @previous_x = @window.mouse_x
+        @previous_y = @window.mouse_y
         return is_clicked?
     end
 

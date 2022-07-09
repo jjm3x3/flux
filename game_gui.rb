@@ -155,8 +155,8 @@ class GameGui < Gosu::Window
         if Gosu.button_down? Gosu::MS_LEFT and !@left_click_down
             @logger.debug "left button click"
             @left_click_down = true
-            @list_dialog_clicked = @list_dialog.check_clicked_at(mouse_x, mouse_y)
-            @simple_dialog_clicked = @simple_dialog.check_clicked_at(mouse_x, mouse_y)
+            @list_dialog_clicked = @list_dialog.check_clicked
+            @simple_dialog_clicked = @simple_dialog.check_clicked
         end
 
         if @left_click_down 
