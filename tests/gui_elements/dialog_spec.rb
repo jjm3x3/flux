@@ -249,31 +249,95 @@ describe "SimpleDialog" do
         end
 
         it "expected result should be yielded" do
-            gui_double = double("gui", mouse_x: 125, mouse_y: 138)
-            background_double = double("background")
-            font_double = instance_double("font", height: 5, text_width: 20, draw_text: nil)
+        end
+    end
+
+    describe "set_position" do
+        it "should draw based what what is porvided in set_position" do
+            gui_double = double("gui")
+            background_double = double("background", width: 1, height: 1, draw: nil)
+            font_double = instance_double("font", height: 5)
             test_logger = Logger.new(test_outfile)
-            prompt_image_double = double("prompt image")
-            mock_card_list = [1,2,3]
+            prompt_image_double = double("prompt image", width: 400, draw: nil)
+            expected_prompt_key = :some_expected_prompt
+            expected_x = 50
+            expected_y = 100
             sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
                 test_logger,
-                dialog_prompts={},
+                dialog_prompts={expected_prompt_key => prompt_image_double},
                 button_options={is_pressed: -> () {} })
-            sut.set_options(mock_card_list)
+            sut.set_prompt(expected_prompt_key)
             sut.show
-            expected_result = mock_card_list[0]
-            actual_result = nil
 
             # execute
-            sut.handle_result do |result|
-                actual_result = result
-            end
+            sut.set_position(expected_x, expected_y)
+            sut.draw
+
 
             # test
-            expect(actual_result).to be_equal expected_result
+            expect(background_double).to have_received(:draw).with(expected_x, expected_y, anything, anything, anything)
+        end
+    end
+
+    describe "check_clicked" do
+        it "should return true when provided windows mouse_x and mouse_y are within the boarders of the dialog" do
+            gui_double = double("gui", mouse_x: 120, mouse_y: 150)
+            background_double = double("background", width: 10, height: 10, draw: nil)
+            font_double = instance_double("font", height: 5)
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image", width: 40, draw: nil)
+            expected_prompt_key = :some_expected_prompt
+            sut = SimpleDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                dialog_prompts={expected_prompt_key => prompt_image_double},
+                button_options={is_pressed: -> () {} })
+            sut.set_prompt(expected_prompt_key)
+            sut.show
+
+            # execute
+            result = sut.check_clicked
+
+            # test
+            expect(result).to be true
+        end
+    end
+
+    describe "set_relative_position" do
+        it "should draw based what what is porvided in set_relative_position and infered from check_clicked" do
+            gui_double = double("gui", mouse_x: 120, mouse_y: 150)
+            background_double = double("background", width: 10, height: 10, draw: nil)
+            font_double = instance_double("font", height: 5)
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image", width: 40, draw: nil)
+            expected_prompt_key = :some_expected_prompt
+            draged_to_x = 130
+            draged_to_y = 160
+            expected_dialog_anchor_x = 100 + (draged_to_x - gui_double.mouse_x)
+            expected_dialog_anchor_y = 100 + (draged_to_y - gui_double.mouse_y)
+            sut = SimpleDialog.new(
+                gui_double,
+                background_double,
+                font_double,
+                test_logger,
+                dialog_prompts={expected_prompt_key => prompt_image_double},
+                button_options={is_pressed: -> () {} })
+            sut.set_prompt(expected_prompt_key)
+            sut.show
+
+            # execute
+            sut.check_clicked  # sets previous x,y at 120,150
+            sut.set_relative_position(draged_to_x, draged_to_y)
+            sut.draw
+
+
+            # test
+            expect(background_double).to have_received(:draw).with(expected_dialog_anchor_x, expected_dialog_anchor_y, anything, anything, anything)
         end
     end
 end
