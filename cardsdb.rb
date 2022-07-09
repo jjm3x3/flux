@@ -111,7 +111,7 @@ SQL
   [3, "Jackpot!", "Draw 3 cards"],
   [4, "No Limits", "Discard all Hand and Keeper Limit rules currently in play."],
   [5, "Draw 3, play 2 of them", "Set your hand aside. Draw 3cards and play 2 of them. Discard the last card, then pick up your hand and continue with your turn. This card and all all cards played because of it, counted as a single play."],
-  [6, "Discard & Draw", "Disacrd your entire hand, then draw as many cards as you discarded.i Do not count this card when determining how many replacement cards to draw."],
+  [6, "Discard & Draw", "Disacrd your entire hand, then draw as many cards as you discarded. Do not count this card when determining how many replacement cards to draw."],
   [7, "Use What You Take", "Take a card at random from another player's hand, and play it"],
   [8, "Taxation!", "Each player mush choose 1 card from his or her hand and give it to you"],
   [9, "Today's Special!", "Set your hand aside and draw 3 cards.  If today is your birthday, play all 3 cards. If today is a holoday or a specaial annicersary, play 2 of the cards. If it's just another day, play only 1 card. Discard the remainder."],
