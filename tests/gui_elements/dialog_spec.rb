@@ -231,7 +231,11 @@ describe "SimpleDialog" do
             font_double = instance_double("font", height: 1, draw_text: nil)
             test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image", width: 400, draw: nil)
-            mock_card_list = [1,2,3]
+            mock_card_list = [
+                {item: 1, image: double("image1", draw: nil)},
+                {item: 2, image: double("image2", draw: nil)},
+                {item: 3, image: double("image3", draw: nil)},
+            ]
             # This test is mostly asserting that the following calculation with
             # all assumptions and constants is executed
             expected_height = (font_double.height + 10) * (mock_card_list.length + 1) + 20 * 2
@@ -263,7 +267,11 @@ describe "SimpleDialog" do
             font_double = instance_double("font", height: 5, text_width: 20, draw_text: nil)
             test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image")
-            mock_card_list = [1,2,3]
+            mock_card_list = [
+                {item: 1, image: double("image1", width: 20, height: 5)},
+                {item: 2, image: double("image2", width: 0, height: 0)},
+                {item: 3, image: double("image3", width: 0, height: 0)},
+            ]
             sut = SimpleDialog.new(
                 gui_double,
                 background_double,

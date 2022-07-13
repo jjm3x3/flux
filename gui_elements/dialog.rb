@@ -45,21 +45,25 @@ class SimpleDialog
         @dialog_prompts[symbol] = prompt_image
     end
 
-    def set_options(list)
-        @option_list = list
+    def set_options(list_of_options)
+        @option_map = {}
         @option_buttons = []
         items_displayed = 1 # accounts for prompt
-        list.each do |card|
-            #TODO:: need to generate these statically
+        card_index = 0
+        list_of_options.each do |list_option|
             @option_buttons << Button.new(
                                 @window,
-                                @font,
-                                "#{card}",
+                                nil,
+                                nil,
                                 dialog_content_x_position,
                                 dialog_content_y_position + @item_spacing * items_displayed + @font.height * items_displayed,
                                 ZOrder::DIALOG_ITEMS,
-                                @button_options)
+                                @button_options,
+                                list_option[:image],
+                                card_index)
+            @option_map[card_index] = list_option[:item]
             items_displayed += 1
+            card_index += 1
         end
         # note cardsDisaplyed is really cardsDisplayed + 1 for the prompt
         @height = (@font.height + @item_spacing) * items_displayed + @boarder_width * 2
@@ -111,14 +115,12 @@ class SimpleDialog
     end
 
     def handle_result
-        option_index = 0
         @option_buttons.each do |option_button|
             if option_button.is_clicked?
-                selected_option = @option_list[option_index]
+                selected_option = @option_map[option_button.id]
                 @logger.debug "#{selected_option} was selected"
-                yield @option_list[option_index]
+                yield selected_option
             end
-            option_index += 1
         end
     end
 
@@ -180,15 +182,13 @@ class AsyncDialog < SimpleDialog
     end
 
     def handle_result
-        option_index = 0
         @option_buttons.each do |option_button|
             if option_button.is_clicked?
-                selected_option = @option_list[option_index]
+                selected_option = @option_map[option_button.id]
                 @logger.debug "CardDialog::handle_result: #{selected_option} was selected"
                 @selected_option = selected_option
                 return true
             end
-            option_index += 1
         end
         return false
     end
