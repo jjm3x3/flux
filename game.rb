@@ -224,7 +224,11 @@ class Game
       @logger.info "Too bad no body has any cards for you"
       return
     end
-    selectedPlayer = @interface.await.choose_from_list(validOpponents, :which_player_to_pick_from_prompt).value
+    choice_result = @interface.await.choose_from_list(validOpponents, :which_player_to_pick_from_prompt)
+    if choice_result.state != :fulfilled
+      @logger.warn "Game::use_what_you_take: Was not able to choose an opponent because: #{choice_result.reason}"
+    end
+    selectedPlayer = choice_result.value
     randomPosition = Random.new.rand(selectedPlayer.hand.length)
     selectedCard = selectedPlayer.hand.delete_at(randomPosition)
     @logger.debug "playing #{selectedCard}"
