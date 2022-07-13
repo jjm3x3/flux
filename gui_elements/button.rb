@@ -1,5 +1,6 @@
 class Button
-    def initialize(window, font, text, x, y, z, options={}, image=nil)
+    attr_reader :id
+    def initialize(window, font, text, x, y, z, options={}, image=nil, id=0)
         @window = window
         @text = text
         @x = x
@@ -7,6 +8,7 @@ class Button
         @z = z
         @font = font
         @image = image
+        @id = id
         @visible = true
         @is_pressed = options[:is_pressed]
         @pressed_color = options[:pressed_color]
