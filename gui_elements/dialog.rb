@@ -54,13 +54,11 @@ class SimpleDialog
         list_of_options.each do |list_option|
             @option_buttons << Button.new(
                                 @window,
-                                nil,
-                                nil,
+                                list_option[:image],
                                 dialog_content_x_position,
                                 dialog_content_y_position + height_counter,
                                 ZOrder::DIALOG_ITEMS,
                                 @button_options,
-                                list_option[:image],
                                 card_index)
             height_counter += list_option[:image].height + @item_spacing
             @option_map[card_index] = list_option[:item]
