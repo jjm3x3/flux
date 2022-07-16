@@ -1,11 +1,12 @@
 class Button
-    def initialize(window, font, text, x, y, z, options={})
+    def initialize(window, font, text, x, y, z, options={}, image=nil)
         @window = window
         @text = text
         @x = x
         @y = y
         @z = z
         @font = font
+        @image = image
         @visible = true
         @is_pressed = options[:is_pressed]
         @pressed_color = options[:pressed_color]
