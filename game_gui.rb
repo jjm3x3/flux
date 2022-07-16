@@ -45,7 +45,15 @@ class GameGui < Gosu::Window
             dialog_prompts,
             @button_options)
 
-        @simple_dialog.set_options(["Yes", "No"])
+        @button_images = {
+            "Yes" => Gosu::Image.from_text("Yes", 20),
+            "No" => Gosu::Image.from_text("No", 20),
+            "Clockwise" => Gosu::Image.from_text("Clockwise", 20),
+            "Counter Clockwise" => Gosu::Image.from_text("Counter Clockwise", 20),
+            "Back to Main Menu" => Gosu::Image.from_text("Back to Main Menu", 20),
+        }
+
+        @simple_dialog.set_options(SimpleDialog.generate_dialog_options(["Yes", "No"], @button_images))
         @simple_dialog.set_prompt :play_a_game_prompt
 
         @list_dialog = CardDialog.new(
@@ -59,13 +67,6 @@ class GameGui < Gosu::Window
         @user_prompt_templates = user_prompt_templates
         @deck = deck
 
-        @button_images = {
-            "Yes": Gosu::Image.from_text("Yes", 20),
-            "No": Gosu::Image.from_text("No", 20),
-            "Clockwise": Gosu::Image.from_text("Clockwise", 20),
-            "Counter Clockwise": Gosu::Image.from_text("Counter Clockwise", 20),
-            "Back to Main Menu": Gosu::Image.from_text("Back to Main Menu", 20),
-        }
         @button_images = @button_images.merge(create_card_images(@deck))
 
         @new_game_driver = nil
