@@ -283,7 +283,8 @@ class GameGui < Gosu::Window
     # "TrueGuiInterface" stuff... well it used to be
     def display_list_dialog(list, prompt_key)
         @logger.debug "GameGui::display_list_dialog called with prompt_key: '#{prompt_key}'"
-        @list_dialog.set_options(list)
+        dialog_options = SimpleDialog.generate_dialog_options(list, @button_images)
+        @list_dialog.set_options(dialog_options)
         @list_dialog.set_prompt prompt_key
         @list_dialog.reset_result
         @list_dialog.show
