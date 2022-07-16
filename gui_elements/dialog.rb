@@ -49,25 +49,25 @@ class SimpleDialog
     def set_options(list_of_options)
         @option_map = {}
         @option_buttons = []
-        items_displayed = 1 # accounts for prompt
         card_index = 0
+        height_counter = @current_prompt_image.height + @item_spacing
         list_of_options.each do |list_option|
             @option_buttons << Button.new(
                                 @window,
                                 nil,
                                 nil,
                                 dialog_content_x_position,
-                                dialog_content_y_position + @item_spacing * items_displayed + @font.height * items_displayed,
+                                dialog_content_y_position + height_counter,
                                 ZOrder::DIALOG_ITEMS,
                                 @button_options,
                                 list_option[:image],
                                 card_index)
+            height_counter += list_option[:image].height + @item_spacing
             @option_map[card_index] = list_option[:item]
-            items_displayed += 1
             card_index += 1
         end
         # note cardsDisaplyed is really cardsDisplayed + 1 for the prompt
-        @height = (@font.height + @item_spacing) * items_displayed + @boarder_width * 2
+        @height = height_counter + @boarder_width * 2
     end
 
     def draw
