@@ -44,6 +44,22 @@ describe "Button" do
         end
     end
 
+    describe "is_clicked?" do
+        it "should interset with image when one is provided" do
+            # setup
+            window_double = double("window", mouse_x: 150 , mouse_y: 150)
+            font_double = double("font", text_width: 100, height: 100)
+            image_double = double("image", width: 200, height: 200)
+            sut = Button.new(window_double, font_double, "HI", 1,1,1, {is_pressed: ->() {} }, image_double)
+
+            # execute
+            result = sut.is_clicked?
+
+            # assert
+            expect(result).to be true
+        end
+    end
+
     describe "set_position" do
         it "should draw based what what is porvided in set_position" do
             # setup

@@ -40,10 +40,19 @@ class Button
 
     private
     def intersects
+        x_max = 0
+        y_max = 0
+        if @image
+            x_max = @image.width
+            y_max = @image.height
+        else
+            x_max = @font.text_width(@text)
+            y_max = @font.height
+        end
         mouse_past_left = @window.mouse_x > @x
-        mouse_past_right = @window.mouse_x >= @x + @font.text_width(@text)
+        mouse_past_right = @window.mouse_x >= @x + x_max
         mouse_below_top = @window.mouse_y > @y
-        mouse_above_bottom = @window.mouse_y < @y + @font.height
+        mouse_above_bottom = @window.mouse_y < @y + y_max
         mouse_past_left && !mouse_past_right && mouse_below_top && mouse_above_bottom
     end
 end
