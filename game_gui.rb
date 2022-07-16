@@ -237,7 +237,7 @@ class GameGui < Gosu::Window
             cardsDisplayed = 0
             @current_displayed_cards = []
             activePlayer.hand.each do |card|
-                newCardButton = Button.new(self, @font, "#{card}", 20, (permanents_start_y + permanents_height + 10 + @font.height) + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::GAME_ITEMS, @button_options)
+                newCardButton = Button.new(self, nil, nil, 20, (permanents_start_y + permanents_height + 10 + @font.height) + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::GAME_ITEMS, @button_options, Gosu::Image.from_text("#{card}", 20))
                 newCardButton.draw
                 @current_displayed_cards << newCardButton
                 cardsDisplayed += 1
