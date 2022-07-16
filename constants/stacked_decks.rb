@@ -39,4 +39,14 @@ module StackedDecks
         Rule.new("Draw 9", 1, "XXXXX9"),
         Rule.new("Play tree", 2, "XXXXX3"),
     ]
+
+    STARTS_WITH_DRAW_3_PLAY_2 =
+    [
+        Action.new(5, "draw a few play a couple", "Draw 3 cards the play 2 of them")
+    ]
+
+    QUICK_USER_PROMT =
+    [
+        Action.new(7, "grab & play" , "Grab a card from someone and play it immediately"),
+    ]
 end
