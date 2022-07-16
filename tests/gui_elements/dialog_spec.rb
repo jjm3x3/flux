@@ -333,7 +333,7 @@ describe "SimpleDialog" do
             background_double = double("background", width: 1, height: 1, draw: nil)
             font_double = instance_double("font", height: 5)
             test_logger = Logger.new(test_outfile)
-            prompt_image_double = double("prompt image", width: 400, draw: nil)
+            prompt_image_double = double("prompt image", width: 400, height: 200, draw: nil)
             expected_prompt_key = :some_expected_prompt
             expected_x = 50
             expected_y = 100
@@ -389,7 +389,7 @@ describe "SimpleDialog" do
             background_double = double("background", width: 10, height: 10, draw: nil)
             font_double = instance_double("font", height: 5)
             test_logger = Logger.new(test_outfile)
-            prompt_image_double = double("prompt image", width: 40, draw: nil)
+            prompt_image_double = double("prompt image", width: 40, height: 20, draw: nil)
             expected_prompt_key = :some_expected_prompt
             draged_to_x = 130
             draged_to_y = 160

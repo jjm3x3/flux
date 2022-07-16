@@ -40,6 +40,14 @@ class Button
         @y = y
     end
 
+    def height
+        if @image
+            @image.height
+        else
+            @font.height
+        end
+    end
+
     private
     def intersects
         x_max = 0
