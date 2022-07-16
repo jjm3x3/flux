@@ -17,7 +17,11 @@ class Button
         left_click_down = @is_pressed.call
 
         textcolor = left_click_down && intersects ? @pressed_color : @unpressed_color
-        @font.draw_text(@text, @x , @y, @z , 1.0, 1.0, textcolor)
+        if @image
+            @image.draw(@x , @y, @z, 1, 1, textcolor)
+        else
+            @font.draw_text(@text, @x , @y, @z , 1.0, 1.0, textcolor)
+        end
     end
 
     def is_clicked?
