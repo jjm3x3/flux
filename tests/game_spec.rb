@@ -752,7 +752,7 @@ describe "game" do
         it "should skip players who have no cards" do
             # setup
             input_stream = StringIO.new("0\n0\n0\n")
-            testLogger = Logger.new($stdout)
+            testLogger = Logger.new(test_outfile)
             numberOfPlayers = 2
             testInterface = TestInterface.new(input_stream, test_outfile, {prompt: "some prompt"})
             player_doubles = [double("player1", hand: [FakeCard.new("make believe")], give_card_to_player_prompt_name: :prompt, add_cards_to_hand: nil)]
