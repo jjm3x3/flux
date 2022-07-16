@@ -31,7 +31,8 @@ class SimpleDialog
         @item_spacing = 10
 
         # height is assigned fairly arbitrarily here (assumes 3 options and prompt = 4)
-        @height = (@font.height + @item_spacing) * 4 + @boarder_width * 2
+        assumed_font_height = 20  # TODO:: fix this just a hack to get out of depending on @font in ctor
+        @height = (assumed_font_height + @item_spacing) * 4 + @boarder_width * 2
         @width = 300
     end
 
