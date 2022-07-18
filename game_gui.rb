@@ -62,6 +62,9 @@ class GameGui < Gosu::Window
         @button_images = {
             "Yes": Gosu::Image.from_text("Yes", 20),
             "No": Gosu::Image.from_text("No", 20),
+            "Clockwise": Gosu::Image.from_text("Clockwise", 20),
+            "Counter Clockwise": Gosu::Image.from_text("Counter Clockwise", 20),
+            "Back to Main Menu": Gosu::Image.from_text("Back to Main Menu", 20),
         }
         @button_images = @button_images.merge(create_card_images(@deck))
 
