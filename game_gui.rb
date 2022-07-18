@@ -197,7 +197,8 @@ class GameGui < Gosu::Window
                 @card_played = false
                 if @new_game_driver.await.has_winner.value
                     # win flow
-                    @simple_dialog.set_options(["Back to Main Menu"])
+                    dialog_options = SimpleDialog.generate_dialog_options(["Back to Main Menu"], @button_images)
+                    @simple_dialog.set_options(dialog_options)
                     @simple_dialog.set_prompt(:exit)
                     @simple_dialog.show
                 elsif
