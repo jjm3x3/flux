@@ -6,7 +6,7 @@ class SimpleDialog
         list_options = []
         list.each do |item|
             list_option = {item: item}
-            list_option[:image] = images[item.name]
+            list_option[:image] = images[item.to_s]
             list_options << list_option
         end
         return list_options
