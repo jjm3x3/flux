@@ -95,6 +95,9 @@ class GameGui < Gosu::Window
         @logger.debug "I am starting a game then"
         numberOfPlayers = 3
         players = Player.generate_players(numberOfPlayers)
+        players.each do |player|
+            @button_images[player.name] = Gosu::Image.from_text(player.name, 20)
+        end
         PlayerPromptGenerator.generate_prompts(players, @user_prompt_templates).each do |key, prompt|
             # TODO:: should check to make sure @list_dialog exists
             @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
