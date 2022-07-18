@@ -59,7 +59,11 @@ class GameGui < Gosu::Window
         @user_prompt_templates = user_prompt_templates
         @deck = deck
 
-        @button_images = create_card_images(@deck)
+        @button_images = {
+            "Yes": Gosu::Image.from_text("Yes", 20),
+            "No": Gosu::Image.from_text("No", 20),
+        }
+        @button_images = @button_images.merge(create_card_images(@deck))
 
         @new_game_driver = nil
 
