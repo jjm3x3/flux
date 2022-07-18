@@ -20,6 +20,26 @@ describe "SimpleDialog" do
             # test
             #  none of the above calls should fail
         end
+
+        it "should raise an exception if there is no image with that name" do
+            # setup
+            test_player = Player.new("TestPlayer")
+            test_card = Card.new
+
+            # execute
+            expect do
+                SimpleDialog.generate_dialog_options(["yes", "no"], {})
+            end.to raise_error("No image found for item yes in image hash")
+            expect do
+                SimpleDialog.generate_dialog_options([Player.new("TestPlayer")], {})
+            end.to raise_error("No image found for item #{test_player.to_s} in image hash")
+            expect do
+                SimpleDialog.generate_dialog_options([test_card], {})
+            end.to  raise_error("No image found for item #{test_card.to_s} in image hash")
+
+            # test
+            #  none of the above calls should fail
+        end
     end
 
     describe "set_prompt" do

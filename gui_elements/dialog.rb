@@ -6,6 +6,7 @@ class SimpleDialog
         list_options = []
         list.each do |item|
             list_option = {item: item}
+            if !images.has_key? item.to_s; raise "No image found for item #{item.to_s} in image hash"; end
             list_option[:image] = images[item.to_s]
             list_options << list_option
         end
