@@ -2,6 +2,7 @@ require 'gosu'
 require './gui_elements/button.rb'
 require './gui_elements/game_stats.rb'
 require './gui_elements/dialog.rb'
+require './gui_elements/player_permanents.rb'
 require './game.rb'
 require './gui_input_manager.rb'
 require './game_driver.rb'
@@ -64,6 +65,8 @@ class GameGui < Gosu::Window
             logger,
             dialog_prompts,
             @button_options)
+
+        @current_players_permanents = PlayerPermanents.new(@font)
 
         @user_prompt_templates = user_prompt_templates
         @deck = deck
@@ -250,26 +253,23 @@ class GameGui < Gosu::Window
 
         @font.draw_text("It is player #{@game_state.active_player.name}'s turn", 400, 500, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
-        @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        @current_players_permanents.draw(@game_state.active_player, 400, 575)
 
-        permanentsDisplayed = 0
-        permananent_margin = 5
-        permanents_start_y = 10 + @game_stats.height + 10 + @font.height + 10 + @font.height + permananent_margin
-        @game_state.active_player.permanents.each do |card|
-            next_y = permanents_start_y + @font.height * permanentsDisplayed + permananent_margin * permanentsDisplayed
-            @font.draw_text("#{card}", 20, next_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
-            permanentsDisplayed += 1
-        end
-        permanents_height = @game_state.active_player.permanents.length * @font.height + @game_state.active_player.permanents.length * permananent_margin
-
-        @font.draw_text("Pick a card to play:", 10, permanents_start_y + permanents_height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        # draw hand
+        y_start = 700  # this should really be a function of the permanents
+        @font.draw_text("Pick a card to play:", 400 , y_start, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
         if @redraw_hand
 
             cardsDisplayed = 0
             @current_displayed_cards = []
             @game_state.active_player.cards_in_hand.each do |card|
-                newCardButton = Button.new(self, Gosu::Image.from_text("#{card}", 20), 20, (permanents_start_y + permanents_height + 10 + @font.height) + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::GAME_ITEMS, @button_options)
+                newCardButton = Button.new(self,
+                    Gosu::Image.from_text("#{card}", 20),
+                    20,
+                    (730) + 10 * cardsDisplayed + @font.height * cardsDisplayed,
+                    ZOrder::GAME_ITEMS,
+                    @button_options)
                 newCardButton.draw
                 @current_displayed_cards << newCardButton
                 cardsDisplayed += 1
