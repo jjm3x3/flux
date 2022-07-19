@@ -310,7 +310,7 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
             aStackedDeck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
-            theGame = Game.new(testLogger, testInterface, players, Random.new, aStackedDeck)
+            theGame = Game.new(testLogger, testInterface, players, aStackedDeck)
             keeper1 = Keeper.new(1, "thing1")
             keeper2 = Keeper.new(2, "thing2")
             theGame.setGoal(Goal.new("do a thing", [keeper1, keeper2], "some rule text"))
@@ -951,7 +951,7 @@ describe "game" do
             players = Player.generate_players(numberOfPlayers)
             player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
             testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
-            theGame = Game.new(testLogger, testInterface, players, random)
+            theGame = Game.new(testLogger, testInterface, players, StackedDeck.new(testLogger), random)
             theFirstPlayer = theGame.players[0]
             keeper1 = Keeper.new(0, "Thing1")
             warCreeper = Creeper.new(1, "I am WAR", "some rules text")
@@ -1689,7 +1689,7 @@ describe "game" do
             stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players, Random.new, stacked_deck)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             moenyKeeper = Keeper.new(19, "Pennies")
             theFirstPlayer.keepers << moenyKeeper
@@ -1777,7 +1777,7 @@ describe "game" do
             stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players, Random.new, stacked_deck)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             deathCreeper = Creeper.new(3, "dead", "Some rules text")
             theFirstPlayer.add_creeper(deathCreeper)
