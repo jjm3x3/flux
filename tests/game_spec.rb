@@ -646,14 +646,27 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
+            stackedCreepers = [
+                Creeper.new(1, "War", "with some rules text"),
+            ]
+            stacked_keepers = [
+                Keeper.new(1, "thing1"),
+                Keeper.new(2, "thing2"),
+                Keeper.new(3, "thing3"),
+                Keeper.new(4, "thing4"),
+                Keeper.new(5, "thing5"),
+                Keeper.new(6, "thing6"),
+                Keeper.new(7, "thing7"),
+                Keeper.new(8, "thing8"),
+                Keeper.new(9, "thing9"),
+            ]
+            stacked_deck = StackedDeck.new(testLogger, stackedCreepers + stacked_keepers)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theGame.setup
-            stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
-            cardsDrawn = 3
+            cardsDrawn = theFirstPlayer.hand.size
 
             # execute
             theGame.discard_and_draw(theFirstPlayer)
