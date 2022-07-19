@@ -9,10 +9,9 @@ class Game
 
   attr_accessor :ruleBase
   attr_accessor :players
-  attr_accessor :deck
   attr_accessor :discardPile
   attr_accessor :currentPlayerCounter
-  attr_reader :goal
+  attr_reader :deck, :goal
 
   def initialize(aLogger, aTrueInterface = CliInterface.new, players=[], aDeck = Deck.new(aLogger), aRandom = Random.new)
 
