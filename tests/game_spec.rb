@@ -16,9 +16,10 @@ describe "game" do
     describe "drawCards" do
         it "should draw bassed on the 'drawRule' if the count parmeter is :draw_rule" do
             # setup
+            input_stream = StringIO.new("")
             test_logger = Logger.new(test_outfile)
-            theGame = Game.new(test_logger)
-            theGame.deck = StackedDeck.new(test_logger)
+            test_interface = TestInterface.new(input_stream, test_outfile)
+            theGame = Game.new(test_logger, test_interface, players=[], StackedDeck.new(test_logger))
             theFirstPlayer = theGame.players[0]
             theDecksOriginalSize = theGame.deck.count
 
@@ -35,8 +36,8 @@ describe "game" do
             test_logger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(test_logger, testInterface, players)
-            theGame.deck = StackedDeck.new(test_logger, [Creeper.new(10000, "Screem", "Some very scary rule text")])
+            stacked_deck = StackedDeck.new(test_logger, [Creeper.new(10000, "Screem", "Some very scary rule text")])
+            theGame = Game.new(test_logger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -52,14 +53,14 @@ describe "game" do
             test_logger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(test_logger, testInterface, players)
-            theGame.deck = StackedDeck.new(test_logger,
+            stacked_deck = StackedDeck.new(test_logger,
                 [Creeper.new(10000, "Screem", "Some very scary rule text"),
                 Creeper.new(10001, "Lonelyness", "There is no one there"),
                 Creeper.new(10002, "Depression", "There is no one there"),
                 Creeper.new(10003, "Bankrupsy", "There is no one there"),
                 Creeper.new(10004, "Lust", "There is no one there"),
                 Creeper.new(10005, "Loss", "There is no one there")])
+            theGame = Game.new(test_logger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -77,10 +78,10 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger,
+            stacked_deck = StackedDeck.new(testLogger,
                 [Creeper.new(10000, "Screem", "Some very scary rule text"),
                 Creeper.new(10001, "Lonelyness", "There is no one there")])
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -96,12 +97,12 @@ describe "game" do
             test_logger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(test_logger, testInterface, players)
             theWholeDeck = [Keeper.new(10000, "wall art"),
                     Keeper.new(10001, "new car smell")]
-            theGame.deck = StackedDeck.new(test_logger,
+            stacked_deck = StackedDeck.new(test_logger,
                 theWholeDeck,
                 startempty=true)
+            theGame = Game.new(test_logger, testInterface, players, stacked_deck)
             thefirstplayer = theGame.players[0]
 
             # execute
@@ -117,11 +118,11 @@ describe "game" do
             test_logger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(test_logger, testInterface, players)
-            theGame.deck = StackedDeck.new(test_logger,
+            stacked_deck = StackedDeck.new(test_logger,
                 [Creeper.new(10000, "screem", "some very scary rule text"),
                     Creeper.new(10001, "lonelyness", "there is no one there")],
                 startempty=true)
+            theGame = Game.new(test_logger, testInterface, players, stacked_deck)
             thefirstplayer = theGame.players[0]
 
             # execute
@@ -220,11 +221,11 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
+            stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty= false, withCreepers=false)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
-            theGame.deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty= false, withCreepers=false)
             countOfDeckToStart = theGame.deck.count
 
             # execute
@@ -240,9 +241,9 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
+            stacked_deck = StackedDeck.new(testLogger, [warCreeper])
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
@@ -260,9 +261,9 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
+            stacked_deck = StackedDeck.new(testLogger, [warCreeper])
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
@@ -371,8 +372,8 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -389,8 +390,8 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             firstPlayersOriginalCardsCount = theFirstPlayer.hand.size
 
@@ -407,9 +408,9 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
+            stacked_deck = StackedDeck.new(testLogger, [warCreeper])
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -426,9 +427,9 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
+            stacked_deck = StackedDeck.new(testLogger, stackedCreepers)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
@@ -449,11 +450,11 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
             fakeCard1 = FakeCard.new("thing1")
             fakeCard2 = FakeCard.new("thing2")
             cardsToPutOnTop = [fakeCard1, fakeCard2]
-            theGame.deck = StackedDeck.new(testLogger, cardsToPutOnTop) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -471,8 +472,8 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -489,9 +490,9 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
+            stacked_deck = StackedDeck.new(testLogger, [warCreeper])
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -508,9 +509,9 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
+            stacked_deck = StackedDeck.new(testLogger, stackedCreepers)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
@@ -531,8 +532,8 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -548,8 +549,8 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -566,9 +567,9 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
+            stacked_deck = StackedDeck.new(testLogger, [warCreeper])
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -585,9 +586,9 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
+            stacked_deck = StackedDeck.new(testLogger, stackedCreepers)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
@@ -625,10 +626,10 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.setup
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
+            stacked_deck = StackedDeck.new(testLogger, [warCreeper])
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -669,8 +670,8 @@ describe "game" do
             testLogger = Logger.new(test_outfile)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             players = Player.generate_players(3)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             theSecondPlayer.set_hand([FakeCard.new("thing1"), FakeCard.new("thing2"), FakeCard.new("thing3")])
@@ -690,8 +691,8 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile)
             numberOfPlayers = 2
             players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger)
+            stacked_deck = StackedDeck.new(testLogger)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             theSecondPlayer = theGame.players[1]
             theSecondPlayer.set_hand([])
@@ -777,8 +778,8 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
 
@@ -796,8 +797,8 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
 
@@ -815,8 +816,8 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
 
@@ -834,8 +835,8 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players)
-            theGame.deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             deckCountBeforeExecution = theGame.deck.count
 
@@ -853,9 +854,9 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
+            stacked_deck = StackedDeck.new(testLogger, [warCreeper])
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -873,9 +874,9 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
             numberOfPlayers = 3
             players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
+            stacked_deck = StackedDeck.new(testLogger, stackedCreepers)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
@@ -1006,9 +1007,9 @@ describe "game" do
             players = Player.generate_players(numberOfPlayers)
             player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
             testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
-            theGame = Game.new(testLogger, testInterface, players)
+            stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
-            theGame.deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
             originalDeckCount = theGame.deck.count
 
             # execute
@@ -1085,9 +1086,9 @@ describe "game" do
             players = Player.generate_players(numberOfPlayers)
             player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
             testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
-            theGame = Game.new(testLogger, testInterface, players)
             warCreeper = Creeper.new(1, "War", "with some rules text")
-            theGame.deck = StackedDeck.new(testLogger, [warCreeper])
+            stacked_deck = StackedDeck.new(testLogger, [warCreeper])
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -1106,9 +1107,9 @@ describe "game" do
             players = Player.generate_players(numberOfPlayers)
             player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
             testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
-            theGame = Game.new(testLogger, testInterface, players)
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
-            theGame.deck = StackedDeck.new(testLogger, stackedCreepers)
+            stacked_deck = StackedDeck.new(testLogger, stackedCreepers)
+            theGame = Game.new(testLogger, testInterface, players, stacked_deck)
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
