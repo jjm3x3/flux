@@ -263,10 +263,17 @@ class GameGui < Gosu::Window
 
             cardsDisplayed = 0
             @current_displayed_cards = []
+            hand_x = 0
+            left_shift = (@game_state.active_player.cards_in_hand.count / 5) * 40
+            hand_x = 420 - left_shift
             @game_state.active_player.cards_in_hand.each do |card|
+                if cardsDisplayed >= 5
+                    cardsDisplayed = 0
+                    hand_x += 185
+                end
                 newCardButton = Button.new(self,
                     Gosu::Image.from_text("#{card}", 20),
-                    20,
+                    hand_x,
                     (730) + 10 * cardsDisplayed + @font.height * cardsDisplayed,
                     ZOrder::GAME_ITEMS,
                     @button_options)
