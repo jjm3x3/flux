@@ -5,7 +5,7 @@ describe "Button" do
         it "should construct" do
             # setup
             window_double = double("window")
-            image_double = double("image", draw: nil)
+            image_double = double("image")
 
             # execute
             Button.new(window_double, image_double, 1,1,1)
