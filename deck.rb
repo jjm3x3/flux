@@ -31,6 +31,12 @@ class Deck
     drawnCards
   end
 
+  def each
+    @cards.each do |card|
+      yield card
+    end
+  end
+
   def count
     @cards.length
   end

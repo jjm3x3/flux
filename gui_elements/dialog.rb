@@ -2,6 +2,17 @@ require "./gui_elements/button.rb"
 require "./gui_elements/zorder.rb"
 
 class SimpleDialog
+    def self.generate_dialog_options(list, images)
+        list_options = []
+        list.each do |item|
+            list_option = {item: item}
+            if !images.has_key? item.to_s; raise "No image found for item #{item.to_s} in image hash"; end
+            list_option[:image] = images[item.to_s]
+            list_options << list_option
+        end
+        return list_options
+    end
+
     def initialize(window, background, font, logger, dialog_prompts, button_options)
         @window = window
         @background = background

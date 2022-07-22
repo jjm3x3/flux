@@ -59,12 +59,30 @@ class GameGui < Gosu::Window
         @user_prompt_templates = user_prompt_templates
         @deck = deck
 
+        @button_images = {
+            "Yes": Gosu::Image.from_text("Yes", 20),
+            "No": Gosu::Image.from_text("No", 20),
+            "Clockwise": Gosu::Image.from_text("Clockwise", 20),
+            "Counter Clockwise": Gosu::Image.from_text("Counter Clockwise", 20),
+            "Back to Main Menu": Gosu::Image.from_text("Back to Main Menu", 20),
+        }
+        @button_images = @button_images.merge(create_card_images(@deck))
+
         @new_game_driver = nil
 
         @current_cached_player = nil
         @current_player_future = nil
 
         @play_card_future = nil
+    end
+
+    def create_card_images(deck)
+        result = {}
+        deck.each do |card|
+            result[card.name] = Gosu::Image.from_text(card.name.to_s, 20)
+        end
+
+        return result
     end
 
     def initialize_dialog_prompts(prompt_strings)
@@ -84,6 +102,9 @@ class GameGui < Gosu::Window
         @logger.debug "I am starting a game then"
         numberOfPlayers = 3
         players = Player.generate_players(numberOfPlayers)
+        players.each do |player|
+            @button_images[player.name] = Gosu::Image.from_text(player.name, 20)
+        end
         PlayerPromptGenerator.generate_prompts(players, @user_prompt_templates).each do |key, prompt|
             # TODO:: should check to make sure @list_dialog exists
             @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))

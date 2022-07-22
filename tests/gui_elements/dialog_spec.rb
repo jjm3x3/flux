@@ -6,6 +6,42 @@ describe "SimpleDialog" do
 
     test_outfile = Tempfile.new 'test_output'
 
+    describe "generate_prompt_options" do
+        it "should require items in the list to respond  to to_s" do
+            # setup
+            test_player = Player.new("TestPlayer")
+            test_card = Card.new
+
+            # execute
+            SimpleDialog.generate_dialog_options(["Yes", "No"], {"Yes" => "Some yes image", "No" => "Some no image"})
+            SimpleDialog.generate_dialog_options([test_player], {test_player.to_s => "testplayer image"})
+            SimpleDialog.generate_dialog_options([test_card], {test_card.to_s => "testcard image"})
+
+            # test
+            #  none of the above calls should fail
+        end
+
+        it "should raise an exception if there is no image with that name" do
+            # setup
+            test_player = Player.new("TestPlayer")
+            test_card = Card.new
+
+            # execute
+            expect do
+                SimpleDialog.generate_dialog_options(["yes", "no"], {})
+            end.to raise_error("No image found for item yes in image hash")
+            expect do
+                SimpleDialog.generate_dialog_options([Player.new("TestPlayer")], {})
+            end.to raise_error("No image found for item #{test_player.to_s} in image hash")
+            expect do
+                SimpleDialog.generate_dialog_options([test_card], {})
+            end.to  raise_error("No image found for item #{test_card.to_s} in image hash")
+
+            # test
+            #  none of the above calls should fail
+        end
+    end
+
     describe "set_prompt" do
         it "should not call draw_text on font when prompt symbol is passed" do
             # setup
