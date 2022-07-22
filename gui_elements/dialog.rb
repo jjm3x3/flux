@@ -31,7 +31,8 @@ class SimpleDialog
         @item_spacing = 10
 
         # height is assigned fairly arbitrarily here (assumes 3 options and prompt = 4)
-        @height = (@font.height + @item_spacing) * 4 + @boarder_width * 2
+        assumed_font_height = 20  # TODO:: fix this just a hack to get out of depending on @font in ctor
+        @height = (assumed_font_height + @item_spacing) * 4 + @boarder_width * 2
         @width = 300
     end
 
@@ -45,24 +46,28 @@ class SimpleDialog
         @dialog_prompts[symbol] = prompt_image
     end
 
-    def set_options(list)
-        @option_list = list
+    def set_options(list_of_options)
+        @option_map = {}
         @option_buttons = []
-        items_displayed = 1 # accounts for prompt
-        list.each do |card|
-            #TODO:: need to generate these statically
+        card_index = 0
+        height_counter = @current_prompt_image.height + @item_spacing
+        list_of_options.each do |list_option|
             @option_buttons << Button.new(
                                 @window,
-                                @font,
-                                "#{card}",
+                                nil,
+                                nil,
                                 dialog_content_x_position,
-                                dialog_content_y_position + @item_spacing * items_displayed + @font.height * items_displayed,
+                                dialog_content_y_position + height_counter,
                                 ZOrder::DIALOG_ITEMS,
-                                @button_options)
-            items_displayed += 1
+                                @button_options,
+                                list_option[:image],
+                                card_index)
+            height_counter += list_option[:image].height + @item_spacing
+            @option_map[card_index] = list_option[:item]
+            card_index += 1
         end
         # note cardsDisaplyed is really cardsDisplayed + 1 for the prompt
-        @height = (@font.height + @item_spacing) * items_displayed + @boarder_width * 2
+        @height = height_counter + @boarder_width * 2
     end
 
     def draw
@@ -111,14 +116,12 @@ class SimpleDialog
     end
 
     def handle_result
-        option_index = 0
         @option_buttons.each do |option_button|
             if option_button.is_clicked?
-                selected_option = @option_list[option_index]
+                selected_option = @option_map[option_button.id]
                 @logger.debug "#{selected_option} was selected"
-                yield @option_list[option_index]
+                yield selected_option
             end
-            option_index += 1
         end
     end
 
@@ -148,12 +151,13 @@ class SimpleDialog
 
     def set_content_position
         cardsDisplayed = 1 # accounts for prompt
+        height_counter = @current_prompt_image.height + @item_spacing
         @option_buttons.each do |button|
             button.set_position(
                 dialog_content_x_position,
-                dialog_content_y_position + @item_spacing * cardsDisplayed + @font.height * cardsDisplayed,
+                dialog_content_y_position + height_counter
             )
-            cardsDisplayed += 1
+            height_counter += button.height + @item_spacing
         end
     end
 
@@ -180,15 +184,13 @@ class AsyncDialog < SimpleDialog
     end
 
     def handle_result
-        option_index = 0
         @option_buttons.each do |option_button|
             if option_button.is_clicked?
-                selected_option = @option_list[option_index]
+                selected_option = @option_map[option_button.id]
                 @logger.debug "CardDialog::handle_result: #{selected_option} was selected"
                 @selected_option = selected_option
                 return true
             end
-            option_index += 1
         end
         return false
     end

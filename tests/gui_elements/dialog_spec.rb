@@ -42,6 +42,34 @@ describe "SimpleDialog" do
         end
     end
 
+    describe "initialize" do
+        it "should support constructing without a font" do
+            # setup
+            gui_double = double("gui")
+            background_double = double("background", width: 1, height: 1, draw: nil)
+            font_double = instance_double("font", height: 1)
+            input_stream = StringIO.new("")
+            test_logger = Logger.new(test_outfile)
+            prompt_image_double = double("prompt image", width: 1, draw: nil)
+            expected_prompt_key = :some_expected_prompt
+
+            # execute
+            sut = SimpleDialog.new(
+                gui_double,
+                background_double,
+                nil,
+                test_logger,
+                dialog_prompts={expected_prompt_key => prompt_image_double},
+                button_options={})
+
+
+            expect(font_double).not_to receive(:draw_text).with(any_args)
+
+            # test
+            expect(sut).not_to be nil
+        end
+    end
+
     describe "set_prompt" do
         it "should not call draw_text on font when prompt symbol is passed" do
             # setup
@@ -204,7 +232,8 @@ describe "SimpleDialog" do
             prompt_image_double = double("prompt image", width: 400, draw: nil)
             # This test is mostly asserting that the following calculation with
             # all assumptions and constants is executed
-            expected_height = (font_double.height + 10) * 4 + 20 * 2
+            assumed_font_height = 20  # needs to match the constant in the dialog ctor
+            expected_height = (assumed_font_height + 10) * 4 + 20 * 2
             expected_prompt_key = :some_expected_prompt
             sut = SimpleDialog.new(
                 gui_double,
@@ -224,17 +253,23 @@ describe "SimpleDialog" do
             expect(background_double).to have_received(:draw).with(anything, anything, anything, anything, expected_height)
         end
 
-        it "should call draw with a height that is based on how many cards are set" do
+        it "should call draw with a height that is based on cumulative height of promt and button images" do
             # setup
             gui_double = double("gui")
             background_double = double("background", width: 1, height: 1, draw: nil)
             font_double = instance_double("font", height: 1, draw_text: nil)
             test_logger = Logger.new(test_outfile)
-            prompt_image_double = double("prompt image", width: 400, draw: nil)
-            mock_card_list = [1,2,3]
+            prompt_image_double = double("prompt image", width: 400, height: 5, draw: nil)
+            mock_card_list = [
+                {item: 1, image: double("image1", height: 10, draw: nil)},
+                {item: 2, image: double("image2", height: 20, draw: nil)},
+                {item: 3, image: double("image3", height: 30, draw: nil)},
+            ]
             # This test is mostly asserting that the following calculation with
             # all assumptions and constants is executed
-            expected_height = (font_double.height + 10) * (mock_card_list.length + 1) + 20 * 2
+            expected_height = (prompt_image_double.height + 10) + mock_card_list.reduce(0) do |add, item|
+                add += item[:image].height + 10
+            end + (20 * 2) # last part is border
             expected_prompt_key = :some_expected_prompt
             sut = SimpleDialog.new(
                 gui_double,
@@ -262,14 +297,18 @@ describe "SimpleDialog" do
             background_double = double("background")
             font_double = instance_double("font", height: 5, text_width: 20, draw_text: nil)
             test_logger = Logger.new(test_outfile)
-            prompt_image_double = double("prompt image")
-            mock_card_list = [1,2,3]
+            prompt_image_double = double("prompt image", height: 5)
+            mock_card_list = [
+                {item: 1, image: double("image1", width: 20, height: 5)},
+                {item: 2, image: double("image2", width: 0, height: 0)},
+                {item: 3, image: double("image3", width: 0, height: 0)},
+            ]
             sut = SimpleDialog.new(
                 gui_double,
                 background_double,
                 font_double,
                 test_logger,
-                dialog_prompts={},
+                dialog_prompts={default: prompt_image_double},
                 button_options={is_pressed: -> () {} })
             sut.set_options(mock_card_list)
             sut.show
@@ -294,7 +333,7 @@ describe "SimpleDialog" do
             background_double = double("background", width: 1, height: 1, draw: nil)
             font_double = instance_double("font", height: 5)
             test_logger = Logger.new(test_outfile)
-            prompt_image_double = double("prompt image", width: 400, draw: nil)
+            prompt_image_double = double("prompt image", width: 400, height: 200, draw: nil)
             expected_prompt_key = :some_expected_prompt
             expected_x = 50
             expected_y = 100
@@ -350,7 +389,7 @@ describe "SimpleDialog" do
             background_double = double("background", width: 10, height: 10, draw: nil)
             font_double = instance_double("font", height: 5)
             test_logger = Logger.new(test_outfile)
-            prompt_image_double = double("prompt image", width: 40, draw: nil)
+            prompt_image_double = double("prompt image", width: 40, height: 20, draw: nil)
             expected_prompt_key = :some_expected_prompt
             draged_to_x = 130
             draged_to_y = 160
