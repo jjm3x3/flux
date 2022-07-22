@@ -5,10 +5,10 @@ describe "Button" do
         it "should construct" do
             # setup
             window_double = double("window")
-            font_double = double("font")
+            image_double = double("image", draw: nil)
 
             # execute
-            Button.new(window_double, font_double, "HI", 1,1,1)
+            Button.new(window_double, image_double, 1,1,1)
 
             # assert
             # nothing much to assert just making sure this works
@@ -19,8 +19,8 @@ describe "Button" do
         it "should draw" do
             # setup
             window_double = double("window")
-            font_double = double("font", draw_text: nil)
-            sut = Button.new(window_double, font_double, "HI", 1,1,1, {is_pressed: ->() {} })
+            image_double = double("image", draw: nil)
+            sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
 
             # execute
             sut.draw
@@ -32,9 +32,8 @@ describe "Button" do
         it "should prefer drawing an image if one is injected" do
             # setup
             window_double = double("window")
-            font_double = double("font", draw_text: nil)
             image_double = double("image", draw: nil)
-            sut = Button.new(window_double, font_double, "HI", 1,1,1, {is_pressed: ->() {} }, image_double)
+            sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
 
             # execute
             sut.draw
@@ -45,12 +44,11 @@ describe "Button" do
     end
 
     describe "is_clicked?" do
-        it "should interset with image when one is provided" do
+        it "should intersect with image" do
             # setup
             window_double = double("window", mouse_x: 150 , mouse_y: 150)
-            font_double = double("font", text_width: 100, height: 100)
             image_double = double("image", width: 200, height: 200)
-            sut = Button.new(window_double, font_double, "HI", 1,1,1, {is_pressed: ->() {} }, image_double)
+            sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
 
             # execute
             result = sut.is_clicked?
@@ -64,8 +62,8 @@ describe "Button" do
         it "should draw based what what is porvided in set_position" do
             # setup
             window_double = double("window")
-            font_double = double("font", draw_text: nil)
-            sut = Button.new(window_double, font_double, "HI", 1,1,1, {is_pressed: ->() {} })
+            image_double = double("image", draw: nil)
+            sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
             expected_x = 100
             expected_y = 100
 
@@ -74,7 +72,7 @@ describe "Button" do
             sut.draw
 
             # assert
-            expect(font_double).to have_received(:draw_text).with(anything, expected_x, expected_y, anything, anything, anything, anything)
+            expect(image_double).to have_received(:draw).with(expected_x, expected_y, anything, anything, anything, anything)
         end
     end
 end

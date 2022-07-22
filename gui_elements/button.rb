@@ -1,13 +1,11 @@
 class Button
     attr_reader :id
-    def initialize(window, font, text, x, y, z, options={}, image=nil, id=0)
+    def initialize(window, image, x, y, z, options={}, id=0)
         @window = window
-        @text = text
+        @image = image
         @x = x
         @y = y
         @z = z
-        @font = font
-        @image = image
         @id = id
         @visible = true
         @is_pressed = options[:is_pressed]
@@ -19,11 +17,7 @@ class Button
         left_click_down = @is_pressed.call
 
         textcolor = left_click_down && intersects ? @pressed_color : @unpressed_color
-        if @image
-            @image.draw(@x , @y, @z, 1, 1, textcolor)
-        else
-            @font.draw_text(@text, @x , @y, @z , 1.0, 1.0, textcolor)
-        end
+        @image.draw(@x , @y, @z, 1, 1, textcolor)
     end
 
     def is_clicked?
@@ -50,15 +44,8 @@ class Button
 
     private
     def intersects
-        x_max = 0
-        y_max = 0
-        if @image
-            x_max = @image.width
-            y_max = @image.height
-        else
-            x_max = @font.text_width(@text)
-            y_max = @font.height
-        end
+        x_max = @image.width
+        y_max = @image.height
         mouse_past_left = @window.mouse_x > @x
         mouse_past_right = @window.mouse_x >= @x + x_max
         mouse_below_top = @window.mouse_y > @y

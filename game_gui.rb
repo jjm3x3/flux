@@ -19,7 +19,7 @@ class GameGui < Gosu::Window
 
         @left_click_down = false
         @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: method(:is_left_button_pressed)}
-        @new_game_button = Button.new(self, nil, nil, 10, 10, ZOrder::GAME_ITEMS, @button_options, Gosu::Image.from_text("New Game?", 20))
+        @new_game_button = Button.new(self, Gosu::Image.from_text("New Game?", 20), 10, 10, ZOrder::GAME_ITEMS, @button_options)
         @game_stats = GameStats.new(10, 10)
         @game = nil
         @current_displayed_cards = []
@@ -260,7 +260,7 @@ class GameGui < Gosu::Window
             cardsDisplayed = 0
             @current_displayed_cards = []
             activePlayer.hand.each do |card|
-                newCardButton = Button.new(self, nil, nil, 20, (permanents_start_y + permanents_height + 10 + @font.height) + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::GAME_ITEMS, @button_options, Gosu::Image.from_text("#{card}", 20))
+                newCardButton = Button.new(self, Gosu::Image.from_text("#{card}", 20), 20, (permanents_start_y + permanents_height + 10 + @font.height) + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::GAME_ITEMS, @button_options)
                 newCardButton.draw
                 @current_displayed_cards << newCardButton
                 cardsDisplayed += 1
