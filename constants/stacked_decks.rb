@@ -49,4 +49,11 @@ module StackedDecks
     [
         Action.new(7, "grab & play" , "Grab a card from someone and play it immediately"),
     ]
+
+    ROTATE_HANDS_COMBO =
+    [
+        Action.new(14, "Some rotation", "Lets rotate"),
+        Rule.new("Draw 9", 1, "XXXXX9"),
+        Rule.new("Play tree", 2, "XXXXX3"),
+    ]
 end

@@ -360,7 +360,11 @@ class Game
   end
 
   def rotateHands(player)
-    direction = @interface.await.ask_rotation(:rotation_prompt).value
+    direction_result = @interface.await.ask_rotation(:rotation_prompt)
+    if direction_result != :fulfilled
+      @logger.warn("Choose direction may not have been fulfilled because #{direction_result.reason}")
+    end
+    direction = direction_result.value
 
     #candidate for debug
     @players.each do |player|
