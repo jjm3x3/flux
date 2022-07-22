@@ -51,6 +51,7 @@ class GameGui < Gosu::Window
             "Clockwise" => Gosu::Image.from_text("Clockwise", 20),
             "Counter Clockwise" => Gosu::Image.from_text("Counter Clockwise", 20),
             "Back to Main Menu" => Gosu::Image.from_text("Back to Main Menu", 20),
+            "no_one" => Gosu::Image.from_text("No One", 20),
         }
 
         @simple_dialog.set_options(SimpleDialog.generate_dialog_options(["Yes", "No"], @button_images))
