@@ -56,4 +56,9 @@ module StackedDecks
         Rule.new("Draw 9", 1, "XXXXX9"),
         Rule.new("Play tree", 2, "XXXXX3"),
     ]
+
+    EXCHANGE_KEEPERS_COMBO =
+    [
+        Action.new(16, "Exchanges some stuff", "EXCHANGE!!")
+    ]
 end
