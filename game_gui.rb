@@ -195,6 +195,7 @@ class GameGui < Gosu::Window
 
         if @new_game_driver
             if @card_played
+                @logger.debug "GameGui::update: Card has been played, update accordingly"
                 @card_played = false
                 if @new_game_driver.await.has_winner.value
                     # win flow
