@@ -116,7 +116,12 @@ class GameGui < Gosu::Window
         @game = Game.new(@logger, GuiInputManager.new(self), players, @deck)
         @game.setup
         @new_game_driver = GameDriver.new(@game, @logger)
-        @logger.debug "GameGui::start_a_new_game: Geting cached player"
+        game_state_result = @new_game_driver.await.get_game_state
+        if game_state_result.state != :fulfilled
+            @logger.warn "GameGui::start_a_new_game: Was not able to initialize game_state because #{game_state_result.reason}"
+        end
+        @game_state = game_state_result.value
+        @logger.debug "GameGui::start_a_new_game: game_state setup and geting cached player"
         @current_cached_player = @new_game_driver.await.active_player.value
         @logger.debug "GameGui::start_a_new_game: New game started"
     end

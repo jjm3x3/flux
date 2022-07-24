@@ -79,6 +79,10 @@ class GameDriver
       @game.winner
     end
 
+    def get_game_state
+      GameState.new(@game.deck.count, @game.discardPile.size, @game.goal.to_s, @game.ruleBase)
+    end
+
     private
     def checkForWinner
       if @game.winner
