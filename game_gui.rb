@@ -114,7 +114,9 @@ class GameGui < Gosu::Window
         @game = Game.new(@logger, GuiInputManager.new(self), players, Random.new, @deck)
         @game.setup
         @new_game_driver = GameDriver.new(@game, @logger)
+        @logger.debug "GameGui::start_a_new_game: Geting cached player"
         @current_cached_player = @new_game_driver.await.active_player.value
+        @logger.debug "GameGui::start_a_new_game: New game started"
     end
 
     def button_up(id)
