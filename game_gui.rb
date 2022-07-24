@@ -197,20 +197,23 @@ class GameGui < Gosu::Window
             if @card_played
                 @logger.debug "GameGui::update: Card has been played, update accordingly"
                 @card_played = false
-                if @new_game_driver.await.has_winner.value
-                    # win flow
-                    dialog_options = SimpleDialog.generate_dialog_options(["Back to Main Menu"], @button_images)
-                    @simple_dialog.set_options(dialog_options)
-                    @simple_dialog.set_prompt(:exit)
-                    @simple_dialog.show
-                elsif
-                    clean_up_future = @new_game_driver.async.post_card_play_clean_up
-                    clean_up_future.add_observer do |time, value|
-                        if value # this means the turn is over
-                            @player_changed = true
-                            setup_cached_player
+                game_has_winner_future = @new_game_driver.async.has_winner
+                game_has_winner_future.add_observer do |time, value|
+                    if value
+                        # win flow
+                        dialog_options = SimpleDialog.generate_dialog_options(["Back to Main Menu"], @button_images)
+                        @simple_dialog.set_options(dialog_options)
+                        @simple_dialog.set_prompt(:exit)
+                        @simple_dialog.show
+                    else
+                        clean_up_future = @new_game_driver.async.post_card_play_clean_up
+                        clean_up_future.add_observer do |time, value|
+                            if value # this means the turn is over
+                                @player_changed = true
+                                setup_cached_player
+                            end
+                            @redraw_hand =true
                         end
-                        @redraw_hand =true
                     end
                 end
 
