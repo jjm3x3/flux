@@ -246,7 +246,7 @@ class GameGui < Gosu::Window
             @simple_dialog.draw
             return
         end
-        @game_stats.draw(@game)
+        @game_stats.draw(@game_state)
 
         activePlayer = @current_cached_player
         @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
