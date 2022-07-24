@@ -171,10 +171,8 @@ class GameGui < Gosu::Window
                     @play_card_future = @new_game_driver.async.play_card(activePlayer, cardToPlay)
                     @play_card_future.add_observer do |time, value|
                         @card_played = true
-                        @redraw_hand = true
+                        update_game_state
                     end
-
-                    @redraw_hand = true
 
                     return
                 end
@@ -311,6 +309,14 @@ class GameGui < Gosu::Window
             @logger.debug "Here is the value #{value}"
             @current_cached_player = value
             @player_changed = true
+            @redraw_hand = true
+        end
+    end
+
+    def update_game_state
+        game_state_future = @new_game_driver.async.get_game_state
+        game_state_future.add_observer do |time, value|
+            @game_state = value
             @redraw_hand = true
         end
     end
