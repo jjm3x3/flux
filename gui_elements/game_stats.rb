@@ -2,13 +2,16 @@ class GameStats
     def initialize(x, y)
         @x = x
         @y = y
+        @rule_x = x + 10
 
         @font = Gosu::Font.new(20)
 
         @margin = 10
+        @rule_margin = 0
     end
 
     def draw(game)
+        previous_rules = 0
         previous_lines = 0
         next_text_y = @y + @margin * previous_lines + @font.height * previous_lines
         @font.draw_text("The deck has #{game.deck.count} cards in it", @x, next_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
