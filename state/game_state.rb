@@ -8,14 +8,16 @@ class GameState
         :play_rule,
         :hand_limit,
         :keeper_limit,
-        :active_player
+        :active_player,
+        :card_to_play
 
     def initialize(
         deck_count,
         discard_pile_count=0,
         gaol_text="",
         rule_base=nil,
-        active_player=nil
+        active_player=nil,
+        card_to_play=1
     )
         @deck_count = deck_count
         @discard_pile_count = discard_pile_count
@@ -34,5 +36,6 @@ class GameState
         if active_player
             @active_player = PlayerState.new(active_player)
         end
+        @card_to_play = card_to_play
     end
 end

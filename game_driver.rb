@@ -52,6 +52,7 @@ class GameDriver
         @logger.debug "After card was played"
         @cardsPlayed += 1
         @logger.debug "Increment cards played"
+        return @cardsPlayed
     end
 
     def post_card_play_clean_up
@@ -94,7 +95,8 @@ class GameDriver
         @game.discardPile.size,
         @game.goal.to_s,
         @game.ruleBase,
-        active_player)
+        active_player,
+        @cardsPlayed+1)
     end
 
     private

@@ -252,6 +252,7 @@ class GameGui < Gosu::Window
         @game_stats.draw(@game_state)
 
         @font.draw_text("It is player #{@game_state.active_player.name}'s turn", 400, 500, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        @font.draw_text("Choose to play #{@game_state.card_to_play} of #{@game_state.play_rule}", 410, 520, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
         @current_players_permanents.draw(@game_state.active_player, 400, 575)
 
