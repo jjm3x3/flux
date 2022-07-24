@@ -22,7 +22,6 @@ class GameGui < Gosu::Window
         @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: method(:is_left_button_pressed)}
         @new_game_button = Button.new(self, Gosu::Image.from_text("New Game?", 20), 10, 10, ZOrder::GAME_ITEMS, @button_options)
         @game_stats = GameStats.new(10, 10)
-        @game = nil
         @current_displayed_cards = []
 
         @player_changed = true
@@ -113,9 +112,9 @@ class GameGui < Gosu::Window
             # TODO:: should check to make sure @list_dialog exists
             @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
         end
-        @game = Game.new(@logger, GuiInputManager.new(self), players, @deck)
-        @game.setup
-        @new_game_driver = GameDriver.new(@game, @logger)
+        game = Game.new(@logger, GuiInputManager.new(self), players, @deck)
+        game.setup
+        @new_game_driver = GameDriver.new(game, @logger)
         game_state_result = @new_game_driver.await.get_game_state
         if game_state_result.state != :fulfilled
             @logger.warn "GameGui::start_a_new_game: Was not able to initialize game_state because #{game_state_result.reason}"
