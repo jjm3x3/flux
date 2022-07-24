@@ -439,7 +439,7 @@ class Game
     loop do
       selected_player_result = @interface.await.choose_from_list(eligibleOpponents, :pick_a_keeper_from_prompt)
       if selected_player_result.state != :fulfilled
-        @logger.info "Something has gone wrong in the choosing process"
+        @logger.warn "selected_player may not have been fulfilled because: '#{selected_player_result.reason}'"
       end
       selectedPlayer = selected_player_result.value
       areYouSure = selectedPlayer != :no_one
