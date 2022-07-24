@@ -5,6 +5,7 @@ require './gui_elements/dialog.rb'
 require './game.rb'
 require './gui_input_manager.rb'
 require './game_driver.rb'
+require './game_state.rb'
 
 class GameGui < Gosu::Window
     def initialize(logger, prompt_strings, user_prompt_templates, deck)
@@ -68,6 +69,7 @@ class GameGui < Gosu::Window
         @user_prompt_templates = user_prompt_templates
         @deck = deck
 
+        @game_state = GameState.new(deck.count)
         @button_images = @button_images.merge(create_card_images(@deck))
 
         @new_game_driver = nil
