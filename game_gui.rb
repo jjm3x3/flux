@@ -73,8 +73,6 @@ class GameGui < Gosu::Window
 
         @new_game_driver = nil
 
-        @current_cached_player = nil
-
         @play_card_future = nil
     end
 
@@ -119,8 +117,6 @@ class GameGui < Gosu::Window
             @logger.warn "GameGui::start_a_new_game: Was not able to initialize game_state because #{game_state_result.reason}"
         end
         @game_state = game_state_result.value
-        @logger.debug "GameGui::start_a_new_game: game_state setup and geting cached player"
-        @current_cached_player = @new_game_driver.await.active_player.value
         @logger.debug "GameGui::start_a_new_game: New game started"
     end
 
