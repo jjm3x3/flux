@@ -168,17 +168,19 @@ class GameGui < Gosu::Window
                         # value is the selected card to play
                         @logger.info "GameGui::update: you clicked a card button #{value}"
                         @play_card_future = @new_game_driver.async.play_card(value)
-                        @play_card_future.add_observer do |time, value|
-                            @card_played = true
-                            update_game_state
-                        end
-
+                        @play_card_future.add_observer(self, :update_after_play)
                     end
                     return
                 end
                 clickedCard += 1
             end
         end
+    end
+
+    def update_after_play(time, value, reason)
+        @logger.debug "GameGui::update_after_play: Starting to execute"
+        @card_played = true
+        update_game_state
     end
 
     def update
