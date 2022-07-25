@@ -226,7 +226,7 @@ class GameGui < Gosu::Window
                 @player_changed = false
                 new_turn_future = @new_game_driver.async.setup_new_turn
                 new_turn_future.add_observer do |time, value|
-                    @redraw_hand = true
+                    update_game_state
                 end
             end
         end
