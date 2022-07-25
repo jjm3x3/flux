@@ -1,6 +1,18 @@
 class GameState
-    attr_reader :deck_count, :discard_pile_count, :gaol_text, :draw_rule, :play_rule, :hand_limit, :keeper_limit
-    def initialize(deck_count, discard_pile_count=0, gaol_text="", rule_base=nil)
+    attr_reader :deck_count,
+        :discard_pile_count,
+        :gaol_text,
+        :draw_rule,
+        :play_rule,
+        :hand_limit,
+        :keeper_limit
+
+    def initialize(
+        deck_count,
+        discard_pile_count=0,
+        gaol_text="",
+        rule_base=nil
+    )
         @deck_count = deck_count
         @discard_pile_count = discard_pile_count
         @gaol_text = gaol_text

@@ -80,7 +80,11 @@ class GameDriver
     end
 
     def get_game_state
-      GameState.new(@game.deck.count, @game.discardPile.size, @game.goal.to_s, @game.ruleBase)
+      GameState.new(
+        @game.deck.count,
+        @game.discardPile.size,
+        @game.goal.to_s,
+        @game.ruleBase)
     end
 
     private
