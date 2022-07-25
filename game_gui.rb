@@ -317,4 +317,33 @@ class GameGui < Gosu::Window
         end
     end
 
+    def draw_oponents
+        current_player_index = 0
+        current_index = 0
+        @game_state.players.each do |player|
+            if @game_state.active_player == player
+                current_player_index = current_index
+            else
+                current_index += 1
+            end
+        end
+        @logger
+
+        current_index = (current_player_index + 1) % @game_state.players.count
+        ittr = 0
+        loop do
+            player = @game_state.players[current_index]
+            player_content_x = 20 + (ittr * 700)
+            @font.draw_text("#{player.name}:", player_content_x, 275, 1, 1.0, 1.0, Gosu::Color::WHITE)
+            @current_players_permanents.draw(player, player_content_x, 300)
+
+            @font.draw_text("#{player.cards_in_hand.count} cards in hand", player_content_x, 425, 1, 1.0, 1.0, Gosu::Color::WHITE)
+
+            ittr += 1
+
+            current_index = (current_index + 1) % @game_state.players.count
+            break if current_index == current_player_index
+        end
+    end
+
 end
