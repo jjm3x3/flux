@@ -199,6 +199,10 @@ class GameGui < Gosu::Window
         end
 
         if @new_game_driver
+            # NOTE:: We are trying to minimize the number of times we make calls
+            #        to the driver so we have a system of boolean flags so that
+            #        it will only fire off a call to the driver when it makes
+            #        sense to do so.
             if @card_played
                 @logger.debug "GameGui::update: Card has been played, update accordingly"
                 @card_played = false
