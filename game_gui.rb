@@ -166,9 +166,7 @@ class GameGui < Gosu::Window
                     card_selected_future = @new_game_driver.async.remove_card_from_active_player(clickedCard)
                     card_selected_future.add_observer do |time, value|
                         # value is the selected card to play
-
-                        @logger.debug "you clicked a card button #{value}"
-
+                        @logger.info "GameGui::update: you clicked a card button #{value}"
                         @play_card_future = @new_game_driver.async.play_card(value)
                         @play_card_future.add_observer do |time, value|
                             @card_played = true
