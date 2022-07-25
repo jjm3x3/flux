@@ -42,6 +42,10 @@ class GameDriver
         return result
     end
 
+    def remove_card_from_active_player(index)
+      active_player.remove_card_from_hand(index)
+    end
+
     def play_card(player, card_to_play)
         @logger.debug "this should get logged sync"
         @game.play_card(card_to_play, player)
