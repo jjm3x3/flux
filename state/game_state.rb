@@ -9,7 +9,8 @@ class GameState
         :hand_limit,
         :keeper_limit,
         :active_player,
-        :card_to_play
+        :card_to_play,
+        :players
 
     def initialize(
         deck_count,
@@ -17,7 +18,8 @@ class GameState
         gaol_text="",
         rule_base=nil,
         active_player=nil,
-        card_to_play=1
+        card_to_play=1,
+        players=[]
     )
         @deck_count = deck_count
         @discard_pile_count = discard_pile_count
@@ -33,8 +35,13 @@ class GameState
             @hand_limit = Float::INFINITY
             @keeper_limit = Float::INFINITY
         end
-        if active_player
-            @active_player = PlayerState.new(active_player)
+        @players = []
+        players.each do |player|
+            player_state = PlayerState.new(player)
+            if player == active_player
+                @active_player = player_state
+            end
+            @players << player_state
         end
         @card_to_play = card_to_play
     end

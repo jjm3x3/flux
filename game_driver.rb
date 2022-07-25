@@ -96,7 +96,8 @@ class GameDriver
         @game.goal.to_s,
         @game.ruleBase,
         active_player,
-        @cardsPlayed+1)
+        @cardsPlayed+1,
+        @game.players)
     end
 
     private
