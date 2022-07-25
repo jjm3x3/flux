@@ -216,7 +216,7 @@ class GameGui < Gosu::Window
                                 @player_changed = true
                                 setup_cached_player
                             end
-                            @redraw_hand =true
+                            update_game_state
                         end
                     end
                 end
