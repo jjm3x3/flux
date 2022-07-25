@@ -160,21 +160,21 @@ class GameGui < Gosu::Window
             @current_displayed_cards.each do |cardButton|
                 @logger.debug "Checking card '#{cardButton}'"
                 if cardButton.is_clicked?
-                    @logger.debug "Starting awaiting active_player from game_driver"
-
                     @logger.debug "Getting card from players hand"
                     card_selected_future = @new_game_driver.async.remove_card_from_active_player(clickedCard)
-                    card_selected_future.add_observer do |time, value|
-                        # value is the selected card to play
-                        @logger.info "GameGui::update: you clicked a card button #{value}"
-                        @play_card_future = @new_game_driver.async.play_card(value)
-                        @play_card_future.add_observer(self, :update_after_play)
-                    end
+                    card_selected_future.add_observer(self, :update_after_card_selected)
                     return
                 end
                 clickedCard += 1
             end
         end
+    end
+
+    def update_after_card_selected(time, value, reason)
+        # value is the selected card to play
+        @logger.info "GameGui::update: you clicked a card button #{value}"
+        @play_card_future = @new_game_driver.async.play_card(value)
+        @play_card_future.add_observer(self, :update_after_play)
     end
 
     def update_after_play(time, value, reason)
