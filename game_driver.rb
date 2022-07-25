@@ -46,9 +46,9 @@ class GameDriver
       active_player.remove_card_from_hand(index)
     end
 
-    def play_card(player, card_to_play)
+    def play_card(card_to_play)
         @logger.debug "this should get logged sync"
-        @game.play_card(card_to_play, player)
+        @game.play_card(card_to_play, active_player)
         @logger.debug "After card was played"
         @cardsPlayed += 1
         @logger.debug "Increment cards played"

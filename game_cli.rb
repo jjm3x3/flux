@@ -24,7 +24,7 @@ class GameCli
           cardToPlay = @interface.await.choose_from_list(hand, :select_a_card_to_play_prompt).value
           @logger.debug "Card selected is: '#{cardToPlay}'"
 
-          play_result = @new_game_driver.await.play_card(activePlayer, cardToPlay)
+          play_result = @new_game_driver.await.play_card(cardToPlay)
           @logger.debug "What was the play result? '#{play_result.state}'"
           if play_result.state != :fulfilled
             @logger.warn "play_result may not have been fulfilled because: '#{play_result.reason}'"
