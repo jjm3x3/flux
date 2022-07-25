@@ -247,7 +247,6 @@ class GameGui < Gosu::Window
         end
         @game_stats.draw(@game_state)
 
-        activePlayer = @current_cached_player
         @font.draw_text("It is player #{@game_state.active_player.name}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
         @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
@@ -268,7 +267,7 @@ class GameGui < Gosu::Window
 
             cardsDisplayed = 0
             @current_displayed_cards = []
-            activePlayer.hand.each do |card|
+            @game_state.active_player.cards_in_hand.each do |card|
                 newCardButton = Button.new(self, Gosu::Image.from_text("#{card}", 20), 20, (permanents_start_y + permanents_height + 10 + @font.height) + 10 * cardsDisplayed + @font.height * cardsDisplayed, ZOrder::GAME_ITEMS, @button_options)
                 newCardButton.draw
                 @current_displayed_cards << newCardButton
