@@ -248,19 +248,19 @@ class GameGui < Gosu::Window
         @game_stats.draw(@game_state)
 
         activePlayer = @current_cached_player
-        @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        @font.draw_text("It is player #{@game_state.active_player.name}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
         @font.draw_text("Here are the permanents they have:", 10, 10 + @game_stats.height + 10 + @font.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
         permanentsDisplayed = 0
         permananent_margin = 5
         permanents_start_y = 10 + @game_stats.height + 10 + @font.height + 10 + @font.height + permananent_margin
-        activePlayer.permanents.each do |card|
+        @game_state.active_player.permanents.each do |card|
             next_y = permanents_start_y + @font.height * permanentsDisplayed + permananent_margin * permanentsDisplayed
             @font.draw_text("#{card}", 20, next_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
             permanentsDisplayed += 1
         end
-        permanents_height = activePlayer.permanents.length * @font.height + activePlayer.permanents.length * permananent_margin
+        permanents_height = @game_state.active_player.permanents.length * @font.height + @game_state.active_player.permanents.length * permananent_margin
 
         @font.draw_text("Pick a card to play:", 10, permanents_start_y + permanents_height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
