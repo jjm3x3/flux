@@ -322,7 +322,7 @@ class Game
 
   end
 
-  def letsDoThatAgain(player)
+  def lets_do_that_again(player)
     eligibleCards = @discardPile.select do |card|
       @logger.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"

@@ -31,7 +31,7 @@ class Action < Card
     when 10
       game.mix_it_all_up(player)
     when 11
-      game.letsDoThatAgain(player)
+      game.lets_do_that_again(player)
     when 12
       game.everybody_gets_1(player)
     when 13

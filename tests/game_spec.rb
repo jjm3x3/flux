@@ -998,7 +998,7 @@ describe "game" do
         end
     end
 
-    describe "letsDoThatAgain" do
+    describe "lets_do_that_again" do
         it "should non contain any keepers or goals" do
             # setup
             input_stream = StringIO.new("0")
@@ -1017,7 +1017,7 @@ describe "game" do
             theGame.discardPile << Goal.new("Achive me", [keeper1, keeper2] , "You most have these cards to win")
 
             # execute
-            theGame.letsDoThatAgain(theFirstPlayer)
+            theGame.lets_do_that_again(theFirstPlayer)
 
             # test
             testInterface.card_list.select do |card|
