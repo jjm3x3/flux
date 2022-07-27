@@ -15,16 +15,16 @@ class GameDriver
     end
 
     def setup_new_turn
-      if(active_player.has_death?)
-        @game.resolve_death_rule(active_player)
-      end
-      drawnCards = @game.drawCards(active_player, :draw_rule)
-      @logger.debug "GameDriver::setup_new_turn: cards drawn at beginning of turn"
-      active_player.add_cards_to_hand(drawnCards)
-      @logger.debug "GameDriver::setup_new_turn: cards added to players hand"
-      @cardsPlayed = 0
-      @cardsDrawn = drawnCards.length
-      @logger.debug "GameDriver::setup_new_turn: New turn has been setup"
+        if(active_player.has_death?)
+          @game.resolve_death_rule(active_player)
+        end
+        drawnCards = @game.drawCards(active_player, :draw_rule)
+        @logger.debug "GameDriver::setup_new_turn: cards drawn at beginning of turn"
+        active_player.add_cards_to_hand(drawnCards)
+        @logger.debug "GameDriver::setup_new_turn: cards added to players hand"
+        @cardsPlayed = 0
+        @cardsDrawn = drawnCards.length
+        @logger.debug "GameDriver::setup_new_turn: New turn has been setup"
     end
 
     def turn_over?
@@ -43,7 +43,7 @@ class GameDriver
     end
 
     def remove_card_from_active_player(index)
-      active_player.remove_card_from_hand(index)
+        active_player.remove_card_from_hand(index)
     end
 
     def play_card(card_to_play)
@@ -70,13 +70,13 @@ class GameDriver
     end
 
     def end_turn_cleanup
-      @game.discardDownToLimit(active_player)
-      @game.removeDownToKeeperLimit(active_player)
-      if active_player.take_another_turn
-        active_player.set_take_another_turn(false)
-      else
-        @game.progress_turn
-      end
+        @game.discardDownToLimit(active_player)
+        @game.removeDownToKeeperLimit(active_player)
+        if active_player.take_another_turn
+          active_player.set_take_another_turn(false)
+        else
+          @game.progress_turn
+        end
     end
 
     def active_player
@@ -85,26 +85,26 @@ class GameDriver
     end
 
     def has_winner
-      @logger.debug "GameDriver:has_winner: checking if game has a winner"
-      @game.winner
+        @logger.debug "GameDriver:has_winner: checking if game has a winner"
+        @game.winner
     end
 
     def get_game_state
-      GameState.new(
-        @game.deck.count,
-        @game.discardPile.size,
-        @game.goal.to_s,
-        @game.ruleBase,
-        active_player,
-        @cardsPlayed+1,
-        @game.players)
+        GameState.new(
+            @game.deck.count,
+            @game.discardPile.size,
+            @game.goal.to_s,
+            @game.ruleBase,
+            active_player,
+            @cardsPlayed+1,
+            @game.players)
     end
 
     private
     def checkForWinner
-      if @game.winner
-        puts "the game is over!!!!==============\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"
-        exit 0
-      end
+        if @game.winner
+            puts "the game is over!!!!==============\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"
+            exit 0
+        end
     end
 end
