@@ -32,7 +32,12 @@ class GameDriver
         @logger.debug "Who is the active_player: #{active_player}"
         active_player_has_cards = active_player.hand.length > 0
         @logger.debug "Does the active player have cards #{active_player_has_cards}"
-        result = @cardsPlayed >= @game.play_limit || !active_player_has_cards
+        active_player_has_reached_play_limit = @cardsPlayed < @game.play_limit
+        @logger.debug "cards played #{@cardsPlayed}"
+        @logger.debug "Play limit is #{@game.play_limit}"
+        @logger.info "GameDriver::turn_over? active player has reached play limit #{active_player_has_reached_play_limit}"
+
+        result = !(active_player_has_reached_play_limit && active_player_has_cards)
         @logger.debug "Is the turn over? #{result}"
         return result
     end
