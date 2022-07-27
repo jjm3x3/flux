@@ -61,4 +61,9 @@ module StackedDecks
     [
         Action.new(16, "Exchanges some stuff", "EXCHANGE!!")
     ]
+
+    TAKE_ANOTHER_TURN =
+    [
+        Action.new(15, "AGAIN?", "GO AGAIN!!")
+    ]
 end
