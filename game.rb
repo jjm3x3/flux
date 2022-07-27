@@ -7,8 +7,8 @@ require "./game_interface.rb"
 
 class Game
 
-    attr_accessor :currentPlayerCounter
-    attr_reader :deck,
+    attr_reader :currentPlayerCounter,
+        :deck,
         :discardPile,
         :goal,
         :players,
