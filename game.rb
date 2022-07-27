@@ -405,7 +405,9 @@ class Game
   end
 
   def take_another_turn(player)
+    @logger.debug "Setting up #{player} to take another turn"
     player.take_another_turn = true
+    @logger.debug "Set up player for another turn"
   end
 
   def exchange_keepers(player)
