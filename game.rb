@@ -311,7 +311,6 @@ class Game
       resolve_taxes_rule(aPlayer)
     end
 
-    # TODO:: may need to redraw permanants in both CLI/GUI
   end
 
   def letsDoThatAgain(player)
@@ -431,7 +430,6 @@ class Game
 
 
     eligibleOpponents.select do |aPlayer|
-      # TODO:: should consider that any player should be able to see this at any time
       @logger.debug "Here are the keepers: #{aPlayer.to_s} has:\n#{StringFormattingUtilities.indexed_display(aPlayer.keepers)}"
     end
 
