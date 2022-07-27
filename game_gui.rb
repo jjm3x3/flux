@@ -114,7 +114,9 @@ class GameGui < Gosu::Window
         @game = Game.new(@logger, GuiInputManager.new(self), players, Random.new, @deck)
         @game.setup
         @new_game_driver = GameDriver.new(@game, @logger)
+        @logger.debug "GameGui::start_a_new_game: Geting cached player"
         @current_cached_player = @new_game_driver.await.active_player.value
+        @logger.debug "GameGui::start_a_new_game: New game started"
     end
 
     def button_up(id)
@@ -153,9 +155,7 @@ class GameGui < Gosu::Window
                 @logger.debug "Checking card '#{cardButton}'"
                 if cardButton.is_clicked?
                     @logger.debug "Starting awaiting active_player from game_driver"
-                    active_player_result = @new_game_driver.await.active_player
-                    @logger.debug "Get activePlayer value out of await result"
-                    activePlayer = active_player_result.value
+                    activePlayer = @current_cached_player
 
                     @logger.debug "Getting card from players hand"
                     cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
@@ -195,21 +195,25 @@ class GameGui < Gosu::Window
 
         if @new_game_driver
             if @card_played
+                @logger.debug "GameGui::update: Card has been played, update accordingly"
                 @card_played = false
-                if @new_game_driver.await.has_winner.value
-                    # win flow
-                    dialog_options = SimpleDialog.generate_dialog_options(["Back to Main Menu"], @button_images)
-                    @simple_dialog.set_options(dialog_options)
-                    @simple_dialog.set_prompt(:exit)
-                    @simple_dialog.show
-                elsif
-                    clean_up_future = @new_game_driver.async.post_card_play_clean_up
-                    clean_up_future.add_observer do |time, value|
-                        if value # this means the turn is over
-                            @player_changed = true
-                            setup_cached_player
+                game_has_winner_future = @new_game_driver.async.has_winner
+                game_has_winner_future.add_observer do |time, value|
+                    if value
+                        # win flow
+                        dialog_options = SimpleDialog.generate_dialog_options(["Back to Main Menu"], @button_images)
+                        @simple_dialog.set_options(dialog_options)
+                        @simple_dialog.set_prompt(:exit)
+                        @simple_dialog.show
+                    else
+                        clean_up_future = @new_game_driver.async.post_card_play_clean_up
+                        clean_up_future.add_observer do |time, value|
+                            if value # this means the turn is over
+                                @player_changed = true
+                                setup_cached_player
+                            end
+                            @redraw_hand =true
                         end
-                        @redraw_hand =true
                     end
                 end
 

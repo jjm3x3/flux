@@ -19,9 +19,12 @@ class GameDriver
         @game.resolve_death_rule(active_player)
       end
       drawnCards = @game.drawCards(active_player, :draw_rule)
+      @logger.debug "GameDriver::setup_new_turn: cards drawn at beginning of turn"
       active_player.add_cards_to_hand(drawnCards)
+      @logger.debug "GameDriver::setup_new_turn: cards added to players hand"
       @cardsPlayed = 0
       @cardsDrawn = drawnCards.length
+      @logger.debug "GameDriver::setup_new_turn: New turn has been setup"
     end
 
     def turn_over?
@@ -72,6 +75,7 @@ class GameDriver
     end
 
     def has_winner
+      @logger.debug "GameDriver:has_winner: checking if game has a winner"
       @game.winner
     end
 
