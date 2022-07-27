@@ -1245,7 +1245,6 @@ describe "game" do
                 theGame.setup
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
-                theGame.currentPlayerCounter = 11
 
                 # execute
                 theGame.rotateHands(theFirstPlayer)
@@ -1331,7 +1330,6 @@ describe "game" do
                 theGame.setup
                 theFirstPlayer = theGame.players[0]
                 firstPlayersOriginalCards = theFirstPlayer.hand
-                theGame.currentPlayerCounter = 11
 
                 # execute
                 theGame.rotateHands(theFirstPlayer)
