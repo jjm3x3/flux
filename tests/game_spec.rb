@@ -1069,44 +1069,6 @@ describe "game" do
             end
         end
 
-        it "should handle if the currentPlayer is set to a number of a player which does not exist" do
-            # setup
-            numberOfPlayers = 4
-            input_stream = StringIO.new("0\n" * numberOfPlayers)
-            testLogger = Logger.new(test_outfile)
-            players = Player.generate_players(numberOfPlayers)
-            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
-            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
-            theGame = Game.new(testLogger, testInterface, players)
-            theFirstPlayer = theGame.players[0]
-            theGame.currentPlayerCounter = 8
-
-            # execute
-            theGame.everybody_gets_1(theFirstPlayer)
-
-            # test
-            # should just work
-        end
-
-        it "should handle if the currentPlayer mod players.length is not 0" do
-            # setup
-            numberOfPlayers = 4
-            input_stream = StringIO.new("0\n" * numberOfPlayers)
-            testLogger = Logger.new(test_outfile)
-            players = Player.generate_players(numberOfPlayers)
-            player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
-            testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
-            theGame = Game.new(testLogger, testInterface, players)
-            theFirstPlayer = theGame.players[0]
-            theGame.currentPlayerCounter = 9
-
-            # execute
-            theGame.everybody_gets_1(theFirstPlayer)
-
-            # test
-            # should just work
-        end
-
         it "should play creepers imidately if they are drawn" do
             # setup
             numberOfPlayers = 3
@@ -1214,25 +1176,6 @@ describe "game" do
     end
 
     describe "rotate_hands" do
-        it "should handle if the currentPlayer is set to a number of a player which does not exist" do
-            # setup
-            input_stream = StringIO.new("thing")
-            testLogger = Logger.new(test_outfile)
-            testInterface = TestInterface.new(input_stream, test_outfile)
-            numberOfPlayers = 3
-            players = Player.generate_players(numberOfPlayers)
-            theGame = Game.new(testLogger, testInterface, players)
-            theFirstPlayer = theGame.players[0]
-            firstPlayersOriginalCards = theFirstPlayer.hand
-            theGame.currentPlayerCounter = 10
-
-            # execute
-            theGame.rotateHands(theFirstPlayer)
-
-            # test
-            # this should work just fine
-        end
-
         describe "counter clockwise" do
             it "first player should not have the hand they started with" do
                 # setup
