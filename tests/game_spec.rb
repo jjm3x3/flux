@@ -133,6 +133,22 @@ describe "game" do
         end
     end
 
+    describe "progress_turn" do
+        it "should not progress too much" do
+            # Test not necessary since
+            # > Ruby automatically converts integers to a large integer class when
+            # > they overflow, so there's (practically) no limit to how big they
+            # > can be.
+            #                       -- https://stackoverflow.com/a/535763
+            # test_logger = Logger.new($stdout)
+            # theGame = Game.new(test_logger)
+
+            # for i in 0..100000000000
+            #     theGame.progress_turn
+            # end
+        end
+    end
+
     describe "removeDownToKeeperLimit" do
         it "should make sure that the player has no more keepers than the current keeper limit" do
             # setup

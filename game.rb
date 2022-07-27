@@ -69,6 +69,7 @@ class Game
   end
 
   def progress_turn
+    @logger.debug "Progressing the turn from #{@currentPlayerCounter}"
     @currentPlayerCounter += 1
   end
 
