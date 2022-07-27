@@ -111,7 +111,7 @@ class GameGui < Gosu::Window
             # TODO:: should check to make sure @list_dialog exists
             @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
         end
-        @game = Game.new(@logger, GuiInputManager.new(self), players, @deck, Random.new)
+        @game = Game.new(@logger, GuiInputManager.new(self), players, @deck)
         @game.setup
         @new_game_driver = GameDriver.new(@game, @logger)
         @logger.debug "GameGui::start_a_new_game: Geting cached player"
