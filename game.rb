@@ -7,11 +7,12 @@ require "./game_interface.rb"
 
 class Game
 
-  attr_accessor :ruleBase
-  attr_accessor :players
-  attr_accessor :discardPile
-  attr_accessor :currentPlayerCounter
-  attr_reader :deck, :goal
+    attr_accessor :currentPlayerCounter
+    attr_reader :deck,
+        :discardPile,
+        :goal,
+        :players,
+        :ruleBase
 
   def initialize(aLogger, aTrueInterface = CliInterface.new, players=[], aDeck = Deck.new(aLogger), aRandom = Random.new)
 
