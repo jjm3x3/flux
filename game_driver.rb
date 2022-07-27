@@ -67,11 +67,11 @@ class GameDriver
     def end_turn_cleanup
       @game.discardDownToLimit(active_player)
       @game.removeDownToKeeperLimit(active_player)
-      if(@take_another_turn)
-        @currentPlayerCounter -= 1
-        @take_another_turn = false
+      if active_player.take_another_turn
+        active_player.set_take_another_turn(false)
+      else
+        @game.progress_turn
       end
-      @game.progress_turn
     end
 
     def active_player

@@ -79,6 +79,7 @@ describe "GameDriver" do
 
         end
     end
+
     describe "post_card_play_clean_up" do
         it "should not play cards" do
             # setup
@@ -105,6 +106,32 @@ describe "GameDriver" do
             # test
             expect(gameDouble).to_not have_received(:play_card)
         end
+    end
+
+    describe "end_turn_cleanup" do
+        it "should not progress the turn if the current player is set to take another turn" do
+            # setup
+            test_logger = Logger.new(test_outfile)
+
+            player_double = double(
+                "player_double",
+                take_another_turn: true,
+                set_take_another_turn: nil)
+            gameDouble = double(
+                "game",
+                active_player: player_double,
+                discardDownToLimit: nil,
+                removeDownToKeeperLimit: nil,
+                progress_turn: nil)
+            gameDriver = GameDriver.new(gameDouble, test_logger)
+
+            # execute
+            gameDriver.end_turn_cleanup
+
+            # test
+            expect(gameDouble).to_not have_received(:progress_turn)
+        end
+
     end
 
     test_outfile.unlink
