@@ -5,6 +5,7 @@ require './gui_elements/dialog.rb'
 require './game.rb'
 require './gui_input_manager.rb'
 require './game_driver.rb'
+require './game_state.rb'
 
 class GameGui < Gosu::Window
     def initialize(logger, prompt_strings, user_prompt_templates, deck)
@@ -21,7 +22,6 @@ class GameGui < Gosu::Window
         @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: method(:is_left_button_pressed)}
         @new_game_button = Button.new(self, Gosu::Image.from_text("New Game?", 20), 10, 10, ZOrder::GAME_ITEMS, @button_options)
         @game_stats = GameStats.new(10, 10)
-        @game = nil
         @current_displayed_cards = []
 
         @player_changed = true
@@ -68,6 +68,7 @@ class GameGui < Gosu::Window
         @user_prompt_templates = user_prompt_templates
         @deck = deck
 
+        @game_state = GameState.new(deck.count)
         @button_images = @button_images.merge(create_card_images(@deck))
 
         @new_game_driver = nil
@@ -111,10 +112,15 @@ class GameGui < Gosu::Window
             # TODO:: should check to make sure @list_dialog exists
             @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
         end
-        @game = Game.new(@logger, GuiInputManager.new(self), players, @deck)
-        @game.setup
-        @new_game_driver = GameDriver.new(@game, @logger)
-        @logger.debug "GameGui::start_a_new_game: Geting cached player"
+        game = Game.new(@logger, GuiInputManager.new(self), players, @deck)
+        game.setup
+        @new_game_driver = GameDriver.new(game, @logger)
+        game_state_result = @new_game_driver.await.get_game_state
+        if game_state_result.state != :fulfilled
+            @logger.warn "GameGui::start_a_new_game: Was not able to initialize game_state because #{game_state_result.reason}"
+        end
+        @game_state = game_state_result.value
+        @logger.debug "GameGui::start_a_new_game: game_state setup and geting cached player"
         @current_cached_player = @new_game_driver.await.active_player.value
         @logger.debug "GameGui::start_a_new_game: New game started"
     end
@@ -164,10 +170,8 @@ class GameGui < Gosu::Window
                     @play_card_future = @new_game_driver.async.play_card(activePlayer, cardToPlay)
                     @play_card_future.add_observer do |time, value|
                         @card_played = true
-                        @redraw_hand = true
+                        update_game_state
                     end
-
-                    @redraw_hand = true
 
                     return
                 end
@@ -241,7 +245,7 @@ class GameGui < Gosu::Window
             @simple_dialog.draw
             return
         end
-        @game_stats.draw(@game)
+        @game_stats.draw(@game_state)
 
         activePlayer = @current_cached_player
         @font.draw_text("It is player #{activePlayer}'s turn'", 10, 10 + @game_stats.height + 10, 1, 1.0, 1.0, Gosu::Color::WHITE)
@@ -304,6 +308,14 @@ class GameGui < Gosu::Window
             @logger.debug "Here is the value #{value}"
             @current_cached_player = value
             @player_changed = true
+            @redraw_hand = true
+        end
+    end
+
+    def update_game_state
+        game_state_future = @new_game_driver.async.get_game_state
+        game_state_future.add_observer do |time, value|
+            @game_state = value
             @redraw_hand = true
         end
     end
