@@ -1,3 +1,5 @@
+require './state/player_state.rb'
+
 class GameState
     attr_reader :deck_count,
         :discard_pile_count,
@@ -5,13 +7,15 @@ class GameState
         :draw_rule,
         :play_rule,
         :hand_limit,
-        :keeper_limit
+        :keeper_limit,
+        :active_player
 
     def initialize(
         deck_count,
         discard_pile_count=0,
         gaol_text="",
-        rule_base=nil
+        rule_base=nil,
+        active_player=nil
     )
         @deck_count = deck_count
         @discard_pile_count = discard_pile_count
@@ -26,6 +30,9 @@ class GameState
             @play_rule = 1
             @hand_limit = Float::INFINITY
             @keeper_limit = Float::INFINITY
+        end
+        if active_player
+            @active_player = PlayerState.new(active_player)
         end
     end
 end

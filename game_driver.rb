@@ -84,7 +84,8 @@ class GameDriver
         @game.deck.count,
         @game.discardPile.size,
         @game.goal.to_s,
-        @game.ruleBase)
+        @game.ruleBase,
+        active_player)
     end
 
     private
