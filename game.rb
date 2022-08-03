@@ -251,7 +251,7 @@ class Game
     player.add_cards_to_hand(newCardsForPlayer)
   end
 
-  def todaysSpecial(player)
+  def todays_special(player)
     @logger.debug "Executing todays_special"
     drawnCards = drawCards(player, 3)
     chosen_card_result = @interface.await.choose_from_list(drawnCards, :choose_card_to_play_prompt)
