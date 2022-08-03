@@ -88,7 +88,7 @@ class CliInterface < BaseTextInterface
     permanentsPrintOut += player.creepers.map do |creeper|
       creeper.to_s
     end
-    @output_stream.puts "#{prompt}\n #{permanentsPrintOut}"
+    @output_stream.puts "#{prompt}\n #{permanentsPrintOut}\n"
   end
 
   def display_message(message)
