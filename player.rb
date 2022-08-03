@@ -17,7 +17,7 @@ class PlayerPromptGenerator
 end
 
 class Player
-  attr_reader :creepers, :name, :keepers, :hand
+  attr_reader :creepers, :name, :keepers, :hand, :take_another_turn
 
   def self.generate_players(number)
       result = []
@@ -32,6 +32,7 @@ class Player
     @keepers = []
     @creepers = []
     @hand = []
+    @take_another_turn = false
   end
 
   def remove_card_from_hand(index)
@@ -148,6 +149,10 @@ class Player
     oldHand = @hand
     @hand = hand
     oldHand
+  end
+
+  def set_take_another_turn(value)
+    @take_another_turn = value
   end
 
   def to_s

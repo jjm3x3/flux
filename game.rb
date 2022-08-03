@@ -311,7 +311,6 @@ class Game
       resolve_taxes_rule(aPlayer)
     end
 
-    # TODO:: may need to redraw permanants in both CLI/GUI
   end
 
   def letsDoThatAgain(player)
@@ -405,7 +404,9 @@ class Game
   end
 
   def take_another_turn(player)
-    player.take_another_turn = true
+    @logger.debug "Setting up #{player} to take another turn"
+    player.set_take_another_turn(true)
+    @logger.debug "Set up player for another turn"
   end
 
   def exchange_keepers(player)
@@ -429,7 +430,6 @@ class Game
 
 
     eligibleOpponents.select do |aPlayer|
-      # TODO:: should consider that any player should be able to see this at any time
       @logger.debug "Here are the keepers: #{aPlayer.to_s} has:\n#{StringFormattingUtilities.indexed_display(aPlayer.keepers)}"
     end
 
