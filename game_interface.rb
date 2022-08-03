@@ -38,7 +38,10 @@ class BaseTextInterface
     card_list.delete_at(whichCard)
   end
 
-  def ask_yes_no(prompt)
+  def ask_yes_no(prompt_key)
+    if !prompt_key; raise "prompt_key missing"; end
+    if !@prompts.has_key? prompt_key; raise "prompt_key missing from prompts collection"; end
+    prompt = @prompts[prompt_key]
     @output_stream.puts "#{prompt} (y/N)"
     response = get_input
     response == 'y' || response == 'Y'
