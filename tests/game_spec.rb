@@ -1395,20 +1395,23 @@ describe "game" do
         end
 
         it "should not force the current player to discard down to hand limit until their first turn is over" do
-            pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n0\n0\n0\n0\n0\n0\n")
             testLogger = Logger.new(test_outfile)
-            theGame = Game.new(testLogger)
-            theGame.ruleBase.addRule(Limit.new("low hand limit", 3, "no cards", 0))
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(testLogger, testInterface, players)
+            theGame.setup
+            theGame.ruleBase.addRule(Limit.new("low hand limit", 1, "no cards", 0))
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+            take_another_turn_card =  Action.new(15, "another turn", "some rules text")
 
             # execute
-            theGame.playCards(theFirstPlayer)
+            theGame.play_card(take_another_turn_card, theFirstPlayer)
 
             # test
-            startingHandSize = 3 + 1 # since we now draw cards in the playCards method
+            startingHandSize = 3 # this is just the starting hand size after calling Game::setup
             expect(theFirstPlayer.hand.size).to eq startingHandSize
         end
     end
