@@ -1348,7 +1348,6 @@ describe "game" do
 
     describe "take_another_turn" do
         it "should make sure the current player remains the same when the last card of their turn is played" do
-            # pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = Logger.new(test_outfile)
