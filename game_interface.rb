@@ -47,7 +47,10 @@ class BaseTextInterface
     response == 'y' || response == 'Y'
   end
 
-  def ask_rotation(prompt="Which direction?")
+  def ask_rotation(prompt_key)
+    if !prompt_key; raise "prompt_key missing"; end
+    if !@prompts.has_key? prompt_key; raise "prompt_key missing from prompts collection"; end
+    prompt = @prompts[prompt_key]
     @output_stream.puts "#{prompt} (clockwise/CounterClockwise)"
     response = get_input
     response.start_with?("cl") ? Direction::Clockwise : Direction::CounterClockwise
