@@ -294,14 +294,9 @@ class GameGui < Gosu::Window
             left_shift = (@game_state.active_player.cards_in_hand.count / 5) * 40
             hand_x = (@game_stats_and_current_player_base_x + 20) - left_shift
             @game_state.active_player.cards_in_hand.each do |card|
+                # card is a unique string representation of a card
                 these_button_options = @button_options.clone
-                tool_tip_text = nil
-                # TODO:: need to fix this since card is now always a string it will never respond to rule_text
-                if card.respond_to?(:rule_text)  
-                    tool_tip_image = get_text_image(card.rule_text)
-                else
-                    tool_tip_image = Gosu::Image.from_text(tool_tip_text,20)
-                end
+                tool_tip_image = @tool_tip_images[card]
                 these_button_options[:tool_tip] = ToolTip.new(self, tool_tip_image)
                 if cardsDisplayed >= 5
                     cardsDisplayed = 0
