@@ -72,7 +72,7 @@ describe "GameDriver" do
             playerDouble = double("player")
 
             # execute
-            gameDriver.play_card(playerDouble, cardDouble)
+            gameDriver.play_card(cardDouble)
 
             # test
             expect(gameDouble).to have_received(:play_card)
