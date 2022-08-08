@@ -4,3 +4,4 @@ new-winow.txt
 assets/*
 *.log
 *.exe
+.DS_STORE
