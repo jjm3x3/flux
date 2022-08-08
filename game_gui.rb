@@ -80,6 +80,7 @@ class GameGui < Gosu::Window
 
         @game_state = GameState.new(deck.count)
         @button_images = @button_images.merge(create_card_images(@deck))
+        @tool_tip_images = create_tool_tip_images(@deck)
 
         @new_game_driver = nil
 
