@@ -339,6 +339,7 @@ class GameGui < Gosu::Window
                 current_line += word + " "
             end
         end
+        lines << current_line
         @logger.debug "the lines for the tip are #{lines}"
         width = @font.text_width("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")  # shoudl be 30
         height = (@font.height + 5) * lines.size
