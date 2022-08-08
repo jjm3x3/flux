@@ -1348,22 +1348,25 @@ describe "game" do
 
     describe "take_another_turn" do
         it "should make sure the current player remains the same when the last card of their turn is played" do
-            pending("This has been thuroughly broken and needs to be fixed")
+            # pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = Logger.new(test_outfile)
-            theGame = Game.new(testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
+            original_current_players_starting_hand_size = theFirstPlayer.hand.length
             originalCurrentPlayer = theGame.currentPlayer
             currentPlayerCounter = 0
-            # tests this action by having the player use this as their one and
-            # only card to play in a turn
-            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+            card_to_play = Action.new(15, "another turn", "some rules text")
 
             # execute
-            theGame.playCards(theFirstPlayer)
+            theGame.play_card(card_to_play, theFirstPlayer)
 
             # test
+            expect(original_current_players_starting_hand_size).to eq 0
             expect(theGame.currentPlayer).to eq originalCurrentPlayer
         end
 
