@@ -57,12 +57,17 @@ class Game
       if drawnCards.length == expectedNumberOfCards
         break
       else
-      # TODO: should shuffle the discard back in the draw at this point
-      if @deck.count == 0
-        @logger.debug "No cards left to draw"
-        break
-      end
-      drawnCards += @deck.drawCards(expectedNumberOfCards - drawnCards.length)
+        if @deck.count == 0
+          if @discardPile.size != 0
+            @logger.debug "No cards left to draw reshuffling deck"
+            @deck.add_cards(@discardPile)
+            @discardPile = []
+          else
+            @logger.warn "There are no cards in the deck or in discard somehow"
+            break
+          end
+        end
+        drawnCards += @deck.drawCards(expectedNumberOfCards - drawnCards.length)
       end
     end
     drawnCards
