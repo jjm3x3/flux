@@ -31,6 +31,10 @@ class Deck
     drawnCards
   end
 
+  def add_cards(cards)
+    @cards += cards
+  end
+
   def each
     @cards.each do |card|
       yield card
