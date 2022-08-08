@@ -97,6 +97,18 @@ class GameGui < Gosu::Window
         return result
     end
 
+    def create_tool_tip_images(deck)
+        result = {}
+        deck.each do |card|
+            if card.respond_to?(:rule_text)
+                result[card.name] = get_text_image(card.rule_text)
+            else
+                result[card.name] = Gosu::Image.from_text(card.name,20)
+            end
+        end
+        return result
+    end
+
     def initialize_dialog_prompts(prompt_strings)
         result = {}
         prompt_strings.map do |key, prompt_string|
