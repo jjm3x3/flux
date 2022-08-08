@@ -5,3 +5,4 @@ assets/*
 *.log
 *.exe
 .DS_STORE
+*.swp
