@@ -1371,20 +1371,24 @@ describe "game" do
         end
 
         it "should make sure the current player remains the same when they play a card in the middle of their turn" do
-            pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n0\n")
             testLogger = Logger.new(test_outfile)
-            theGame = Game.new(testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(testLogger, testInterface, players)
+            theGame.setup
             theGame.ruleBase.addRule(Rule.new("play more", 2, "play 2"))
             theFirstPlayer = theGame.players[0]
             originalCurrentPlayer = theGame.currentPlayer
             currentPlayerCounter = 0
-            theFirstPlayer.hand.unshift(Keeper.new(15, "Any ol thing "))
-            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+            thing_card = Keeper.new(15, "Any ol thing ")
+            take_another_turn_card =  Action.new(15, "another turn", "some rules text")
 
             # execute
-            theGame.playCards(theFirstPlayer)
+            theGame.play_card(thing_card, theFirstPlayer)
+            theGame.play_card(take_another_turn_card, theFirstPlayer)
 
             # test
             expect(theGame.currentPlayer).to eq originalCurrentPlayer
