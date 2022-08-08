@@ -21,6 +21,7 @@ class GameCli
         while !is_turn_over
           @interface.await.print_permanents(activePlayer, prompt="here are the permanents you have:")
 
+          # should consider not using choose_from_list since the GUI doesn't
           cardToPlay = @interface.await.choose_from_list(hand, :select_a_card_to_play_prompt).value
           @logger.debug "Card selected is: '#{cardToPlay}'"
 
