@@ -73,9 +73,6 @@ class GameGui < Gosu::Window
 
         @new_game_driver = nil
 
-        @current_cached_player = nil
-        @current_player_future = nil
-
         @play_card_future = nil
     end
 
@@ -120,8 +117,6 @@ class GameGui < Gosu::Window
             @logger.warn "GameGui::start_a_new_game: Was not able to initialize game_state because #{game_state_result.reason}"
         end
         @game_state = game_state_result.value
-        @logger.debug "GameGui::start_a_new_game: game_state setup and geting cached player"
-        @current_cached_player = @new_game_driver.await.active_player.value
         @logger.debug "GameGui::start_a_new_game: New game started"
     end
 
@@ -221,7 +216,6 @@ class GameGui < Gosu::Window
                         clean_up_future.add_observer do |time, value|
                             if value # this means the turn is over
                                 @player_changed = true
-                                setup_cached_player
                             end
                             update_game_state
                         end
@@ -307,17 +301,6 @@ class GameGui < Gosu::Window
     end
 
     private
-    def setup_cached_player
-        @current_player_future = @new_game_driver.async.active_player
-        @current_player_future.add_observer do |time, value|
-            @logger.debug "Here is the time #{time}"
-            @logger.debug "Here is the value #{value}"
-            @current_cached_player = value
-            @player_changed = true
-            @redraw_hand = true
-        end
-    end
-
     def update_game_state
         game_state_future = @new_game_driver.async.get_game_state
         game_state_future.add_observer do |time, value|
