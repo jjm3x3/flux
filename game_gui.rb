@@ -160,24 +160,27 @@ class GameGui < Gosu::Window
             @current_displayed_cards.each do |cardButton|
                 @logger.debug "Checking card '#{cardButton}'"
                 if cardButton.is_clicked?
-                    @logger.debug "Starting awaiting active_player from game_driver"
-                    activePlayer = @current_cached_player
-
                     @logger.debug "Getting card from players hand"
-                    cardToPlay = activePlayer.remove_card_from_hand(clickedCard)
-                    @logger.debug "you clicked a card button #{cardToPlay}"
-
-                    @play_card_future = @new_game_driver.async.play_card(activePlayer, cardToPlay)
-                    @play_card_future.add_observer do |time, value|
-                        @card_played = true
-                        update_game_state
-                    end
-
+                    card_selected_future = @new_game_driver.async.remove_card_from_active_player(clickedCard)
+                    card_selected_future.add_observer(self, :update_after_card_selected)
                     return
                 end
                 clickedCard += 1
             end
         end
+    end
+
+    def update_after_card_selected(time, value, reason)
+        # value is the selected card to play
+        @logger.info "GameGui::update: you clicked a card button #{value}"
+        @play_card_future = @new_game_driver.async.play_card(value)
+        @play_card_future.add_observer(self, :update_after_play)
+    end
+
+    def update_after_play(time, value, reason)
+        @logger.debug "GameGui::update_after_play: Starting to execute"
+        @card_played = true
+        update_game_state
     end
 
     def update
@@ -198,6 +201,10 @@ class GameGui < Gosu::Window
         end
 
         if @new_game_driver
+            # NOTE:: We are trying to minimize the number of times we make calls
+            #        to the driver so we have a system of boolean flags so that
+            #        it will only fire off a call to the driver when it makes
+            #        sense to do so.
             if @card_played
                 @logger.debug "GameGui::update: Card has been played, update accordingly"
                 @card_played = false
