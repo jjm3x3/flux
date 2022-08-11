@@ -1348,60 +1348,69 @@ describe "game" do
 
     describe "take_another_turn" do
         it "should make sure the current player remains the same when the last card of their turn is played" do
-            pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n")
             testLogger = Logger.new(test_outfile)
-            theGame = Game.new(testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(testLogger, testInterface, players)
             theFirstPlayer = theGame.players[0]
+            original_current_players_starting_hand_size = theFirstPlayer.hand.length
             originalCurrentPlayer = theGame.currentPlayer
             currentPlayerCounter = 0
-            # tests this action by having the player use this as their one and
-            # only card to play in a turn
-            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+            card_to_play = Action.new(15, "another turn", "some rules text")
 
             # execute
-            theGame.playCards(theFirstPlayer)
+            theGame.play_card(card_to_play, theFirstPlayer)
 
             # test
+            expect(original_current_players_starting_hand_size).to eq 0
             expect(theGame.currentPlayer).to eq originalCurrentPlayer
         end
 
         it "should make sure the current player remains the same when they play a card in the middle of their turn" do
-            pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n0\n")
             testLogger = Logger.new(test_outfile)
-            theGame = Game.new(testLogger)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(testLogger, testInterface, players)
+            theGame.setup
             theGame.ruleBase.addRule(Rule.new("play more", 2, "play 2"))
             theFirstPlayer = theGame.players[0]
             originalCurrentPlayer = theGame.currentPlayer
             currentPlayerCounter = 0
-            theFirstPlayer.hand.unshift(Keeper.new(15, "Any ol thing "))
-            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+            thing_card = Keeper.new(15, "Any ol thing ")
+            take_another_turn_card =  Action.new(15, "another turn", "some rules text")
 
             # execute
-            theGame.playCards(theFirstPlayer)
+            theGame.play_card(thing_card, theFirstPlayer)
+            theGame.play_card(take_another_turn_card, theFirstPlayer)
 
             # test
             expect(theGame.currentPlayer).to eq originalCurrentPlayer
         end
 
         it "should not force the current player to discard down to hand limit until their first turn is over" do
-            pending("This has been thuroughly broken and needs to be fixed")
             # setup
             input_stream = StringIO.new("0\n0\n0\n0\n0\n0\n0\n")
             testLogger = Logger.new(test_outfile)
-            theGame = Game.new(testLogger)
-            theGame.ruleBase.addRule(Limit.new("low hand limit", 3, "no cards", 0))
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(testLogger, testInterface, players)
+            theGame.setup
+            theGame.ruleBase.addRule(Limit.new("low hand limit", 1, "no cards", 0))
             theFirstPlayer = theGame.players[0]
-            theFirstPlayer.hand.unshift(Action.new(15, "another turn", "some rules text"))
+            take_another_turn_card =  Action.new(15, "another turn", "some rules text")
 
             # execute
-            theGame.playCards(theFirstPlayer)
+            theGame.play_card(take_another_turn_card, theFirstPlayer)
 
             # test
-            startingHandSize = 3 + 1 # since we now draw cards in the playCards method
+            startingHandSize = 3 # this is just the starting hand size after calling Game::setup
             expect(theFirstPlayer.hand.size).to eq startingHandSize
         end
     end
