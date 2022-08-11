@@ -251,11 +251,14 @@ class Game
     player.add_cards_to_hand(newCardsForPlayer)
   end
 
-  def todaysSpecial(player)
+  def todays_special(player)
     @logger.debug "Executing todays_special"
     drawnCards = drawCards(player, 3)
-    cardToPlay = @interface.await.choose_from_list(drawnCards, :choose_card_to_play_prompt).value
-    cardToPlay.play(player, self)
+    chosen_card_result = @interface.await.choose_from_list(drawnCards, :choose_card_to_play_prompt)
+    if chosen_card_result.state != :fulfilled
+        @logger.warn "chosen_card_result may not have been fulfilled because #{chosen_card_result.reason}"
+    end
+    chosen_card_result.value.play(player, self)
 
     @logger.debug "First card played now figure out if any more should be played"
     if @interface.await.ask_yes_no(:birthday_prompt).value
@@ -267,7 +270,11 @@ class Game
       cardToPlay.play(player, self)
     else
       @logger.debug "It is the not current players birthday is it at least a holiday or anniversary"
-      if @interface.await.ask_yes_no(:holiday_anniversary_prompt).value
+      yes_no_result = @interface.await.ask_yes_no(:holiday_anniversary_prompt)
+      if yes_no_result.state != :fulfilled
+        @logger.warn "Something went wrong when prompting user yes/no the reason is #{yes_no_result.reason}"
+      end
+      if yes_no_result.value
         cardToPlay = @interface.await.choose_from_list(drawnCards, :choose_card_to_play_prompt).value
         cardToPlay.play(player, self)
       end

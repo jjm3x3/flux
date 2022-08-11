@@ -799,7 +799,7 @@ describe "game" do
 
     end
 
-    describe "todaysSpecial" do
+    describe "todays_special" do
         it "should draw 3 cards" do
             # setup
             input_stream = StringIO.new("0\nn\nn\n")
@@ -813,7 +813,7 @@ describe "game" do
             deckCountBeforeExecution = theGame.deck.count
 
             # execute
-            theGame.todaysSpecial(theFirstPlayer)
+            theGame.todays_special(theFirstPlayer)
 
             # test
             expect(theGame.deck.count).to eq deckCountBeforeExecution - 3
@@ -832,7 +832,7 @@ describe "game" do
             deckCountBeforeExecution = theGame.deck.count
 
             # execute
-            theGame.todaysSpecial(theFirstPlayer)
+            theGame.todays_special(theFirstPlayer)
 
             # test
             expect(theFirstPlayer.keepers.size).to eq 1 # stand in for knowing how many cards got played
@@ -851,7 +851,7 @@ describe "game" do
             deckCountBeforeExecution = theGame.deck.count
 
             # execute
-            theGame.todaysSpecial(theFirstPlayer)
+            theGame.todays_special(theFirstPlayer)
 
             # test
             expect(theFirstPlayer.keepers.size).to eq 2 # stand in for knowing how many cards got played
@@ -870,7 +870,7 @@ describe "game" do
             deckCountBeforeExecution = theGame.deck.count
 
             # execute
-            theGame.todaysSpecial(theFirstPlayer)
+            theGame.todays_special(theFirstPlayer)
 
             # test
             expect(theFirstPlayer.keepers.size).to eq 3 # stand in for knowing how many cards got played
@@ -890,7 +890,7 @@ describe "game" do
             # assuming the start draw rule is 1
 
             # execute
-            theGame.todaysSpecial(theFirstPlayer)
+            theGame.todays_special(theFirstPlayer)
 
             # test
             expect(theFirstPlayer.creepers).to include warCreeper
@@ -912,7 +912,7 @@ describe "game" do
             cardsDrawn = 3
 
             # execute
-            theGame.todaysSpecial(theFirstPlayer)
+            theGame.todays_special(theFirstPlayer)
 
             # test
             expect(theGame.deck.count).to eq countOfDeckToStart - (cardsDrawn + stackedCreepers.size) # the creeper
