@@ -23,7 +23,8 @@ class GameGui < Gosu::Window
         @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: method(:is_left_button_pressed)}
         @new_game_button = Button.new(self, Gosu::Image.from_text("New Game?", 20), 10, 10, ZOrder::GAME_ITEMS, @button_options)
         @game_stats_and_current_player_base_x = 400
-        @game_stats = GameStats.new(@game_stats_and_current_player_base_x, 10)
+        game_stats_y = 10
+        @game_stats = GameStats.new(@game_stats_and_current_player_base_x, game_stats_y)
         @current_displayed_cards = []
 
         @player_changed = true
@@ -254,14 +255,17 @@ class GameGui < Gosu::Window
 
         draw_oponents
 
-        @font.draw_text("It is player #{@game_state.active_player.name}'s turn", @game_stats_and_current_player_base_x, 500, 1, 1.0, 1.0, Gosu::Color::WHITE)
-        @font.draw_text("Choose to play #{@game_state.card_to_play} of #{@game_state.play_rule}", @game_stats_and_current_player_base_x + 10, 520, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        player_announcement_text_y = 500
+        @font.draw_text("It is player #{@game_state.active_player.name}'s turn", @game_stats_and_current_player_base_x, player_announcement_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        cards_to_play_indicator_y = player_announcement_text_y + 20
+        @font.draw_text("Choose to play #{@game_state.card_to_play} of #{@game_state.play_rule}", @game_stats_and_current_player_base_x + 10, cards_to_play_indicator_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
-        @current_players_permanents.draw(@game_state.active_player, @game_stats_and_current_player_base_x, 575)
+        current_players_permanents_y = 575
+        @current_players_permanents.draw(@game_state.active_player, @game_stats_and_current_player_base_x, current_players_permanents_y)
 
         # draw hand
-        y_start = 700  # this should really be a function of the permanents
-        @font.draw_text("Pick a card to play:", @game_stats_and_current_player_base_x , y_start, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        current_player_hand_y = 700
+        @font.draw_text("Pick a card to play:", @game_stats_and_current_player_base_x , current_player_hand_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
         if @redraw_hand
 
@@ -278,7 +282,7 @@ class GameGui < Gosu::Window
                 newCardButton = Button.new(self,
                     Gosu::Image.from_text("#{card}", 20),
                     hand_x,
-                    (730) + 10 * cardsDisplayed + @font.height * cardsDisplayed,
+                    (current_player_hand_y + 30) + 10 * cardsDisplayed + @font.height * cardsDisplayed,
                     ZOrder::GAME_ITEMS,
                     @button_options)
                 newCardButton.draw
