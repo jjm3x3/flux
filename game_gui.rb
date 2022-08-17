@@ -325,16 +325,7 @@ class GameGui < Gosu::Window
     end
 
     def draw_oponents
-        current_player_index = 0
-        current_index = 0
-        @game_state.players.each do |player|
-            if @game_state.active_player == player
-                current_player_index = current_index
-            else
-                current_index += 1
-            end
-        end
-        @logger
+        current_player_index = @game_state.current_player_index
 
         current_index = (current_player_index + 1) % @game_state.players.count
         ittr = 0

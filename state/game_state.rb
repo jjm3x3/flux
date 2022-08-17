@@ -45,4 +45,18 @@ class GameState
         end
         @card_to_play = card_to_play
     end
+
+    def current_player_index
+        current_player_index = 0
+        current_index = 0
+        @players.each do |player|
+            if @active_player == player
+                current_player_index = current_index
+            else
+                current_index += 1
+            end
+        end
+
+        return current_player_index
+    end
 end
