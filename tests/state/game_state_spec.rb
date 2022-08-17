@@ -9,7 +9,7 @@ describe "game_state" do
             # execute
             sut = GameState.new(10)
 
-            # test 
+            # test
             #   should not throw ex
         end
 
