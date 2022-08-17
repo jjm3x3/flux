@@ -22,7 +22,8 @@ class GameGui < Gosu::Window
         @left_click_down = false
         @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: method(:is_left_button_pressed)}
         @new_game_button = Button.new(self, Gosu::Image.from_text("New Game?", 20), 10, 10, ZOrder::GAME_ITEMS, @button_options)
-        @game_stats = GameStats.new(400, 10)
+        @game_stats_and_current_player_base_x = 400
+        @game_stats = GameStats.new(@game_stats_and_current_player_base_x, 10)
         @current_displayed_cards = []
 
         @player_changed = true
@@ -253,14 +254,14 @@ class GameGui < Gosu::Window
 
         draw_oponents
 
-        @font.draw_text("It is player #{@game_state.active_player.name}'s turn", 400, 500, 1, 1.0, 1.0, Gosu::Color::WHITE)
-        @font.draw_text("Choose to play #{@game_state.card_to_play} of #{@game_state.play_rule}", 410, 520, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        @font.draw_text("It is player #{@game_state.active_player.name}'s turn", @game_stats_and_current_player_base_x, 500, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        @font.draw_text("Choose to play #{@game_state.card_to_play} of #{@game_state.play_rule}", @game_stats_and_current_player_base_x + 10, 520, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
-        @current_players_permanents.draw(@game_state.active_player, 400, 575)
+        @current_players_permanents.draw(@game_state.active_player, @game_stats_and_current_player_base_x, 575)
 
         # draw hand
         y_start = 700  # this should really be a function of the permanents
-        @font.draw_text("Pick a card to play:", 400 , y_start, 1, 1.0, 1.0, Gosu::Color::WHITE)
+        @font.draw_text("Pick a card to play:", @game_stats_and_current_player_base_x , y_start, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
         if @redraw_hand
 
@@ -268,7 +269,7 @@ class GameGui < Gosu::Window
             @current_displayed_cards = []
             hand_x = 0
             left_shift = (@game_state.active_player.cards_in_hand.count / 5) * 40
-            hand_x = 420 - left_shift
+            hand_x = (@game_stats_and_current_player_base_x + 20) - left_shift
             @game_state.active_player.cards_in_hand.each do |card|
                 if cardsDisplayed >= 5
                     cardsDisplayed = 0
