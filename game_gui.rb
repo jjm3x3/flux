@@ -66,7 +66,7 @@ class GameGui < Gosu::Window
             dialog_prompts,
             @button_options)
 
-        @current_players_permanents = PlayerPermanents.new(@font)
+        @current_players_permanents = PlayerPermanents.new(@font, Gosu::Color::WHITE)
 
         @user_prompt_templates = user_prompt_templates
         @deck = deck
