@@ -43,6 +43,9 @@ class GameState
             end
             @players << player_state
         end
+        if !@active_player && players.length > 0
+            raise "Object passed as active_player does not exist in the list of current game players"
+        end
         @card_to_play = card_to_play
     end
 
