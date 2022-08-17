@@ -20,6 +20,5 @@ class PlayerPermanents
             @font.draw_text("#{card}", perm_x, next_y, 1, 1.0, 1.0, @color)
             permanentsDisplayed += 1
         end
-        # permanents_height = activePlayer.permanents.length * @font.height + activePlayer.permanents.length * permananent_margin
     end
 end
