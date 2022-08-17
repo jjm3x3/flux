@@ -341,10 +341,13 @@ class GameGui < Gosu::Window
         loop do
             player = @game_state.players[current_index]
             player_content_x = 20 + (ittr * 700)
-            @font.draw_text("#{player.name}:", player_content_x, 275, 1, 1.0, 1.0, Gosu::Color::WHITE)
-            @current_players_permanents.draw(player, player_content_x, 300)
+            opponent_content_y = 275
+            @font.draw_text("#{player.name}:", player_content_x, opponent_content_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
+            opponent_permanents_y = opponent_content_y + 25
+            @current_players_permanents.draw(player, player_content_x, opponent_permanents_y)
 
-            @font.draw_text("#{player.cards_in_hand.count} cards in hand", player_content_x, 425, 1, 1.0, 1.0, Gosu::Color::WHITE)
+            opponent_cards_in_hand_text_y = opponent_permanents_y +  125
+            @font.draw_text("#{player.cards_in_hand.count} cards in hand", player_content_x, opponent_cards_in_hand_text_y, 1, 1.0, 1.0, Gosu::Color::WHITE)
 
             ittr += 1
 
