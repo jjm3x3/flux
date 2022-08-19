@@ -998,7 +998,7 @@ describe "game" do
         end
     end
 
-    describe "letsDoThatAgain" do
+    describe "lets_do_that_again" do
         it "should non contain any keepers or goals" do
             # setup
             input_stream = StringIO.new("0")
@@ -1017,13 +1017,35 @@ describe "game" do
             theGame.discardPile << Goal.new("Achive me", [keeper1, keeper2] , "You most have these cards to win")
 
             # execute
-            theGame.letsDoThatAgain(theFirstPlayer)
+            theGame.lets_do_that_again(theFirstPlayer)
 
             # test
             testInterface.card_list.select do |card|
                 expect(card.class).to_not eq Keeper
                 expect(card.class).to_not eq Goal
             end
+        end
+
+        it "should not prompt if there are no actions or new rules in the discard" do
+            # setup
+            input_stream = StringIO.new("0")
+            testLogger = Logger.new(test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS)
+            numberOfPlayers = 3
+            players = Player.generate_players(numberOfPlayers)
+            theGame = Game.new(testLogger, testInterface, players)
+            theFirstPlayer = theGame.players[0]
+            keeper1 = Keeper.new(0, "Thing1")
+            keeper2 = Keeper.new(0, "thing2")
+            theGame.discardPile << keeper1
+            theGame.discardPile << keeper2
+            theGame.discardPile << Goal.new("Achive me", [keeper1, keeper2] , "You most have these cards to win")
+
+            # execute
+            theGame.lets_do_that_again(theFirstPlayer)
+
+            # test
+            expect(testInterface.prompted).to be nil
         end
     end
 

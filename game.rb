@@ -322,10 +322,13 @@ class Game
 
   end
 
-  def letsDoThatAgain(player)
+  def lets_do_that_again(player)
     eligibleCards = @discardPile.select do |card|
       @logger.debug "this card is of type: #{card.card_type}"
       card.card_type == "Rule" || card.card_type == "Action"
+    end
+    if eligibleCards.count == 0
+      return
     end
     pickedCard = @interface.await.choose_from_list(eligibleCards, :replay_prompt).value
     @discardPile = @discardPile.select do |card|
