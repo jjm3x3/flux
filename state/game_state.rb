@@ -8,14 +8,18 @@ class GameState
         :play_rule,
         :hand_limit,
         :keeper_limit,
-        :active_player
+        :active_player,
+        :card_to_play,
+        :players
 
     def initialize(
         deck_count,
         discard_pile_count=0,
         gaol_text="",
         rule_base=nil,
-        active_player=nil
+        active_player=nil,
+        card_to_play=1,
+        players=[]
     )
         @deck_count = deck_count
         @discard_pile_count = discard_pile_count
@@ -31,8 +35,31 @@ class GameState
             @hand_limit = Float::INFINITY
             @keeper_limit = Float::INFINITY
         end
-        if active_player
-            @active_player = PlayerState.new(active_player)
+        @players = []
+        players.each do |player|
+            player_state = PlayerState.new(player)
+            if player == active_player
+                @active_player = player_state
+            end
+            @players << player_state
         end
+        if !@active_player && players.length > 0
+            raise "Object passed as active_player does not exist in the list of current game players"
+        end
+        @card_to_play = card_to_play
+    end
+
+    def current_player_index
+        current_player_index = 0
+        current_index = 0
+        @players.each do |player|
+            if @active_player == player
+                current_player_index = current_index
+            else
+                current_index += 1
+            end
+        end
+
+        return current_player_index
     end
 end
