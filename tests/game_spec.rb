@@ -131,6 +131,33 @@ describe "game" do
             # test
             expect(returnedcards.length).to eq 0 # 0 since there are no "real cards to draw"
         end
+
+        it "should reshufle the discard pile into the deck" do
+            # setup
+            input_stream = StringIO.new("")
+            test_logger = Logger.new(test_outfile)
+            testInterface = TestInterface.new(input_stream, test_outfile)
+            players = Player.generate_players(3)
+            stacked_deck = StackedDeck.new(test_logger,
+                [Creeper.new(10000, "screem", "some very scary rule text"),
+                    Creeper.new(10001, "lonelyness", "there is no one there")],
+                startempty=true)
+            theGame = Game.new(test_logger, testInterface, players, stacked_deck)
+            thefirstplayer = theGame.players[0]
+            # fill discard pile
+
+            a_gaol = Goal.new("Some gaol", [1,2],"Some rule text about how this works")
+            theGame.play_card(a_gaol, thefirstplayer)
+            theGame.play_card(a_gaol, thefirstplayer)
+            theGame.play_card(a_gaol, thefirstplayer)
+
+            # execute
+            returnedcards = theGame.drawCards(thefirstplayer, :draw_rule)
+
+            # test
+            expect(returnedcards.length).to eq 1
+            expect(theGame.discardPile.length).to eq 0
+        end
     end
 
     describe "progress_turn" do
