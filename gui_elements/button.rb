@@ -8,8 +8,6 @@ class Button
         @z = z
         @id = id
         @visible = true
-        @unpressed_color = options[:unpressed_color]
-        @pressed_color = options[:pressed_color]
         @is_pressed = options[:is_pressed]
         @text_color = options[:text_color]
         @unpressed_background_image = options[:unpressed_background_image]
