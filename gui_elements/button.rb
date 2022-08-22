@@ -18,7 +18,7 @@ class Button
     def draw
         left_click_down = @is_pressed.call
 
-        my_red = Gosu::Color.new(0xFFB6402B)
+        my_red = Gosu::Color.new(0xFFdd5818)
         my_red_pressed = Gosu::Color.new(0xFF9C3625)
 
         button_color = left_click_down && intersects ? my_red_pressed : my_red

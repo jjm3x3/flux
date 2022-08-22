@@ -13,9 +13,8 @@ class GameGui < Gosu::Window
         super 1200, 900
         self.caption = "Fluxx"
 
-        # #852AB5
         @game_background = Gosu::record(10, 10) do
-            my_purple = Gosu::Color.new(255, 120, 40, 139)
+            my_purple = Gosu::Color.new(0xFF6D398E)
             Gosu::draw_rect(0,0, 10, 10, my_purple, ZOrder::BAKGROUND)
         end
         @font = Gosu::Font.new(20)
