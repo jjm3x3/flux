@@ -102,9 +102,9 @@ class GameGui < Gosu::Window
         result = {}
         deck.each do |card|
             if card.respond_to?(:rule_text)
-                result[card.name] = get_text_image(card.rule_text)
+                result[card.name] = GuiUtil.get_text_image(card.rule_text, @font)
             elsif card.card_type == "Keeper" && card.is_peace?
-                result[card.name] =get_text_image("#{card.name}\n (If you have War, move it to another player if you have this on the table)")
+                result[card.name] = GuiUtil.get_text_image("#{card.name}\n (If you have War, move it to another player if you have this on the table)", @font)
             else
                 result[card.name] = Gosu::Image.from_text(card.name,20)
             end
@@ -326,41 +326,6 @@ class GameGui < Gosu::Window
         end
         @simple_dialog.draw
         @list_dialog.draw
-    end
-
-    def get_text_image(text)
-        lines = []
-        lines_by_newline = text.split("\n")
-        current_line = ""
-        lines_by_newline.each do |line|
-            if line.size > 30
-                # split up line and add split lines to "lines"
-                words = line.split(" ")
-                words.each do |word|
-                    @logger.debug "add word #{word} to tool tip"
-                    if current_line.size + 1 + word.size > 30
-                        lines << current_line
-                        current_line = word + " "
-                    else
-                        current_line += word + " "
-                    end
-                end
-            else
-                lines << line
-            end
-        end
-        lines << current_line
-        @logger.debug "the lines for the tip are #{lines}"
-        width = @font.text_width("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")  # shoudl be 30
-        height = (@font.height + 5) * lines.size
-        text_image = Gosu::record(width.to_i, height) do
-            line_count = 0
-            lines.each do |line|
-                @font.draw_text(line, 0, line_count * (@font.height + 5), ZOrder::DIALOG_ITEMS, 1.0, 1.0, Gosu::Color::WHITE)
-                line_count += 1
-            end
-        end
-        return text_image
     end
 
     def get_dialog_result
