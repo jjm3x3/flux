@@ -21,12 +21,9 @@ class Button
     def draw
         left_click_down = @is_pressed.call
 
-        my_red = Gosu::Color.new(0xFFdd5818)
-        my_red_pressed = Gosu::Color.new(0xFF9C3625)
-
-        button_color = left_click_down && intersects ? my_red_pressed : my_red
-        Gosu::draw_rect(@x, @y, @width, @height, button_color, @z)
-        @image.draw(@x + 3, @y + 3, @z, 1, 1, @unpressed_color)
+        button_image = left_click_down && intersects ? @pressed_background_image : @unpressed_background_image
+        button_image.draw(@x, @y, @z, @width, @height)
+        @image.draw(@x + 3, @y + 3, @z, 1, 1, @text_color)
     end
 
     def is_clicked?
