@@ -19,8 +19,10 @@ class Button
     def draw
         left_click_down = @is_pressed.call
 
-        button_image = left_click_down && intersects ? @pressed_background_image : @unpressed_background_image
-        button_image.draw(@x, @y, @z, @width, @height)
+        if @pressed_background_image && @unpressed_background_image
+            button_image = left_click_down && intersects ? @pressed_background_image : @unpressed_background_image
+            button_image.draw(@x, @y, @z, @width, @height)
+        end
         @image.draw(@x + 3, @y + 3, @z, 1, 1, @text_color)
     end
 
