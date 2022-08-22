@@ -329,16 +329,24 @@ class GameGui < Gosu::Window
     end
 
     def get_text_image(text)
-        words = text.split(" ")
         lines = []
+        lines_by_newline = text.split("\n")
         current_line = ""
-        words.each do |word|
-            @logger.debug "add word #{word} to tool tip"
-            if current_line.size + 1 + word.size > 30
-                lines << current_line
-                current_line = word + " "
+        lines_by_newline.each do |line|
+            if line.size > 30
+                # split up line and add split lines to "lines"
+                words = line.split(" ")
+                words.each do |word|
+                    @logger.debug "add word #{word} to tool tip"
+                    if current_line.size + 1 + word.size > 30
+                        lines << current_line
+                        current_line = word + " "
+                    else
+                        current_line += word + " "
+                    end
+                end
             else
-                current_line += word + " "
+                lines << line
             end
         end
         lines << current_line
