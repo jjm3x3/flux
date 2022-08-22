@@ -30,9 +30,10 @@ class GameGui < Gosu::Window
         end
 
         @button_options = {
-            pressed_color: Gosu::Color::BLACK,
-            unpressed_color: Gosu::Color::WHITE,
-            is_pressed: method(:is_left_button_pressed)
+            is_pressed: method(:is_left_button_pressed),
+            text_color: Gosu::Color::WHITE,
+            unpressed_background_image: unpressed_button,
+            pressed_background_image: pressed_button,
         }
 
         @left_click_down = false
