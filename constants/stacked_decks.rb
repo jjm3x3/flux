@@ -71,4 +71,9 @@ module StackedDecks
     [
         Action.new(9, "A special day?", "Set your hand aside and draw 3 cards. If today is your birthday, play all 3 cards. If today is a holiday or a specaial annicersary, play 2 of the cards. If it's just another day, play only 1 card. Discard the remainder."),
     ]
+
+    STARTS_WITH_PEACE =
+    [
+        Keeper.new(16, "peas"),
+    ]
 end
