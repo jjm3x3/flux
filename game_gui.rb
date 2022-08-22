@@ -5,6 +5,7 @@ require './gui_elements/dialog.rb'
 require './gui_elements/player_permanents.rb'
 require './game.rb'
 require './gui_input_manager.rb'
+require './gui_util.rb'
 require './game_driver.rb'
 require './state/game_state.rb'
 
@@ -13,21 +14,11 @@ class GameGui < Gosu::Window
         super 1200, 900
         self.caption = "Fluxx"
 
-        @game_background = Gosu::record(10, 10) do
-            my_purple = Gosu::Color.new(0xFF6D398E)
-            Gosu::draw_rect(0,0, 10, 10, my_purple, ZOrder::BAKGROUND)
-        end
+        @game_background = GuiUtil.generate_simple_color_tile(0xFF6D398E)
         @font = Gosu::Font.new(20)
 
-
-        unpressed_button = Gosu::record(1, 1) do
-            my_red = Gosu::Color.new(0xFFdd5818)
-            Gosu::draw_rect(0, 0, 1, 1, my_red, ZOrder::BAKGROUND)
-        end
-        pressed_button = Gosu::record(1, 1) do
-            my_red_pressed = Gosu::Color.new(0xFF9C3625)
-            Gosu::draw_rect(0, 0, 1, 1, my_red_pressed, ZOrder::BAKGROUND)
-        end
+        unpressed_button = GuiUtil.generate_simple_color_tile(0xFFdd5818)
+        pressed_button = GuiUtil.generate_simple_color_tile(0xFF9C3625)
 
         @button_options = {
             is_pressed: method(:is_left_button_pressed),
@@ -49,10 +40,7 @@ class GameGui < Gosu::Window
 
         @logger = logger
 
-        dialog_background = Gosu::record(10,10) do
-            my_green = Gosu::Color.new(255,0, 128, 0)
-            Gosu::draw_rect(0, 0, 10, 10, my_green, ZOrder::DIALOG)
-        end
+        dialog_background = GuiUtil.generate_simple_color_tile(0xFF008000)
 
         dialog_prompts = initialize_dialog_prompts(prompt_strings)
 
@@ -259,7 +247,7 @@ class GameGui < Gosu::Window
     end
 
     def draw
-        @game_background.draw(0, 0, ZOrder::BAKGROUND, width/10, height/10)
+        @game_background.draw(0, 0, ZOrder::BAKGROUND, width/@game_background.width, height/@game_background.height)
 
         if !@new_game_driver
             # for main menu
