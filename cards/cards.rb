@@ -63,10 +63,16 @@ class Keeper < Card
 end
 
 class Goal < Card
+    attr_reader :rule_text
 
   def initialize(name, cards, rule)
     super(2, name)
     @related_keepers = cards
+    if rule == "? and ?"
+      @rule_text = "The player with #{cards[0]}, and #{cards[1]} on the table wins"
+    else
+      @rule_text = rule
+    end
   end
 
   def play(player, game)
