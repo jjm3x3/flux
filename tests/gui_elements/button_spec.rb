@@ -5,7 +5,7 @@ describe "Button" do
         it "should construct" do
             # setup
             window_double = double("window")
-            image_double = double("image")
+            image_double = double("image", height: 10, width: 10)
 
             # execute
             Button.new(window_double, image_double, 1,1,1)
@@ -19,7 +19,7 @@ describe "Button" do
         it "should draw" do
             # setup
             window_double = double("window")
-            image_double = double("image", draw: nil)
+            image_double = double("image", height: 10, width: 10, draw: nil)
             sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
 
             # execute
@@ -32,7 +32,7 @@ describe "Button" do
         it "should prefer drawing an image if one is injected" do
             # setup
             window_double = double("window")
-            image_double = double("image", draw: nil)
+            image_double = double("image", height: 10, width: 10, draw: nil)
             sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
 
             # execute
@@ -62,7 +62,7 @@ describe "Button" do
         it "should draw based what what is porvided in set_position" do
             # setup
             window_double = double("window")
-            image_double = double("image", draw: nil)
+            image_double = double("image", height: 10, width: 10, draw: nil)
             sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
             expected_x = 100
             expected_y = 100
@@ -72,6 +72,8 @@ describe "Button" do
             sut.draw
 
             # assert
+            expected_x += 3  # accounts for buffer
+            expected_y += 3  # accounts for buffer
             expect(image_double).to have_received(:draw).with(expected_x, expected_y, anything, anything, anything, anything)
         end
     end
