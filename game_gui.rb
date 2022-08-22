@@ -19,12 +19,23 @@ class GameGui < Gosu::Window
         end
         @font = Gosu::Font.new(20)
 
-        @left_click_down = false
+
+        unpressed_button = Gosu::record(1, 1) do
+            my_red = Gosu::Color.new(0xFFdd5818)
+            Gosu::draw_rect(0, 0, 1, 1, my_red, ZOrder::BAKGROUND)
+        end
+        pressed_button = Gosu::record(1, 1) do
+            my_red_pressed = Gosu::Color.new(0xFF9C3625)
+            Gosu::draw_rect(0, 0, 1, 1, my_red_pressed, ZOrder::BAKGROUND)
+        end
+
         @button_options = {
             pressed_color: Gosu::Color::BLACK,
             unpressed_color: Gosu::Color::WHITE,
             is_pressed: method(:is_left_button_pressed)
         }
+
+        @left_click_down = false
         @new_game_button = Button.new(self, Gosu::Image.from_text("New Game?", 20), 10, 10, ZOrder::GAME_ITEMS, @button_options)
         @game_stats_and_current_player_base_x = 400
         game_stats_y = 10
