@@ -21,7 +21,9 @@ class Button
 
         if @pressed_background_image && @unpressed_background_image
             button_image = left_click_down && intersects ? @pressed_background_image : @unpressed_background_image
-            button_image.draw(@x, @y, @z, @width, @height)
+            x_scale = @width/button_image.width
+            y_scale = @height/button_image.height
+            button_image.draw(@x, @y, @z, x_scale, y_scale)
         end
         @image.draw(@x + 3, @y + 3, @z, 1, 1, @text_color)
     end
