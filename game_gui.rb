@@ -85,8 +85,6 @@ class GameGui < Gosu::Window
         @new_game_driver = nil
 
         @play_card_future = nil
-
-        @a_tool_tip = ToolTip.new(self, Gosu::Image.from_text("I am a tooltip", 20))
     end
 
     def create_card_images(deck)
@@ -322,7 +320,6 @@ class GameGui < Gosu::Window
             @current_displayed_cards.each do |cardButton|
                 cardButton.draw
             end
-            # @a_tool_tip.draw
         end
         @simple_dialog.draw
         @list_dialog.draw
