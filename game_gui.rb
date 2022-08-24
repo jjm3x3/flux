@@ -5,6 +5,7 @@ require './gui_elements/dialog.rb'
 require './gui_elements/player_permanents.rb'
 require './game.rb'
 require './gui_input_manager.rb'
+require './gui_util.rb'
 require './game_driver.rb'
 require './state/game_state.rb'
 
@@ -13,14 +14,20 @@ class GameGui < Gosu::Window
         super 1200, 900
         self.caption = "Fluxx"
 
-        @game_background = Gosu::record(10, 10) do
-            my_purple = Gosu::Color.new(255, 120, 40, 139)
-            Gosu::draw_rect(0,0, 10, 10, my_purple, ZOrder::BAKGROUND)
-        end
+        @game_background = GuiUtil.generate_simple_color_tile(0xFF6D398E)
         @font = Gosu::Font.new(20)
 
+        unpressed_button = GuiUtil.generate_simple_color_tile(0xFFdd5818)
+        pressed_button = GuiUtil.generate_simple_color_tile(0xFF9C3625)
+
+        @button_options = {
+            is_pressed: method(:is_left_button_pressed),
+            text_color: Gosu::Color::WHITE,
+            unpressed_background_image: unpressed_button,
+            pressed_background_image: pressed_button,
+        }
+
         @left_click_down = false
-        @button_options = {pressed_color: Gosu::Color::BLACK, unpressed_color: Gosu::Color::WHITE, is_pressed: method(:is_left_button_pressed)}
         @new_game_button = Button.new(self, Gosu::Image.from_text("New Game?", 20), 10, 10, ZOrder::GAME_ITEMS, @button_options)
         @game_stats_and_current_player_base_x = 400
         game_stats_y = 10
@@ -33,10 +40,7 @@ class GameGui < Gosu::Window
 
         @logger = logger
 
-        dialog_background = Gosu::record(10,10) do
-            my_green = Gosu::Color.new(255,0, 128, 0)
-            Gosu::draw_rect(0, 0, 10, 10, my_green, ZOrder::DIALOG)
-        end
+        dialog_background = GuiUtil.generate_simple_color_tile(0xFF008000)
 
         dialog_prompts = initialize_dialog_prompts(prompt_strings)
 
@@ -243,7 +247,7 @@ class GameGui < Gosu::Window
     end
 
     def draw
-        @game_background.draw(0, 0, ZOrder::BAKGROUND, width/10, height/10)
+        @game_background.draw(0, 0, ZOrder::BAKGROUND, width/@game_background.width, height/@game_background.height)
 
         if !@new_game_driver
             # for main menu

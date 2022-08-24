@@ -261,9 +261,9 @@ describe "SimpleDialog" do
             test_logger = Logger.new(test_outfile)
             prompt_image_double = double("prompt image", width: 400, height: 5, draw: nil)
             mock_card_list = [
-                {item: 1, image: double("image1", height: 10, draw: nil)},
-                {item: 2, image: double("image2", height: 20, draw: nil)},
-                {item: 3, image: double("image3", height: 30, draw: nil)},
+                {item: 1, image: double("image1", height: 10, width: 10, draw: nil)},
+                {item: 2, image: double("image2", height: 20, width: 20, draw: nil)},
+                {item: 3, image: double("image3", height: 30, width: 30, draw: nil)},
             ]
             # This test is mostly asserting that the following calculation with
             # all assumptions and constants is executed
