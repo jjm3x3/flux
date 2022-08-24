@@ -27,7 +27,7 @@ class Action < Card
     when 8
       game.taxation(player)
     when 9
-      game.todaysSpecial(player)
+      game.todays_special(player)
     when 10
       game.mix_it_all_up(player)
     when 11
