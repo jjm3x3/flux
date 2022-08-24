@@ -29,9 +29,11 @@ class GuiUtil
         width = font.text_width("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")  # shoudl be 30
         height = (font.height + 5) * lines.size
         text_image = Gosu::record(width.to_i, height) do
+            my_green = Gosu::Color.new(0xFF357035)
+            Gosu::draw_rect(0, 0, width + 6, height + 6, my_green, ZOrder::DIALOG)
             line_count = 0
             lines.each do |line|
-                font.draw_text(line, 0, line_count * (font.height + 5), ZOrder::DIALOG_ITEMS, 1.0, 1.0, Gosu::Color::WHITE)
+                font.draw_text(line, 3, line_count * (font.height + 5) + 3, ZOrder::DIALOG_ITEMS, 1.0, 1.0, Gosu::Color::WHITE)
                 line_count += 1
             end
         end
