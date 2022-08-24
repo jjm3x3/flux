@@ -297,7 +297,7 @@ class GameGui < Gosu::Window
                 # card is a unique string representation of a card
                 these_button_options = @button_options.clone
                 tool_tip_image = @tool_tip_images[card]
-                these_button_options[:tool_tip] = ToolTip.new(self, tool_tip_image)
+                these_button_options[:tool_tip_image] = tool_tip_image
                 if cardsDisplayed >= 5
                     cardsDisplayed = 0
                     hand_x += 185
