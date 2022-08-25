@@ -166,13 +166,16 @@ class GameGui < Gosu::Window
                         @new_game_button.set_visibility false
                         start_a_new_game
                     elsif result == "Back to Main Menu"
+                        @new_game_button.set_visibility true
                         @new_game_driver = nil
                     end
                     # TODO:: do things for other cases
                 end
                 return
             end
+            @logger.debug "GameGui::button_up: no dialogs are visible so processing menu buttons"
             if @new_game_button.is_clicked?
+                @logger.debug "Showing new game dialog since button was clicked"
                 @simple_dialog.show
                 return
             end
