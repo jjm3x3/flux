@@ -34,7 +34,7 @@ class GameGui < Gosu::Window
         @game_stats = GameStats.new(@game_stats_and_current_player_base_x, game_stats_y)
         @current_displayed_cards = []
 
-        @player_changed = true
+        @player_changed = false
         @redraw_hand = true
         @card_played = false
 
@@ -143,6 +143,7 @@ class GameGui < Gosu::Window
         end
         @game_state = game_state_result.value
         @logger.debug "GameGui::start_a_new_game: New game started"
+        @player_changed = true
     end
 
     def button_up(id)
