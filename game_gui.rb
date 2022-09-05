@@ -61,9 +61,6 @@ class GameGui < Gosu::Window
             "no_one" => Gosu::Image.from_text("No One", 20),
         }
 
-        @simple_dialog.set_options(SimpleDialog.generate_dialog_options(["Yes", "No"], @button_images))
-        @simple_dialog.set_prompt :play_a_game_prompt
-
         @list_dialog = CardDialog.new(
             self,
             dialog_background,
