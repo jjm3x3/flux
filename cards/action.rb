@@ -1,8 +1,6 @@
 require "./cards/cards.rb"
 
 class Action < Card
-  attr_reader :rule_text
-
   def initialize(id, name, rule_text)
     super(4,name)
     @id = id

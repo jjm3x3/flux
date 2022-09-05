@@ -1,7 +1,8 @@
 class Card
 
-  attr_reader :card_type
-  attr_reader :name
+  attr_reader :card_type,
+    :name,
+    :rule_text
 
   def initialize(number=1,name="thing")
     @name = name
@@ -35,7 +36,6 @@ class Card
 end
 
 class Keeper < Card
-  attr_reader :rule_text
   @@peace_id = 16
   @@money_id = 19
 
@@ -69,8 +69,6 @@ class Keeper < Card
 end
 
 class Goal < Card
-    attr_reader :rule_text
-
   def initialize(name, cards, rule)
     super(2, name)
     @related_keepers = cards
@@ -99,7 +97,7 @@ class Goal < Card
 end
 
 class Rule < Card
-  attr_reader :rule_type, :rule_text
+  attr_reader :rule_type
 
   def initialize(name, ruleType, rulesText)
     super(3,name)
