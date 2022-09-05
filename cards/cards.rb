@@ -35,12 +35,18 @@ class Card
 end
 
 class Keeper < Card
+  attr_reader :rule_text
   @@peace_id = 16
   @@money_id = 19
 
   def initialize(id, name)
     super(1,name)
     @id = id
+    if is_peace?
+      @rule_text = "#{name}\n (If you have War, move it to another player if you have this on the table)"
+    else
+      @rule_text = name
+    end
   end
 
   def play(player, game)

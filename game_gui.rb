@@ -100,8 +100,6 @@ class GameGui < Gosu::Window
         deck.each do |card|
             if card.respond_to?(:rule_text)
                 result[card.name] = GuiUtil.get_text_image(card.rule_text, @font)
-            elsif card.card_type == "Keeper" && card.is_peace?
-                result[card.name] = GuiUtil.get_text_image("#{card.name}\n (If you have War, move it to another player if you have this on the table)", @font)
             else
                 result[card.name] = GuiUtil.get_text_image(card.name, @font)
             end
