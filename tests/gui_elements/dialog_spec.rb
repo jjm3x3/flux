@@ -255,7 +255,7 @@ describe "SimpleDialog" do
 
         it "should call draw with a height that is based on cumulative height of promt and button images" do
             # setup
-            gui_double = double("gui")
+            gui_double = double("gui", mouse_x: 10, mouse_y: 10)
             background_double = double("background", width: 1, height: 1, draw: nil)
             font_double = instance_double("font", height: 1, draw_text: nil)
             test_logger = Logger.new(test_outfile)
