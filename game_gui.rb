@@ -176,6 +176,8 @@ class GameGui < Gosu::Window
             @logger.debug "GameGui::button_up: no dialogs are visible so processing menu buttons"
             if @new_game_button.is_clicked?
                 @logger.debug "Showing new game dialog since button was clicked"
+                @simple_dialog.set_options(SimpleDialog.generate_dialog_options(["Yes", "No"], @button_images))
+                @simple_dialog.set_prompt :play_a_game_prompt
                 @simple_dialog.show
                 return
             end
