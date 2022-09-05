@@ -56,8 +56,8 @@ logger.level = log_level
 logger.debug "Starting up game!"
 boot_strapping_logger.close  # the app/game logger can take it from here
 
-# the_deck = Deck.new(logger)
-the_deck = StackedDecks.stacked_deck_factory(logger, StackedDecks::QUICK_WIN)
+the_deck = Deck.new(logger)
+# the_deck = StackedDecks.stacked_deck_factory(logger, StackedDecks::QUICK_WIN)
 
 if options[:cli]
     players = Player.generate_players(3)
