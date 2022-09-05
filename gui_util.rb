@@ -10,11 +10,12 @@ class GuiUtil
         lines = []
         lines_by_newline = text.split("\n")
         current_line = ""
+        line_length = 30
         lines_by_newline.each do |line|
-            if line.size > 30
+            if line.size > line_length
                 words = line.split(" ")
                 words.each do |word|
-                    if current_line.size + 1 + word.size > 30
+                    if current_line.size + 1 + word.size > line_length
                         lines << current_line
                         current_line = word + " "
                     else
@@ -26,7 +27,7 @@ class GuiUtil
             end
         end
         lines << current_line
-        width = font.text_width("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")  # shoudl be 30
+        width = font.text_width("x"*line_length)
         height = (font.height + 5) * lines.size
         text_image = Gosu::record(width.to_i, height) do
             my_green = Gosu::Color.new(0xFF357035)
