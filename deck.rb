@@ -10,6 +10,10 @@ class Deck
     @interface = anInterface
 
     @firstCard = true
+    @cards = []
+  end
+
+  def setup
     @cards = buildDeck
   end
 
@@ -117,17 +121,25 @@ class StackedDeck < Deck
 
   def initialize(logger, cardsToPutOnTop = [], startEmpty=false, withCreepers=true)
     super(logger)
-    if startEmpty
+    @cards_to_put_on_top = cardsToPutOnTop
+    @start_empty = startEmpty
+    @with_creepers = withCreepers
+  end
+
+  def setup
+    super
+    if @start_empty
       @cards = []
     end
-    cardsToPutOnTop.select do |card|
+    @cards_to_put_on_top.select do |card|
       @cards.unshift(card)
     end
-    if(!withCreepers)
+    if(!@with_creepers)
       @cards = @cards.select do |card|
         card.card_type != "Creeper"
       end
     end
+
   end
 
   def drawACard
