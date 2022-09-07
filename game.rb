@@ -32,6 +32,8 @@ class Game
   end
 
   def setup
+    # setup deck
+    @deck.setup
     # deal openings hands
     @players.each do |player|
       firstHand = drawCards(player, 3) # basic rules draw three cards to start
