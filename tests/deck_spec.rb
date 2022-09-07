@@ -27,6 +27,7 @@ describe "deck" do
             input_stream = StringIO.new("0")
             test_logger = Logger.new(test_outfile)
             theDeck = Deck.new(test_logger)
+            theDeck.setup
             # setup the deck so there is only one card left to draw
             (1..(theDeck.count-1)).each do |itteration|
                 theDeck.send(:drawACard)
@@ -42,6 +43,7 @@ describe "deck" do
             input_stream = StringIO.new("0")
             test_logger = Logger.new(test_outfile)
             theDeck = Deck.new(test_logger)
+            theDeck.setup
             # setup the deck so there is only one card left to draw
             (1..theDeck.count).each do |itteration|
                 theDeck.send(:drawACard)
@@ -57,6 +59,7 @@ describe "deck" do
             input_stream = StringIO.new("0")
             test_logger = Logger.new(test_outfile)
             theDeck = Deck.new(test_logger)
+            theDeck.setup
             # setup the deck so there are no cards left to draw
             (1..theDeck.count).each do |itteration|
                 theDeck.send(:drawACard)
@@ -72,6 +75,7 @@ describe "deck" do
             input_stream = StringIO.new("0")
             test_logger = Logger.new(test_outfile)
             theDeck = Deck.new(test_logger)
+            theDeck.setup
             # setup the deck so there is only one card left to draw
             (1..(theDeck.count-2)).each do |itteration|
                 theDeck.send(:drawACard)
