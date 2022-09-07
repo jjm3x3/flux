@@ -20,6 +20,7 @@ describe "game" do
             test_logger = Logger.new(test_outfile)
             test_interface = TestInterface.new(input_stream, test_outfile)
             theGame = Game.new(test_logger, test_interface, players=[], StackedDeck.new(test_logger))
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             theDecksOriginalSize = theGame.deck.count
 
@@ -38,6 +39,7 @@ describe "game" do
             players = Player.generate_players(3)
             stacked_deck = StackedDeck.new(test_logger, [Creeper.new(10000, "Screem", "Some very scary rule text")])
             theGame = Game.new(test_logger, testInterface, players, stacked_deck)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -61,6 +63,7 @@ describe "game" do
                 Creeper.new(10004, "Lust", "There is no one there"),
                 Creeper.new(10005, "Loss", "There is no one there")])
             theGame = Game.new(test_logger, testInterface, players, stacked_deck)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -82,6 +85,7 @@ describe "game" do
                 [Creeper.new(10000, "Screem", "Some very scary rule text"),
                 Creeper.new(10001, "Lonelyness", "There is no one there")])
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -103,6 +107,7 @@ describe "game" do
                 theWholeDeck,
                 startempty=true)
             theGame = Game.new(test_logger, testInterface, players, stacked_deck)
+            stacked_deck.setup  # don't want to draw opening hands for test
             thefirstplayer = theGame.players[0]
 
             # execute
@@ -123,6 +128,7 @@ describe "game" do
                     Creeper.new(10001, "lonelyness", "there is no one there")],
                 startempty=true)
             theGame = Game.new(test_logger, testInterface, players, stacked_deck)
+            theGame.setup
             thefirstplayer = theGame.players[0]
 
             # execute
@@ -143,6 +149,7 @@ describe "game" do
                     Creeper.new(10001, "lonelyness", "there is no one there")],
                 startempty=true)
             theGame = Game.new(test_logger, testInterface, players, stacked_deck)
+            theGame.setup
             thefirstplayer = theGame.players[0]
             # fill discard pile
 
