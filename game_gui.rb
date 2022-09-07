@@ -79,6 +79,7 @@ class GameGui < Gosu::Window
 
         @game_state = GameState.new(deck.count)
         @button_images = @button_images.merge(create_card_images(@deck))
+        @tool_tip_images = create_tool_tip_images(@deck)
 
         @new_game_driver = nil
 
@@ -91,6 +92,18 @@ class GameGui < Gosu::Window
             result[card.name] = Gosu::Image.from_text(card.name.to_s, 20)
         end
 
+        return result
+    end
+
+    def create_tool_tip_images(deck)
+        result = {}
+        deck.each do |card|
+            if card.respond_to?(:rule_text)
+                result[card.name] = GuiUtil.get_text_image(card.rule_text, @font)
+            else
+                result[card.name] = GuiUtil.get_text_image(card.name, @font)
+            end
+        end
         return result
     end
 
@@ -275,20 +288,24 @@ class GameGui < Gosu::Window
 
             cardsDisplayed = 0
             @current_displayed_cards = []
-            hand_x = 0
             left_shift = (@game_state.active_player.cards_in_hand.count / 5) * 40
             hand_x = (@game_stats_and_current_player_base_x + 20) - left_shift
             @game_state.active_player.cards_in_hand.each do |card|
+                # card is a unique string representation of a card
+                these_button_options = @button_options.clone
+                tool_tip_image = @tool_tip_images[card]
+                these_button_options[:tool_tip_image] = tool_tip_image
                 if cardsDisplayed >= 5
                     cardsDisplayed = 0
                     hand_x += 185
                 end
-                newCardButton = Button.new(self,
+                newCardButton = Button.new(
+                    self,
                     Gosu::Image.from_text("#{card}", 20),
                     hand_x,
                     (current_player_hand_y + 30) + 10 * cardsDisplayed + @font.height * cardsDisplayed,
                     ZOrder::GAME_ITEMS,
-                    @button_options)
+                    these_button_options)
                 newCardButton.draw
                 @current_displayed_cards << newCardButton
                 cardsDisplayed += 1

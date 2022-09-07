@@ -1,7 +1,8 @@
 class Card
 
-  attr_reader :card_type
-  attr_reader :name
+  attr_reader :card_type,
+    :name,
+    :rule_text
 
   def initialize(number=1,name="thing")
     @name = name
@@ -41,6 +42,11 @@ class Keeper < Card
   def initialize(id, name)
     super(1,name)
     @id = id
+    if is_peace?
+      @rule_text = "#{name}\n (If you have War, move it to another player if you have this on the table)"
+    else
+      @rule_text = name
+    end
   end
 
   def play(player, game)
@@ -63,10 +69,14 @@ class Keeper < Card
 end
 
 class Goal < Card
-
   def initialize(name, cards, rule)
     super(2, name)
     @related_keepers = cards
+    if rule == "? and ?"
+      @rule_text = "The player with #{cards[0]}, and #{cards[1]} on the table wins"
+    else
+      @rule_text = rule
+    end
   end
 
   def play(player, game)
@@ -87,7 +97,7 @@ class Goal < Card
 end
 
 class Rule < Card
-  attr_reader :rule_type, :rule_text
+  attr_reader :rule_type
 
   def initialize(name, ruleType, rulesText)
     super(3,name)

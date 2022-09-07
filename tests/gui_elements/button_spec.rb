@@ -18,7 +18,7 @@ describe "Button" do
     describe "draw" do
         it "should draw" do
             # setup
-            window_double = double("window")
+            window_double = double("window", mouse_x: 10, mouse_y: 10)
             image_double = double("image", height: 10, width: 10, draw: nil)
             sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
 
@@ -31,7 +31,7 @@ describe "Button" do
 
         it "should prefer drawing an image if one is injected" do
             # setup
-            window_double = double("window")
+            window_double = double("window", mouse_x: 10, mouse_y: 10)
             image_double = double("image", height: 10, width: 10, draw: nil)
             sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
 
@@ -61,7 +61,7 @@ describe "Button" do
     describe "set_position" do
         it "should draw based what what is porvided in set_position" do
             # setup
-            window_double = double("window")
+            window_double = double("window", mouse_x: 10, mouse_y: 10)
             image_double = double("image", height: 10, width: 10, draw: nil)
             sut = Button.new(window_double, image_double, 1,1,1, {is_pressed: ->() {} })
             expected_x = 100
