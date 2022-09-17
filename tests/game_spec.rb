@@ -1117,6 +1117,7 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile, player_prompts)
             stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty=false, withCreepers=false)
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -1136,6 +1137,7 @@ describe "game" do
             player_prompts = PlayerPromptGenerator.generate_prompts(players, Constants::USER_SPECIFIC_PROMPTS)
             testInterface = TestInterface.new(input_stream, test_outfile, Constants::PROMPT_STRINGS.merge(player_prompts))
             theGame = Game.new(testLogger, testInterface, players)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -1143,8 +1145,9 @@ describe "game" do
             theGame.everybody_gets_1(theFirstPlayer)
 
             # test
+            expected_starting_hand = 3
             theGame.players.select do |player|
-                expect(player.hand.length).to eq 1 # since no hands
+                expect(player.hand.length).to eq expected_starting_hand + 1
             end
         end
 
@@ -1159,6 +1162,7 @@ describe "game" do
             warCreeper = Creeper.new(1, "War", "with some rules text")
             stacked_deck = StackedDeck.new(testLogger, [warCreeper])
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            stacked_deck.setup  # don't wanna draw opening hands
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -1180,6 +1184,7 @@ describe "game" do
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             stacked_deck = StackedDeck.new(testLogger, stackedCreepers)
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            stacked_deck.setup  # don't wanna draw opening hands
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
