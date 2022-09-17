@@ -76,6 +76,8 @@ class GameGui < Gosu::Window
 
         @user_prompt_templates = user_prompt_templates
         @deck = deck
+        # needs to be setup to generate values
+        @deck.setup
 
         @game_state = GameState.new(deck.count)
         @button_images = @button_images.merge(create_card_images(@deck))
