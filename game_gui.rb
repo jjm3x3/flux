@@ -134,7 +134,6 @@ class GameGui < Gosu::Window
             @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
         end
         @logger.debug "GamGui::start_a_new_game: Size of deck before starting is '#{@deck.count}'"
-        @deck.setup
         game = Game.new(@logger, GuiInputManager.new(self), players, @deck)
         game.setup
         @new_game_driver = GameDriver.new(game, @logger)
