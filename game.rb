@@ -522,7 +522,11 @@ class Game
       if(eligiablePermanents.size == 0)
         discard(player.take_death)
       else
-        selectedCard = @interface.await.choose_from_list(eligiablePermanents, :death_discard_prompt).value
+        choose_result = @interface.await.choose_from_list(eligiablePermanents, :death_discard_prompt)
+        if choose_result.state != :fulfilled
+          @logger.warn "Was not able to fulfil selecting a card for death #{choose_result.reason}"
+        end
+        selectedCard = choose_result.value
         player.discard_permanent(selectedCard)
       end
     end
