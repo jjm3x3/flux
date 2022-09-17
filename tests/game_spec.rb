@@ -236,6 +236,7 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 1
@@ -254,6 +255,7 @@ describe "game" do
             testInterface = TestInterface.new(input_stream, test_outfile)
             players = Player.generate_players(3)
             theGame = Game.new(testLogger, testInterface, players)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
@@ -273,6 +275,7 @@ describe "game" do
             players = Player.generate_players(3)
             stacked_deck = StackedDeck.new(testLogger, cardsToPutOnTop=[], startEmpty= false, withCreepers=false)
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
@@ -294,6 +297,7 @@ describe "game" do
             warCreeper = Creeper.new(1, "War", "with some rules text")
             stacked_deck = StackedDeck.new(testLogger, [warCreeper])
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
@@ -314,6 +318,7 @@ describe "game" do
             warCreeper = Creeper.new(1, "War", "with some rules text")
             stacked_deck = StackedDeck.new(testLogger, [warCreeper])
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            stacked_deck.setup  # don't want to draw opening hands
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             cardsDrawnToDate = 0
