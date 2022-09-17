@@ -597,6 +597,7 @@ describe "game" do
             players = Player.generate_players(3)
             stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
 
             # execute
@@ -614,6 +615,7 @@ describe "game" do
             players = Player.generate_players(3)
             stacked_deck = StackedDeck.new(testLogger) # this ensures that the card played doesn't require input of its own
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            theGame.setup
             theFirstPlayer = theGame.players[0]
             originalDeckCount = theGame.deck.count
 
@@ -633,6 +635,7 @@ describe "game" do
             warCreeper = Creeper.new(1, "War", "with some rules text")
             stacked_deck = StackedDeck.new(testLogger, [warCreeper])
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            stacked_deck.setup  # don't wanna draw opening hands
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
 
@@ -652,6 +655,7 @@ describe "game" do
             stackedCreepers = [Creeper.new(1, "War", "with some rules text")]
             stacked_deck = StackedDeck.new(testLogger, stackedCreepers)
             theGame = Game.new(testLogger, testInterface, players, stacked_deck)
+            stacked_deck.setup  # don't wanna draw opening hands
             theFirstPlayer = theGame.players[0]
             # assuming the start draw rule is 1
             countOfDeckToStart = theGame.deck.count
