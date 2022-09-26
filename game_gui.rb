@@ -76,6 +76,8 @@ class GameGui < Gosu::Window
 
         @user_prompt_templates = user_prompt_templates
         @deck = deck
+        # needs to be setup to generate values
+        @deck.setup
 
         @game_state = GameState.new(deck.count)
         @button_images = @button_images.merge(create_card_images(@deck))
@@ -131,6 +133,7 @@ class GameGui < Gosu::Window
             # TODO:: should check to make sure @list_dialog exists
             @list_dialog.add_prompt(key, Gosu::Image.from_text(prompt, 20))
         end
+        @logger.debug "GamGui::start_a_new_game: Size of deck before starting is '#{@deck.count}'"
         game = Game.new(@logger, GuiInputManager.new(self), players, @deck)
         game.setup
         @new_game_driver = GameDriver.new(game, @logger)
