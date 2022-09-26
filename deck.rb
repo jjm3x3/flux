@@ -139,7 +139,6 @@ class StackedDeck < Deck
         card.card_type != "Creeper"
       end
     end
-
   end
 
   def drawACard

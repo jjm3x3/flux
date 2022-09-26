@@ -34,7 +34,7 @@ class GameGui < Gosu::Window
         @game_stats = GameStats.new(@game_stats_and_current_player_base_x, game_stats_y)
         @current_displayed_cards = []
 
-        @player_changed = true
+        @player_changed = false
         @redraw_hand = true
         @card_played = false
 
@@ -60,9 +60,6 @@ class GameGui < Gosu::Window
             "Back to Main Menu" => Gosu::Image.from_text("Back to Main Menu", 20),
             "no_one" => Gosu::Image.from_text("No One", 20),
         }
-
-        @simple_dialog.set_options(SimpleDialog.generate_dialog_options(["Yes", "No"], @button_images))
-        @simple_dialog.set_prompt :play_a_game_prompt
 
         @list_dialog = CardDialog.new(
             self,
@@ -143,6 +140,7 @@ class GameGui < Gosu::Window
         end
         @game_state = game_state_result.value
         @logger.debug "GameGui::start_a_new_game: New game started"
+        @player_changed = true
     end
 
     def button_up(id)
@@ -166,13 +164,18 @@ class GameGui < Gosu::Window
                         @new_game_button.set_visibility false
                         start_a_new_game
                     elsif result == "Back to Main Menu"
+                        @new_game_button.set_visibility true
                         @new_game_driver = nil
                     end
                     # TODO:: do things for other cases
                 end
                 return
             end
+            @logger.debug "GameGui::button_up: no dialogs are visible so processing menu buttons"
             if @new_game_button.is_clicked?
+                @logger.debug "Showing new game dialog since button was clicked"
+                @simple_dialog.set_options(SimpleDialog.generate_dialog_options(["Yes", "No"], @button_images))
+                @simple_dialog.set_prompt :play_a_game_prompt
                 @simple_dialog.show
                 return
             end
